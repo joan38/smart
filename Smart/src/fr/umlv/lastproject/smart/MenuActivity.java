@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.osmdroid.events.MapAdapter;
@@ -10,6 +11,7 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -57,6 +59,7 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
+	String formPath ;
 
 	private boolean missionCreated = false;
 
@@ -156,6 +159,8 @@ public class MenuActivity extends Activity {
 				centerMap.setVisibility(View.INVISIBLE);
 			}
 		});
+		
+		
 
 		/**
 		 * Exemple d'utilisation d'un shapefile
@@ -320,8 +325,8 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
-				String filePath = fileForm.toString().split("file:///")[1];
-				missionDialog.setPathForm(filePath);
+				formPath = fileForm.toString().split("file:///")[1];
+				missionDialog.setPathForm(formPath);
 
 				break;
 			}
@@ -337,7 +342,20 @@ public class MenuActivity extends Activity {
 
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
-		Mission.createMission(missionName, this, mapView, new Form());
+		Form form = new Form() ;
+		if(formPath!= null){
+			try {
+				form.read(formPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		Mission.createMission(missionName, this, mapView,form);
 		missionCreated = Mission.getInstance().startMission();
 		overlayManager.add(Mission.getInstance().getPolygonLayer());
 		overlayManager.add(Mission.getInstance().getLineLayer());

@@ -237,6 +237,7 @@ public class DbManager {
 			db.close();
 
 		} catch (SQLiteException e) {
+			e.printStackTrace();
 			Log.d("TEST", "Erreur lors de l'ouverture de la base");
 			return -1;
 		} catch (SQLException e) {
