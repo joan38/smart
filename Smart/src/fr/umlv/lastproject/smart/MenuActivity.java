@@ -349,6 +349,7 @@ public class MenuActivity extends Activity {
 					// Mission.getInstance().stopMission();
 					break;
 				}
+				break;
 
 			case SmartConstants.BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
