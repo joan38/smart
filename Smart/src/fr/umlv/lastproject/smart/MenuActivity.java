@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.form.CreateFormActivity;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
@@ -269,23 +271,6 @@ public class MenuActivity extends Activity {
 						missionDialog = new AlertCreateMissionDialog(this);
 						missionDialog.show();
 					}
-					// Form f = new Form("MonForm");
-					// f.addField(new TextField("titi"));
-					// f.addField(new NumericField("toto", 5, 10));
-					// f.addField(new BooleanField("alors"));
-					// List<String> l = new LinkedList<String>();
-					// l.add("pouet");
-					// l.add("pouet2");
-
-					// f.addField(new ListField("liste", l));
-
-					// Mission.createMission("ma mission thibault yoyo",
-					// this, mapView, f);
-					// Mission.getInstance().startMission();
-					// overlayManager.add(Mission.getInstance().getPolygonLayer());
-					// overlayManager.add(Mission.getInstance().getLineLayer());
-					// overlayManager.add(Mission.getInstance().getPointLayer());
-
 					break;
 				case SmartConstants.CREATE_FORM:
 					LayoutInflater factory = LayoutInflater.from(this);
@@ -355,12 +340,25 @@ public class MenuActivity extends Activity {
 
 					}
 					break;
+
+				case SmartConstants.EXPORT_KML:
+					Intent intent = new Intent(MenuActivity.this,
+							PictureActivity.class);
+					startActivityForResult(intent, 10);
+					break;
 				default:
 					// Mission.getInstance().stopMission();
 					break;
 				}
 
+			case SmartConstants.BROWSER_ACTIVITY:
+				Uri fileForm = data.getData();
+				String filePath = fileForm.toString().split("file:///")[1];
+				missionDialog.setPathForm(filePath);
+
+				break;
 			}
+
 		}
 	}
 
