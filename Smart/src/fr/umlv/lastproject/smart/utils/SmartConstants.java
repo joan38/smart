@@ -19,5 +19,12 @@ public final class SmartConstants {
 	public static final int GPS_REFRESH_DISTANCE = 10;
 
 	public static final int DEFAULT_ZOOM = 15;
+	
+	public final static int TEXT_FIELD = 0;
+	public final static int NUMERIC_FIELD = 1;
+	public final static int BOOLEAN_FIELD = 2;
+	public final static int LIST_FIELD = 3;
+	public final static int PICTURE_FIELD = 4;
+	public final static int HEIGHT_FIELD = 5;
 
 }
