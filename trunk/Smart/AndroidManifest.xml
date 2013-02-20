@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.umlv.lastproject.smart"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/smart"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="fr.umlv.lastproject.smart.MenuActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.LayersActivity"
+            android:label="@string/title_activity_layers" >
+        </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.form.CreateFormActivity"
+            android:label="@string/title_activity_create_form" >
+        </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.form.AddFieldtoFormActivity"
+            android:label="@string/title_activity_add_fieldto_form" >
+        </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.browser.FileChooserActivity"
+            android:label="@string/title_activity_browser" >
+            <intent-filter>
+                <action android:name="fr.umlv.lastproject.smart.browser"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.OPENABLE"/>
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+</manifest>

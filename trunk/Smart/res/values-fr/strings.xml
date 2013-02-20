@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Smart</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="latitude">Latitude :</string>
+    <string name="longitude">Longitude :</string>
+    <string name="altitude">Altitude :</string>
+    <string name="accuracy">Précision :</string>
+    <string name="centerMap">Recentrage de la carte</string>
+    <string name="findGPS">Recherche du signal GPS..</string>
+    <string name="gpsSettings">Paramétrages du GPS</string>
+    <string name="gpsMessage">Cette application require le GPS.\nValider pour accéder aux paramétrages. \nVous pouvez également y accéder par le menu de paramétrages.</string>
+    <string name="cancel">Annuler</string>
+    <string name="validate">Valider</string>
+    <string name="hideInfoZone">Cacher la zone d\'informations</string>
+    <string name="showInfoZone">Afficher la zone d\'informations</string>
+    <string name="exit">Quitter ?</string>
+    <string name="exitMsg">Êtes-vous sûr de vouloir quitter SMART ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="option">Option</string>
+    
+    <string name="addShortcut">Ajouter un raccouci</string>
+    <string name="removeShortcut">Retirer le raccourci</string>
+
+    <string-array name="items">
+        <item>Créer mission</item>
+        <item>Créer un formulaire</item>
+        <item>Relevé de point</item>
+        <item>Relevé de ligne</item>
+        <item>Relevé de polygon</item>
+        <item>Import de KML</item>
+        <item>Import de GeoTIFF</item>
+        <item>Import de ShapeFile</item>
+    </string-array>
+    <string name="stopMission">Arrêter la mission</string>
+    
+      <string-array name="typeFields">
+        <item>Texte</item>
+        <item>Numérique</item>
+        <item>Boolean</item>
+        <item>Liste</item>
+        <item>Photo</item>
+        <item>Hauteur</item>
+    </string-array>
+    
+    <string name="title_activity_browser">BrowserActivity</string>
+    <string name="empty_directory">Répertoire vide</string>
+    <string name="storage_removed">Espace disque non disponible.</string>
+    <string name="choose_file">Sélectionner un fichier</string>
+    <string name="error_selecting_file">Erreur lors de sélection du fichier</string>  
+    <string name="zoomIn">Do you really want to zoom in even if tiles are missing?</string>  
+    <string name="zoomOut">Do you really want to zoom out even if tiles are missing?</string> 
+    <string name="zoomTitle">Tuiles manquantes pour ce niveau de zoom</string>
+     <string name="trackTitle">Créer un nouveau tracé GPS</string>
+     <string name="track_text_name">Nom de la nouvelle trace GPS</string>
+    <string name="track_text_param">Entrez une valeur pour le mode sélectionné</string>
+    <string name="track_radio_time">Temps (s)</string>
+    <string name="track_radio_distance">Distance (m)</string>
+    <string name="create_button">Créer</string>
+    <string name="cancel_button">Annuler</string>
+     
+     <string name="missionName">Nom :</string>
+     <string name="selectForm">Formulaire :</string>
+     <string name="formBrowser">Selectionner le formulaire</string>
+     <string name="mission">Mission</string>
+     
+     <string name="track_name_missing">Saisir un nom pour la trace</string> 
+   <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string> 
+      <string name="track_param_false">Le paramètre doit être un nombre entier</string> 
+      <string name="track_error">Erreur en fin de trace</string> 
+    
+    <string name="Coms">Commentaires</string>
+    <string name="ComsDefault">Champ par défaut : Commentaires</string>
+    
+    <string name="CreateForm">Création d\'un formulaire</string>
+    <string name="AddField">Ajouter un champ</string>
+    <string name="Name">Nom</string>
+    <string name="List">Liste</string>
+    
+
+</resources>
