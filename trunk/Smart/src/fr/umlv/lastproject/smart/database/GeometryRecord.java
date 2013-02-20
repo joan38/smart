@@ -12,7 +12,7 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 /**
  * Object Geometry which can be stored in table "geometries"
  * 
- * @author Maellou
+ * @author Maelle Cabot
  * 
  */
 public class GeometryRecord {
@@ -28,6 +28,11 @@ public class GeometryRecord {
 	public GeometryRecord() {
 	}
 
+	/**
+	 * 
+	 * @param g is the geometry associated to the GeometryRecord
+	 * @param idMission
+	 */
 	public GeometryRecord(Geometry g, int idMission) {
 		this.type = g.getType();
 		this.g = g;
@@ -35,6 +40,11 @@ public class GeometryRecord {
 		createPoints();
 	}
 
+	/**
+	 * 
+	 * @param type of the geometry
+	 * @param idMission
+	 */
 	public GeometryRecord(GeometryType type, int idMission) {
 		super();
 		this.type = type;
@@ -42,30 +52,58 @@ public class GeometryRecord {
 
 	}
 
+	/**
+	 * 
+	 * @return the id of the geometryRecord
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * 
+	 * @return the type of the GeometryRecord
+	 */
 	public GeometryType getType() {
 		return type;
 	}
 
+	/**
+	 * 
+	 * @param type
+	 */
 	public void setType(GeometryType type) {
 		this.type = type;
 	}
 
+	/**
+	 * 
+	 * @return the id of the mission associated to the GeometryRecord
+	 */
 	public int getIdMission() {
 		return idMission;
 	}
 
+	/**
+	 * 
+	 * @param idMission
+	 */
 	public void setIdMission(int idMission) {
 		this.idMission = idMission;
 	}
 
+	/**
+	 * 
+	 * @return the list of PointRecord corresponding to the GeometryRecord
+	 */
 	public List<PointRecord> getPointsRecord() {
 		return points;
 	}

@@ -37,12 +37,14 @@ import fr.umlv.lastproject.smart.database.ListFieldRecord;
 import fr.umlv.lastproject.smart.database.NumericFieldRecord;
 import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
+import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Object form associated at a mission
  * 
- * @author Maellou
+ * @author Maelle Cabot
  * 
  */
 public class Form implements Serializable {
@@ -55,12 +57,6 @@ public class Form implements Serializable {
 	private ArrayList<Field> fieldsList;
 	private List<Object> editTextList;
 
-	private static final int TEXT_FIELD = 0;
-	private static final int NUMERIC_FIELD = 1;
-	private static final int BOOLEAN_FIELD = 2;
-	private static final int LIST_FIELD = 3;
-	private static final int PICTURE_FIELD = 4;
-	private static final int HEIGHT_FIELD = 5;
 
 	private final String FORM ="form" ;
 	private final String FIELD="field" ;
@@ -72,39 +68,69 @@ public class Form implements Serializable {
 
 	private TableLayout layoutDynamic;
 
-
+/**
+ * 
+ * @param name of the form
+ */
 	public Form(String name) {
 		this.name = name;
 		this.fieldsList = new ArrayList<Field>();
 		this.fieldsList.add(new TextField("commentaires"));
 	}
 
+	/**
+	 * Form by default
+	 */
 	public Form() {
 		this.name = "FormDefault";
 		this.fieldsList = new ArrayList<Field>();
 		this.fieldsList.add(new TextField("commentaires"));
 	}
 
+	/**
+	 * 
+	 * @return the name of form
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * 
+	 * @return the fields list of the form
+	 */
 	public ArrayList<Field> getFieldsList() {
 		return fieldsList;
 	}
 
+	/**
+	 * 
+	 * @param fieldsList
+	 */
 	public void setFieldsList(ArrayList<Field> fieldsList) {
 		this.fieldsList = fieldsList;
 	}
 
+	/**
+	 * 
+	 * @param f is the field to add at the form
+	 */
 	public void addField(Field f) {
 		this.fieldsList.add(f);
 	}
 
+	/**
+	 * 
+	 * @param label of the field to delete
+	 */
 	public void deleteField(String label){
 		for(int i=0;i<fieldsList.size();i++){
 			if(fieldsList.get(i).getLabel().equals(label)){
@@ -113,6 +139,11 @@ public class Form implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 * @param label of the field to search
+	 * @return true if the field exists
+	 */
 	public boolean searchLabel(String label){
 		for(int i=0;i<fieldsList.size();i++){
 			if(fieldsList.get(i).getLabel().equals(label)){
@@ -131,86 +162,8 @@ public class Form implements Serializable {
 	 *            geometry to insert
 	 */
 	public void openForm(final Context context, final Geometry g) {
-		LayoutInflater factory = LayoutInflater.from(context);
-		final View alertDialogView = factory.inflate(
-				fr.umlv.lastproject.smart.R.layout.activity_formulaire_viewer,
-				null);
-
-
-		layoutDynamic = ( TableLayout ) alertDialogView.findViewById(R.id.layoutDynamicFormulaire);
-		layoutDynamic.setVerticalScrollBarEnabled(true);
-
-		buildForm(layoutDynamic, context);
-
-		final AlertDialog.Builder adb = new AlertDialog.Builder(context);
-		final Form form = this;
-		adb.setView(alertDialogView);
-		adb.setTitle("Formulaire");
-
-
-		adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-
-				DbManager dbManager = new DbManager();
-				dbManager.open(context);
-				int idGeometry = dbManager.insertGeometry(new GeometryRecord(g,
-						Mission.getInstance().getId()));
-				FormRecord formRecord = new FormRecord(form);
-
-				for(int i=0; i<formRecord.getFields().size();i++){
-					int type = formRecord.getFields().get(i).getField().getType();
-
-
-					switch(type){
-					case TEXT_FIELD:
-						TextFieldRecord text = (TextFieldRecord) formRecord.getFields().get(i);
-						text.setValue(((EditText) editTextList.get(i)).getText().toString());
-
-						break;
-					case NUMERIC_FIELD:
-						final NumericFieldRecord num = (NumericFieldRecord) formRecord.getFields().get(i);
-						num.setValue(Double.parseDouble(((EditText) editTextList.get(i)).getText().toString()));
-						break;
-					case BOOLEAN_FIELD:
-						BooleanFieldRecord b = (BooleanFieldRecord) formRecord.getFields().get(i);
-						RadioGroup g = (RadioGroup) editTextList.get(i);
-						if(g.getCheckedRadioButtonId() == 0){
-							b.setValue(true);
-						} else {
-							b.setValue(false);
-						}
-						break;
-					case LIST_FIELD:
-						ListFieldRecord l = (ListFieldRecord) formRecord.getFields().get(i);
-						l.setValue(((EditText) editTextList.get(i)).getText().toString());
-						break;
-					case PICTURE_FIELD:
-						PictureFieldRecord p = (PictureFieldRecord) formRecord.getFields().get(i);
-						p.setValue(((EditText) editTextList.get(i)).getText().toString());
-						break;
-					case HEIGHT_FIELD:
-						HeightFieldRecord h = (HeightFieldRecord) formRecord.getFields().get(i);
-						h.setValue(Double.parseDouble(((EditText) editTextList.get(i)).getText().toString()));
-
-						break;
-					default:
-					}
-				}
-
-				dbManager.insertFormRecord(formRecord, idGeometry);
-				dbManager.close();
-
-			}
-		});
-
-
-
-		adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-
-			}
-		});
-		adb.show();
+		final FormDialog dialog=new FormDialog(context, this, g);
+		dialog.show();
 	}
 	/**
 	 * 
@@ -285,7 +238,7 @@ public class Form implements Serializable {
 
 
 			switch (typeField) {
-			case TEXT_FIELD:
+			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
 				textView.setTag(tf.getLabel());
 				textView.setText(tf.getLabel());
@@ -296,7 +249,7 @@ public class Form implements Serializable {
 				editTextList.add(editText);
 
 				break;
-			case NUMERIC_FIELD:
+			case SmartConstants.NUMERIC_FIELD:
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
@@ -335,7 +288,7 @@ public class Form implements Serializable {
 				editTextList.add(editText);
 
 				break;
-			case BOOLEAN_FIELD:
+			case SmartConstants.BOOLEAN_FIELD:
 				BooleanField bf = (BooleanField) field;
 				textView.setText(bf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
@@ -358,7 +311,7 @@ public class Form implements Serializable {
 				editTextList.add(group);
 
 				break;
-			case LIST_FIELD:
+			case SmartConstants.LIST_FIELD:
 				final ListField lf = (ListField) field;
 				textView.setText(lf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
@@ -389,7 +342,7 @@ public class Form implements Serializable {
 				l.addView(spin);
 
 				break;
-			case PICTURE_FIELD:
+			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
 
 				textView.setText(pf.getLabel());
@@ -399,7 +352,7 @@ public class Form implements Serializable {
 				editTextList.add(editText);
 
 				break;
-			case HEIGHT_FIELD:
+			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
 				textView.setText(hf.getLabel());
 				textView.setPadding(20, 10, 5, 0);

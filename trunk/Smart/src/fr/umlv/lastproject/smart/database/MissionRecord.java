@@ -26,7 +26,6 @@ public class MissionRecord {
 
 	public MissionRecord() {
 		this.title = Mission.getInstance().getTitle();
-		Log.d("", "id" + this.title);
 		this.status = true;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(
 				"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
@@ -35,43 +34,83 @@ public class MissionRecord {
 
 	}
 
+	/**
+	 * 
+	 * @return the id of the missionRecord
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 		Mission.getInstance().setId(id);
 	}
 
+	/**
+	 * 
+	 * @return title of the missionRecord
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * 
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * 
+	 * @return true, if the mission is started
+	 */
 	public boolean isStatus() {
 		return status;
 	}
 
+	/**
+	 * 
+	 * @param status
+	 */
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
+	/**
+	 * 
+	 * @return the date of the mission
+	 */
 	public String getDate() {
 		return date;
 	}
 
+	/**
+	 * 
+	 * @param date
+	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
 
+	/**
+	 * 
+	 * @return the form associated to the missionRecord
+	 */
 	public Form getForm() {
 		return form;
 	}
 
+	/**
+	 * 
+	 * @param form
+	 */
 	public void setForm(Form form) {
 		this.form = form;
 	}

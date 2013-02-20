@@ -3,29 +3,23 @@ package fr.umlv.lastproject.smart.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
-import android.support.v4.view.ViewPager.LayoutParams;
-import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -34,18 +28,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+/**
+ * Creation's activity to make a new form
+ * @author Maelle Cabot
+ *
+ */
 public class CreateFormActivity extends Activity {
 
-	private final static int TEXT_FIELD = 0;
-	private final static int NUMERIC_FIELD = 1;
-	private final static int BOOLEAN_FIELD = 2;
-	private final static int LIST_FIELD = 3;
-	private final static int PICTURE_FIELD = 4;
-	private final static int HEIGHT_FIELD = 5;
+	
 
 	Form form = new Form();
 	private TableLayout layoutDynamic;
-	private TableLayout layoutDynamicAddField;
 	private Spinner spin;
 	List<EditText>	allEds =  new ArrayList<EditText>();
 	private int type;
@@ -100,45 +93,45 @@ public class CreateFormActivity extends Activity {
 
 
 						switch (position){
-						case TEXT_FIELD :
+						case SmartConstants.TEXT_FIELD :
 
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-							type=TEXT_FIELD;
+							type=SmartConstants.TEXT_FIELD;
 							break;
-						case NUMERIC_FIELD :
+						case SmartConstants.NUMERIC_FIELD :
 							rowMax.setVisibility(View.VISIBLE);
 							rowMin.setVisibility(View.VISIBLE);
 							rowList.setVisibility(View.GONE);
 
-							type=NUMERIC_FIELD;
+							type=SmartConstants.NUMERIC_FIELD;
 							break;
-						case BOOLEAN_FIELD :
+						case SmartConstants.BOOLEAN_FIELD :
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-							type=BOOLEAN_FIELD;
+							type=SmartConstants.BOOLEAN_FIELD;
 							break;
-						case LIST_FIELD :
+						case SmartConstants.LIST_FIELD :
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.VISIBLE);
-							type=LIST_FIELD;
+							type=SmartConstants.LIST_FIELD;
 							break;
-						case PICTURE_FIELD :
+						case SmartConstants.PICTURE_FIELD :
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 
-							type=PICTURE_FIELD;
+							type=SmartConstants.PICTURE_FIELD;
 							break;
-						case HEIGHT_FIELD :
+						case SmartConstants.HEIGHT_FIELD :
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 
-							type=HEIGHT_FIELD;
+							type=SmartConstants.HEIGHT_FIELD;
 							break;
 						default:
 						}
@@ -177,7 +170,7 @@ public class CreateFormActivity extends Activity {
 						int min=-1;
 
 						switch (type){
-						case TEXT_FIELD : 	
+						case SmartConstants.TEXT_FIELD : 	
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
 
@@ -192,7 +185,7 @@ public class CreateFormActivity extends Activity {
 								form.addField(t);
 							}
 							break;
-						case NUMERIC_FIELD :
+						case SmartConstants.NUMERIC_FIELD :
 
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
@@ -216,7 +209,7 @@ public class CreateFormActivity extends Activity {
 							}
 
 							break;
-						case BOOLEAN_FIELD :
+						case SmartConstants.BOOLEAN_FIELD :
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
 
@@ -231,12 +224,12 @@ public class CreateFormActivity extends Activity {
 								form.addField(b);
 							}
 							break;
-						case LIST_FIELD :
+						case SmartConstants.LIST_FIELD :
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
 
 							listValue = (EditText)alertDialogView.findViewById(R.id.valueList);
-							String[] tab = labelValue.getText().toString().split("/");
+							String[] tab = listValue.getText().toString().split("/");
 							if(!form.searchLabel(label)){
 								erreur=true;
 
@@ -253,7 +246,7 @@ public class CreateFormActivity extends Activity {
 
 							}
 							break;
-						case PICTURE_FIELD :
+						case SmartConstants.PICTURE_FIELD :
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
 							if(!form.searchLabel(label)){
@@ -266,7 +259,7 @@ public class CreateFormActivity extends Activity {
 								form.addField(p);
 							}
 							break;
-						case HEIGHT_FIELD :
+						case SmartConstants.HEIGHT_FIELD :
 							labelValue = (EditText)alertDialogView.findViewById(R.id.valueName);
 							label = labelValue.getText().toString();
 							if(!form.searchLabel(label)){
@@ -288,8 +281,6 @@ public class CreateFormActivity extends Activity {
 							ImageView image = new ImageView(c);
 							image.setClickable(true);
 							image.setImageDrawable(getResources().getDrawable(R.drawable.basket));
-//							ImageButton delete = new ImageButton(c);
-//							delete.setImageDrawable(getResources().getDrawable(R.drawable.basket));
 							image.setOnClickListener(new OnClickListener() {
 
 								@Override
@@ -344,17 +335,17 @@ public class CreateFormActivity extends Activity {
 
 
 
-	public int dipToPixel(int dip){
-		return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
-	}
-
-	public void refresh(Context c){
-		TextView v = new TextView(c);
-		v.setText("Nom");
-		EditText t = new EditText(c);
-		layoutDynamicAddField.addView(v);
-		layoutDynamicAddField.addView(t);
-	}
+//	public int dipToPixel(int dip){
+//		return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
+//	}
+//
+//	public void refresh(Context c){
+//		TextView v = new TextView(c);
+//		v.setText("Nom");
+//		EditText t = new EditText(c);
+//		layoutDynamicAddField.addView(v);
+//		layoutDynamicAddField.addView(t);
+//	}
 
 
 	@Override

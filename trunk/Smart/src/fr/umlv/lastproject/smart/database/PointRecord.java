@@ -5,7 +5,7 @@ import fr.umlv.lastproject.smart.layers.PointGeometry;
 /**
  * Object Point which can be stored in table "points"
  * 
- * @author Maellou
+ * @author Maelle Cabot
  * 
  */
 public class PointRecord {
