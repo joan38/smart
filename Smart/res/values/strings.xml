@@ -84,6 +84,7 @@
     <string name="title_activity_add_fieldto_form">AddFieldtoFormActivity</string>
     <string name="Name">Name</string>
     <string name="List">List</string>
+    <string name="form_title">Form</string>
        
 
 </resources>
