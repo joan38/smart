@@ -6,7 +6,7 @@ package fr.umlv.lastproject.smart.layers;
  * @author Fad's
  * 
  */
-public class Geometry {
+public abstract class Geometry {
 
 	/**
 	 * 
