@@ -31,10 +31,13 @@
         <item>Point Survay</item>
         <item>Line Survay</item>
         <item>Polygon Survay</item>
+        <item>Track GPS</item>
         <item>Import KML</item>
         <item>Import GeoTIFF</item>
         <item>Import ShapeFile</item>
-
+        <item>Export KML</item>
+        <item>Export CSV</item>
+        <item>Export Mission</item>
     </string-array>
     <string name="stopMission">Stop mission</string>
     
@@ -62,6 +65,8 @@
     <string name="selectForm">Form :</string>
     <string name="formBrowser">Select form file</string>
     <string name="mission">Mission</string>
+    <string name="export_mission">Export mission</string>
+    
     
     <string name="defaultForm">Default</string>
     <string name="othertForm">Other</string>
