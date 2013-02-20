@@ -2,27 +2,31 @@ package fr.umlv.lastproject.smart.form;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-import java.util.LinkedList;
-import java.util.List;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
@@ -156,9 +160,9 @@ public class Form implements Serializable {
 	 * 
 	 * @param s the file to load
 	 * @throws XmlPullParserException if the xml is malformatted
-	 * @throws FileNotFoundException if the file does not exist
+	 * @throws IOException 
 	 */
-	public void read(String s) throws XmlPullParserException, FileNotFoundException{
+	public void read(String s) throws XmlPullParserException, IOException{
 
 		XmlPullParserFactory xml = XmlPullParserFactory.newInstance() ;
 		xml.setNamespaceAware(true);
@@ -171,13 +175,19 @@ public class Form implements Serializable {
 
 			if(eventype == XmlPullParser.START_TAG){
 				String tag = xpp.getName();
-				if(tag == FORM){
+				Log.d("", "tag"+xpp.getName());
+				Log.d("", "tag count attribute "+ xpp.getAttributeCount() );
+
+				if(tag.equals(FORM)){
 					for(int i =0 ; i< xpp.getAttributeCount() ; i++){
-						if(xpp.getAttributeName(i) == TITLE ){
-							setName(xpp.getAttributeValue(i)) ;
+						Log.d("", "tag form "+xpp.getAttributeName(i));
+
+						if(xpp.getAttributeName(i).equals(TITLE) ){
+							setName(xpp.getAttributeValue(i).replace(" ", "")) ;
 						}
 					}
-				}else if(tag == FIELD){
+				}else if(tag.equals(FIELD)){
+					
 
 
 					String type = null ;
@@ -187,30 +197,39 @@ public class Form implements Serializable {
 					String values = null ;
 
 					for(int i = 0 ; i < xpp.getAttributeCount() ; i++){
-						if(xpp.getAttributeType(i) == TYPE){
+						Log.d("", "tag type"+xpp.getAttributeName(i));
+						if(xpp.getAttributeName(i).equals(TYPE)){
 							type = xpp.getAttributeValue(i);
-						}else if(xpp.getAttributeType(i) == TITLE){
-							title = xpp.getAttributeValue(i) ;
-						}else if(xpp.getAttributeType(i)== MAX){
+							Log.d("", "tag att"+xpp.getAttributeValue(i));
+
+						}else if(xpp.getAttributeName(i).equals(TITLE)){
+							title = xpp.getAttributeValue(i).replace(" ", "") ;
+						}else if(xpp.getAttributeName(i).equals(MAX)){
 							max = Integer.valueOf(xpp.getAttributeValue(i));
-						}else if(xpp.getAttributeType(i)== MIN){
+						}else if(xpp.getAttributeName(i).equals(MIN)){
 							min = Integer.getInteger(xpp.getAttributeValue(i)) ;
-						}else if(xpp.getAttributeType(i)==VALUES){
+						}else if(xpp.getAttributeName(i).equals(VALUES)){
 							values= xpp.getAttributeValue(i) ;
 						}
 					}
-					/*if(type == null) 
 
-					if( type == "photo" ){
-						addField(new HeightField("")) ;
-					}else if(type == "height"){
-						addField(new HeightFieldRecord(field, value))
-					}else if(type == "")*/
-
+					if( type.equals("photo") ){
+						addField(new PictureField(title)) ;
+					}else if(type.equals("height")){
+						addField(new HeightField(title));
+					}else if(type.equals("boolean")){
+						addField(new BooleanField(title));
+					}else if(type.equals("list")){
+						String[] list = values.split("/");
+						addField(new ListField(title, new ArrayList<String>(Arrays.asList(list)))) ;
+					}else if(type.equals("num")){
+						addField(new NumericField(title, min, max));
+					}
 				}
-
 			}
-
+			
+			eventype = xpp.next() ;
+			
 		}
 	}
 
@@ -251,7 +270,6 @@ public class Form implements Serializable {
 								editText.setError("Invalid");
 							}
 						}
-
 					}
 
 					@Override
@@ -327,14 +345,11 @@ public class Form implements Serializable {
 
 				l.addView(textView);
 				l.addView(spin);
-
 				break;
 			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
-
 				textView.setText(pf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
-
 				l.addView(textView);
 				editTextList.add(editText);
 
@@ -344,7 +359,6 @@ public class Form implements Serializable {
 				textView.setText(hf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
 				l.addView(textView);
 				l.addView(editText);
 				editTextList.add(editText);
@@ -354,7 +368,5 @@ public class Form implements Serializable {
 				break;
 			}
 		}
-
 	}
-
 }

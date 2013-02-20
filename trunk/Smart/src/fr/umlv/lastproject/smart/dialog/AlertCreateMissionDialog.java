@@ -87,6 +87,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	public void setPathForm(String path) {
 		formPath.setText(path);
+		
 	}
 
 }
