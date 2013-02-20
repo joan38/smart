@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateFormActivity" >
+
+    <TextView 	android:id = "@+id/title" 
+    android:layout_width = "fill_parent"
+	android:layout_height = "wrap_content"
+	android:gravity ="center"
+	android:textStyle="bold"
+	android:padding="10dp"
+	android:text="@string/CreateForm"/>
+    
+    
+	<LinearLayout android:id="@+id/tableRow1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:layout_below="@+id/title"
+    android:paddingLeft="10dp">
+        
+		<TextView android:layout_width = "fill_parent"
+		android:layout_height = "wrap_content"
+		android:id = "@+id/commentairesLabel" 
+		android:text="@string/ComsDefault"/>
+		
+		<EditText 
+		android:inputType="textMultiLine"
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:id = "@+id/commentaires" />
+	
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:id="@+id/tableRow3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/tableRow1"
+	    android:layout_centerHorizontal="true" >
+		
+	<Button  android:id="@+id/buttonAdd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:gravity ="center"
+    android:text="@string/AddField"/>
+	
+	<Button  android:id="@+id/buttonValidate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:gravity ="center"
+    android:text="@string/validate"/>
+	
+	</LinearLayout>
+
+	<TableLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/layoutDynamicCreateFormulaire"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_below="@+id/tableRow3"
+	    android:orientation="vertical"
+	    android:paddingLeft="10dp"
+	    android:paddingTop="10dp">
+	
+	</TableLayout>
+
+</RelativeLayout>
