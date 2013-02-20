@@ -30,7 +30,7 @@ public class LineGeometry extends Geometry {
 	}
 
 	/**
-	 * Line constructor
+	 * Starts a line at the point of coords (latitude,longitude)
 	 * 
 	 * @param latitude
 	 *            : latitude of the point
@@ -62,5 +62,7 @@ public class LineGeometry extends Geometry {
 	public List<PointGeometry> getPoints() {
 		return this.points;
 	}
+
+	
 
 }

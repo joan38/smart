@@ -161,8 +161,8 @@ public class Form implements Serializable {
 	 * @param g
 	 *            geometry to insert
 	 */
-	public void openForm(final Context context, final Geometry g) {
-		final FormDialog dialog=new FormDialog(context, this, g);
+	public void openForm(final Context context, final Geometry g, final Mission mission) {
+		final FormDialog dialog=new FormDialog(context, this, g, mission);
 		dialog.show();
 	}
 	/**

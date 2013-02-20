@@ -37,6 +37,7 @@ public class GeometryLayer extends Overlay {
 	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
 
+	
 	/**
 	 * 
 	 * @param ctx
