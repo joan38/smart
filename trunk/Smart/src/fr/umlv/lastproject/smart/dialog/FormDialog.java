@@ -48,7 +48,7 @@ public class FormDialog extends AlertDialog.Builder{
 	private TableLayout layoutDynamic;
 
 	
-	public FormDialog(final Context context, final Form form, final Geometry g){
+	public FormDialog(final Context context, final Form form, final Geometry g, final Mission mission){
 		super(context);
 		final LayoutInflater factory = LayoutInflater.from(context);
 		final View alertDialogView = factory.inflate(
@@ -113,12 +113,13 @@ public class FormDialog extends AlertDialog.Builder{
 
 				dbManager.insertFormRecord(formRecord, idGeometry);
 				dbManager.close();
+				//mission.addGeometry(g);
 			}
 		});
 
 		setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-
+					mission.removeGeometry(g);
 			}
 		});
 	}
