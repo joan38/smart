@@ -3,24 +3,22 @@ package fr.umlv.lastproject.smart.geotiff;
 import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.views.overlay.TilesOverlay;
+
 import android.content.Context;
 import android.graphics.Color;
 
-/**
- * Main class to import GeotTIFF Tiles
- * @author Marc
- *
- */
 public class TMSOverlay extends TilesOverlay {
 
 	private final int zoomLevelMax, zoomLevelMin;
+	private final String name;
 
 	public TMSOverlay(final MapTileProviderBase aTileProvider,
 			final Context aContext, final int minZoomLevel,
-			final int maxZoomLevel) {
+			final int maxZoomLevel, final String name) {
 		super(aTileProvider, aContext);
 		zoomLevelMax = maxZoomLevel;
 		zoomLevelMin = minZoomLevel;
+		this.name = name;
 		if (zoomLevelMax < zoomLevelMin
 				|| zoomLevelMax > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
 				|| zoomLevelMin < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL)
@@ -36,10 +34,8 @@ public class TMSOverlay extends TilesOverlay {
 	public int getZoomLevelMin() {
 		return zoomLevelMin;
 	}
-	
-	
-	
-	
-	
 
+	public String getName() {
+		return name;
+	}
 }

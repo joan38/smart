@@ -55,12 +55,10 @@ public class MenuActivity extends Activity {
 	private GPS gps;
 	private LocationManager locationManager;
 	private InfoOverlay infoOverlay;
-	private String toBeDeleted;
 	private DirectedLocationOverlay directedLocationOverlay;
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-	private int a = 8;
 
 	private boolean missionCreated = false;
 
@@ -69,6 +67,8 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 
 	private AlertCreateMissionDialog missionDialog;
+
+	private ListOverlay listOverlay = new ListOverlay();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +95,12 @@ public class MenuActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
 						LayersActivity.class);
+				layersActivity.putExtra("overlays", listOverlay);
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
 			}
 		});
+
 	}
 
 	@Override
