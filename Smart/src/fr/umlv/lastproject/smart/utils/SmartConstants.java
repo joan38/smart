@@ -12,8 +12,12 @@ public final class SmartConstants {
 	public static final int LINE_SURVEY = 3;
 	public static final int POLYGON_SURVEY = 4;
 	public static final int GPS_TRACK = 5;
-	public static final int EXPORT_KML = 6;
-	public static final int EXPORT_GEOTIFF = 7;
+	public static final int IMPORT_KML = 6;
+	public static final int IMPORT_GEOTIFF = 7;
+	public static final int IMPORT_SHAPE = 8;
+	public static final int EXPORT_KML = 9;
+	public static final int EXPORT_CSV = 10;
+	public static final int EXPORT_MISSION = 11;
 
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;

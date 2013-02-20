@@ -30,9 +30,13 @@
         <item>Relevé de point</item>
         <item>Relevé de ligne</item>
         <item>Relevé de polygon</item>
+        <item>Trace GPS</item>
         <item>Import de KML</item>
         <item>Import de GeoTIFF</item>
         <item>Import de ShapeFile</item>
+        <item>Export de KML</item>
+        <item>Export de CSV</item>
+        <item>Export de mission</item>
     </string-array>
     <string name="stopMission">Arrêter la mission</string>
     
@@ -65,6 +69,8 @@
      <string name="selectForm">Formulaire :</string>
      <string name="formBrowser">Selectionner le formulaire</string>
      <string name="mission">Mission</string>
+     <string name="export_mission">Exporter une mission</string>
+     
      
      <string name="track_name_missing">Saisir un nom pour la trace</string> 
    <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string> 
