@@ -60,6 +60,7 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
+	private int a = 4 ;
 
 	private boolean missionCreated = false;
 
