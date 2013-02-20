@@ -31,7 +31,7 @@ public class HomeActivity extends Activity {
 	private boolean enabled;
 
 	// public static final Integer[] images = { R.drawable.smart,
-	//             R.drawable.smart, R.drawable.orange, R.drawable.mixed };
+	// R.drawable.smart, R.drawable.orange, R.drawable.mixed };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,10 @@ public class HomeActivity extends Activity {
 				if (enabled) {
 					item = new ListViewItem(R.drawable.centermap,
 							getString(R.string.stopMission), enabled);
-				} else
+				} else {
 					item = new ListViewItem(R.drawable.centermap, items[i],
 							!enabled);
+				}
 				break;
 
 			case SmartConstants.POINT_SURVEY:
