@@ -26,18 +26,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import fr.umlv.lastproject.smart.form.CreateFormActivity;
-import fr.umlv.lastproject.smart.form.Form;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
+import fr.umlv.lastproject.smart.form.CreateFormActivity;
+import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 
 public class MenuActivity extends Activity {
 
@@ -61,7 +60,7 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-	private int a = 8 ;
+	private int a = 8;
 
 	private boolean missionCreated = false;
 
@@ -137,7 +136,7 @@ public class MenuActivity extends Activity {
 		mapView.setMapListener(new MapAdapter() {
 			@Override
 			public boolean onScroll(ScrollEvent event) {
-				
+
 				isMapTracked = false;
 				centerMap.setVisibility(View.VISIBLE);
 				return super.onScroll(event);
@@ -250,7 +249,7 @@ public class MenuActivity extends Activity {
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -268,59 +267,62 @@ public class MenuActivity extends Activity {
 						missionDialog = new AlertCreateMissionDialog(this);
 						missionDialog.show();
 					}
-//					Form f = new Form("MonForm");
-//					f.addField(new TextField("titi"));
-//					f.addField(new NumericField("toto", 5, 10));
-//					f.addField(new BooleanField("alors"));
-//					List<String> l = new LinkedList<String>();
-//					l.add("pouet");
-//					l.add("pouet2");
+					// Form f = new Form("MonForm");
+					// f.addField(new TextField("titi"));
+					// f.addField(new NumericField("toto", 5, 10));
+					// f.addField(new BooleanField("alors"));
+					// List<String> l = new LinkedList<String>();
+					// l.add("pouet");
+					// l.add("pouet2");
 
-					//f.addField(new ListField("liste", l));
+					// f.addField(new ListField("liste", l));
 
-
-					
-					
-//					Mission.createMission("ma mission thibault yoyo",
-//							this, mapView, f);
-//					Mission.getInstance().startMission();
-//					overlayManager.add(Mission.getInstance().getPolygonLayer());
-//					overlayManager.add(Mission.getInstance().getLineLayer());
-//					overlayManager.add(Mission.getInstance().getPointLayer());
+					// Mission.createMission("ma mission thibault yoyo",
+					// this, mapView, f);
+					// Mission.getInstance().startMission();
+					// overlayManager.add(Mission.getInstance().getPolygonLayer());
+					// overlayManager.add(Mission.getInstance().getLineLayer());
+					// overlayManager.add(Mission.getInstance().getPointLayer());
 
 					break;
 				case SmartConstants.CREATE_FORM:
 					LayoutInflater factory = LayoutInflater.from(this);
 					final View alertDialogView = factory.inflate(
-							fr.umlv.lastproject.smart.R.layout.name_form,
-							null);
-					final AlertDialog.Builder adb = new AlertDialog.Builder(this);
-				
+							fr.umlv.lastproject.smart.R.layout.name_form, null);
+					final AlertDialog.Builder adb = new AlertDialog.Builder(
+							this);
+
 					adb.setView(alertDialogView);
 					adb.setTitle(getResources().getString(R.string.CreateForm));
-					
-					adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							
-							EditText et = (EditText) alertDialogView
-									.findViewById(fr.umlv.lastproject.smart.R.id.nameForm);
-					
-							
-							Intent intent = new Intent(MenuActivity.this, CreateFormActivity.class);
-							intent.putExtra("nameForm", et.getText().toString());
-							
-							startActivity(intent);	
 
-						}
-					});
+					adb.setPositiveButton("Valider",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
 
-					adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
+									EditText et = (EditText) alertDialogView
+											.findViewById(fr.umlv.lastproject.smart.R.id.nameForm);
 
-						}
-					});
+									Intent intent = new Intent(
+											MenuActivity.this,
+											CreateFormActivity.class);
+									intent.putExtra("nameForm", et.getText()
+											.toString());
+
+									startActivity(intent);
+
+								}
+							});
+
+					adb.setNegativeButton("Annuler",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+
+								}
+							});
 					adb.show();
-					
+
 					break;
 				case SmartConstants.POINT_SURVEY:
 					Mission.getInstance().startSurvey(GeometryType.POINT);
@@ -334,20 +336,21 @@ public class MenuActivity extends Activity {
 					Mission.getInstance().startSurvey(GeometryType.POLYGON);
 					break;
 				case SmartConstants.GPS_TRACK:
-					if(gpsTrack==null){
-						final AlertTrackDialog trackDialog=new AlertTrackDialog(this);
+					if (gpsTrack == null) {
+						final AlertTrackDialog trackDialog = new AlertTrackDialog(
+								this);
 						trackDialog.show();
 						break;
-					}
-					else{
+					} else {
 						try {
 							gpsTrack.stopTrack();
-							gpsTrack=null;
+							gpsTrack = null;
 						} catch (IOException e) {
-							gpsTrack=null;
-							Toast.makeText(this, R.string.track_error, Toast.LENGTH_LONG).show();
+							gpsTrack = null;
+							Toast.makeText(this, R.string.track_error,
+									Toast.LENGTH_LONG).show();
 						}
-						
+
 					}
 					break;
 				default:
@@ -358,10 +361,11 @@ public class MenuActivity extends Activity {
 			}
 		}
 	}
+
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
-		gpsTrack=new GPSTrack(trackMode, name, locationManager, mapView);
+		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
 		gpsTrack.startTrack();
-		
+
 	}
 
 	public void startMission(final String missionName) {
@@ -372,7 +376,7 @@ public class MenuActivity extends Activity {
 		overlayManager.add(Mission.getInstance().getLineLayer());
 		overlayManager.add(Mission.getInstance().getPointLayer());
 	}
-	
+
 	public String getMissionName() {
 		return missionName;
 	}
