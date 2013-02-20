@@ -52,6 +52,8 @@ public class DbManager {
 	private static final int MISSIONS_NUM_COL_STATUS = 2;
 	private static final String MISSIONS_COL_DATE = "date";
 	private static final int MISSIONS_NUM_COL_DATE = 3;
+	private static final String MISSIONS_COL_FORM = "form";
+	private static final int MISSIONS_NUM_COL_FORM = 4;
 
 	public static final String TABLE_GEOMETRIES = "geometries";
 	private static final String GEOMETRIES_COL_ID = "id";
@@ -79,7 +81,8 @@ public class DbManager {
 	private static String CREATE_TABLE_MISSIONS = "CREATE TABLE IF NOT EXISTS missions ( "
 			+ "id INTEGER PRIMARY KEY,"
 			+ "title TEXT UNIQUE,"
-			+ "status INTEGER NOT NULL," + "date TEXT NOT NULL );";
+			+ "status INTEGER NOT NULL," + "date TEXT NOT NULL, "
+			+ "form TEXT NOT NULL);";
 
 	private static String CREATE_TABLE_GEOMETRIES = "CREATE TABLE IF NOT EXISTS geometries ( "
 			+ "id INTEGER PRIMARY KEY,"
@@ -325,6 +328,7 @@ public class DbManager {
 			values.put(MISSIONS_COL_STATUS, 0);
 		}
 		values.put(MISSIONS_COL_DATE, mission.getDate());
+		values.put(MISSIONS_COL_FORM,mission.getForm().getName());
 		try {
 			mDb.insertOrThrow(TABLE_MISSIONS, null, values);
 			int id = getLastIndex(TABLE_MISSIONS);
