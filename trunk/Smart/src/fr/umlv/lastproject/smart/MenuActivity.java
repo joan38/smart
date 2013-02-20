@@ -36,7 +36,6 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.form.CreateFormActivity;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
@@ -342,9 +341,9 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.EXPORT_KML:
-					Intent intent = new Intent(MenuActivity.this,
-							PictureActivity.class);
-					startActivityForResult(intent, 10);
+					// Intent intent = new Intent(MenuActivity.this,
+					// PictureActivity.class);
+					// startActivityForResult(intent, 10);
 					break;
 				default:
 					// Mission.getInstance().stopMission();
