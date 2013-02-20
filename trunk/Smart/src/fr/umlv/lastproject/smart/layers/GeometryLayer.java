@@ -28,11 +28,12 @@ public class GeometryLayer extends Overlay {
 
 	private static final double VALUE_1E6 = 1E6;
 	private GeometryType type;
-	private ArrayList<Geometry> geometries;
+	private List<Geometry> geometries;
 	private Projection projection;
 	private Paint paint;
 	private Symbology symbology;
 	private boolean editable = false;
+	private String name;
 	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
 
@@ -46,6 +47,20 @@ public class GeometryLayer extends Overlay {
 		super(ctx);
 		this.geometries = new ArrayList<Geometry>();
 		// TODO Auto-generated constructor stub
+	}
+
+	public GeometryLayer(final Context ctx, List<Geometry> geometries) {
+		super(ctx);
+		this.geometries = geometries;
+	}
+
+	public GeometryLayer(final Context ctx, List<Geometry> geometries,
+			GeometryType type, Symbology symbologie, String name) {
+		super(ctx);
+		this.geometries = geometries;
+		this.type = type;
+		this.symbology = symbologie;
+		this.name = name;
 	}
 
 	public List<Geometry> getGeometries() {
@@ -66,6 +81,15 @@ public class GeometryLayer extends Overlay {
 	}
 
 	/**
+	 * Function which add all geometries to the geometries list
+	 * 
+	 * @param geometry
+	 */
+	public void addGeometries(List<Geometry> geometries) {
+		this.geometries.addAll(geometries);
+	}
+
+	/**
 	 * Function which set a type to the geometry
 	 * 
 	 * @param type
@@ -80,6 +104,22 @@ public class GeometryLayer extends Overlay {
 	 */
 	public GeometryType getType() {
 		return type;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -204,7 +244,6 @@ public class GeometryLayer extends Overlay {
 				// Récupéartion de la liste de points de la géometrie
 				List<PointGeometry> polygonPoints = polygonGeometry.getPoints();
 
-
 				for (int j = 0; j < polygonPoints.size(); j++) {
 
 					PointGeometry pointA = polygonPoints.get(j
@@ -249,7 +288,8 @@ public class GeometryLayer extends Overlay {
 
 	/**
 	 * 
-	 * @param editable is the layer editable ?
+	 * @param editable
+	 *            is the layer editable ?
 	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
@@ -274,7 +314,7 @@ public class GeometryLayer extends Overlay {
 
 		return super.onDoubleTap(e, mapView);
 	}
-	
+
 	@Override
 	public boolean onSingleTapUp(MotionEvent e, MapView mapView) {
 
@@ -296,7 +336,8 @@ public class GeometryLayer extends Overlay {
 
 	/**
 	 * 
-	 * @param listener the listener which will listen
+	 * @param listener
+	 *            the listener which will listen
 	 */
 	public void addGeometryLayerSingleTapListener(
 			GeometryLayerSingleTapListener listener) {
@@ -305,7 +346,8 @@ public class GeometryLayer extends Overlay {
 
 	/**
 	 * 
-	 * @param listener the listener wich will listen
+	 * @param listener
+	 *            the listener wich will listen
 	 */
 	public void removeGeometryLayerSingleTapListener(
 			GeometryLayerSingleTapListener listener) {
@@ -314,7 +356,8 @@ public class GeometryLayer extends Overlay {
 
 	/**
 	 * 
-	 * @param listener the listener wich will listen
+	 * @param listener
+	 *            the listener wich will listen
 	 */
 	public void addGeometryLayerDoubleTapListener(
 			GeometryLayerDoubleTapListener listener) {
@@ -323,7 +366,8 @@ public class GeometryLayer extends Overlay {
 
 	/**
 	 * 
-	 * @param listener the listener which will listen
+	 * @param listener
+	 *            the listener which will listen
 	 */
 	public void removeGeometryLayerDoubleTapListener(
 			GeometryLayerDoubleTapListener listener) {

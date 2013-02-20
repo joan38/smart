@@ -7,6 +7,7 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
+import fr.umlv.lastproject.smart.kml.Kml;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -22,7 +23,7 @@ import fr.umlv.lastproject.smart.layers.Symbology;
  * @Description : Import a Kml file
  * 
  */
-public class KmlImport {
+class KmlImport {
 
 	/**
 	 * Return a list of GeometryLayer with all the geometry type in the kml
@@ -33,28 +34,32 @@ public class KmlImport {
 	 * @throws IOException
 	 */
 
-	public static List<GeometryLayer> getLayersFromKML(String file,
+	public static List<GeometryLayer> getLayersFromKML(String path,
 			Context contexte) throws XmlPullParserException, IOException {
-		Kml kml = new Kml(file);
+		Kml kml = new Kml();
 		List<GeometryLayer> overlays = new ArrayList<GeometryLayer>();
-		kml.readKml();
+		kml.readKml(path);
 		for (GeometryType type : GeometryType.values()) {
-			ArrayList<Geometry> geometries = (ArrayList<Geometry>) kml
+			List<Geometry> geometries = (ArrayList<Geometry>) kml
 					.getGeometries().get(type);
-			GeometryLayer overlay = new GeometryLayer(contexte);
-			for (Geometry geom : geometries) {
-				overlay.addGeometry(geom);
-			}
+			GeometryLayer overlay = new GeometryLayer(contexte, geometries);
 
 			Symbology symbology = null;
-			if (type == GeometryType.POINT)
+			String name = path.substring(path.lastIndexOf('/') + 1,
+					path.lastIndexOf('.'));
+			if (type == GeometryType.POINT) {
 				symbology = new PointSymbology();
-			else if (type == GeometryType.LINE)
+				name += "_POINT";
+			} else if (type == GeometryType.LINE) {
 				symbology = new LineSymbology();
-			else if (type == GeometryType.POLYGON)
+				name += "_LINE";
+			} else if (type == GeometryType.POLYGON) {
 				symbology = new PolygonSymbology();
+				name += "_POLYGON";
+			}
 			overlay.setSymbology(symbology);
 			overlay.setType(type);
+			overlay.setName(name);
 			overlays.add(overlay);
 		}
 		return overlays;
@@ -70,26 +75,26 @@ public class KmlImport {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public static GeometryLayer getLayerFromKML(String file, GeometryType type,
+	public static GeometryLayer getLayerFromKML(String path, GeometryType type,
 			Context contexte) throws XmlPullParserException, IOException {
-		Kml kml = new Kml(file);
-		kml.readKml();
+		Kml kml = new Kml();
+		kml.readKml(path);
 		ArrayList<Geometry> geometries = (ArrayList<Geometry>) kml
 				.getGeometry(type);
-		GeometryLayer overlay = new GeometryLayer(contexte);
-		for (Geometry geom : geometries) {
-			overlay.addGeometry(geom);
-		}
+		GeometryLayer overlay = new GeometryLayer(contexte, geometries);
 
 		Symbology symbology = null;
-		if (type == GeometryType.POINT)
+		if (type == GeometryType.POINT) {
 			symbology = new PointSymbology();
-		else if (type == GeometryType.LINE)
+		} else if (type == GeometryType.LINE) {
 			symbology = new LineSymbology();
-		else if (type == GeometryType.POLYGON)
+		} else if (type == GeometryType.POLYGON) {
 			symbology = new PolygonSymbology();
+		}
 		overlay.setSymbology(symbology);
 		overlay.setType(type);
+		overlay.setName(path.substring(path.lastIndexOf('/'),
+				path.lastIndexOf('.')));
 
 		return overlay;
 	}

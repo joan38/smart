@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataimport;
+package fr.umlv.lastproject.smart.kml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,26 +28,16 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
  */
 public class Kml {
 
-	private final File file;
+	private File file;
 	private final Map<GeometryType, List<Geometry>> geometries = new HashMap<GeometryType, List<Geometry>>();
 
-	private final String GEOMETRIES_TAGS = "Point|LineString|Polygon";
-	private final String POINT_TAG = "Point";
-	private final String LINE_TAG = "LineString";
-	private final String POLYGON_TAG = "Polygon";
-	private final String COORDINATES_TAG = "coordinates";
+	private static final String GEOMETRIESTAGS = "Point|LineString|Polygon";
+	private static final String POINTTAG = "Point";
+	private static final String LINETAG = "LineString";
+	private static final String POLYGONTAG = "Polygon";
+	private static final String COORDINATESTAG = "coordinates";
 
-	public Kml(String path) {
-		file = new File(path);
-		initGeometries();
-	}
-
-	public Kml(File file) {
-		this.file = file;
-		initGeometries();
-	}
-
-	private void initGeometries() {
+	public Kml() {
 		for (GeometryType type : GeometryType.values()) {
 			this.geometries.put(type, new ArrayList<Geometry>());
 		}
@@ -56,10 +46,36 @@ public class Kml {
 	/**
 	 * Use to read the .kml files and parse the different geometry
 	 * 
+	 * @param path
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public void readKml() throws XmlPullParserException, IOException {
+	public void readKml(String path) throws XmlPullParserException, IOException {
+		if (null != path) {
+			this.file = new File(path);
+			readKml();
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	/**
+	 * Use to read the .kml files and parse the different geometry
+	 * 
+	 * @param file
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
+	public void readKml(File file) throws XmlPullParserException, IOException {
+		if (null != file) {
+			this.file = file;
+			readKml();
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	private void readKml() throws XmlPullParserException, IOException {
 
 		// initialize the parser
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -89,33 +105,34 @@ public class Kml {
 
 					/*
 					 * coordinates[0] = x coordinates[1] = y coordinates[2] = z
-					 * (not use)
+					 * (z not use)
 					 */
 					if (coordinates.length > 2) {
-						points.add(new PointGeometry(
-								Double.parseDouble(coordinates[1]), Double
-										.parseDouble(coordinates[0])));
+						points.add(new PointGeometry(Double
+								.parseDouble(coordinates[1]), Double
+								.parseDouble(coordinates[0])));
 					}
 				}
 
 				// if a <coordinates> tag was found
 			} else if (eventType == XmlPullParser.START_TAG
-					&& COORDINATES_TAG.contains(xpp.getName())) {
+					&& COORDINATESTAG.contains(xpp.getName())) {
 
 				filter = true;
 
 				// if the end of a <coordinates> tag was found
 			} else if (eventType == XmlPullParser.END_TAG
-					&& GEOMETRIES_TAGS.contains(xpp.getName())) {
+					&& GEOMETRIESTAGS.contains(xpp.getName())) {
 
 				filter = false;
 
-				// add the geometry found in the general HashMap geometries
-				if (xpp.getName().equals(POINT_TAG)) {
+				// add the geometry found in the general Map geometries
+				if (xpp.getName().equals(POINTTAG)) {
 					geometries.get(GeometryType.POINT).add(points.get(0));
-				} else if (xpp.getName().equals(LINE_TAG)) {
-					geometries.get(GeometryType.LINE).add(new LineGeometry(points));
-				} else if (xpp.getName().equals(POLYGON_TAG)) {
+				} else if (xpp.getName().equals(LINETAG)) {
+					geometries.get(GeometryType.LINE).add(
+							new LineGeometry(points));
+				} else if (xpp.getName().equals(POLYGONTAG)) {
 					geometries.get(GeometryType.POLYGON).add(
 							new PolygonGeometry(points));
 				}
@@ -129,8 +146,8 @@ public class Kml {
 	}
 
 	/**
-	 * Return all geometries found with the read() method and with the specified
-	 * type in params
+	 * Return all geometries found with the reaKml() method and with the
+	 * specified type in params
 	 * 
 	 * @param type
 	 * @return
@@ -142,9 +159,25 @@ public class Kml {
 		return geometries.get(type);
 	}
 
+	/**
+	 * Return all geometries found with the readKml() method
+	 * 
+	 * @param type
+	 * @return
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
 	public Map<GeometryType, List<Geometry>> getGeometries()
 			throws XmlPullParserException, IOException {
 		return geometries;
+	}
+
+	public void writeKml(String path) {
+
+	}
+
+	public void writeKml(File file) {
+
 	}
 
 }
