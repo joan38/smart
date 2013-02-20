@@ -1,9 +1,11 @@
 package fr.umlv.lastproject.smart.form;
 
+import fr.umlv.lastproject.smart.utils.SmartConstants;
+
 /**
  * Field of type Text
  * 
- * @author Maellou
+ * @author Maelle
  * 
  */
 public class TextField extends Field {
@@ -12,10 +14,9 @@ public class TextField extends Field {
 	 * 
 	 */
 	private static final long serialVersionUID = -5771639179711379906L;
-	private static int TEXT_TYPE = 0;
 
 	public TextField(String label) {
-		super(label, TEXT_TYPE);
+		super(label, SmartConstants.TEXT_FIELD);
 	}
 
 	

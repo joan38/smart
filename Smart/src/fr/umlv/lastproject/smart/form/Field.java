@@ -17,28 +17,44 @@ public abstract class Field implements Serializable {
 	private String label;
 	private int type;
 
-	/*
-	 * TEXT_FIELD = 0; NUMERIC_FIELD = 1; BOOLEAN_FIELD = 2; LIST_FIELD = 3;
-	 * PICTURE_FIELD = 4; HEIGHT_FIELD = 5;
+	/**
+	 * 
+	 * @param label of the field
+	 * @param type of the field
 	 */
-
 	public Field(String label, int type) {
 		this.label = label;
 		this.type = type;
 	}
 
+	/**
+	 * 
+	 * @return the type of field
+	 */
 	public int getType() {
 		return type;
 	}
 
+	/**
+	 * 
+	 * @param type
+	 */
 	public void setType(int type) {
 		this.type = type;
 	}
 
+	/**
+	 * 
+	 * @return the label of field
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * 
+	 * @param label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}

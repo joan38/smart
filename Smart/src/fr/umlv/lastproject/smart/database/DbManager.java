@@ -27,6 +27,7 @@ import fr.umlv.lastproject.smart.form.NumericField;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Class to manage the database and the static tables (missions, geometries,
@@ -71,13 +72,6 @@ public class DbManager {
 	private static final int POINTS_NUM_COL_Z = 3;
 	private static final String POINTS_COL_ID_GEOMETRY = "idGeometry";
 	private static final int POINTS_NUM_COL_ID_GEOMETRY = 4;
-
-	private static final int TEXT_FIELD = 0;
-	private static final int NUMERIC_FIELD = 1;
-	private static final int BOOLEAN_FIELD = 2;
-	private static final int LIST_FIELD = 3;
-	private static final int PICTURE_FIELD = 4;
-	private static final int HEIGHT_FIELD = 5;
 
 	private DbHelper mDbHelper;
 	private SQLiteDatabase mDb;
@@ -198,29 +192,29 @@ public class DbManager {
 			int typeField = field.getType();
 
 			switch (typeField) {
-			case TEXT_FIELD:
+			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
 				sql += tf.getLabel() + " TEXT, ";
 				break;
-			case NUMERIC_FIELD:
+			case SmartConstants.NUMERIC_FIELD:
 				NumericField nf = (NumericField) field;
 				sql += nf.getLabel() + " REAL CHECK (" + nf.getLabel() + " > "
 						+ nf.getMin() + " AND " + nf.getLabel() + " < "
 						+ nf.getMax() + " ),";
 				break;
-			case BOOLEAN_FIELD:
+			case SmartConstants.BOOLEAN_FIELD:
 				BooleanField bf = (BooleanField) field;
 				sql += bf.getLabel() + " INTEGER,";
 				break;
-			case LIST_FIELD:
+			case SmartConstants.LIST_FIELD:
 				ListField lf = (ListField) field;
 				sql += lf.getLabel() + " TEXT,";
 				break;
-			case PICTURE_FIELD:
+			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
 				sql += pf.getLabel() + " TEXT,";
 				break;
-			case HEIGHT_FIELD:
+			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
 				sql += hf.getLabel() + " TEXT,";
 				break;
@@ -269,35 +263,28 @@ public class DbManager {
 			int typeField = field.getField().getType();
 
 			switch (typeField) {
-			case TEXT_FIELD:
+			case SmartConstants.TEXT_FIELD:
 				TextFieldRecord tf = (TextFieldRecord) field;
-				Log.d("TEST", tf.getField().getLabel() + " " + tf.getValue());
 				values.put(tf.getField().getLabel(), tf.getValue());
 				break;
-			case NUMERIC_FIELD:
+			case SmartConstants.NUMERIC_FIELD:
 				NumericFieldRecord nf = (NumericFieldRecord) field;
-				Log.d("TEST", nf.getField().getLabel() + " " + nf.getValue());
-
 				values.put(nf.getField().getLabel(), nf.getValue());
 				break;
-			case BOOLEAN_FIELD:
+			case SmartConstants.BOOLEAN_FIELD:
 				BooleanFieldRecord bf = (BooleanFieldRecord) field;
-				Log.d("TEST", bf.getField().getLabel() + " " + bf.isValue());
-
 				values.put(bf.getField().getLabel(), bf.isValue());
 				break;
-			case LIST_FIELD:
+			case SmartConstants.LIST_FIELD:
 				ListFieldRecord lf = (ListFieldRecord) field;
 				values.put(lf.getField().getLabel(), lf.getValue());
 				break;
-			case PICTURE_FIELD:
+			case SmartConstants.PICTURE_FIELD:
 				PictureFieldRecord pf = (PictureFieldRecord) field;
 				values.put(pf.getField().getLabel(), pf.getValue());
 				break;
-			case HEIGHT_FIELD:
+			case SmartConstants.HEIGHT_FIELD:
 				HeightFieldRecord hf = (HeightFieldRecord) field;
-				Log.d("TEST", hf.getField().getLabel() + " " + hf.getValue());
-
 				values.put(hf.getField().getLabel(), hf.getValue());
 				break;
 			default:

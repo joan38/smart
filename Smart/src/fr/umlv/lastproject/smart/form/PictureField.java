@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart.form;
 
+import fr.umlv.lastproject.smart.utils.SmartConstants;
+
 /**
  * Field of type Picture
  * 
@@ -12,10 +14,9 @@ public class PictureField extends Field {
 	 * 
 	 */
 	private static final long serialVersionUID = -6925473200014882410L;
-	private static int PICTURE_TYPE = 4;
 
 	public PictureField(String name) {
-		super("Picture", PICTURE_TYPE);
+		super("Picture", SmartConstants.PICTURE_FIELD);
 	}
 
 
