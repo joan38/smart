@@ -56,6 +56,7 @@ public class MenuActivity extends Activity {
 	private GPS gps;
 	private LocationManager locationManager;
 	private InfoOverlay infoOverlay;
+	private String toBeDeleted;
 	private DirectedLocationOverlay directedLocationOverlay;
 	private View centerMap;
 	private boolean isMapTracked = true;
