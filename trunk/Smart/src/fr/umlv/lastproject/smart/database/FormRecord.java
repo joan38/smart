@@ -16,14 +16,14 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 public class FormRecord {
 
 	private String name;
-	private ArrayList<FieldRecord> fields;
+	private List<FieldRecord> fields;
 
 	/**
 	 * 
 	 * @param fields is the list of fielRecord in the form
 	 * @param name of the formRecord
 	 */
-	public FormRecord(ArrayList<FieldRecord> fields, String name) {
+	public FormRecord(List<FieldRecord> fields, String name) {
 		super();
 		this.fields = fields;
 		this.name = name;
@@ -37,7 +37,7 @@ public class FormRecord {
 		super();
 		this.fields = new ArrayList<FieldRecord>();
 
-		ArrayList<Field> fieldslist = f.getFieldsList();
+		ArrayList<Field> fieldslist = (ArrayList<Field>) f.getFieldsList();
 		for (Field fld : fieldslist) {
 
 			switch (fld.getType()) {
@@ -106,7 +106,7 @@ public class FormRecord {
 	 * 
 	 * @param fields
 	 */
-	public void setFields(ArrayList<FieldRecord> fields) {
+	public void setFields(List<FieldRecord> fields) {
 		this.fields = fields;
 	}
 

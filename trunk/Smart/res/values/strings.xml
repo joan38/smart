@@ -37,7 +37,6 @@
         <item>Import ShapeFile</item>
         <item>Export KML</item>
         <item>Export CSV</item>
-        <item>Export Mission</item>
     </string-array>
     <string name="stopMission">Stop mission</string>
     

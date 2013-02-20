@@ -3,8 +3,6 @@ package fr.umlv.lastproject.smart.database;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import android.util.Log;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 
@@ -25,12 +23,15 @@ public class MissionRecord {
 	private Form form;
 
 	public MissionRecord() {
-		this.title = Mission.getInstance().getTitle();
-		this.status = true;
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
-		this.date = dateFormat.format(new Date());
-		this.form = Mission.getInstance().getForm();
+		if(Mission.getInstance() != null){
+			this.title = Mission.getInstance().getTitle();
+			this.form = Mission.getInstance().getForm();
+			this.status = true;
+			SimpleDateFormat dateFormat = new SimpleDateFormat(
+					"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
+			this.date = dateFormat.format(new Date());
+		}
+
 
 	}
 
@@ -48,7 +49,9 @@ public class MissionRecord {
 	 */
 	public void setId(int id) {
 		this.id = id;
-		Mission.getInstance().setId(id);
+		if(Mission.getInstance() != null){
+			Mission.getInstance().setId(id);
+		}
 	}
 
 	/**

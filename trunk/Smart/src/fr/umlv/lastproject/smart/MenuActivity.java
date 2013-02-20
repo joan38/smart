@@ -12,28 +12,25 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
+import fr.umlv.lastproject.smart.dialog.AlertExportCSVDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
-import fr.umlv.lastproject.smart.form.CreateFormActivity;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
@@ -272,42 +269,8 @@ public class MenuActivity extends Activity {
 					}
 					break;
 				case SmartConstants.CREATE_FORM:
-					LayoutInflater factory = LayoutInflater.from(this);
-					final View alertDialogView = factory.inflate(
-							fr.umlv.lastproject.smart.R.layout.name_form, null);
-					final AlertDialog.Builder adb = new AlertDialog.Builder(
-							this);
-
-					adb.setView(alertDialogView);
-					adb.setTitle(getResources().getString(R.string.CreateForm));
-
-					adb.setPositiveButton("Valider",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-
-									EditText et = (EditText) alertDialogView
-											.findViewById(fr.umlv.lastproject.smart.R.id.nameForm);
-
-									Intent intent = new Intent(
-											MenuActivity.this,
-											CreateFormActivity.class);
-									intent.putExtra("nameForm", et.getText()
-											.toString());
-
-									startActivity(intent);
-
-								}
-							});
-
-					adb.setNegativeButton("Annuler",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-
-								}
-							});
-					adb.show();
+					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(this);
+					createFormDialog.show();
 
 					break;
 				case SmartConstants.POINT_SURVEY:
@@ -338,6 +301,10 @@ public class MenuActivity extends Activity {
 						}
 
 					}
+					break;
+				case SmartConstants.EXPORT_CSV:
+					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(this);
+					exportCSVDialog.show();
 					break;
 
 				case SmartConstants.EXPORT_KML:
