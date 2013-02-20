@@ -10,13 +10,10 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import java.util.LinkedList;
 import java.util.List;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,15 +25,6 @@ import android.widget.TableLayout;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
-import fr.umlv.lastproject.smart.database.DbManager;
-import fr.umlv.lastproject.smart.database.FormRecord;
-import fr.umlv.lastproject.smart.database.GeometryRecord;
-import fr.umlv.lastproject.smart.database.HeightFieldRecord;
-import fr.umlv.lastproject.smart.database.ListFieldRecord;
-import fr.umlv.lastproject.smart.database.NumericFieldRecord;
-import fr.umlv.lastproject.smart.database.PictureFieldRecord;
-import fr.umlv.lastproject.smart.database.TextFieldRecord;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -54,7 +42,7 @@ public class Form implements Serializable {
 	 */
 	private static final long serialVersionUID = -30424477427478579L;
 	private String name;
-	private ArrayList<Field> fieldsList;
+	private List<Field> fieldsList;
 	private List<Object> editTextList;
 
 
@@ -66,7 +54,6 @@ public class Form implements Serializable {
 	private final String MIN="min" ;
 	private final String MAX="max" ;
 
-	private TableLayout layoutDynamic;
 
 /**
  * 
@@ -107,7 +94,7 @@ public class Form implements Serializable {
 	 * 
 	 * @return the fields list of the form
 	 */
-	public ArrayList<Field> getFieldsList() {
+	public List<Field> getFieldsList() {
 		return fieldsList;
 	}
 
@@ -115,7 +102,7 @@ public class Form implements Serializable {
 	 * 
 	 * @param fieldsList
 	 */
-	public void setFieldsList(ArrayList<Field> fieldsList) {
+	public void setFieldsList(List<Field> fieldsList) {
 		this.fieldsList = fieldsList;
 	}
 

@@ -37,7 +37,7 @@ public class CreateFormActivity extends Activity {
 
 	
 
-	Form form = new Form();
+	private Form form = new Form();
 	private TableLayout layoutDynamic;
 	private Spinner spin;
 	List<EditText>	allEds =  new ArrayList<EditText>();

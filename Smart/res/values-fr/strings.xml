@@ -36,7 +36,6 @@
         <item>Import de ShapeFile</item>
         <item>Export de KML</item>
         <item>Export de CSV</item>
-        <item>Export de mission</item>
     </string-array>
     <string name="stopMission">Arrêter la mission</string>
     

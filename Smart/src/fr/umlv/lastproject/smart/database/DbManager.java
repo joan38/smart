@@ -234,6 +234,7 @@ public class DbManager {
 			db = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null,
 					SQLiteDatabase.OPEN_READWRITE);
 			db.execSQL(sql);
+			db.close();
 
 		} catch (SQLiteException e) {
 			Log.d("TEST", "Erreur lors de l'ouverture de la base");
@@ -368,7 +369,7 @@ public class DbManager {
 	public List<MissionRecord> getAllMissions() {
 
 		Cursor c = mDb.query(TABLE_MISSIONS, new String[] { MISSIONS_COL_ID,
-				MISSIONS_COL_TITLE, MISSIONS_COL_STATUS, MISSIONS_COL_DATE },
+				MISSIONS_COL_TITLE, MISSIONS_COL_STATUS, MISSIONS_COL_DATE, MISSIONS_COL_FORM },
 				null, null, null, null, null);
 
 		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
@@ -400,6 +401,7 @@ public class DbManager {
 			mission.setStatus(true);
 		}
 		mission.setDate(c.getString(MISSIONS_NUM_COL_DATE));
+		mission.setForm(new Form(c.getString(MISSIONS_NUM_COL_FORM)));
 		return mission;
 	}
 
