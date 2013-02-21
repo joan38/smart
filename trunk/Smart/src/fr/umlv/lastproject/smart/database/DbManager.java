@@ -414,25 +414,9 @@ public class DbManager {
 	 * @return 0 if the insertion ok, -1 if it's not
 	 */
 	public int insertGeometry(GeometryRecord geometry) {
-
 		ContentValues values = new ContentValues();
 
-		int type;
-		switch (geometry.getType()) {
-		case POINT:
-			type = 0;
-			break;
-		case LINE:
-			type = 1;
-			break;
-		case POLYGON:
-			type = 2;
-			break;
-		default:
-			type = 0;
-		}
-
-		values.put(GEOMETRIES_COL_TYPE, type);
+		values.put(GEOMETRIES_COL_TYPE, geometry.getType().getId());
 		values.put(GEOMETRIES_COL_ID_MISSION, geometry.getIdMission());
 
 		try {
@@ -443,7 +427,6 @@ public class DbManager {
 				insertPoint(pr);
 			}
 			return id;
-
 		} catch (SQLException e) {
 			Log.d("TEST", "doublon");
 			return -1;
@@ -456,7 +439,6 @@ public class DbManager {
 	 * @return a list of Geometry
 	 */
 	public List<GeometryRecord> getAllGeometries() {
-
 		Cursor c = mDb.query(TABLE_GEOMETRIES, new String[] {
 				GEOMETRIES_COL_ID, GEOMETRIES_COL_TYPE,
 				GEOMETRIES_COL_ID_MISSION }, null, null, null, null, null);
@@ -468,12 +450,24 @@ public class DbManager {
 		c.close();
 		return geometries;
 	}
+	
+	public List<GeometryRecord> getGeometriesFromMission(int idMission) {
+		ArrayList<GeometryRecord> geometries = new ArrayList<GeometryRecord>();
+		
+		Cursor c = mDb.rawQuery("SELECT * FROM geometries WHERE " + GEOMETRIES_COL_ID_MISSION + "=" + idMission,
+				null);
+		
+		while (c.moveToNext()) {
+			geometries.add(cursorToGeometry(c));
+		}
+		
+		return geometries;
+	}
 
 	/**
 	 * Convert a cursor to a Geometry object
 	 * 
-	 * @param c
-	 *            the cursor
+	 * @param c the cursor
 	 * @return a Geometry object
 	 */
 	private GeometryRecord cursorToGeometry(Cursor c) {
@@ -481,28 +475,28 @@ public class DbManager {
 			return null;
 		}
 		GeometryRecord geometry = new GeometryRecord();
-
-		GeometryType type;
-		switch (c.getInt(GEOMETRIES_NUM_COL_TYPE)) {
-		case 0:
-			type = GeometryType.POINT;
-			break;
-		case 1:
-			type = GeometryType.LINE;
-			break;
-		case 2:
-			type = GeometryType.POLYGON;
-			break;
-
-		default:
-			type = GeometryType.POINT;
-		}
-
 		geometry.setId(c.getInt(GEOMETRIES_NUM_COL_ID));
-		geometry.setType(type);
 		geometry.setIdMission(c.getInt(GEOMETRIES_NUM_COL_ID_MISSION));
-
+		geometry.setType(GeometryType.getFromId(c.getInt(GEOMETRIES_NUM_COL_TYPE)));
+		
+		for (PointRecord point : getPointsFromGeometry(geometry.getId())) {
+			geometry.addPoint(point);
+		}
+		
 		return geometry;
+	}
+	
+	public List<PointRecord> getPointsFromGeometry(int idGeometry) {
+		ArrayList<PointRecord> points = new ArrayList<PointRecord>();
+
+		Cursor c = mDb.rawQuery("SELECT * FROM points WHERE " + POINTS_COL_ID_GEOMETRY + "=" + idGeometry,
+				null);
+		
+		while (c.moveToNext()) {
+			points.add(cursorToPoint(c));
+		}
+		
+		return points;
 	}
 
 	/**
@@ -513,7 +507,6 @@ public class DbManager {
 	 * @return 0 if the insertion ok, -1 if it's not
 	 */
 	public int insertPoint(PointRecord point) {
-
 		ContentValues values = new ContentValues();
 
 		values.put(POINTS_COL_X, point.getX());

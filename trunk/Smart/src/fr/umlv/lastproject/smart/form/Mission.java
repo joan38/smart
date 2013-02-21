@@ -30,32 +30,29 @@ public final class Mission {
 	private GeometryLayer lineLayer;
 	private GeometryLayer polygonLayer;
 
-	private Context context;
+	private final Context context;
 
 	/* the name of the mission */
 	private int id;
-	private String name;
+	private final String title;
 
 	/* the status (on / off) */
 	private boolean status = false;
 
 	private final SmartMapView mapView;
-
 	private Form form;
-
 	private Survey survey;
 
 	/**
 	 * 
-	 * @param name
+	 * @param title
 	 *            of the mission
 	 * @param context
 	 *            the context
 	 */
-	private Mission(String name, final Context context,
+	private Mission(String title, final Context context,
 			final SmartMapView mapview, Form f) {
-
-		this.name = name;
+		this.title = title;
 		this.context = context;
 		this.mapView = mapview;
 		this.form = f;
@@ -106,6 +103,7 @@ public final class Mission {
 
 
 	/**
+	 * Start the mission.
 	 * 
 	 * @return status of the mission
 	 */
@@ -115,6 +113,7 @@ public final class Mission {
 	}
 
 	/**
+	 * Stop the mission.
 	 * 
 	 * @return status of the mission
 	 */
@@ -124,6 +123,7 @@ public final class Mission {
 	}
 
 	/**
+	 * Get the layer which containes the polygons of the mission.
 	 * 
 	 * @return the layer which containes the polygons of the mission
 	 */
@@ -132,6 +132,7 @@ public final class Mission {
 	}
 
 	/**
+	 * Get the layer which contain the lines.
 	 * 
 	 * @return the layer which contain the lines
 	 */
@@ -140,6 +141,7 @@ public final class Mission {
 	}
 
 	/**
+	 * Get the which contains the points.
 	 * 
 	 * @return the which contains the points
 	 */
@@ -148,6 +150,7 @@ public final class Mission {
 	}
 
 	/**
+	 * Get the form of this mission
 	 * 
 	 * @return the form of this mission
 	 */
@@ -156,9 +159,9 @@ public final class Mission {
 	}
 
 	/**
+	 * Start the survey for a given geometry type.
 	 * 
-	 * @param type
-	 *            of the survey to do
+	 * @param type of the survey to do
 	 */
 	public void startSurvey(GeometryType type) {
 		if (!status)
@@ -208,27 +211,51 @@ public final class Mission {
 		default:
 			break;
 		}
-
 	}
 
+	/**
+	 * Get the title of the mission.
+	 * 
+	 * @return the title of the mission
+	 */
 	public String getTitle() {
-		return name;
+		return title;
 	}
 
+	/**
+	 * Get the Android context of the mission.
+	 * 
+	 * @return the Android context of the mission
+	 */
+	public Context getContext() {
+		return context;
+	}
+
+	/**
+	 * Set the id of the of the mission.
+	 * 
+	 * @param id the id of the mission
+	 */
 	public void setId(int id) {
 		this.id = id;
 		Log.d("", "id mission setid" + id);
 	}
 
+	/**
+	 * Get the id of the mission.
+	 * 
+	 * @return the id of the mission
+	 */
 	public int getId() {
 		return id;
 	}
 
 	public void removeGeometry(Geometry g) {
-		if(g==null){
-			Log.d("TEST2","Trying to remove a null geometry");
+		if (g == null) {
+			Log.d("TEST2", "Trying to remove a null geometry");
 			return;
 		}
+
 		switch (g.getType()) {
 		case POINT:
 			pointLayer.getGeometries().remove(g);
@@ -242,8 +269,7 @@ public final class Mission {
 		default:
 			break;
 		}
-		mapView.invalidate();
-		
 
+		mapView.invalidate();
 	}
 }
