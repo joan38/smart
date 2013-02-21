@@ -5,6 +5,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
+import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class AlertCreateMissionDialog extends AlertDialog.Builder {
@@ -37,6 +41,38 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 		final TextView textViewMissionName = ((TextView) createMissionDialog
 				.findViewById(R.id.missionNameValue));
+
+		textViewMissionName.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+				if (!textViewMissionName.getText().toString().equals("")) {
+					DbManager dbManager = new DbManager();
+					dbManager.open(menu);
+					
+					
+					if(dbManager.existsMission(textViewMissionName.getText().toString())){
+						textViewMissionName.setError(menu.getResources().getString(R.string.invalid));
+					}
+					dbManager.close();
+
+				}
+			}
+		});
 
 		RadioGroup radioForm = (RadioGroup) createMissionDialog
 				.findViewById(R.id.radioForm);
@@ -87,7 +123,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	public void setPathForm(String path) {
 		formPath.setText(path);
-		
+
 	}
 
 }

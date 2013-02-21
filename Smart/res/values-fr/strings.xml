@@ -97,7 +97,8 @@
     
         <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     
-    
+    <string name="invalid">Invalide</string>
+        
     
     
 
