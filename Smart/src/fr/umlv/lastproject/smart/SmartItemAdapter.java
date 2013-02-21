@@ -39,8 +39,8 @@ public class SmartItemAdapter extends ArrayAdapter<ListViewItem> {
 
 	// private view holder class which represent the item componants
 	private class SmartHolder {
-		ImageView imageView;
-		TextView txtTitle;
+		private ImageView imageView;
+		private TextView txtTitle;
 	}
 
 	/**
