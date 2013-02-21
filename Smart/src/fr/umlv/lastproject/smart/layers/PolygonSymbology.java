@@ -1,6 +1,9 @@
 package fr.umlv.lastproject.smart.layers;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 /**
  * This class represent the symbology of the polygon
@@ -10,6 +13,10 @@ import android.graphics.Color;
  */
 public class PolygonSymbology extends Symbology {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int thickness;
 
 	/**
@@ -48,6 +55,20 @@ public class PolygonSymbology extends Symbology {
 	 */
 	public void setThickness(int thickness) {
 		this.thickness = thickness;
+	}
+
+	@Override
+	public Canvas getImage(final Bitmap bitmap) {
+		final Canvas canvas = new Canvas(bitmap);
+
+		// set drawing colour
+		final Paint p = new Paint();
+		p.setColor(getColor());
+		
+
+		
+		canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), p);
+		return canvas;
 	}
 
 }

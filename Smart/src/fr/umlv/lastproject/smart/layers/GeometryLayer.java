@@ -9,6 +9,7 @@ import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -371,6 +372,11 @@ public class GeometryLayer extends Overlay implements Layer {
 	public void removeGeometryLayerDoubleTapListener(
 			GeometryLayerDoubleTapListener listener) {
 		doubleTapListeners.remove(listener);
+	}
+
+	@Override
+	public Canvas getOverview(final Bitmap bitmap) {
+		return symbology.getImage(bitmap);
 	}
 
 }

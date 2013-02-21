@@ -1,5 +1,11 @@
 package fr.umlv.lastproject.smart.layers;
 
-public interface Layer {
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
+public interface Layer  {
+	
+	String getName();
+	Canvas getOverview(final Bitmap bitmap);
 
 }

@@ -1,6 +1,9 @@
 package fr.umlv.lastproject.smart.layers;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 /**
  * This class represent the Point symbology
@@ -9,6 +12,10 @@ import android.graphics.Color;
  * 
  */
 public class PointSymbology extends Symbology {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int radius;
 
 	/**
@@ -48,6 +55,22 @@ public class PointSymbology extends Symbology {
 	 */
 	public void setRadio(int radius) {
 		this.radius = radius;
+	}
+
+	@Override
+	public Canvas getImage(final Bitmap bitmap) {
+		final Canvas canvas = new Canvas(bitmap);
+
+		// set drawing colour
+		final Paint p = new Paint();
+		p.setColor(getColor());
+
+		// draw a line onto the canvas
+		float width=bitmap.getWidth();
+		float height=bitmap.getHeight(); 
+		float radius=width>height?width:height;
+		canvas.drawCircle(width/2, height/2, radius, p);
+		return canvas;
 	}
 
 }
