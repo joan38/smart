@@ -116,6 +116,8 @@ public class FormDialog extends AlertDialog.Builder {
 							case SmartConstants.LIST_FIELD:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
+								Log.d("TEST", "edit "+((EditText) editTextList.get(i))
+								.getText());
 								l.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
@@ -162,6 +164,7 @@ public class FormDialog extends AlertDialog.Builder {
 			int typeField = field.getType();
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
+			
 
 			switch (typeField) {
 			case SmartConstants.TEXT_FIELD:
@@ -272,6 +275,7 @@ public class FormDialog extends AlertDialog.Builder {
 				break;
 			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
+				final EditText et = new EditText(c);
 
 				textView.setText(pf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
@@ -302,9 +306,8 @@ public class FormDialog extends AlertDialog.Builder {
 						c.startActivityForResult(intent, 10);
 
 						namePictureView.setText(namePicture);
-						EditText et = new EditText(c);
+						
 						et.setText(namePicture);
-						editTextList.add(et);
 						
 					}
 				});
@@ -315,7 +318,8 @@ public class FormDialog extends AlertDialog.Builder {
 				ll.addView(namePictureView);
 
 				l.addView(ll);
-			
+				editTextList.add(et);
+
 				break;
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
