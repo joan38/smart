@@ -36,6 +36,8 @@
         <item>Import de ShapeFile</item>
         <item>Export de KML</item>
         <item>Export de CSV</item>
+        <item>Mesure</item>
+        <item>Export de formulaire</item>
     </string-array>
     <string name="stopMission">Arrêter la mission</string>
     
@@ -69,6 +71,7 @@
      <string name="formBrowser">Selectionner le formulaire</string>
      <string name="mission">Mission</string>
      <string name="export_mission">Exporter une mission</string>
+     <string name="export_form">Exporter un formulaire</string>
      
      
      <string name="track_name_missing">Saisir un nom pour la trace</string> 

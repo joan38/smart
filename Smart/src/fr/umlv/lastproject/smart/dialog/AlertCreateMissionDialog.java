@@ -63,7 +63,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 						FileUtils.XML_TYPE,
 						Environment.getExternalStorageDirectory() + "");
 				menu.startActivityForResult(intent,
-						SmartConstants.BROWSER_ACTIVITY);
+						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
 		});
 

@@ -31,6 +31,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.dataimport.DataImport;
 import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
@@ -42,7 +43,6 @@ import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.PictureActivity;
-import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -411,6 +411,13 @@ public class MenuActivity extends Activity {
 							PictureActivity.class);
 					startActivityForResult(intent, 10);
 					break;
+				case SmartConstants.EXPORT_FORM:
+					Intent intentForm = FileUtils.createGetContentIntent(
+							FileUtils.XML_TYPE,
+							Environment.getExternalStorageDirectory() + "");
+					startActivityForResult(intentForm,
+							SmartConstants.FORM_BROWSER_ACTIVITY);
+					break;
 				default:
 					// Mission.getInstance().stopMission();
 					break;
@@ -423,10 +430,19 @@ public class MenuActivity extends Activity {
 				mapView.setReorderedLayers(listOverlay);
 				break;
 
-			case SmartConstants.BROWSER_ACTIVITY:
+			case SmartConstants.MISSION_BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
 				formPath = fileForm.toString().split("file:///")[1];
 				missionDialog.setPathForm(formPath);
+
+				break;
+			case SmartConstants.FORM_BROWSER_ACTIVITY:
+				Uri file = data.getData();
+				
+				Intent sendIntent = new Intent(Intent.ACTION_SEND);
+		        sendIntent.setType("application/formulaire");
+		        sendIntent.putExtra(Intent.EXTRA_STREAM, file);
+		        startActivity(Intent.createChooser(sendIntent, "Select E-Mail Application"));
 
 				break;
 			}
