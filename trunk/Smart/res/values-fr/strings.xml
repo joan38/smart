@@ -99,7 +99,8 @@
     
     <string name="invalid">Invalide</string>
         
-    
+    <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
+    <string name="menuLayersTitle">Gestion des couches</string>
     
 
 </resources>

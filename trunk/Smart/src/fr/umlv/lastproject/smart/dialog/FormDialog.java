@@ -54,11 +54,12 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public class FormDialog extends AlertDialog.Builder {
-	
+
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
 
-	public FormDialog(final MenuActivity context, final Form form, final Geometry g, final Mission mission) {
+	public FormDialog(final MenuActivity context, final Form form,
+			final Geometry g, final Mission mission) {
 		super(context);
 		setCancelable(false);
 		final LayoutInflater factory = LayoutInflater.from(context);
@@ -92,7 +93,7 @@ public class FormDialog extends AlertDialog.Builder {
 								text.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
-								
+
 							case SmartConstants.NUMERIC_FIELD:
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
 										.getFields().get(i);
@@ -100,7 +101,7 @@ public class FormDialog extends AlertDialog.Builder {
 										.parseDouble(((EditText) editTextList
 												.get(i)).getText().toString()));
 								break;
-								
+
 							case SmartConstants.BOOLEAN_FIELD:
 								BooleanFieldRecord b = (BooleanFieldRecord) formRecord
 										.getFields().get(i);
@@ -111,25 +112,28 @@ public class FormDialog extends AlertDialog.Builder {
 									b.setValue(false);
 								}
 								break;
-								
+
 							case SmartConstants.LIST_FIELD:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "edit "+((EditText) editTextList.get(i))
-								.getText());
+								Log.d("TEST",
+										"edit "
+												+ ((EditText) editTextList
+														.get(i)).getText());
 								l.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
-								
+
 							case SmartConstants.PICTURE_FIELD:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "picture "+((EditText) editTextList.get(i))
-										.getText().toString());
+								Log.d("TEST", "picture "
+										+ ((EditText) editTextList.get(i))
+												.getText().toString());
 								p.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
-								
+
 							case SmartConstants.HEIGHT_FIELD:
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
 										.getFields().get(i);
@@ -137,18 +141,20 @@ public class FormDialog extends AlertDialog.Builder {
 										.parseDouble(((EditText) editTextList
 												.get(i)).getText().toString()));
 								break;
-								
+
 							default:
 							}
 						}
 
 						try {
-								dbManager.open(context);
-								long idForm = dbManager.insertFormRecord(formRecord);
-								dbManager.insertGeometry(new GeometryRecord(g, Mission
-										.getInstance().getId(), idForm));
+							dbManager.open(context);
+							long idForm = dbManager
+									.insertFormRecord(formRecord);
+							dbManager.insertGeometry(new GeometryRecord(g,
+									Mission.getInstance().getId(), idForm));
 						} catch (SmartException e) {
-							Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+							Toast.makeText(context, e.getMessage(),
+									Toast.LENGTH_LONG).show();
 							Log.e("", e.getMessage());
 						}
 						dbManager.close();
@@ -172,7 +178,6 @@ public class FormDialog extends AlertDialog.Builder {
 			int typeField = field.getType();
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
-			
 			switch (typeField) {
 			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
@@ -184,7 +189,7 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(editText);
 				editTextList.add(editText);
 				break;
-				
+
 			case SmartConstants.NUMERIC_FIELD:
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
@@ -288,7 +293,6 @@ public class FormDialog extends AlertDialog.Builder {
 
 				final TextView namePictureView = new TextView(c);
 
-
 				ImageView takePicture = new ImageView(c);
 				takePicture.setClickable(true);
 				takePicture.setImageDrawable(c.getResources().getDrawable(
@@ -301,20 +305,23 @@ public class FormDialog extends AlertDialog.Builder {
 								"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
 						String date = dateFormat.format(new Date());
 
-						String namePicture = Mission.getInstance().getTitle()+"_"+date;
+						String namePicture = Mission.getInstance().getTitle()
+								+ "_" + date;
 						namePicture = namePicture.replace(" ", "_");
 						namePicture = namePicture.replace(":", "");
 						namePicture = namePicture.replace("/", "_");
-						Intent intent = new Intent(c,
-								PictureActivity.class);
-
+						Log.d("pictureActivity", "jvai l'appel");
+						Intent intent = new Intent(c, PictureActivity.class);
+						intent.putExtra("takePicture", true);
 						intent.putExtra("namePicture", namePicture);
-						c.startActivityForResult(intent, 10);
+
+						c.startActivity(intent);
+						Log.d("pictureActivity", "je l'ai appeler !!!!");
 
 						namePictureView.setText(namePicture);
-						
+
 						et.setText(namePicture);
-						
+
 					}
 				});
 
@@ -324,6 +331,7 @@ public class FormDialog extends AlertDialog.Builder {
 				ll.addView(namePictureView);
 
 				l.addView(ll);
+
 				editTextList.add(et);
 				break;
 
@@ -337,10 +345,9 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(editText);
 				editTextList.add(editText);
 				break;
-				
+
 			default:
 			}
 		}
 	}
-
 }

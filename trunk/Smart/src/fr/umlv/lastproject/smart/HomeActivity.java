@@ -10,15 +10,13 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
- * This class is the Home Activity, where all SMART fonctionnalities is
- * available
+ * This class is the Home Activity, where all SMART functionalities is available
  * 
  * @author Fad's
  * 
@@ -34,7 +32,7 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
 
 		// Retry the mission status

@@ -13,13 +13,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPS;
 import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
 /**
@@ -42,56 +40,18 @@ public class PictureActivity extends Activity {
 	private float bearing;
 	private String namePicture;
 
+	private boolean takePicture = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture);
 
-		File appFolder = new File(Environment.getExternalStorageDirectory()
-				+ "/SMART/");
-		if (!appFolder.exists()) {
-			appFolder.mkdir();
+		createPictureFolder();
 
-		}
-		File picuresFolder = new File(Environment.getExternalStorageDirectory()
-				+ "/SMART/pictures/");
-		if (!picuresFolder.exists()) {
-			picuresFolder.mkdir();
-		}
+		initGPS();
 
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		gps = new GPS(locationManager);
-
-		gps.start(1, 1);
-		gps.addGPSListener(new IGPSListener() {
-
-			@Override
-			public void actionPerformed(GPSEvent event) {
-				latitude = event.getLatitude();
-				longitude = event.getLongitude();
-				bearing = event.getBearing();
-				Log.d("actionPerform", "je caaaaapte");
-			}
-		});
-
-		// L'endroit où sera enregistrée la photo
-		// Remarquez que mFichier est un attribut de ma classe
-		namePicture = getIntent().getExtras().getString("namePicture");
-
-		picture = new File(PICTURE_PATH, namePicture + ".jpg");
-		Log.d("name", picture.toString());
-
-		// On récupère ensuite l'URI associée au fichier
-		Uri fileUri = Uri.fromFile(picture);
-
-		// Maintenant, on crée l'intent
-		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-		// Et on déclare qu'on veut que l'image soit enregistrée là où pointe
-		// l'URI
-		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		// Enfin, on lance l'intent pour que l'application de photo se lance
-		startActivityForResult(cameraIntent, PICTURE_RESULT);
+		TakePhoto();
 	}
 
 	@Override
@@ -103,37 +63,47 @@ public class PictureActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// Si on revient de l'activité qu'on avait lancée avec le code
-		// PHOTO_RESULT
 
+		// Si la prise de photo c'est bien déroulé, on la geoTag
 		if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
-			// Si l'image est une miniature
-
-			// On sait ici que le fichier pointé par mFichier est
-			// accessible, on peut donc faire ce qu'on veut avec, par
-			// exemple en faire un Bitmap
+			// GeoTag picture
 			geoTag(namePicture, latitude, longitude, bearing);
-
-			Intent intentReturn = new Intent(PictureActivity.this,
-					MenuActivity.class);
-			intentReturn.putExtra("pictureName", "smartPictureName");
-
+			finish();
 		}
+	}
+
+	/**
+	 * Function which init the gps listener to geoTag picture
+	 */
+	private void initGPS() {
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		gps = new GPS(locationManager);
+
+		gps.start(1, 1);
+		gps.addGPSListener(new IGPSListener() {
+
+			@Override
+			public void actionPerformed(GPSEvent event) {
+				latitude = event.getLatitude();
+				longitude = event.getLongitude();
+				bearing = event.getBearing();
+			}
+		});
 	}
 
 	public void geoTag(String filename, double latitude, double longitude,
 			float bearing) {
 		ExifInterface exif = null;
-		Log.d("geotag", filename);
 		try {
+			// Récupration de la photo à geoTag
 			exif = new ExifInterface(PICTURE_PATH + filename + ".jpg");
 			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// String latitudeStr = "90/1,12/1,30/1";
 
+		// Transformation de la latitude au format souhaité
 		double alat = Math.abs(latitude);
 		String dms = Location.convert(alat, Location.FORMAT_SECONDS);
 		String[] splits = dms.split(":");
@@ -145,6 +115,7 @@ public class PictureActivity extends Activity {
 			seconds = secnds[0];
 		}
 
+		// On set la latitude sur la photo
 		String latitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds
 				+ "/1";
 		exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitudeStr);
@@ -152,6 +123,7 @@ public class PictureActivity extends Activity {
 		exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF,
 				latitude > 0 ? "N" : "S");
 
+		// Transformation de la longitude au format souhaité
 		double alon = Math.abs(longitude);
 
 		dms = Location.convert(alon, Location.FORMAT_SECONDS);
@@ -163,6 +135,8 @@ public class PictureActivity extends Activity {
 		} else {
 			seconds = secnds[0];
 		}
+
+		// On set la longitude sur la photo
 		String longitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds
 				+ "/1";
 
@@ -173,16 +147,60 @@ public class PictureActivity extends Activity {
 				String.valueOf(bearing));
 
 		try {
+			// Sauvegarde des changements
 			exif.saveAttributes();
-			finish();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		// perform a media scanning after saving the image
 		sendBroadcast(new Intent(
 				Intent.ACTION_MEDIA_MOUNTED,
 				Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 
 	}
+
+	/**
+	 * Function which start camera intent and take the picture
+	 */
+	private void TakePhoto() {
+		takePicture = true;
+		namePicture = getIntent().getExtras().getString("namePicture");
+		picture = new File(PICTURE_PATH, namePicture + ".jpg");
+
+		// On récupère l'URI associée au fichier
+		Uri fileUri = Uri.fromFile(picture);
+		// Création de l'intent de la caméra
+		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		// On indique que qu'on enregistre l'image la où pointe l'Uri
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		// Lancement de l'intent de caméra
+		startActivityForResult(cameraIntent, PICTURE_RESULT);
+
+	}
+
+	/**
+	 * Function which create SMART directory and Picture directory if don't
+	 * exists
+	 */
+	private void createPictureFolder() {
+		File appFolder = new File(Environment.getExternalStorageDirectory()
+				+ "/SMART/");
+		if (!appFolder.exists()) {
+			appFolder.mkdir();
+
+		}
+		File picuresFolder = new File(Environment.getExternalStorageDirectory()
+				+ "/SMART/pictures/");
+		if (!picuresFolder.exists()) {
+			picuresFolder.mkdir();
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean("takePicture", takePicture);
+	}
+
 }
