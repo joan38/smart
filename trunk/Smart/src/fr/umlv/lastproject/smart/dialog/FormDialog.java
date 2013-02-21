@@ -1,8 +1,12 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
+import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
@@ -20,21 +24,25 @@ import fr.umlv.lastproject.smart.form.HeightField;
 import fr.umlv.lastproject.smart.form.ListField;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.NumericField;
+import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -46,9 +54,10 @@ public class FormDialog extends AlertDialog.Builder{
 	
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
+	private TextView namePicture;
 
 	
-	public FormDialog(final Context context, final Form form, final Geometry g, final Mission mission){
+	public FormDialog(final MenuActivity context, final Form form, final Geometry g, final Mission mission){
 		super(context);
 		final LayoutInflater factory = LayoutInflater.from(context);
 		final View alertDialogView = factory.inflate(
@@ -124,7 +133,9 @@ public class FormDialog extends AlertDialog.Builder{
 		});
 	}
 	
-	public final void buildForm(TableLayout l, final Context c, List<Field> fieldsList){
+
+	public final void buildForm(TableLayout l, final MenuActivity c, List<Field> fieldsList){
+
 
 		editTextList = new LinkedList<Object>();
 
@@ -244,8 +255,34 @@ public class FormDialog extends AlertDialog.Builder{
 
 				textView.setText(pf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
+			
+				namePicture = new TextView(c);
+				
+				ImageView takePicture = new ImageView(c);
+				takePicture.setClickable(true);
+				takePicture.setImageDrawable(c.getResources().getDrawable(R.drawable.takepicture));
+				takePicture.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						SimpleDateFormat dateFormat = new SimpleDateFormat(
+								"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
+						String date = dateFormat.format(new Date());
+						String namePicture = Mission.getInstance().getTitle()+"_"+date;
+						Intent intent = new Intent(c,
+								PictureActivity.class);
+						intent.putExtra("namePicture", namePicture);
+						c.startActivityForResult(intent, 10);
+						
+					}
+				});
+				
+				LinearLayout ll = new LinearLayout(c);
+				ll.addView(textView);
+				ll.addView(takePicture);
+				ll.addView(namePicture);
 
-				l.addView(textView);
+				l.addView(ll);
 				editTextList.add(editText);
 
 				break;
@@ -264,6 +301,10 @@ public class FormDialog extends AlertDialog.Builder{
 				break;
 			}
 		}
+	}
+	
+	public void setNamePicture(String name){
+		this.namePicture.setText(name);
 	}
 
 }

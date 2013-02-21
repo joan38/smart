@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart.form;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.SmartMapView;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
@@ -30,7 +31,7 @@ public final class Mission {
 	private GeometryLayer lineLayer;
 	private GeometryLayer polygonLayer;
 
-	private final Context context;
+	private final MenuActivity context;
 
 	/* the name of the mission */
 	private int id;
@@ -50,7 +51,7 @@ public final class Mission {
 	 * @param context
 	 *            the context
 	 */
-	private Mission(String title, final Context context,
+	private Mission(String title, final MenuActivity context,
 			final SmartMapView mapview, Form f) {
 		this.title = title;
 		this.context = context;
@@ -87,7 +88,7 @@ public final class Mission {
 	 *            of the mission
 	 * @return the new mission
 	 */
-	public static Mission createMission(String name, Context context,
+	public static Mission createMission(String name, MenuActivity context,
 			SmartMapView mapview, Form f) {
 		// if(Mission.getInstance().getStatus()) return null ;
 		mission = new Mission(name, context, mapview, f);
@@ -116,6 +117,12 @@ public final class Mission {
 	 * @return status of the mission
 	 */
 	public boolean stopMission() {
+
+
+		DbManager dbManager = new DbManager();
+		dbManager.open(context);
+		dbManager.stopMission(id);
+		dbManager.close();
 		status = false;
 		return status;
 	}
