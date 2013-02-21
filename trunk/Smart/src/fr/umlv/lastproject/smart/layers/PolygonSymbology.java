@@ -58,8 +58,8 @@ public class PolygonSymbology extends Symbology {
 	}
 
 	@Override
-	public Canvas getImage(final Bitmap bitmap) {
-		final Canvas canvas = new Canvas(bitmap);
+	public Canvas getImage() {
+		final Canvas canvas = new Canvas();
 
 		// set drawing colour
 		final Paint p = new Paint();
@@ -67,7 +67,7 @@ public class PolygonSymbology extends Symbology {
 		
 
 		
-		canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), p);
+		canvas.drawRect(0, 0, 16, 16, p);
 		return canvas;
 	}
 

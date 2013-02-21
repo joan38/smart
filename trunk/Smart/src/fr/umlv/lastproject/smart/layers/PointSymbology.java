@@ -58,18 +58,15 @@ public class PointSymbology extends Symbology {
 	}
 
 	@Override
-	public Canvas getImage(final Bitmap bitmap) {
-		final Canvas canvas = new Canvas(bitmap);
+	public Canvas getImage() {
+		final Canvas canvas = new Canvas();
 
 		// set drawing colour
 		final Paint p = new Paint();
 		p.setColor(getColor());
 
-		// draw a line onto the canvas
-		float width=bitmap.getWidth();
-		float height=bitmap.getHeight(); 
-		float radius=width>height?width:height;
-		canvas.drawCircle(width/2, height/2, radius, p);
+		
+		canvas.drawCircle(8, 8, 8, p);
 		return canvas;
 	}
 
