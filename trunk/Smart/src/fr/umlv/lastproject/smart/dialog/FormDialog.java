@@ -27,6 +27,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
@@ -50,6 +51,7 @@ import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 public class FormDialog extends AlertDialog.Builder {
 
@@ -78,10 +80,17 @@ public class FormDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						DbManager dbManager = new DbManager();
-						dbManager.open(context);
-						int idGeometry = dbManager
-								.insertGeometry(new GeometryRecord(g, Mission
-										.getInstance().getId()));
+						int idGeometry = 0;
+						try {
+							dbManager.open(context);
+							idGeometry = dbManager
+									.insertGeometry(new GeometryRecord(g, Mission
+											.getInstance().getId()));
+						} catch (SmartException e) {
+							Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+							Log.e("", e.getMessage());
+						}
+						
 						FormRecord formRecord = new FormRecord(form);
 
 						for (int i = 0; i < formRecord.getFields().size(); i++) {
@@ -141,7 +150,12 @@ public class FormDialog extends AlertDialog.Builder {
 							}
 						}
 
-						dbManager.insertFormRecord(formRecord, idGeometry);
+						try {
+							dbManager.insertFormRecord(formRecord, idGeometry);
+						} catch (SmartException e) {
+							Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+							Log.e("", e.getMessage());
+						}
 						dbManager.close();
 						// mission.addGeometry(g);
 					}

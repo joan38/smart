@@ -8,10 +8,14 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
  * 
@@ -23,7 +27,12 @@ public class KmlExport {
 	
 	public static void exportMission(File kmlFile, Mission mission) throws ParserConfigurationException, TransformerException {
 		DbManager dbm = new DbManager();
-		dbm.open(mission.getContext());
+		try {
+			dbm.open(mission.getContext());
+		} catch (SmartException e) {
+			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 		
 		Kml kml = new Kml(kmlFile);
 		kml.writeKml(dbm.getGeometriesFromMission(mission.getId()), mission.getTitle());

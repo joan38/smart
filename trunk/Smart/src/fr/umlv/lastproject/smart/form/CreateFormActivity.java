@@ -43,6 +43,7 @@ public class CreateFormActivity extends Activity {
 	private int type;
 	
 	private static final String MIN = " Min : ";
+	private static final String MAX = " Max : ";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +221,8 @@ public class CreateFormActivity extends Activity {
 												label, min, max);
 										view.setText(getString(R.string.field_numeric)
 												+ num.getLabel()
-												+ +num.getMax()
+												+ MAX 
+												+ num.getMax()
 												+ MIN
 												+ num.getMin());
 
@@ -242,7 +244,7 @@ public class CreateFormActivity extends Activity {
 												Toast.LENGTH_LONG).show();
 									} else {
 										BooleanField b = new BooleanField(label);
-										view.setText(R.string.field_boolean
+										view.setText(getString(R.string.field_boolean)
 												+ b.getLabel());
 
 										form.addField(b);
@@ -287,7 +289,7 @@ public class CreateFormActivity extends Activity {
 												Toast.LENGTH_LONG).show();
 									} else {
 										PictureField p = new PictureField(label);
-										view.setText(R.string.field_picture
+										view.setText(getString(R.string.field_picture)
 												+ p.getLabel());
 
 										form.addField(p);
@@ -306,7 +308,7 @@ public class CreateFormActivity extends Activity {
 
 									} else {
 										HeightField h = new HeightField(label);
-										view.setText(getString(R.string.field_text)
+										view.setText(getString(R.string.field_height)
 												+ h.getLabel());
 
 										form.addField(h);

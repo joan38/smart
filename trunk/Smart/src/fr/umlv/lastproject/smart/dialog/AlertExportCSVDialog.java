@@ -8,6 +8,7 @@ import java.util.Map;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.utils.SmartException;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class AlertExportCSVDialog extends AlertDialog.Builder {
@@ -70,7 +72,12 @@ public class AlertExportCSVDialog extends AlertDialog.Builder {
 	
 	private Map<String, Integer> getAllMissions(Context c){
 		DbManager dbm = new DbManager() ;
-		dbm.open(c);
+		try {
+			dbm.open(c);
+		} catch (SmartException e) {
+			Toast.makeText(c, e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 		List<MissionRecord> missionRecords = dbm.getAllMissions();
 		dbm.close();
 		
