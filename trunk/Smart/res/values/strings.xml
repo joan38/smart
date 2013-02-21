@@ -37,6 +37,8 @@
         <item>Import ShapeFile</item>
         <item>Export KML</item>
         <item>Export CSV</item>
+        <item>Measure</item> 
+        <item>Export Form</item>   
     </string-array>
     <string name="stopMission">Stop mission</string>
     
@@ -65,6 +67,8 @@
     <string name="formBrowser">Select form file</string>
     <string name="mission">Mission</string>
     <string name="export_mission">Export mission</string>
+    <string name="export_form">Export Form</string>
+    
     
     
     <string name="defaultForm">Default</string>
