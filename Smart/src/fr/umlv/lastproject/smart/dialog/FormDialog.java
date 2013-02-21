@@ -270,7 +270,6 @@ public class FormDialog extends AlertDialog.Builder {
 						EditText et = new EditText(c);
 						et.setText(lf.getValues().get(position));
 						editTextList.add(et);
-
 					}
 
 					@Override
@@ -321,7 +320,6 @@ public class FormDialog extends AlertDialog.Builder {
 						namePictureView.setText(namePicture);
 
 						et.setText(namePicture);
-
 					}
 				});
 
