@@ -33,5 +33,5 @@ public abstract class Symbology implements Serializable {
 		return this.color;
 	}
 	
-	public abstract Canvas getImage(final Bitmap bitmap);
+	public abstract Canvas getImage();
 }

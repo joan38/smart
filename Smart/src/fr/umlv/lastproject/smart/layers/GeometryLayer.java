@@ -375,8 +375,8 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	@Override
-	public Canvas getOverview(final Bitmap bitmap) {
-		return symbology.getImage(bitmap);
+	public Canvas getOverview() {
+		return symbology.getImage();
 	}
 
 }

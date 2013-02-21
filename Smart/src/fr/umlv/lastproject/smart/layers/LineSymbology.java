@@ -58,15 +58,15 @@ public class LineSymbology extends Symbology {
 	}
 
 	@Override
-	public Canvas getImage(final Bitmap bitmap) {
-		final Canvas canvas = new Canvas(bitmap);
+	public Canvas getImage() {
+		final Canvas canvas = new Canvas();
 
 		// set drawing colour
 		final Paint p = new Paint();
 		p.setColor(getColor());
 
 		// draw a line onto the canvas
-		canvas.drawLine(0, 0, bitmap.getHeight(), bitmap.getWidth(), p);
+		canvas.drawLine(0, 0, 16, 16, p);
 		return canvas;
 	}
 }

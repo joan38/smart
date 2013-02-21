@@ -23,7 +23,7 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 			final Context aContext, final int minZoomLevel,
 			final int maxZoomLevel, final String name) {
 		super(aTileProvider, aContext);
-		this.context=aContext;
+		this.context = aContext;
 		zoomLevelMax = maxZoomLevel;
 		zoomLevelMin = minZoomLevel;
 		this.name = name;
@@ -48,13 +48,15 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	}
 
 	@Override
-	public Canvas getOverview(Bitmap bitmap) {
+	public Canvas getOverview() {
 		final Canvas canvas = new Canvas();
-final Bitmap newBitmap=BitmapFactory.decodeResource(context.getResources(),R.drawable.raster );
+		final Bitmap bitmap = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.raster);
 		// set drawing colour
-		
-canvas.setBitmap(Bitmap.createScaledBitmap(newBitmap, bitmap.getWidth(), bitmap.getHeight(), false));
-		
+
+		// canvas.setBitmap(Bitmap.createScaledBitmap(newBitmap,
+		// bitmap.getWidth(), bitmap.getHeight(), false));
+canvas.setBitmap(bitmap);
 		return canvas;
 	}
 }
