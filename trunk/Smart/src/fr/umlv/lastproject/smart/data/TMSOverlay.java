@@ -1,7 +1,8 @@
-package fr.umlv.lastproject.smart.geotiff;
+package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 
 import android.content.Context;
@@ -12,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Layer;
-import fr.umlv.lastproject.smart.layers.SmartIcon;
 
 public class TMSOverlay extends TilesOverlay implements Layer {
 
@@ -49,11 +49,15 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	}
 
 	@Override
-	public SmartIcon getOverview() {
-		final SmartIcon icon=SmartIcon.RASTER;
-		icon.setBitmap(BitmapFactory.decodeResource(
-				context.getResources(), R.drawable.raster));
-		return icon;
+	public Bitmap getOverview() {
+		
+		return BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.raster);
+	}
+
+	@Override
+	public Overlay getOverlay() {
+		return this;
 	}
 
 	

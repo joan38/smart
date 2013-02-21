@@ -64,7 +64,6 @@ public class AlertCreateFormDialog extends AlertDialog.Builder{
 							int which) {
 
 						
-
 						Intent intent = new Intent(
 							menu,
 								CreateFormActivity.class);

@@ -22,8 +22,7 @@ public class PolygonSymbology extends Symbology {
 	 * Color : Black / Thickness : 5
 	 */
 	public PolygonSymbology() {
-		super(Color.BLACK);
-		this.thickness = 5;
+		this(5,Color.BLACK);
 	}
 
 	/**
@@ -53,5 +52,6 @@ public class PolygonSymbology extends Symbology {
 	public void setThickness(int thickness) {
 		this.thickness = thickness;
 	}
+
 
 }

@@ -33,7 +33,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
-import fr.umlv.lastproject.smart.dataimport.DataImport;
+import fr.umlv.lastproject.smart.data.DataImport;
+import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
@@ -43,7 +44,6 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
@@ -109,12 +109,7 @@ public class MenuActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
 						LayersActivity.class);
-				Log.d("debug", "AAAAAA "
-						+ mapView.getListOverlay().get(1).getSymbologie()
-								.getType().toString());
-				Log.d("debug", "AAAAAAA2 "
-						+ mapView.getListOverlay().get(2).getSymbologie()
-								.getType().toString());
+			
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
@@ -137,8 +132,9 @@ public class MenuActivity extends Activity {
 					.getExternalStorageDirectory().getPath()
 					+ "/SMART/poly.kml", GeometryType.POLYGON);
 			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
-
+			
 			mapView.addGeometryLayer(kml);
+			
 
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
@@ -147,7 +143,9 @@ public class MenuActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		GeometryLayer ge=new GeometryLayer(this);
+		
+		mapView.addGeometryLayer(ge);
 		// Couche pr�sentes
 		String s = "getOverlays() size = "
 				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";

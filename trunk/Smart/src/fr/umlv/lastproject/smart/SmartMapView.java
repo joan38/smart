@@ -11,10 +11,13 @@ import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
+import android.widget.Toast;
+import fr.umlv.lastproject.smart.data.TMSOverlay;
 import android.util.Log;
-import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
-import fr.umlv.lastproject.smart.layers.SmartIcon;
+import fr.umlv.lastproject.smart.layers.Layer;
+
 
 /**
  * MapView with geoTIFFOverlays & geometryLayers notion
@@ -29,7 +32,7 @@ public class SmartMapView extends MapView {
 	// private static final int WORLD_MAP_MAX_ZOOM = 4;
 	// private static final String WORLD_MAP_EXTENSION = ".png";
 
-	private final Map<LayerState, Overlay> stringToOverlay;
+	private final Map<String, Overlay> stringToOverlay;
 
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
@@ -37,7 +40,7 @@ public class SmartMapView extends MapView {
 		// this.geometryLayers = new ArrayList<GeometryLayer>();
 		this.listOverlay = new ListOverlay();
 
-		this.stringToOverlay = new HashMap<LayerState, Overlay>();
+		this.stringToOverlay = new HashMap<String, Overlay>();
 		// super.getOverlayManager().getTilesOverlay().setEnabled(false);
 
 		// TMSOverlay worldOverlay;
@@ -60,23 +63,21 @@ public class SmartMapView extends MapView {
 	 * @param name
 	 * @param overlay
 	 */
-	public void addOverlay(String name, Overlay overlay) {
+	public void addOverlay(Layer layer) {
+		Log.d("TEST2","addOverlay "+layer.getName());
+		final String name = layer.getName();
+		if (stringToOverlay.containsKey(name)) {
+			Toast.makeText(getContext(), "Layer already exists",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+		final Overlay overlay = layer.getOverlay();
 		getOverlays().add(overlay);
-		stringToOverlay.put(new LayerState(name), overlay);
-		listOverlay.add(name);
+		stringToOverlay.put(name, overlay);
+		listOverlay.add(new LayerItem(name, layer.getOverview()));
 	}
 
-	/**
-	 * 
-	 * @param name
-	 * @param overlay
-	 */
-	public void addOverlay(String name, SmartIcon symbologie, Overlay overlay) {
-		getOverlays().add(overlay);
-		stringToOverlay.put(new LayerState(name), overlay);
-		Log.d("debug", " addOverlay " + symbologie.getType());
-		listOverlay.add(name, symbologie);
-	}
+
 
 	/**
 	 * Adds a {@link TMSOverlay} (Tile Map Service Overlay)
@@ -84,7 +85,8 @@ public class SmartMapView extends MapView {
 	 * @param overlay
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
-		addOverlay(overlay.getName(), overlay.getOverview(), overlay);
+		addOverlay(overlay);
+
 		geoTIFFOverlays.add(overlay);
 	}
 
@@ -94,7 +96,8 @@ public class SmartMapView extends MapView {
 	 * @param layer
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
-		addOverlay(layer.getName(), layer.getOverview(), layer);
+		addOverlay(layer);
+
 	}
 
 	/**
@@ -104,7 +107,8 @@ public class SmartMapView extends MapView {
 	 */
 	public void addGeometryLayers(final List<GeometryLayer> layers) {
 		for (GeometryLayer geom : layers) {
-			addOverlay(geom.getName(), geom.getOverview(), geom);
+			addOverlay(geom);
+
 		}
 	}
 
@@ -144,14 +148,15 @@ public class SmartMapView extends MapView {
 	public void setReorderedLayers(final ListOverlay overlays) {
 		List<TMSOverlay> newGeotiffoverlays = new ArrayList<TMSOverlay>();
 
-		for (LayerState overlay : this.listOverlay.toList()) {
-			Overlay o = this.stringToOverlay.get(overlay);
+		for (LayerItem overlay : this.listOverlay.toList()) {
+			Overlay o = this.stringToOverlay.get(overlay.getName());
 			getOverlays().remove(o);
 		}
 
 		for (int i = 0; i < overlays.size(); i++) {
-			Overlay o = this.stringToOverlay.get(overlays.get(i));
-			getOverlays().add(i, this.stringToOverlay.get(overlays.get(i)));
+			Overlay o = this.stringToOverlay.get(overlays.get(i).getName());
+			getOverlays().add(i,
+					this.stringToOverlay.get(overlays.get(i).getName()));
 			boolean isTMSOverlay = geoTIFFOverlays.remove(o);
 			if (isTMSOverlay) {
 				newGeotiffoverlays.add((TMSOverlay) o);

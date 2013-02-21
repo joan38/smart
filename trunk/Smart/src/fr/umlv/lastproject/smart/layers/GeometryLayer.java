@@ -9,11 +9,15 @@ import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 
 /**
@@ -35,6 +39,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	private String name;
 	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
+	private final Context context;
 
 	/**
 	 * 
@@ -43,19 +48,20 @@ public class GeometryLayer extends Overlay implements Layer {
 	 * 
 	 */
 	public GeometryLayer(Context ctx) {
-		super(ctx);
-		this.geometries = new ArrayList<Geometry>();
-		// TODO Auto-generated constructor stub
+		this(ctx, new ArrayList<Geometry>());
+
 	}
 
 	public GeometryLayer(final Context ctx, List<Geometry> geometries) {
-		super(ctx);
-		this.geometries = geometries;
+		this(ctx, geometries, GeometryType.POLYGON, new PolygonSymbology(),
+				"default");
+
 	}
 
 	public GeometryLayer(final Context ctx, List<Geometry> geometries,
 			GeometryType type, Symbology symbologie, String name) {
 		super(ctx);
+		this.context = ctx;
 		this.geometries = geometries;
 		this.type = type;
 		this.symbology = symbologie;
@@ -374,11 +380,40 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	@Override
-	public SmartIcon getOverview() {
-		SmartIcon icon = SmartIcon.SYMBOLOGY;
-		icon.setColor(getSymbology().getColor());
-		icon.setType(type);
-		return icon;
+	public Bitmap getOverview() {
+
+		final Bitmap bit = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.geometry);
+		//Bitmap bitmap=Bitmap.createBitmap(48, 48, Config.ARGB_8888);
+		
+		Bitmap bitmap=bit.copy(Config.ARGB_8888, true);
+		final Canvas canvas = new Canvas(bitmap);
+
+		final Paint paint = new Paint();
+		
+		paint.setColor(symbology.getColor());
+		switch (type) {
+		case POINT:
+			canvas.drawCircle(24, 24, 12, paint);
+			break;
+		case LINE:
+			paint.setStrokeWidth(5);
+			canvas.drawLine(0, 0, 48, 48, paint);
+			break;
+		case POLYGON:
+			canvas.drawRect(6, 6, 42, 42, paint);
+			break;
+		default:
+			break;
+		}
+		//canvas.drawBitmap(bitmap, 0, 0, paint);
+		return bitmap;
+
+	}
+
+	@Override
+	public Overlay getOverlay() {
+		return this;
 	}
 
 }

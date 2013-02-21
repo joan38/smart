@@ -7,6 +7,10 @@ package fr.umlv.lastproject.smart.layers;
  * 
  */
 public abstract class Geometry {
+	
+	private static final String POINT_STRING="Point";
+	private static final String LINE_STRING="LineString";
+	private static final String POLYGON_STRING="Polygon";
 
 	/**
 	 * Enum of the geometry types
@@ -14,9 +18,9 @@ public abstract class Geometry {
 	 * @author thibault
 	 */
 	public enum GeometryType {
-		POINT(0, "Point"),
-		LINE(1, "LineString"),
-		POLYGON(2, "Polygon");
+		POINT(0, POINT_STRING),
+		LINE(1, LINE_STRING),
+		POLYGON(2, POLYGON_STRING);
 
 		private final int dbId;
 		private final String kmlName;

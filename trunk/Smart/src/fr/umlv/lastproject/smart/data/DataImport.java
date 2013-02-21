@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataimport;
+package fr.umlv.lastproject.smart.data;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,6 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
-import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
-import fr.umlv.lastproject.smart.geotiff.TMSTileSourceBase;
-import fr.umlv.lastproject.smart.kml.KmlImport;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.utils.ZIPUtils;

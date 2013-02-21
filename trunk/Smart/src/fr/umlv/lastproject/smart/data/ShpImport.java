@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataimport;
+package fr.umlv.lastproject.smart.data;
 
 import android.content.Context;
 import diewald_shapeFile.files.shp.shapeTypes.ShpPoint;
