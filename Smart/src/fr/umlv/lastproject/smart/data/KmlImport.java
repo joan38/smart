@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.kml;
+package fr.umlv.lastproject.smart.data;
 
 import java.io.File;
 import java.io.IOException;

@@ -21,8 +21,7 @@ public class PointSymbology extends Symbology {
 	 * Color : Black / Radius : 5
 	 */
 	public PointSymbology() {
-		super(Color.BLACK);
-		this.radius = 5;
+		this(5, Color.BLACK);
 	}
 
 	/**
@@ -53,4 +52,5 @@ public class PointSymbology extends Symbology {
 	public void setRadio(int radius) {
 		this.radius = radius;
 	}
+
 }

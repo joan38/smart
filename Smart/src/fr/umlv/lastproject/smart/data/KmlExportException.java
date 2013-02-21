@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.kml;
+package fr.umlv.lastproject.smart.data;
 
 /**
  * The exception class for the Kml export.

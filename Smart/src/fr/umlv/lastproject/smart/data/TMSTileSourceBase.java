@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.geotiff;
+package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.ResourceProxy.string;
 import org.osmdroid.tileprovider.MapTile;

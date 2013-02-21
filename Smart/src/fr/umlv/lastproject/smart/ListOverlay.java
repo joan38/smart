@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.util.Log;
-import fr.umlv.lastproject.smart.layers.SmartIcon;
+
+import fr.umlv.lastproject.smart.layers.Layer;
 
 /**
  * A class for stock the name of the map overlays
@@ -21,17 +21,18 @@ public class ListOverlay implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final List<LayerState> overlays;
+	private final List<LayerItem> overlays;
 
 	public ListOverlay() {
-		overlays = new ArrayList<LayerState>();
+		overlays = new ArrayList<LayerItem>();
 	}
 
-	public ListOverlay(List<LayerState> layers) {
-		this.overlays = new ArrayList<LayerState>();
-		for (LayerState layer : layers) {
-			overlays.add(new LayerState(layer.getName(), layer.isVisible(),
-					layer.getSymbologie()));
+	public ListOverlay(List<Layer> layers) {
+		this.overlays = new ArrayList<LayerItem>();
+
+		for (Layer layer : layers) {
+			overlays.add(new LayerItem(layer.getName(),layer.getOverview()));
+
 		}
 	}
 
@@ -40,27 +41,30 @@ public class ListOverlay implements Serializable {
 	 * @param layer
 	 * @return
 	 */
-	public boolean add(String layer) {
-		return this.overlays.add(new LayerState(layer));
+	public boolean add(LayerItem item) {
+		return overlays.add(item);
 	}
 
-	/**
-	 * 
-	 * @param layer
-	 * @param symbologie
-	 * @return
-	 */
-	public boolean add(String layer, SmartIcon symbologie) {
-		Log.d("debug", "hahhahah " + symbologie.getType());
-		return this.overlays.add(new LayerState(layer, symbologie));
-	}
+
+//	/**
+//	 * 
+//	 * @param layers
+//	 * @return
+//	 */
+//	public boolean addAll(List<String> layers) {
+//		for (String layer : layers) {
+//			overlays.add(new LayerItem(layer));
+//		}
+//		return true;
+//	}
+
 
 	/**
 	 * 
 	 * @param location
 	 * @return
 	 */
-	public LayerState get(int location) {
+	public LayerItem get(int location) {
 		return this.overlays.get(location);
 	}
 
@@ -78,7 +82,7 @@ public class ListOverlay implements Serializable {
 	 * @param location
 	 * @return
 	 */
-	public LayerState remove(int location) {
+	public LayerItem remove(int location) {
 		return this.overlays.remove(location);
 	}
 
@@ -124,8 +128,10 @@ public class ListOverlay implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<LayerState> toList() {
+
+	public List<LayerItem> toList() {
 		return Collections.unmodifiableList(this.overlays);
+
 	}
 
 	/**
@@ -144,5 +150,7 @@ public class ListOverlay implements Serializable {
 		}
 		return data + "]";
 	}
+	
+	
 
 }

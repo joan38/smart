@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataexport;
+package fr.umlv.lastproject.smart.data;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,8 +10,6 @@ import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.kml.KmlExport;
-import fr.umlv.lastproject.smart.kml.KmlExportException;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public final class DataExport {

@@ -24,30 +24,13 @@ public class LayersActivity extends ListActivity {
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 
-		Log.d("debug", "LLLLLLL "
-				+ listOverlay.get(1).getSymbologie().getType().toString());
-		Log.d("debug", "LLLLLLL2 "
-				+ listOverlay.get(2).getSymbologie().getType().toString());
+		
 
-		// setListAdapter(new ArrayAdapter<String>(this,
-		// R.layout.listview_layers_items, listOverlay.toArray()));
-		//
-		ListView listView = getListView();
+		
+				ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
-		//
-		// listView.setOnItemClickListener(new OnItemClickListener() {
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// // When clicked, show a toast with the TextView text
-		// Toast.makeText(getApplicationContext(),
-		// ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-		// }
-		// });
-
-		for (LayerState l : listOverlay.toList()) {
-			Log.d("debug", "LayerActivity " + l.getName() + " "
-					+ l.getSymbologie().getType());
-		}
+		
+		
 
 		SmartItemLayerAdapter adapter = new SmartItemLayerAdapter(this,
 				R.layout.listview_layers_items, listOverlay.toList());
