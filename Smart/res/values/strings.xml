@@ -24,6 +24,7 @@
     <string name="option">Option</string>
     <string name="addShortcut">Add shortcut</string>
     <string name="removeShortcut">Remove shortcut</string>
+    <string name="symbo_desc">Symbologie</string>
 
     <string-array name="items">
         <item>Start mission</item>

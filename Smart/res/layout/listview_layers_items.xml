@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="10dp"
-    android:textSize="20sp" >
-</TextView>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/layer_check"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
+    
+	<ImageView
+		android:id="@+id/layer_symbo"
+		android:layout_gravity="left"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@string/symbo_desc"/>
+
+	<TextView
+		android:id="@+id/layer_name"
+		android:textSize="30sp"
+		android:layout_weight="0.5"
+		android:layout_gravity="center"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
+
+
+</LinearLayout>

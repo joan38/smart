@@ -2,26 +2,16 @@ package fr.umlv.lastproject.smart.layers;
 
 import java.io.Serializable;
 
-import fr.umlv.lastproject.smart.R;
+import android.graphics.Bitmap;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-
 public enum SmartIcon implements Serializable {
-	RASTER,SYMBOLOGY;
-	
-	private  Bitmap bitmap;
+	RASTER, SYMBOLOGY;
+
+	private Bitmap bitmap;
 	private int color;
 	private GeometryType type;
-	
-	
-	
-	
-	
-	
+
 	public Bitmap getBitmap() {
 		return bitmap;
 	}
@@ -45,10 +35,5 @@ public enum SmartIcon implements Serializable {
 	public void setType(GeometryType type) {
 		this.type = type;
 	}
-
-
-	
-	
-	
 
 }

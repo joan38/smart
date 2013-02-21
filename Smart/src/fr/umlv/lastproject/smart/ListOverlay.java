@@ -2,11 +2,11 @@ package fr.umlv.lastproject.smart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import android.util.Log;
+import fr.umlv.lastproject.smart.layers.SmartIcon;
 
 /**
  * A class for stock the name of the map overlays
@@ -27,10 +27,11 @@ public class ListOverlay implements Serializable {
 		overlays = new ArrayList<LayerState>();
 	}
 
-	public ListOverlay(List<GeometryLayer> layers) {
+	public ListOverlay(List<LayerState> layers) {
 		this.overlays = new ArrayList<LayerState>();
-		for (GeometryLayer layer : layers) {
-			overlays.add(new LayerState(layer.getName()));
+		for (LayerState layer : layers) {
+			overlays.add(new LayerState(layer.getName(), layer.isVisible(),
+					layer.getSymbologie()));
 		}
 	}
 
@@ -45,14 +46,13 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param layers
+	 * @param layer
+	 * @param symbologie
 	 * @return
 	 */
-	public boolean addAll(List<String> layers) {
-		for (String layer : layers) {
-			overlays.add(new LayerState(layer));
-		}
-		return true;
+	public boolean add(String layer, SmartIcon symbologie) {
+		Log.d("debug", "hahhahah " + symbologie.getType());
+		return this.overlays.add(new LayerState(layer, symbologie));
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class ListOverlay implements Serializable {
 	 * 
 	 * @return
 	 */
-	public Collection<LayerState> toList() {
-		return Collections.unmodifiableCollection(this.overlays);
+	public List<LayerState> toList() {
+		return Collections.unmodifiableList(this.overlays);
 	}
 
 	/**

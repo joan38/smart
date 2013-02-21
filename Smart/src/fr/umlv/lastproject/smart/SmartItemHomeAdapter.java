@@ -18,7 +18,7 @@ import android.widget.TextView;
  * @author Fad's
  * 
  */
-public class SmartItemAdapter extends ArrayAdapter<ListViewItem> {
+public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 
 	private Context context;
 
@@ -31,7 +31,7 @@ public class SmartItemAdapter extends ArrayAdapter<ListViewItem> {
 	 * @param items
 	 *            : list of item to add
 	 */
-	public SmartItemAdapter(Context context, int resourceId,
+	public SmartItemHomeAdapter(Context context, int resourceId,
 			List<ListViewItem> items) {
 		super(context, resourceId, items);
 		this.context = context;

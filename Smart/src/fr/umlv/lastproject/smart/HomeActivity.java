@@ -77,7 +77,7 @@ public class HomeActivity extends Activity {
 		}
 
 		ListView listView = (ListView) findViewById(R.id.listView);
-		SmartItemAdapter adapter = new SmartItemAdapter(this,
+		SmartItemHomeAdapter adapter = new SmartItemHomeAdapter(this,
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
 		listView.setClickable(false);

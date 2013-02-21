@@ -1,11 +1,6 @@
 package fr.umlv.lastproject.smart.layers;
 
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Pair;
 
 /**
  * This class represent the Point symbology
@@ -58,11 +53,4 @@ public class PointSymbology extends Symbology {
 	public void setRadio(int radius) {
 		this.radius = radius;
 	}
-
-	@Override
-	public Pair<Integer, GeometryType> getImage() {
-		return new Pair<Integer, Geometry.GeometryType>(getColor(), GeometryType.LINE);
-	}
-
-
 }
