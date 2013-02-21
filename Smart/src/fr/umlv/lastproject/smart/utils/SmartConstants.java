@@ -6,7 +6,7 @@ public final class SmartConstants {
 	public static final int LAYERS_VIEW = 2;
 	public static final int MISSION_BROWSER_ACTIVITY = 3;
 	public static final int FORM_BROWSER_ACTIVITY = 4;
-
+	public static final int IMPORT_KML_BROWSER_ACTIVITY = 5;
 
 	public static final int CREATE_MISSION = 0;
 	public static final int CREATE_FORM = 1;
@@ -22,7 +22,6 @@ public final class SmartConstants {
 	public static final int MEASURE = 11;
 	public static final int EXPORT_FORM = 12;
 
-
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
 
@@ -35,7 +34,8 @@ public final class SmartConstants {
 	public final static int PICTURE_FIELD = 4;
 	public final static int HEIGHT_FIELD = 5;
 
-	private SmartConstants(){
-		
+	private SmartConstants() {
+
 	}
+
 }

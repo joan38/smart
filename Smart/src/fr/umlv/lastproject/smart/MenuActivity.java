@@ -42,7 +42,6 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -72,7 +71,7 @@ public class MenuActivity extends Activity {
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
 
-	private String formPath;
+	private String kmlPath;
 
 	private boolean missionCreated = false;
 
@@ -382,14 +381,14 @@ public class MenuActivity extends Activity {
 				case SmartConstants.POLYGON_SURVEY:
 					Mission.getInstance().startSurvey(GeometryType.POLYGON);
 					break;
-					
+
 				case SmartConstants.GPS_TRACK:
 					if (gpsTrack == null) {
 						final AlertTrackDialog trackDialog = new AlertTrackDialog(
 								this);
 						trackDialog.show();
 						break;
-						
+
 					} else {
 						try {
 							gpsTrack.stopTrack();
@@ -402,7 +401,16 @@ public class MenuActivity extends Activity {
 
 					}
 					break;
-					
+
+				case SmartConstants.IMPORT_KML:
+					Intent exportKMLItent = FileUtils.createGetContentIntent(
+							FileUtils.KML_TYPE,
+							Environment.getExternalStorageDirectory() + "");
+					startActivityForResult(exportKMLItent,
+							SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
+
+					break;
+
 				case SmartConstants.EXPORT_CSV:
 					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(
 							this);
@@ -410,9 +418,7 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.EXPORT_KML:
-					Intent intent = new Intent(MenuActivity.this,
-							PictureActivity.class);
-					startActivityForResult(intent, 10);
+
 					break;
 
 				case SmartConstants.EXPORT_FORM:
@@ -437,18 +443,34 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
-				formPath = fileForm.toString().split("file:///")[1];
-				missionDialog.setPathForm(formPath);
+				kmlPath = fileForm.toString().split("file:///")[1];
+				missionDialog.setPathForm(kmlPath);
 
 				break;
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
 				Uri file = data.getData();
-				
-				Intent sendIntent = new Intent(Intent.ACTION_SEND);
-		        sendIntent.setType("application/formulaire");
-		        sendIntent.putExtra(Intent.EXTRA_STREAM, file);
-		        startActivity(Intent.createChooser(sendIntent, "Select E-Mail Application"));
 
+				Intent sendIntent = new Intent(Intent.ACTION_SEND);
+				sendIntent.setType("application/formulaire");
+				sendIntent.putExtra(Intent.EXTRA_STREAM, file);
+				startActivity(Intent.createChooser(sendIntent,
+						"Select E-Mail Application"));
+
+				break;
+
+			case SmartConstants.IMPORT_KML_BROWSER_ACTIVITY:
+				Uri fileKML = data.getData();
+				kmlPath = fileKML.toString().split("file:///")[1];
+				try {
+					mapView.addGeometryLayers(DataImport.importKml(this,
+							kmlPath));
+				} catch (XmlPullParserException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			}
 
@@ -464,16 +486,6 @@ public class MenuActivity extends Activity {
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
 		Form form = new Form();
-		if (formPath != null) {
-			try {
-				form.read(formPath);
-			} catch (IOException e) {
-				Log.d("TEST2", e.getMessage());
-			} catch (XmlPullParserException e) {
-				Log.d("TEST2", e.getMessage());
-			}
-		}
-
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
 		overlayManager.add(Mission.getInstance().getPolygonLayer());
