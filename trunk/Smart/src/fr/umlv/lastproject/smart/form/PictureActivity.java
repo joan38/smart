@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart.form;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,13 +13,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPS;
 import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
+import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
+/**
+ * Activity which launch the camera device and geoTag it
+ * 
+ * @author Fad's
+ * 
+ */
 public class PictureActivity extends Activity {
 
 	private File picture;
@@ -33,7 +40,7 @@ public class PictureActivity extends Activity {
 	private double latitude;
 	private double longitude;
 	private float bearing;
-	private Date pictureTime;
+	private String namePicture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +62,7 @@ public class PictureActivity extends Activity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		gps = new GPS(locationManager);
 
-		gps.start(SmartConstants.GPS_REFRESH_TIME,
-				SmartConstants.GPS_REFRESH_DISTANCE);
+		gps.start(1, 1);
 		gps.addGPSListener(new IGPSListener() {
 
 			@Override
@@ -64,13 +70,16 @@ public class PictureActivity extends Activity {
 				latitude = event.getLatitude();
 				longitude = event.getLongitude();
 				bearing = event.getBearing();
-				pictureTime = event.getTime();
+				Log.d("actionPerform", "je caaaaapte");
 			}
 		});
 
 		// L'endroit où sera enregistrée la photo
 		// Remarquez que mFichier est un attribut de ma classe
-		picture = new File(PICTURE_PATH, "smart_" + pictureTime + ".jpg");
+		namePicture = getIntent().getExtras().getString("namePicture");
+
+		picture = new File(PICTURE_PATH, namePicture + ".jpg");
+		Log.d("name", picture.toString());
 
 		// On récupère ensuite l'URI associée au fichier
 		Uri fileUri = Uri.fromFile(picture);
@@ -103,7 +112,11 @@ public class PictureActivity extends Activity {
 			// On sait ici que le fichier pointé par mFichier est
 			// accessible, on peut donc faire ce qu'on veut avec, par
 			// exemple en faire un Bitmap
-			geoTag("geotag", latitude, longitude, bearing);
+			geoTag(namePicture, latitude, longitude, bearing);
+
+			Intent intentReturn = new Intent(PictureActivity.this,
+					MenuActivity.class);
+			intentReturn.putExtra("pictureName", "smartPictureName");
 
 		}
 	}
@@ -111,8 +124,10 @@ public class PictureActivity extends Activity {
 	public void geoTag(String filename, double latitude, double longitude,
 			float bearing) {
 		ExifInterface exif = null;
+		Log.d("geotag", filename);
 		try {
 			exif = new ExifInterface(PICTURE_PATH + filename + ".jpg");
+			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
