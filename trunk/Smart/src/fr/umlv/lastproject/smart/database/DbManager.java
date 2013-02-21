@@ -378,16 +378,33 @@ public class DbManager {
 	 * 
 	 * @return id of the activated mission, -1 if no one is activated
 	 */
-	public int existActivatedMission(){
+	public int existsActivatedMission(){
 		
 		Cursor c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_STATUS+"=1", null);
 		
-		if(c == null){
+		if(c.getCount()==0){
 			return -1;
 		} else {
 			c.moveToNext();
 			MissionRecord r = cursorToMission(c);
 			return r.getId();
+		}
+		
+	}
+	
+	/**
+	 * Search if a mission is activated
+	 * 
+	 * @return id of the activated mission, -1 if no one is activated
+	 */
+	public boolean existsMission(String name){
+		Cursor c = null;
+		c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_TITLE+"='"+name+"'", null);
+		
+		if(c.getCount()==0){
+			return false;
+		} else {
+			return true;
 		}
 		
 	}
