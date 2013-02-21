@@ -380,9 +380,16 @@ public class DbManager {
 	 */
 	public int existActivatedMission(){
 		
-		//Cursor c = mDb.rawQuery("SELECT "++"", selectionArgs);
+		Cursor c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_STATUS+"=1", null);
 		
-		return -1;
+		if(c == null){
+			return -1;
+		} else {
+			c.moveToNext();
+			MissionRecord r = cursorToMission(c);
+			return r.getId();
+		}
+		
 	}
 
 	/**
