@@ -30,4 +30,9 @@ public final class SmartConstants {
 	public final static int PICTURE_FIELD = 4;
 	public final static int HEIGHT_FIELD = 5;
 
+	private SmartConstants(){
+		
+	}
+	
+	
 }

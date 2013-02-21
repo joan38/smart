@@ -17,7 +17,7 @@ public abstract class Geometry {
 		POINT, LINE, POLYGON
 	}
 	
-	GeometryType type ;
+	private GeometryType type ;
 
 	private Symbology symbology;
 

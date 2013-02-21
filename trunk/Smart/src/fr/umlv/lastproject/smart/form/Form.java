@@ -50,13 +50,16 @@ public class Form implements Serializable {
 	private List<Object> editTextList;
 
 
-	private final String FORM ="form" ;
-	private final String FIELD="field" ;
-	private final String TYPE="type" ;
-	private final String TITLE="title"; 
-	private final String VALUES="values" ;
-	private final String MIN="min" ;
-	private final String MAX="max" ;
+	private static final String FORM ="form" ;
+	private static final String FIELD="field" ;
+	private static final String TYPE="type" ;
+	private static final String TITLE="title"; 
+	private static final String VALUES="values" ;
+	private static final String MIN="min" ;
+	private static final String MAX="max" ;
+	private static final String COMMENTS="commentaires";
+	private static final String DEFAULT_NAME="FormDefault";
+	private static final String CHARSET="UTF-8";
 
 
 /**
@@ -66,16 +69,14 @@ public class Form implements Serializable {
 	public Form(String name) {
 		this.name = name;
 		this.fieldsList = new ArrayList<Field>();
-		this.fieldsList.add(new TextField("commentaires"));
+		this.fieldsList.add(new TextField(COMMENTS));
 	}
 
 	/**
 	 * Form by default
 	 */
 	public Form() {
-		this.name = "FormDefault";
-		this.fieldsList = new ArrayList<Field>();
-		this.fieldsList.add(new TextField("commentaires"));
+		this(DEFAULT_NAME);
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class Form implements Serializable {
 		xml.setNamespaceAware(true);
 		XmlPullParser xpp = xml.newPullParser();
 		FileInputStream fis = new FileInputStream(new File(s));
-		xpp.setInput(fis,"UTF-8");
+		xpp.setInput(fis,CHARSET);
 		int eventype = xpp.getEventType() ;
 
 		while(eventype != XmlPullParser.END_DOCUMENT){
@@ -178,7 +179,7 @@ public class Form implements Serializable {
 				Log.d("", "tag"+xpp.getName());
 				Log.d("", "tag count attribute "+ xpp.getAttributeCount() );
 
-				if(tag.equals(FORM)){
+				if(FORM.equals(tag)){
 					for(int i =0 ; i< xpp.getAttributeCount() ; i++){
 						Log.d("", "tag form "+xpp.getAttributeName(i));
 
@@ -186,7 +187,7 @@ public class Form implements Serializable {
 							setName(xpp.getAttributeValue(i).replace(" ", "")) ;
 						}
 					}
-				}else if(tag.equals(FIELD)){
+				}else if(FIELD.equals(tag)){
 					
 
 

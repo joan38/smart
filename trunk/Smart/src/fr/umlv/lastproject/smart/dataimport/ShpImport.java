@@ -13,8 +13,15 @@ import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 
-public class ShpImport {
+public final class ShpImport {
 
+	
+	
+	private ShpImport(){
+		
+	}
+	
+	
 	public static GeometryLayer getLayerFromShp(String file, Context context) {
 
 		try {
@@ -50,8 +57,7 @@ public class ShpImport {
 
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d("TEST2",e.getMessage());
 		}
 
 		return null;

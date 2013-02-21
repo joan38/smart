@@ -78,13 +78,13 @@ public class DbManager {
 	private DbHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
-	private static String CREATE_TABLE_MISSIONS = "CREATE TABLE IF NOT EXISTS missions ( "
+	private static final String CREATE_TABLE_MISSIONS = "CREATE TABLE IF NOT EXISTS missions ( "
 			+ "id INTEGER PRIMARY KEY,"
 			+ "title TEXT UNIQUE,"
 			+ "status INTEGER NOT NULL," + "date TEXT NOT NULL, "
 			+ "form TEXT NOT NULL);";
 
-	private static String CREATE_TABLE_GEOMETRIES = "CREATE TABLE IF NOT EXISTS geometries ( "
+	private static final String CREATE_TABLE_GEOMETRIES = "CREATE TABLE IF NOT EXISTS geometries ( "
 			+ "id INTEGER PRIMARY KEY,"
 			+ "type INTEGER NOT NULL,"
 			+ "idMission INTEGER NOT NULL,"
@@ -93,7 +93,7 @@ public class DbManager {
 			+ "("
 			+ MISSIONS_COL_ID + "));";
 
-	private static String CREATE_TABLE_POINTS = "CREATE TABLE IF NOT EXISTS points ( "
+	private static final String CREATE_TABLE_POINTS = "CREATE TABLE IF NOT EXISTS points ( "
 			+ "id INTEGER PRIMARY KEY,"
 			+ "x REAL NOT NULL,"
 			+ "y REAL NOT NULL,"

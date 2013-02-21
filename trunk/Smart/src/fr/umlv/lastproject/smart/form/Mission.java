@@ -21,7 +21,7 @@ import fr.umlv.lastproject.smart.survey.SurveyStopListener;
  * @author thibault, maelle cabot
  * 
  */
-public class Mission {
+public final class Mission {
 
 	private static Mission mission = null;
 
@@ -39,7 +39,7 @@ public class Mission {
 	/* the status (on / off) */
 	private boolean status = false;
 
-	private SmartMapView mapView;
+	private final SmartMapView mapView;
 
 	private Form form;
 
@@ -103,16 +103,15 @@ public class Mission {
 		return mission;
 	}
 
-	private boolean getStatus() {
-		return status;
-	}
+
 
 	/**
 	 * 
 	 * @return status of the mission
 	 */
 	public boolean startMission() {
-		return status = true;
+		 status = true;
+		 return status;
 	}
 
 	/**
@@ -120,7 +119,8 @@ public class Mission {
 	 * @return status of the mission
 	 */
 	public boolean stopMission() {
-		return status = false;
+		 status = false;
+		 return status;
 	}
 
 	/**
