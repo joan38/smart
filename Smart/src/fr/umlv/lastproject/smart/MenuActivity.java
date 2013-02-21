@@ -39,6 +39,7 @@ import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.PictureActivity;
+import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -394,6 +395,7 @@ public class MenuActivity extends Activity {
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
 		Form form = new Form();
+		form.addField(new PictureField("Ma photo"));
 		if (formPath != null) {
 			try {
 				form.read(formPath);
@@ -404,7 +406,7 @@ public class MenuActivity extends Activity {
 			}
 		}
 
-		Mission.createMission(missionName, this, mapView, form);
+		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
 		overlayManager.add(Mission.getInstance().getPolygonLayer());
 		overlayManager.add(Mission.getInstance().getLineLayer());

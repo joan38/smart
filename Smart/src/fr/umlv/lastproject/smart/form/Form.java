@@ -28,6 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
@@ -57,7 +58,7 @@ public class Form implements Serializable {
 	private static final String VALUES="values" ;
 	private static final String MIN="min" ;
 	private static final String MAX="max" ;
-	private static final String COMMENTS="commentaires";
+	private static final String COMMENTS="Commentaires";
 	private static final String DEFAULT_NAME="FormDefault";
 	private static final String CHARSET="UTF-8";
 
@@ -153,7 +154,7 @@ public class Form implements Serializable {
 	 * @param g
 	 *            geometry to insert
 	 */
-	public void openForm(final Context context, final Geometry g, final Mission mission) {
+	public void openForm(final MenuActivity context, final Geometry g, final Mission mission) {
 		final FormDialog dialog=new FormDialog(context, this, g, mission);
 		dialog.show();
 	}

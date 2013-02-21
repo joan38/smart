@@ -361,6 +361,29 @@ public class DbManager {
 		c.close();
 		return id;
 	}
+	
+	/**
+	 * Stop the mission
+	 * 
+	 * @param idMission
+	 */
+	public void stopMission(int idMission){
+		ContentValues args = new ContentValues();
+		args.put(MISSIONS_COL_STATUS, 0);
+		mDb.update(TABLE_MISSIONS, args, "id="+idMission, null);
+	}
+	
+	/**
+	 * Search if a mission is activated
+	 * 
+	 * @return id of the activated mission, -1 if no one is activated
+	 */
+	public int existActivatedMission(){
+		
+		//Cursor c = mDb.rawQuery("SELECT "++"", selectionArgs);
+		
+		return -1;
+	}
 
 	/**
 	 * Request the table "missions" to get all rows
