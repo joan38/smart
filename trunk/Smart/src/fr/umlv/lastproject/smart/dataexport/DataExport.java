@@ -11,14 +11,14 @@ import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.kml.KmlExport;
+import fr.umlv.lastproject.smart.kml.KmlExportException;
 
 public final class DataExport {
-	
-	private DataExport(){
-		
+
+	private DataExport() {
 	}
-	
-	
+
 	/**
 	 * Export the geometries of the mission in a CSV file. The name of the file
 	 * is <the name of the mission>.csv
@@ -31,7 +31,8 @@ public final class DataExport {
 		dbm.open(mission.getContext());
 		csv.write("Geometries,Points\n");
 
-		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission.getId())) {
+		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
+				.getId())) {
 			csv.write(geometry.getType().name() + ",");
 
 			for (PointRecord point : geometry.getPointsRecord()) {
@@ -50,15 +51,18 @@ public final class DataExport {
 	 * Export the geometries of the mission in a KML file. The name of the file
 	 * is <the name of the mission>.kml
 	 * 
-	 * @throws KmlExportException 
+	 * @throws KmlExportException
 	 */
-	public static void exportKml(String path, Mission mission) throws KmlExportException {
+	public static void exportKml(String path, Mission mission)
+			throws KmlExportException {
 		try {
 			KmlExport.exportMission(new File(path), mission);
 		} catch (ParserConfigurationException e) {
-			throw new KmlExportException("Unable to export the mission " + mission.getTitle(), e);
+			throw new KmlExportException("Unable to export the mission "
+					+ mission.getTitle(), e);
 		} catch (TransformerException e) {
-			throw new KmlExportException("Unable to export the mission " + mission.getTitle(), e);
+			throw new KmlExportException("Unable to export the mission "
+					+ mission.getTitle(), e);
 		}
 	}
 }

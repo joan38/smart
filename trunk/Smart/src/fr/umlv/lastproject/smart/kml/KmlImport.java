@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataimport;
+package fr.umlv.lastproject.smart.kml;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
-import fr.umlv.lastproject.smart.kml.Kml;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
