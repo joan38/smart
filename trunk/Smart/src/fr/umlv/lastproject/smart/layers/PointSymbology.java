@@ -1,9 +1,11 @@
 package fr.umlv.lastproject.smart.layers;
 
+import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Pair;
 
 /**
  * This class represent the Point symbology
@@ -58,16 +60,9 @@ public class PointSymbology extends Symbology {
 	}
 
 	@Override
-	public Canvas getImage() {
-		final Canvas canvas = new Canvas();
-
-		// set drawing colour
-		final Paint p = new Paint();
-		p.setColor(getColor());
-
-		
-		canvas.drawCircle(8, 8, 8, p);
-		return canvas;
+	public Pair<Integer, GeometryType> getImage() {
+		return new Pair<Integer, Geometry.GeometryType>(getColor(), GeometryType.LINE);
 	}
+
 
 }

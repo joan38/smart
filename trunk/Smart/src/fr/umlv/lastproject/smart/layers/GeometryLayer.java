@@ -375,8 +375,13 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	@Override
-	public Canvas getOverview() {
-		return symbology.getImage();
+	public SmartIcon getOverview() {
+		SmartIcon icon=SmartIcon.SYMBOLOGY;
+		icon.setColor(getSymbology().getColor());
+		icon.setType(type);
+		return icon;
 	}
+
+	
 
 }

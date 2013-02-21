@@ -2,8 +2,12 @@ package fr.umlv.lastproject.smart.layers;
 
 import java.io.Serializable;
 
+import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.util.Pair;
 
 /**
  * This class represent the geometry symbology
@@ -33,5 +37,5 @@ public abstract class Symbology implements Serializable {
 		return this.color;
 	}
 	
-	public abstract Canvas getImage();
+	public abstract Pair<Integer, GeometryType> getImage();
 }
