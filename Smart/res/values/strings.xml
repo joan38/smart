@@ -100,6 +100,8 @@
     <string name="field_list">List field : </string>
     <string name="field_boolean">Boolean field : </string>
     <string name="field_numeric">Numeric field : </string>
+    <string name="field_height">Height field : </string>
+    
     <string name="field_error_min_max">Error : Min > Max</string>
     
     <string name="invalid">Invalid</string>

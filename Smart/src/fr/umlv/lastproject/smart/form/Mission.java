@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart.form;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.SmartMapView;
 import fr.umlv.lastproject.smart.database.DbManager;
@@ -15,6 +16,7 @@ import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.Survey;
 import fr.umlv.lastproject.smart.survey.SurveyStopListener;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
  * This class is used to create a mission
@@ -94,8 +96,13 @@ public final class Mission {
 		mission = new Mission(name, context, mapview, f);
 		// ecriture en base
 		DbManager dbm = new DbManager();
-		dbm.open(context);
-		dbm.insertMission(new MissionRecord());
+		try {
+			dbm.open(context);
+			dbm.insertMission(new MissionRecord());
+		} catch (SmartException e) {
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 		dbm.close();
 
 		return mission;
@@ -120,7 +127,12 @@ public final class Mission {
 
 
 		DbManager dbManager = new DbManager();
-		dbManager.open(context);
+		try {
+			dbManager.open(context);
+		} catch (SmartException e) {
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 		dbManager.stopMission(id);
 		dbManager.close();
 		status = false;

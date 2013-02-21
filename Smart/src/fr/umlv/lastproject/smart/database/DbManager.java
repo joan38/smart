@@ -28,6 +28,7 @@ import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
  * Class to manage the database and the static tables (missions, geometries,
@@ -139,21 +140,21 @@ public class DbManager {
 		 * Open the database and create it if it's not exist
 		 * 
 		 * @return an access to database (read and write mode)
-		 * @throws SQLException
+		 * @throws SmartException 
 		 */
-		public SQLiteDatabase openDataBase() throws SQLException {
+		public SQLiteDatabase openDataBase() throws SmartException {
 			SQLiteDatabase dbRetour = null;
 
-			try {
+			try{
 				dbRetour = SQLiteDatabase.openOrCreateDatabase(DB_PATH
 						+ DB_NAME, null);
 				dbRetour.execSQL(CREATE_TABLE_MISSIONS);
 				dbRetour.execSQL(CREATE_TABLE_GEOMETRIES);
 				dbRetour.execSQL(CREATE_TABLE_POINTS);
-
-			} catch (Exception e) {
+			} catch(SQLiteException e){
+				throw new SmartException("Open database error");
 			}
-
+			
 			return dbRetour;
 
 		}
@@ -165,8 +166,9 @@ public class DbManager {
 	 * 
 	 * @param context
 	 *            of application
+	 * @throws SmartException 
 	 */
-	public void open(Context context) {
+	public void open(Context context) throws SmartException {
 		mDbHelper = new DbHelper(context);
 		mDb = mDbHelper.openDataBase();
 
@@ -185,8 +187,9 @@ public class DbManager {
 	 * @param form
 	 *            to create
 	 * @return 0 if the creation ok, -1 if it's not
+	 * @throws SmartException 
 	 */
-	public int createTableForm(Form f) {
+	public int createTableForm(Form f) throws SmartException {
 		SQLiteDatabase db = null;
 		String sql = "CREATE TABLE IF NOT EXISTS " + f.getName()
 				+ "( id INTEGER PRIMARY KEY, " + "date TEXT NOT NULL, ";
@@ -236,13 +239,8 @@ public class DbManager {
 			db.execSQL(sql);
 			db.close();
 
-		} catch (SQLiteException e) {
-			e.printStackTrace();
-			Log.d("TEST", "Erreur lors de l'ouverture de la base");
-			return -1;
 		} catch (SQLException e) {
-			Log.d("TEST", "Erreur SQL");
-			return -1;
+			throw new SmartException("Database Error");
 		}
 
 		return 0;
@@ -254,8 +252,9 @@ public class DbManager {
 	 * @param formRecord
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
+	 * @throws SmartException 
 	 */
-	public int insertFormRecord(FormRecord formRecord, int idGeometry) {
+	public int insertFormRecord(FormRecord formRecord, int idGeometry) throws SmartException {
 
 		ContentValues values = new ContentValues();
 
@@ -306,7 +305,7 @@ public class DbManager {
 			return 0;
 
 		} catch (SQLException e) {
-			return -1;
+			throw new SmartException("Insert database error");
 		}
 	}
 
@@ -316,13 +315,14 @@ public class DbManager {
 	 * @param mission
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
+	 * @throws SmartException 
 	 */
-	public int insertMission(MissionRecord mission) {
+	public int insertMission(MissionRecord mission) throws SmartException {
 
 		ContentValues values = new ContentValues();
 
 		createTableForm(mission.getForm());
-		
+
 		values.put(MISSIONS_COL_TITLE, mission.getTitle());
 		if (mission.isStatus()) {
 			values.put(MISSIONS_COL_STATUS, 1);
@@ -340,7 +340,7 @@ public class DbManager {
 		} catch (SQLException e) {
 			int id = getMission(Mission.getInstance().getTitle());
 			mission.setId(id);
-			return -1;
+			throw new SmartException("Insert database error");
 		}
 	}
 
@@ -361,7 +361,7 @@ public class DbManager {
 		c.close();
 		return id;
 	}
-	
+
 	/**
 	 * Stop the mission
 	 * 
@@ -372,16 +372,16 @@ public class DbManager {
 		args.put(MISSIONS_COL_STATUS, 0);
 		mDb.update(TABLE_MISSIONS, args, "id="+idMission, null);
 	}
-	
+
 	/**
 	 * Search if a mission is activated
 	 * 
 	 * @return id of the activated mission, -1 if no one is activated
 	 */
 	public int existsActivatedMission(){
-		
+
 		Cursor c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_STATUS+"=1", null);
-		
+
 		if(c.getCount()==0){
 			return -1;
 		} else {
@@ -389,9 +389,9 @@ public class DbManager {
 			MissionRecord r = cursorToMission(c);
 			return r.getId();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Search if a mission is activated
 	 * 
@@ -400,13 +400,13 @@ public class DbManager {
 	public boolean existsMission(String name){
 		Cursor c = null;
 		c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_TITLE+"='"+name+"'", null);
-		
+
 		if(c.getCount()==0){
 			return false;
 		} else {
 			return true;
 		}
-		
+
 	}
 
 	/**
@@ -459,8 +459,9 @@ public class DbManager {
 	 * @param geometry
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
+	 * @throws SmartException 
 	 */
-	public int insertGeometry(GeometryRecord geometry) {
+	public int insertGeometry(GeometryRecord geometry) throws SmartException {
 		ContentValues values = new ContentValues();
 
 		values.put(GEOMETRIES_COL_TYPE, geometry.getType().getId());
@@ -475,8 +476,7 @@ public class DbManager {
 			}
 			return id;
 		} catch (SQLException e) {
-			Log.d("TEST", "doublon");
-			return -1;
+			throw new SmartException("Insert database error");
 		}
 	}
 
@@ -497,17 +497,17 @@ public class DbManager {
 		c.close();
 		return geometries;
 	}
-	
+
 	public List<GeometryRecord> getGeometriesFromMission(int idMission) {
 		ArrayList<GeometryRecord> geometries = new ArrayList<GeometryRecord>();
-		
+
 		Cursor c = mDb.rawQuery("SELECT * FROM geometries WHERE " + GEOMETRIES_COL_ID_MISSION + "=" + idMission,
 				null);
-		
+
 		while (c.moveToNext()) {
 			geometries.add(cursorToGeometry(c));
 		}
-		
+
 		return geometries;
 	}
 
@@ -525,24 +525,24 @@ public class DbManager {
 		geometry.setId(c.getInt(GEOMETRIES_NUM_COL_ID));
 		geometry.setIdMission(c.getInt(GEOMETRIES_NUM_COL_ID_MISSION));
 		geometry.setType(GeometryType.getFromId(c.getInt(GEOMETRIES_NUM_COL_TYPE)));
-		
+
 		for (PointRecord point : getPointsFromGeometry(geometry.getId())) {
 			geometry.addPoint(point);
 		}
-		
+
 		return geometry;
 	}
-	
+
 	public List<PointRecord> getPointsFromGeometry(int idGeometry) {
 		ArrayList<PointRecord> points = new ArrayList<PointRecord>();
 
 		Cursor c = mDb.rawQuery("SELECT * FROM points WHERE " + POINTS_COL_ID_GEOMETRY + "=" + idGeometry,
 				null);
-		
+
 		while (c.moveToNext()) {
 			points.add(cursorToPoint(c));
 		}
-		
+
 		return points;
 	}
 
@@ -552,8 +552,9 @@ public class DbManager {
 	 * @param point
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
+	 * @throws SmartException 
 	 */
-	public int insertPoint(PointRecord point) {
+	public int insertPoint(PointRecord point) throws SmartException {
 		ContentValues values = new ContentValues();
 
 		values.put(POINTS_COL_X, point.getX());
@@ -566,8 +567,7 @@ public class DbManager {
 			return 0;
 
 		} catch (SQLException e) {
-			Log.d("TEST", "doublon");
-			return -1;
+			throw new SmartException("Insert database error");
 		}
 	}
 

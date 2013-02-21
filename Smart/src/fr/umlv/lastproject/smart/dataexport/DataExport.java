@@ -7,12 +7,16 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.kml.KmlExport;
 import fr.umlv.lastproject.smart.kml.KmlExportException;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 public final class DataExport {
 
@@ -28,7 +32,12 @@ public final class DataExport {
 	public static void exportCsv(File file, Mission mission) throws IOException {
 		FileWriter csv = new FileWriter(file);
 		DbManager dbm = new DbManager();
-		dbm.open(mission.getContext());
+		try {
+			dbm.open(mission.getContext());
+		} catch (SmartException e) {
+			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 		csv.write("Geometries,Points\n");
 
 		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission

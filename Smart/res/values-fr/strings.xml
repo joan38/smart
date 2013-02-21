@@ -89,12 +89,12 @@
     <string name="form_title">Formulaire</string>
     
     <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
-        <string name="field_text">Champs texte : </string>
-    <string name="field_picture">Champs photo : </string>
-    <string name="field_list">Champs liste : </string>
-    <string name="field_boolean">Champs booléen : </string>
-    <string name="field_numeric">Champs numérique : </string>
-    
+        <string name="field_text">Champ texte : </string>
+    <string name="field_picture">Champ photo : </string>
+    <string name="field_list">Champ liste : </string>
+    <string name="field_boolean">Champ booléen : </string>
+    <string name="field_numeric">Champ numérique : </string>
+    <string name="field_height">Champ hauteur : </string>
         <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     
     <string name="invalid">Invalide</string>

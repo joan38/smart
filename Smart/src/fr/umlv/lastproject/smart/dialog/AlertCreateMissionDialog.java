@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import fr.umlv.lastproject.smart.MenuActivity;
@@ -19,6 +20,7 @@ import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
@@ -62,7 +64,12 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 				
 				if (!textViewMissionName.getText().toString().equals("")) {
 					DbManager dbManager = new DbManager();
-					dbManager.open(menu);
+					try {
+						dbManager.open(menu);
+					} catch (SmartException e) {
+						Toast.makeText(menu, e.getMessage(), Toast.LENGTH_LONG).show();
+						Log.e("", e.getMessage());
+					}
 					
 					
 					if(dbManager.existsMission(textViewMissionName.getText().toString())){
