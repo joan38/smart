@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Layer;
+import fr.umlv.lastproject.smart.layers.SmartIcon;
 
 public class TMSOverlay extends TilesOverlay implements Layer {
 
@@ -48,15 +49,12 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	}
 
 	@Override
-	public Canvas getOverview() {
-		final Canvas canvas = new Canvas();
-		final Bitmap bitmap = BitmapFactory.decodeResource(
-				context.getResources(), R.drawable.raster);
-		// set drawing colour
-
-		// canvas.setBitmap(Bitmap.createScaledBitmap(newBitmap,
-		// bitmap.getWidth(), bitmap.getHeight(), false));
-canvas.setBitmap(bitmap);
-		return canvas;
+	public SmartIcon getOverview() {
+		final SmartIcon icon=SmartIcon.RASTER;
+		icon.setBitmap(BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.raster));
+		return icon;
 	}
+
+	
 }
