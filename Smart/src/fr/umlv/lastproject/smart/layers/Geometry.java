@@ -9,12 +9,40 @@ package fr.umlv.lastproject.smart.layers;
 public abstract class Geometry {
 
 	/**
+	 * Enum of the geometry types
 	 * 
 	 * @author thibault
-	 *
 	 */
 	public enum GeometryType {
-		POINT, LINE, POLYGON
+		POINT(0, "Point"),
+		LINE(1, "LineString"),
+		POLYGON(2, "Polygon");
+
+		private final int dbId;
+		private final String kmlName;
+
+		private GeometryType(int dbId, String kmlName) {
+			this.dbId = dbId;
+			this.kmlName = kmlName;
+		}
+
+		public int getId() {
+			return dbId;
+		}
+
+		public String getKmlName() {
+			return kmlName;
+		}
+
+		public static GeometryType getFromId(int id) {
+			for (GeometryType geometryType : values()) {
+				if (geometryType.dbId == id) {
+					return geometryType;
+				}
+			}
+
+			return null;
+		}
 	}
 	
 	private GeometryType type ;

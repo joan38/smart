@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart.dataimport;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,8 @@ class KmlImport {
 
 	public static List<GeometryLayer> getLayersFromKML(String path,
 			Context contexte) throws XmlPullParserException, IOException {
-		Kml kml = new Kml();
+		Kml kml = new Kml(new File(path));
 		List<GeometryLayer> overlays = new ArrayList<GeometryLayer>();
-		kml.readKml(path);
 		for (GeometryType type : GeometryType.values()) {
 			List<Geometry> geometries = (ArrayList<Geometry>) kml
 					.getGeometries().get(type);
@@ -47,15 +47,24 @@ class KmlImport {
 			Symbology symbology = null;
 			String name = path.substring(path.lastIndexOf('/') + 1,
 					path.lastIndexOf('.'));
-			if (type == GeometryType.POINT) {
+			switch (type) {
+			case POINT:
 				symbology = new PointSymbology();
 				name += "_POINT";
-			} else if (type == GeometryType.LINE) {
+				break;
+				
+			case LINE:
 				symbology = new LineSymbology();
 				name += "_LINE";
-			} else if (type == GeometryType.POLYGON) {
+				break;
+				
+			case POLYGON:
 				symbology = new PolygonSymbology();
 				name += "_POLYGON";
+				break;
+				
+			default:
+				throw new IllegalStateException("The given GeometryType is not supported for the KML export");
 			}
 			overlay.setSymbology(symbology);
 			overlay.setType(type);
@@ -77,8 +86,7 @@ class KmlImport {
 	 */
 	public static GeometryLayer getLayerFromKML(String path, GeometryType type,
 			Context contexte) throws XmlPullParserException, IOException {
-		Kml kml = new Kml();
-		kml.readKml(path);
+		Kml kml = new Kml(new File(path));
 		ArrayList<Geometry> geometries = (ArrayList<Geometry>) kml
 				.getGeometry(type);
 		GeometryLayer overlay = new GeometryLayer(contexte, geometries);

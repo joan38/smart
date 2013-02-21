@@ -17,8 +17,6 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
  */
 public class GeometryRecord {
 	private int id;
-
-	/* O:point 1:ligne 2:polygones */
 	private GeometryType type;
 
 	private Geometry g;
@@ -49,7 +47,6 @@ public class GeometryRecord {
 		super();
 		this.type = type;
 		this.idMission = idMission;
-
 	}
 
 	/**
@@ -106,6 +103,14 @@ public class GeometryRecord {
 	 */
 	public List<PointRecord> getPointsRecord() {
 		return points;
+	}
+	
+	public boolean addPoint(PointRecord point) {
+		return points.add(point);
+	}
+	
+	public boolean removePoint(PointRecord point) {
+		return points.remove(point);
 	}
 
 	/**
