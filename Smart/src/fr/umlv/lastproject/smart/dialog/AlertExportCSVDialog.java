@@ -34,44 +34,45 @@ public class AlertExportCSVDialog extends AlertDialog.Builder {
 
 		setView(exportMissionDialog);
 		setTitle(R.string.export_mission);
-		
-		final ListView listView = (ListView) exportMissionDialog.findViewById(R.id.listViewMission);
-		
-		final Map<String, Integer> mapMissions = getAllMissions(c);
+
+		final ListView listView = (ListView) exportMissionDialog
+				.findViewById(R.id.listViewMission);
+
+		final Map<String, Long> mapMissions = getAllMissions(c);
 		List<String> titleMissions = new ArrayList<String>(mapMissions.keySet());
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
-				android.R.layout.simple_list_item_1,titleMissions);
+				android.R.layout.simple_list_item_1, titleMissions);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
-				
+
 				// Connect to export CSV
 				// Id mission = position + 1
 				String value = (String) adapter.getItemAtPosition(position);
-				int idMission = mapMissions.get(value);
-				
-				Log.d("TEST", "id de la mission "+value+" "+idMission);
+				long idMission = mapMissions.get(value);
+
+				Log.d("TEST", "id de la mission " + value + " " + idMission);
 
 			}
 		});
-		
+
 		setNegativeButton(R.string.cancel, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 	}
-	
-	private Map<String, Integer> getAllMissions(Context c){
-		DbManager dbm = new DbManager() ;
+
+	private Map<String, Long> getAllMissions(Context c) {
+		DbManager dbm = new DbManager();
 		try {
 			dbm.open(c);
 		} catch (SmartException e) {
@@ -80,9 +81,9 @@ public class AlertExportCSVDialog extends AlertDialog.Builder {
 		}
 		List<MissionRecord> missionRecords = dbm.getAllMissions();
 		dbm.close();
-		
-		Map<String, Integer> mapMissions = new HashMap<String, Integer>();
-		for(MissionRecord m : missionRecords){
+
+		Map<String, Long> mapMissions = new HashMap<String, Long>();
+		for (MissionRecord m : missionRecords) {
 			mapMissions.put(m.getTitle(), m.getId());
 		}
 		return mapMissions;

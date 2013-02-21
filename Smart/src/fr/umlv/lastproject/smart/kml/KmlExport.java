@@ -2,46 +2,149 @@ package fr.umlv.lastproject.smart.kml;
 
 import java.io.File;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import android.util.Log;
-import android.widget.Toast;
-
+import android.content.Context;
+import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
+import fr.umlv.lastproject.smart.database.FieldRecord;
+import fr.umlv.lastproject.smart.database.FormRecord;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
+import fr.umlv.lastproject.smart.database.HeightFieldRecord;
+import fr.umlv.lastproject.smart.database.ListFieldRecord;
+import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.database.NumericFieldRecord;
+import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
-import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.database.TextFieldRecord;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
+ * Utils for export in Kml
  * 
+ * @author Joan Goyeau
  * 
- * @author joan
- *
  */
-public class KmlExport {
-	
-	public static void exportMission(File kmlFile, Mission mission) throws ParserConfigurationException, TransformerException {
+public abstract class KmlExport {
+
+	/**
+	 * Export the given mission in a Kml file.
+	 * 
+	 * @param kmlFile
+	 * @param mission
+	 * @throws KmlExportException
+	 * @throws SmartException 
+	 */
+	public static void exportMission(File kmlFile, int idMission,
+			Context context) throws KmlExportException, SmartException {
 		DbManager dbm = new DbManager();
+		dbm.open(context);
+		MissionRecord mission = dbm.getMission(idMission);
+
 		try {
-			dbm.open(mission.getContext());
-		} catch (SmartException e) {
-			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("", e.getMessage());
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document kml = docBuilder.newDocument();
+
+			// kml element
+			Element kmlElement = kml.createElement(Kml.KMLTAG);
+			kml.appendChild(kmlElement);
+
+			// Set attributes to kml element
+			Attr xmlns = kml.createAttribute(Kml.KMLNSTAG);
+			xmlns.setValue("http://www.opengis.net/kml/2.2");
+			kmlElement.setAttributeNode(xmlns);
+
+			Attr xmlnsGx = kml.createAttribute(Kml.KMLNSGXTAG);
+			xmlnsGx.setValue("http://www.google.com/kml/ext/2.2");
+			kmlElement.setAttributeNode(xmlnsGx);
+
+			Attr xmlnsKml = kml.createAttribute(Kml.XMLNSKMLTAG);
+			xmlnsKml.setValue("http://www.opengis.net/kml/2.2");
+			kmlElement.setAttributeNode(xmlnsKml);
+
+			Attr xmlnsAtom = kml.createAttribute(Kml.XMLNSATOMTAG);
+			xmlnsAtom.setValue("http://www.w3.org/2005/Atom");
+			kmlElement.setAttributeNode(xmlnsAtom);
+
+			// Document element
+			Element documentElement = kml.createElement(Kml.DOCUMENTTAG);
+			kmlElement.appendChild(documentElement);
+
+			// name element
+			Element documentNameElement = kml.createElement(Kml.NAMETAG);
+			documentNameElement.appendChild(kml.createTextNode(kmlFile
+					.getName()));
+			documentElement.appendChild(documentNameElement);
+
+			// Folder element
+			Element folderElement = kml.createElement(Kml.FOLDERTAG);
+			documentElement.appendChild(folderElement);
+
+			// name element
+			Element folderNameElement = kml.createElement(Kml.NAMETAG);
+			folderNameElement
+					.appendChild(kml.createTextNode(mission.getTitle()));
+			folderElement.appendChild(folderNameElement);
+
+			// // open element
+			// Element openElement = kml.createElement("open");
+			// folderNameElement.appendChild(kml.createTextNode("1"));
+			// folderElement.appendChild(openElement);
+
+			for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
+					.getId())) {
+				// Placemark element
+				Element placemarkElement = kml.createElement(Kml.PLACEMARKTAG);
+				folderElement.appendChild(placemarkElement);
+
+				// name element
+				Element placemarkNameElement = kml.createElement(Kml.NAMETAG);
+				placemarkNameElement.appendChild(kml.createTextNode(String
+						.valueOf(geometry.getId())));
+				placemarkElement.appendChild(placemarkNameElement);
+
+				// description element
+				Element descriptionElement = KmlExport
+						.pepareDescriptionElement(kml, dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName()));
+				placemarkElement.appendChild(descriptionElement);
+
+				// Polygon or Point or LineString element
+				Element geometryElement = KmlExport.pepareGeometryElement(kml,
+						geometry);
+				placemarkElement.appendChild(geometryElement);
+			}
+
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(kml);
+			StreamResult result = new StreamResult(kmlFile);
+
+			transformer.transform(source, result);
+		} catch (ParserConfigurationException e) {
+			throw new KmlExportException("Unable to export the mission", e);
+		} catch (TransformerException e) {
+			throw new KmlExportException("Unable to export the mission", e);
 		}
-		
-		Kml kml = new Kml(kmlFile);
-		kml.writeKml(dbm.getGeometriesFromMission(mission.getId()), mission.getTitle());
-		
+
 		dbm.close();
 	}
 
-	public static Element pepareGeometryElement(Document kml,
-			GeometryRecord geometry) {
+	private static Element pepareGeometryElement(Document kml, GeometryRecord geometry) {
 		// Polygon or Point or LineString element
 		Element geomertryElement = kml.createElement(geometry.getType()
 				.getKmlName());
@@ -49,7 +152,8 @@ public class KmlExport {
 		switch (geometry.getType()) {
 		case POINT:
 		case LINE:
-			Element coordinatesElement = prepareCoordinatesElement(kml, geometry);
+			Element coordinatesElement = prepareCoordinatesElement(kml,
+					geometry);
 			geomertryElement.appendChild(coordinatesElement);
 			break;
 
@@ -63,7 +167,7 @@ public class KmlExport {
 			throw new IllegalStateException(
 					"The given GeometryType is not supported for the KML export");
 		}
-		
+
 		return geomertryElement;
 	}
 
@@ -90,7 +194,8 @@ public class KmlExport {
 	private static Element prepareOuterBoundaryIsElement(Document kml,
 			GeometryRecord geometry) {
 		// outerBoundaryIs element
-		Element outerBoundaryIsElement = kml.createElement(Kml.OUTERBOUNDARYTAG);
+		Element outerBoundaryIsElement = kml
+				.createElement(Kml.OUTERBOUNDARYTAG);
 
 		// LinearRing element
 		Element linearRingElement = kml.createElement(Kml.LINEARRINGTAG);
@@ -100,5 +205,52 @@ public class KmlExport {
 		linearRingElement.appendChild(coordinatesElement);
 
 		return outerBoundaryIsElement;
+	}
+
+	private static Element pepareDescriptionElement(Document kml, FormRecord formRecord) {
+		Element descriptionElement = kml.createElement(Kml.DESCRIPTIONTAG);
+		StringBuilder description = new StringBuilder(formRecord.getName());
+
+		for (FieldRecord field : formRecord.getFields()) {
+			description.append(field.getField().getLabel() + " : ");
+			switch (field.getField().getType()) {
+			case SmartConstants.TEXT_FIELD:
+				TextFieldRecord tf = (TextFieldRecord) field;
+				description.append(tf.getValue());
+				break;
+
+			case SmartConstants.NUMERIC_FIELD:
+				NumericFieldRecord nf = (NumericFieldRecord) field;
+				description.append(nf.getValue());
+				break;
+
+			case SmartConstants.BOOLEAN_FIELD:
+				BooleanFieldRecord bf = (BooleanFieldRecord) field;
+				description.append(bf.getValue());
+				break;
+
+			case SmartConstants.LIST_FIELD:
+				ListFieldRecord lf = (ListFieldRecord) field;
+				description.append(lf.getValue());
+				break;
+
+			case SmartConstants.PICTURE_FIELD:
+				PictureFieldRecord pf = (PictureFieldRecord) field;
+				description.append(pf.getValue());
+				break;
+
+			case SmartConstants.HEIGHT_FIELD:
+				HeightFieldRecord hf = (HeightFieldRecord) field;
+				description.append(hf.getValue());
+				break;
+
+			default:
+				throw new IllegalStateException("Unkown field");
+			}
+		}
+
+		descriptionElement.appendChild(kml.createTextNode(description
+				.toString()));
+		return descriptionElement;
 	}
 }

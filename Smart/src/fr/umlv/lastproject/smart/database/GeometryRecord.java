@@ -16,12 +16,13 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
  * 
  */
 public class GeometryRecord {
-	private int id;
+	private long id;
 	private GeometryType type;
 
 	private Geometry g;
-	private int idMission;
+	private long idMission;
 	private List<PointRecord> points = new ArrayList<PointRecord>();
+	private long idFormRecord;
 
 	public GeometryRecord() {
 	}
@@ -31,10 +32,11 @@ public class GeometryRecord {
 	 * @param g is the geometry associated to the GeometryRecord
 	 * @param idMission
 	 */
-	public GeometryRecord(Geometry g, int idMission) {
+	public GeometryRecord(Geometry g, long idMission, long idFormRecord) {
 		this.type = g.getType();
 		this.g = g;
 		this.idMission = idMission;
+		this.idFormRecord = idFormRecord;
 		createPoints();
 	}
 
@@ -44,7 +46,6 @@ public class GeometryRecord {
 	 * @param idMission
 	 */
 	public GeometryRecord(GeometryType type, int idMission) {
-		super();
 		this.type = type;
 		this.idMission = idMission;
 	}
@@ -53,15 +54,23 @@ public class GeometryRecord {
 	 * 
 	 * @return the id of the geometryRecord
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
+	}
+	
+	/**
+	 * 
+	 * @return the id of the formRecord
+	 */
+	public long getIdFormRecord() {
+		return idFormRecord;
 	}
 
 	/**
 	 * 
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -85,7 +94,7 @@ public class GeometryRecord {
 	 * 
 	 * @return the id of the mission associated to the GeometryRecord
 	 */
-	public int getIdMission() {
+	public long getIdMission() {
 		return idMission;
 	}
 
@@ -93,7 +102,7 @@ public class GeometryRecord {
 	 * 
 	 * @param idMission
 	 */
-	public void setIdMission(int idMission) {
+	public void setIdMission(long idMission) {
 		this.idMission = idMission;
 	}
 
@@ -117,7 +126,6 @@ public class GeometryRecord {
 	 * Create the list of points forming the database
 	 */
 	public final void createPoints() {
-
 		switch (type) {
 		case POINT:
 			PointGeometry p = (PointGeometry) g;

@@ -27,7 +27,7 @@ public class BooleanFieldRecord extends FieldRecord {
 	 * 
 	 * @return the value of boolean field
 	 */
-	public boolean isValue() {
+	public boolean getValue() {
 		return value;
 	}
 

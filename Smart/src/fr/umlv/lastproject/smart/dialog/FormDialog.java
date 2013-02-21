@@ -54,12 +54,11 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public class FormDialog extends AlertDialog.Builder {
-
+	
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
 
-	public FormDialog(final MenuActivity context, final Form form,
-			final Geometry g, final Mission mission) {
+	public FormDialog(final MenuActivity context, final Form form, final Geometry g, final Mission mission) {
 		super(context);
 		setCancelable(false);
 		final LayoutInflater factory = LayoutInflater.from(context);
@@ -80,17 +79,6 @@ public class FormDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						DbManager dbManager = new DbManager();
-						int idGeometry = 0;
-						try {
-							dbManager.open(context);
-							idGeometry = dbManager
-									.insertGeometry(new GeometryRecord(g, Mission
-											.getInstance().getId()));
-						} catch (SmartException e) {
-							Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-							Log.e("", e.getMessage());
-						}
-						
 						FormRecord formRecord = new FormRecord(form);
 
 						for (int i = 0; i < formRecord.getFields().size(); i++) {
@@ -103,8 +91,8 @@ public class FormDialog extends AlertDialog.Builder {
 										.getFields().get(i);
 								text.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
-
 								break;
+								
 							case SmartConstants.NUMERIC_FIELD:
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
 										.getFields().get(i);
@@ -112,6 +100,7 @@ public class FormDialog extends AlertDialog.Builder {
 										.parseDouble(((EditText) editTextList
 												.get(i)).getText().toString()));
 								break;
+								
 							case SmartConstants.BOOLEAN_FIELD:
 								BooleanFieldRecord b = (BooleanFieldRecord) formRecord
 										.getFields().get(i);
@@ -122,6 +111,7 @@ public class FormDialog extends AlertDialog.Builder {
 									b.setValue(false);
 								}
 								break;
+								
 							case SmartConstants.LIST_FIELD:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
@@ -130,6 +120,7 @@ public class FormDialog extends AlertDialog.Builder {
 								l.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
+								
 							case SmartConstants.PICTURE_FIELD:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
@@ -138,20 +129,24 @@ public class FormDialog extends AlertDialog.Builder {
 								p.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
+								
 							case SmartConstants.HEIGHT_FIELD:
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
 										.getFields().get(i);
 								h.setValue(Double
 										.parseDouble(((EditText) editTextList
 												.get(i)).getText().toString()));
-
 								break;
+								
 							default:
 							}
 						}
 
 						try {
-							dbManager.insertFormRecord(formRecord, idGeometry);
+								dbManager.open(context);
+								long idForm = dbManager.insertFormRecord(formRecord);
+								dbManager.insertGeometry(new GeometryRecord(g, Mission
+										.getInstance().getId(), idForm));
 						} catch (SmartException e) {
 							Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 							Log.e("", e.getMessage());
@@ -171,7 +166,6 @@ public class FormDialog extends AlertDialog.Builder {
 
 	public final void buildForm(TableLayout l, final MenuActivity c,
 			List<Field> fieldsList) {
-
 		editTextList = new LinkedList<Object>();
 
 		for (Field field : fieldsList) {
@@ -179,7 +173,6 @@ public class FormDialog extends AlertDialog.Builder {
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
 			
-
 			switch (typeField) {
 			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
@@ -190,8 +183,8 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(textView);
 				l.addView(editText);
 				editTextList.add(editText);
-
 				break;
+				
 			case SmartConstants.NUMERIC_FIELD:
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
@@ -224,14 +217,13 @@ public class FormDialog extends AlertDialog.Builder {
 							int arg2, int arg3) {
 
 					}
-
 				});
 
 				l.addView(textView);
 				l.addView(editText);
 				editTextList.add(editText);
-
 				break;
+
 			case SmartConstants.BOOLEAN_FIELD:
 				BooleanField bf = (BooleanField) field;
 				textView.setText(bf.getLabel());
@@ -253,8 +245,8 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(group);
 
 				editTextList.add(group);
-
 				break;
+
 			case SmartConstants.LIST_FIELD:
 				final ListField lf = (ListField) field;
 				textView.setText(lf.getLabel());
@@ -285,8 +277,8 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(textView);
 				l.addView(spin);
-
 				break;
+
 			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
 				final EditText et = new EditText(c);
@@ -333,8 +325,8 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(ll);
 				editTextList.add(et);
-
 				break;
+
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
 				textView.setText(hf.getLabel());
@@ -344,13 +336,11 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(textView);
 				l.addView(editText);
 				editTextList.add(editText);
-
 				break;
+				
 			default:
-				break;
 			}
 		}
 	}
-
 
 }

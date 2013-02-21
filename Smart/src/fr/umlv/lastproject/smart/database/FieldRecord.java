@@ -17,7 +17,6 @@ public class FieldRecord {
 	 * @param field associated to the fieldRecord
 	 */
 	public FieldRecord(Field field) {
-		super();
 		this.field = field;
 	}
 
@@ -36,6 +35,4 @@ public class FieldRecord {
 	public void setField(Field field) {
 		this.field = field;
 	}
-
-
 }

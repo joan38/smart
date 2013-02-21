@@ -38,6 +38,4 @@ public final class SmartConstants {
 	private SmartConstants(){
 		
 	}
-	
-	
 }

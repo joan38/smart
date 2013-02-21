@@ -36,7 +36,7 @@ public final class Mission {
 	private final MenuActivity context;
 
 	/* the name of the mission */
-	private int id;
+	private long id;
 	private final String title;
 
 	/* the status (on / off) */
@@ -257,7 +257,7 @@ public final class Mission {
 	 * @param id
 	 *            the id of the mission
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 		Log.d("", "id mission setid" + id);
 	}
@@ -267,7 +267,7 @@ public final class Mission {
 	 * 
 	 * @return the id of the mission
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

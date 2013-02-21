@@ -142,7 +142,7 @@ public class MenuActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		// Couche présentes
+		// Couche prï¿½sentes
 		String s = "getOverlays() size = "
 				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
 		for (int i = 0; i < mapView.getOverlays().size(); i++) {
@@ -382,12 +382,14 @@ public class MenuActivity extends Activity {
 				case SmartConstants.POLYGON_SURVEY:
 					Mission.getInstance().startSurvey(GeometryType.POLYGON);
 					break;
+					
 				case SmartConstants.GPS_TRACK:
 					if (gpsTrack == null) {
 						final AlertTrackDialog trackDialog = new AlertTrackDialog(
 								this);
 						trackDialog.show();
 						break;
+						
 					} else {
 						try {
 							gpsTrack.stopTrack();
@@ -400,6 +402,7 @@ public class MenuActivity extends Activity {
 
 					}
 					break;
+					
 				case SmartConstants.EXPORT_CSV:
 					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(
 							this);
@@ -411,6 +414,7 @@ public class MenuActivity extends Activity {
 							PictureActivity.class);
 					startActivityForResult(intent, 10);
 					break;
+
 				case SmartConstants.EXPORT_FORM:
 					Intent intentForm = FileUtils.createGetContentIntent(
 							FileUtils.XML_TYPE,
@@ -418,6 +422,7 @@ public class MenuActivity extends Activity {
 					startActivityForResult(intentForm,
 							SmartConstants.FORM_BROWSER_ACTIVITY);
 					break;
+
 				default:
 					// Mission.getInstance().stopMission();
 					break;
