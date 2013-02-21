@@ -395,7 +395,7 @@ public class MenuActivity extends Activity {
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
 		Form form = new Form();
-		form.addField(new PictureField("Ma photo"));
+		form.addField(new PictureField("Maphoto"));
 		if (formPath != null) {
 			try {
 				form.read(formPath);

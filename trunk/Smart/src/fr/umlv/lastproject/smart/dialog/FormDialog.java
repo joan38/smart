@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,11 +55,11 @@ public class FormDialog extends AlertDialog.Builder {
 
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
-	private TextView namePicture;
 
 	public FormDialog(final MenuActivity context, final Form form,
 			final Geometry g, final Mission mission) {
 		super(context);
+		setCancelable(false);
 		final LayoutInflater factory = LayoutInflater.from(context);
 		final View alertDialogView = factory.inflate(
 				fr.umlv.lastproject.smart.R.layout.activity_formulaire_viewer,
@@ -121,6 +122,8 @@ public class FormDialog extends AlertDialog.Builder {
 							case SmartConstants.PICTURE_FIELD:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
+								Log.d("TEST", "picture "+((EditText) editTextList.get(i))
+										.getText().toString());
 								p.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
@@ -273,7 +276,8 @@ public class FormDialog extends AlertDialog.Builder {
 				textView.setText(pf.getLabel());
 				textView.setPadding(20, 10, 5, 0);
 
-				namePicture = new TextView(c);
+				final TextView namePictureView = new TextView(c);
+
 
 				ImageView takePicture = new ImageView(c);
 				takePicture.setClickable(true);
@@ -286,23 +290,32 @@ public class FormDialog extends AlertDialog.Builder {
 						SimpleDateFormat dateFormat = new SimpleDateFormat(
 								"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
 						String date = dateFormat.format(new Date());
-						String namePicture = Mission.getInstance().getTitle()
-								+ "_" + date;
-						Intent intent = new Intent(c, PictureActivity.class);
+
+						String namePicture = Mission.getInstance().getTitle()+"_"+date;
+						namePicture = namePicture.replace(" ", "_");
+						namePicture = namePicture.replace(":", "");
+						namePicture = namePicture.replace("/", "_");
+						Intent intent = new Intent(c,
+								PictureActivity.class);
+
 						intent.putExtra("namePicture", namePicture);
 						c.startActivityForResult(intent, 10);
 
+						namePictureView.setText(namePicture);
+						EditText et = new EditText(c);
+						et.setText(namePicture);
+						editTextList.add(et);
+						
 					}
 				});
 
 				LinearLayout ll = new LinearLayout(c);
 				ll.addView(textView);
 				ll.addView(takePicture);
-				ll.addView(namePicture);
+				ll.addView(namePictureView);
 
 				l.addView(ll);
-				editTextList.add(editText);
-
+			
 				break;
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
@@ -321,8 +334,5 @@ public class FormDialog extends AlertDialog.Builder {
 		}
 	}
 
-	public void setNamePicture(String name) {
-		this.namePicture.setText(name);
-	}
 
 }
