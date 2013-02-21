@@ -13,7 +13,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 
@@ -24,7 +23,7 @@ import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
  * @author Fad's, thibault brun
  * 
  */
-public class GeometryLayer extends Overlay {
+public class GeometryLayer extends Overlay implements Layer {
 
 	private static final double VALUE_1E6 = 1E6;
 	private GeometryType type;
@@ -37,7 +36,6 @@ public class GeometryLayer extends Overlay {
 	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
 
-	
 	/**
 	 * 
 	 * @param ctx
@@ -235,7 +233,7 @@ public class GeometryLayer extends Overlay {
 
 			case POLYGON:
 
-				Log.d("", "polygon draw");
+				// Log.d("", "polygon draw");
 				// Récupération de la géometrie et de sa symbologie
 				PolygonGeometry polygonGeometry = (PolygonGeometry) geometry;
 
@@ -269,7 +267,7 @@ public class GeometryLayer extends Overlay {
 						canvas.drawLine(pixelA.x, pixelA.y, pixelB.x, pixelB.y,
 								paint);
 
-						Log.d("", "polygon draw " + pixelA.x);
+						// Log.d("", "polygon draw " + pixelA.x);
 
 					}
 				}

@@ -1,15 +1,16 @@
 package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
-import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.dataimport.DataImport;
 import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
@@ -42,6 +45,8 @@ import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
+import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class MenuActivity extends Activity {
@@ -49,8 +54,9 @@ public class MenuActivity extends Activity {
 	/**
 	 * 
 	 * @author thibault Brun
-	 * @author tanios Faddoul Description : This class contains the Menus
-	 *         container
+	 * @author tanios Faddoul
+	 * 
+	 * @Description : This class contains the Menus container
 	 * 
 	 */
 
@@ -66,8 +72,7 @@ public class MenuActivity extends Activity {
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
 
-	private String formPath ;
-
+	private String formPath;
 
 	private boolean missionCreated = false;
 
@@ -76,8 +81,6 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 
 	private AlertCreateMissionDialog missionDialog;
-
-	private ListOverlay listOverlay = new ListOverlay();
 
 	private int zoomLevel;
 
@@ -88,7 +91,6 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_smart);
 		initMap();
 		initGps();
-
 
 		ImageButton home = (ImageButton) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
@@ -107,12 +109,49 @@ public class MenuActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
 						LayersActivity.class);
-				layersActivity.putExtra("overlays", listOverlay);
+				layersActivity.putExtra("overlays", mapView.getListOverlay());
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
 			}
 		});
 
+		// importKML();
+	}
+
+	private void importKML() {
+		// import kml
+		try {
+			List<GeometryLayer> kmls = DataImport.importKml(this, Environment
+					.getExternalStorageDirectory().getPath()
+					+ "/SMART/test.kml");
+			Log.d("TEST2", "" + kmls.size());
+			mapView.addGeometryLayers(kmls);
+
+			GeometryLayer kml = DataImport.importKml(this, Environment
+					.getExternalStorageDirectory().getPath()
+					+ "/SMART/poly.kml", GeometryType.POLYGON);
+			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
+
+			mapView.addGeometryLayer(kml);
+
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Couche présentes
+		String s = "getOverlays() size = "
+				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
+		for (int i = 0; i < mapView.getOverlays().size(); i++) {
+			s += ((Overlay) mapView.getOverlays().get(i)).toString() + " ";
+		}
+		Log.d("debug", s);
+		Log.d("debug", "getListOverlay() size = "
+				+ mapView.getListOverlay().size() + "\ndata = "
+				+ mapView.getListOverlay().toString());
 	}
 
 	@Override
@@ -144,8 +183,11 @@ public class MenuActivity extends Activity {
 		mapController.setZoom(SmartConstants.DEFAULT_ZOOM);
 		overlayManager.add(new ScaleBarOverlay(this));
 
-		mapView.addGeoTIFFOverlay(new TMSOverlay(
-				new MapTileProviderBasic(this), this, 10, 16, "test"));
+		// mapView.addGeoTIFFOverlay(new TMSOverlay(
+		// new MapTileProviderBasic(this), this, 10, 16, "geo1"));
+		//
+		// mapView.addGeoTIFFOverlay(new TMSOverlay(
+		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
 
 		directedLocationOverlay = new DirectedLocationOverlay(this);
 		directedLocationOverlay.setShowAccuracy(true);
@@ -375,6 +417,12 @@ public class MenuActivity extends Activity {
 				}
 				break;
 
+			case SmartConstants.LAYERS_VIEW:
+				ListOverlay listOverlay = (ListOverlay) data
+						.getSerializableExtra("layers");
+				mapView.setReorderedLayers(listOverlay);
+				break;
+
 			case SmartConstants.BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
 				formPath = fileForm.toString().split("file:///")[1];
@@ -400,9 +448,9 @@ public class MenuActivity extends Activity {
 			try {
 				form.read(formPath);
 			} catch (IOException e) {
-				Log.d("TEST2",e.getMessage());
+				Log.d("TEST2", e.getMessage());
 			} catch (XmlPullParserException e) {
-				Log.d("TEST2",e.getMessage());
+				Log.d("TEST2", e.getMessage());
 			}
 		}
 

@@ -2,9 +2,12 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,9 +15,9 @@ import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 
 /**
- * MapView with geoTIFFLayers notion
+ * MapView with geoTIFFOverlays & geometryLayers notion
  * 
- * @author Marc
+ * @author Marc, Thibault Douilly
  * 
  */
 public class SmartMapView extends MapView {
@@ -24,10 +27,15 @@ public class SmartMapView extends MapView {
 	// private static final int WORLD_MAP_MAX_ZOOM = 4;
 	// private static final String WORLD_MAP_EXTENSION = ".png";
 
+	private final Map<LayerState, Overlay> stringToOverlay;
+
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
-		this.geometryLayers = new ArrayList<GeometryLayer>();
+		// this.geometryLayers = new ArrayList<GeometryLayer>();
+		this.listOverlay = new ListOverlay();
+
+		this.stringToOverlay = new HashMap<LayerState, Overlay>();
 		// super.getOverlayManager().getTilesOverlay().setEnabled(false);
 
 		// TMSOverlay worldOverlay;
@@ -41,7 +49,20 @@ public class SmartMapView extends MapView {
 	}
 
 	private final List<TMSOverlay> geoTIFFOverlays;
-	private final List<GeometryLayer> geometryLayers;
+	// private final List<GeometryLayer> geometryLayers;
+
+	private ListOverlay listOverlay;
+
+	/**
+	 * 
+	 * @param name
+	 * @param overlay
+	 */
+	public void addOverlay(String name, Overlay overlay) {
+		getOverlays().add(overlay);
+		stringToOverlay.put(new LayerState(name), overlay);
+		listOverlay.add(name);
+	}
 
 	/**
 	 * Adds a {@link TMSOverlay} (Tile Map Service Overlay)
@@ -49,9 +70,38 @@ public class SmartMapView extends MapView {
 	 * @param overlay
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
+		addOverlay(overlay.getName(), overlay);
 		geoTIFFOverlays.add(overlay);
-		getOverlays().add(0, overlay);
+	}
 
+	/**
+	 * Adds a {@link GeometryLayer}
+	 * 
+	 * @param layer
+	 */
+	public void addGeometryLayer(final GeometryLayer layer) {
+		addOverlay(layer.getName(), layer);
+	}
+
+	/**
+	 * Adds a some {@link GeometryLayer}
+	 * 
+	 * @param layer
+	 */
+	public void addGeometryLayers(final List<GeometryLayer> layers) {
+		for (GeometryLayer geom : layers) {
+			addOverlay(geom.getName(), geom);
+		}
+	}
+
+	/**
+	 * 
+	 * @param overlay
+	 */
+	private void removeOverlay(String name) {
+		getOverlays().remove(stringToOverlay.get(name));
+		stringToOverlay.remove(name);
+		listOverlay.remove(name);
 	}
 
 	/**
@@ -60,55 +110,45 @@ public class SmartMapView extends MapView {
 	 * @param overlay
 	 */
 	public void removeGeoTIFFOverlay(final TMSOverlay overlay) {
+		removeOverlay(overlay.getName());
 		geoTIFFOverlays.remove(overlay);
-		getOverlays().remove(overlay);
 	}
 
 	/**
-	 * Gets an unmodifiable view of all the TMS Overlays
-	 * 
-	 * 
-	 * @return {@link List}<{@link TMSOverlay}>
-	 */
-	public List<TMSOverlay> getGeoTIFFOverlays() {
-		return Collections.unmodifiableList(this.geoTIFFOverlays);
-	}
-
-	/**
-	 * 
-	 * @param layer
-	 */
-	public void addGeometryLayer(final GeometryLayer layer) {
-		this.geometryLayers.add(layer);
-		getOverlays().add(0, layer);
-
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param layer
-	 */
-	public void addGeometryLayers(final List<GeometryLayer> layers) {
-		this.geometryLayers.addAll(layers);
-		getOverlays().addAll(0, layers);
-	}
-
-	/**
+	 * Removes a {@link GeometryLayer}
 	 * 
 	 * @param layer
 	 */
 	public void removeGeometryLayer(final GeometryLayer layer) {
-		this.geometryLayers.remove(layer);
-		getOverlays().remove(layer);
+		removeOverlay(layer.getName());
 	}
 
 	/**
 	 * 
-	 * @return
+	 * @param overlays
 	 */
-	public List<GeometryLayer> getGeometryLayers() {
-		return Collections.unmodifiableList(this.geometryLayers);
+	public void setReorderedLayers(final ListOverlay overlays) {
+		List<TMSOverlay> newGeotiffoverlays = new ArrayList<TMSOverlay>();
+
+		for (LayerState overlay : this.listOverlay.toList()) {
+			Overlay o = this.stringToOverlay.get(overlay);
+			getOverlays().remove(o);
+		}
+
+		for (int i = 0; i < overlays.size(); i++) {
+			Overlay o = this.stringToOverlay.get(overlays.get(i));
+			getOverlays().add(i, this.stringToOverlay.get(overlays.get(i)));
+			boolean isTMSOverlay = geoTIFFOverlays.remove(o);
+			if (isTMSOverlay) {
+				newGeotiffoverlays.add((TMSOverlay) o);
+			}
+		}
+
+		geoTIFFOverlays.clear();
+		geoTIFFOverlays.addAll(newGeotiffoverlays);
+
+		this.listOverlay = overlays;
+		this.invalidate();
 
 	}
 
@@ -117,7 +157,24 @@ public class SmartMapView extends MapView {
 	 */
 	public void clear() {
 		getOverlays().clear();
+		listOverlay.clear();
 		geoTIFFOverlays.clear();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public ListOverlay getListOverlay() {
+		return this.listOverlay;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<TMSOverlay> getGeoTIFFOverlays() {
+		return Collections.unmodifiableList(this.geoTIFFOverlays);
 	}
 
 }
