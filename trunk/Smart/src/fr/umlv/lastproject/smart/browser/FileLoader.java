@@ -67,17 +67,23 @@ public class FileLoader extends AsyncTaskLoader<List<File>> {
 		List<File> oldData = mData;
 		mData = data;
 		
-		if (isStarted())
+		if (isStarted()){
 			super.deliverResult(data);
+		}
+			
 
-		if (oldData != null && oldData != data)
+		if (oldData != null && oldData != data){
 			onReleaseResources(oldData);
+		}
+			
 	}
 
 	@Override
 	protected void onStartLoading() {
-		if (mData != null)
+		if (mData != null){
 			deliverResult(mData);
+		}
+			
 
 		if (mFileObserver == null) {
 			mFileObserver = new FileObserver(mPath, FILE_OBSERVER_MASK) {

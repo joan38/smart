@@ -100,16 +100,14 @@ public final class Mission {
 		return mission;
 	}
 
-
-
 	/**
 	 * Start the mission.
 	 * 
 	 * @return status of the mission
 	 */
 	public boolean startMission() {
-		 status = true;
-		 return status;
+		status = true;
+		return status;
 	}
 
 	/**
@@ -118,8 +116,8 @@ public final class Mission {
 	 * @return status of the mission
 	 */
 	public boolean stopMission() {
-		 status = false;
-		 return status;
+		status = false;
+		return status;
 	}
 
 	/**
@@ -161,11 +159,14 @@ public final class Mission {
 	/**
 	 * Start the survey for a given geometry type.
 	 * 
-	 * @param type of the survey to do
+	 * @param type
+	 *            of the survey to do
 	 */
 	public void startSurvey(GeometryType type) {
-		if (!status)
+		if (!status) {
 			return;
+		}
+
 		switch (type) {
 		case LINE:
 			Log.d("", "mission survey line");
@@ -234,7 +235,8 @@ public final class Mission {
 	/**
 	 * Set the id of the of the mission.
 	 * 
-	 * @param id the id of the mission
+	 * @param id
+	 *            the id of the mission
 	 */
 	public void setId(int id) {
 		this.id = id;

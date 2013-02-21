@@ -12,7 +12,13 @@ import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
 
-public class DataExport {
+public final class DataExport {
+	
+	private DataExport(){
+		
+	}
+	
+	
 	/**
 	 * Export the geometries of the mission in a CSV file. The name of the file
 	 * is <the name of the mission>.csv
