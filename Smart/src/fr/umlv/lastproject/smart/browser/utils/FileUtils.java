@@ -173,8 +173,8 @@ public final class FileUtils {
 		if (curdir.endsWith("/")) {
 			separator = "";
 		}
-		File clickedFile = new File(curdir + separator + file);
-		return clickedFile;
+
+		return new File(curdir + separator + file);
 	}
 
 	public static File getFile(File curdir, String file) {
@@ -259,15 +259,17 @@ public final class FileUtils {
 	public static String getMimeType(Context context, File file) {
 		String mimeType = null;
 		final MimeTypes mimeTypes = getMimeTypes(context);
-		if (file != null)
+		if (file != null) {
 			mimeType = mimeTypes.getMimeType(file.getName());
+		}
+
 		return mimeType;
 	}
 
 	private static final String HIDDEN_PREFIX = ".";
 
 	/**
-	 * File and folder comparator. TODO Expose sorting option method
+	 * File and folder comparator. 
 	 * 
 	 * @author paulburke
 	 */
@@ -338,8 +340,10 @@ public final class FileUtils {
 			// Sort the folders alphabetically
 			Arrays.sort(dirs, mComparator);
 			// Add each folder to the File list for the list adapter
-			for (File dir : dirs)
+			for (File dir : dirs){
 				list.add(dir);
+			}
+				
 		}
 
 		// List file in this directory with the file filter
@@ -348,8 +352,10 @@ public final class FileUtils {
 			// Sort the files alphabetically
 			Arrays.sort(files, mComparator);
 			// Add each file to the File list for the list adapter
-			for (File file : files)
+			for (File file : files){
 				list.add(file);
+			}
+				
 		}
 
 		return list;

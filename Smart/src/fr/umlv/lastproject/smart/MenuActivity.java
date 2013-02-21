@@ -64,7 +64,9 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-	String formPath;
+
+	private String formPath ;
+
 
 	private boolean missionCreated = false;
 
@@ -76,7 +78,6 @@ public class MenuActivity extends Activity {
 
 	private ListOverlay listOverlay = new ListOverlay();
 
-	private int oldZoom;
 	private int zoomLevel;
 
 	@Override
@@ -86,7 +87,7 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_smart);
 		initMap();
 		initGps();
-		oldZoom = mapView.getZoomLevel();
+
 
 		ImageButton home = (ImageButton) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
@@ -397,11 +398,9 @@ public class MenuActivity extends Activity {
 			try {
 				form.read(formPath);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.d("TEST2",e.getMessage());
 			} catch (XmlPullParserException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.d("TEST2",e.getMessage());
 			}
 		}
 
@@ -416,7 +415,7 @@ public class MenuActivity extends Activity {
 		return missionName;
 	}
 
-	public void setMissionName(String missionName) {
+	public void setMissionName(final String missionName) {
 		this.missionName = missionName;
 	}
 }

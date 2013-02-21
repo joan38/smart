@@ -37,10 +37,10 @@ public class CreateFormActivity extends Activity {
 
 	
 
-	private Form form = new Form();
+	private final Form form = new Form();
 	private TableLayout layoutDynamic;
 	private Spinner spin;
-	List<EditText>	allEds =  new ArrayList<EditText>();
+	private final List<EditText> allEds =  new ArrayList<EditText>();
 	private int type;
 
 
@@ -78,9 +78,9 @@ public class CreateFormActivity extends Activity {
 
 				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-					TableRow rowMax = (TableRow)alertDialogView.findViewById(R.id.tableRowMax);
-					TableRow rowMin = (TableRow)alertDialogView.findViewById(R.id.tableRowMin);
-					TableRow rowList = (TableRow)alertDialogView.findViewById(R.id.tableRowList);
+					final TableRow rowMax = (TableRow)alertDialogView.findViewById(R.id.tableRowMax);
+					final TableRow rowMin = (TableRow)alertDialogView.findViewById(R.id.tableRowMin);
+					final TableRow rowList = (TableRow)alertDialogView.findViewById(R.id.tableRowList);
 
 
 					@Override
@@ -151,7 +151,7 @@ public class CreateFormActivity extends Activity {
 				adb.setView(alertDialogView);
 				adb.setTitle(getResources().getString(R.string.AddField));
 
-				adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+				adb.setPositiveButton(R.string.validate, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 
 
