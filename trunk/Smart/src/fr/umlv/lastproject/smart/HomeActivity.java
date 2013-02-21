@@ -25,10 +25,8 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
  */
 public class HomeActivity extends Activity {
 
-	private ListView listView;
 	private List<ListViewItem> listItem;
 	private String[] items;
-	private boolean enabled;
 
 	// public static final Integer[] images = { R.drawable.smart,
 	// R.drawable.smart, R.drawable.orange, R.drawable.mixed };
@@ -40,7 +38,7 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 
 		// Retry the mission status
-		enabled = getIntent().getExtras().getBoolean("missionCreated");
+		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
@@ -80,7 +78,7 @@ public class HomeActivity extends Activity {
 			item.setImageId(R.drawable.smart);
 		}
 
-		listView = (ListView) findViewById(R.id.listView);
+		ListView listView = (ListView) findViewById(R.id.listView);
 		SmartItemAdapter adapter = new SmartItemAdapter(this,
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);

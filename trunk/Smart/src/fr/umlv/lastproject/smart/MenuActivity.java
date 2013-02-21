@@ -38,6 +38,7 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -63,7 +64,7 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-	String formPath ;
+	String formPath;
 
 	private boolean missionCreated = false;
 
@@ -74,7 +75,7 @@ public class MenuActivity extends Activity {
 	private AlertCreateMissionDialog missionDialog;
 
 	private ListOverlay listOverlay = new ListOverlay();
-	
+
 	private int oldZoom;
 	private int zoomLevel;
 
@@ -85,8 +86,7 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_smart);
 		initMap();
 		initGps();
-		oldZoom=mapView.getZoomLevel();
-		
+		oldZoom = mapView.getZoomLevel();
 
 		ImageButton home = (ImageButton) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +133,7 @@ public class MenuActivity extends Activity {
 	 */
 	public void initMap() {
 		mapView = (SmartMapView) findViewById(R.id.mapview);
-		zoomLevel=mapView.getZoomLevel();
+		zoomLevel = mapView.getZoomLevel();
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -141,8 +141,9 @@ public class MenuActivity extends Activity {
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(SmartConstants.DEFAULT_ZOOM);
 		overlayManager.add(new ScaleBarOverlay(this));
-		
-		mapView.addGeoTIFFOverlay(new TMSOverlay(new MapTileProviderBasic(this), this, 10, 16, "test"));
+
+		mapView.addGeoTIFFOverlay(new TMSOverlay(
+				new MapTileProviderBasic(this), this, 10, 16, "test"));
 
 		directedLocationOverlay = new DirectedLocationOverlay(this);
 		directedLocationOverlay.setShowAccuracy(true);
@@ -156,40 +157,42 @@ public class MenuActivity extends Activity {
 				centerMap.setVisibility(View.VISIBLE);
 				return super.onScroll(event);
 			}
-			
+
 			@Override
 			public boolean onZoom(ZoomEvent event) {
-				final int oldZoom=zoomLevel;
-				final int newZoom=mapView.getZoomLevel();
-				
-				Log.d("TEST",""+mapView.getGeoTIFFOverlays().size());
-				
-				for(TMSOverlay o : mapView.getGeoTIFFOverlays()){
-					Log.d("TEST",""+o.getZoomLevelMin()+ " / "+o.getZoomLevelMax());
+				final int oldZoom = zoomLevel;
+				final int newZoom = mapView.getZoomLevel();
+
+				Log.d("TEST", "" + mapView.getGeoTIFFOverlays().size());
+
+				for (TMSOverlay o : mapView.getGeoTIFFOverlays()) {
+					Log.d("TEST",
+							"" + o.getZoomLevelMin() + " / "
+									+ o.getZoomLevelMax());
 				}
-				
-				
-				int zoomEvent=event.getZoomLevel();
-				Log.d("TEST",""+zoomEvent);
-				for (TMSOverlay overlay : mapView.getGeoTIFFOverlays()){
-					if(zoomEvent-overlay.getZoomLevelMax()==1 && oldZoom<newZoom){
-						final AlertZoomDialog dialog=new AlertZoomDialog(MenuActivity.this, true,mapView);
+
+				int zoomEvent = event.getZoomLevel();
+				Log.d("TEST", "" + zoomEvent);
+				for (TMSOverlay overlay : mapView.getGeoTIFFOverlays()) {
+					if (zoomEvent - overlay.getZoomLevelMax() == 1
+							&& oldZoom < newZoom) {
+						final AlertZoomDialog dialog = new AlertZoomDialog(
+								MenuActivity.this, true, mapView);
 						dialog.show();
 						return true;
-						
-					}
-					else if( overlay.getZoomLevelMin()-zoomEvent==1 && newZoom<oldZoom){
-						final AlertZoomDialog dialog=new AlertZoomDialog(MenuActivity.this, false,mapView);
+
+					} else if (overlay.getZoomLevelMin() - zoomEvent == 1
+							&& newZoom < oldZoom) {
+						final AlertZoomDialog dialog = new AlertZoomDialog(
+								MenuActivity.this, false, mapView);
 						dialog.show();
 						return true;
 					}
-					
-					
+
 				}
-				zoomLevel=newZoom;
+				zoomLevel = newZoom;
 				return true;
-				
-				
+
 			}
 		});
 
@@ -206,8 +209,6 @@ public class MenuActivity extends Activity {
 				centerMap.setVisibility(View.INVISIBLE);
 			}
 		});
-		
-		
 
 		/**
 		 * Exemple d'utilisation d'un shapefile
@@ -321,7 +322,8 @@ public class MenuActivity extends Activity {
 					}
 					break;
 				case SmartConstants.CREATE_FORM:
-					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(this);
+					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(
+							this);
 					createFormDialog.show();
 
 					break;
@@ -355,14 +357,15 @@ public class MenuActivity extends Activity {
 					}
 					break;
 				case SmartConstants.EXPORT_CSV:
-					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(this);
+					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(
+							this);
 					exportCSVDialog.show();
 					break;
 
 				case SmartConstants.EXPORT_KML:
-					// Intent intent = new Intent(MenuActivity.this,
-					// PictureActivity.class);
-					// startActivityForResult(intent, 10);
+					Intent intent = new Intent(MenuActivity.this,
+							PictureActivity.class);
+					startActivityForResult(intent, 10);
 					break;
 				default:
 					// Mission.getInstance().stopMission();
@@ -384,14 +387,13 @@ public class MenuActivity extends Activity {
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
 		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
 		gpsTrack.startTrack();
-		
 
 	}
 
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
-		Form form = new Form() ;
-		if(formPath!= null){
+		Form form = new Form();
+		if (formPath != null) {
 			try {
 				form.read(formPath);
 			} catch (IOException e) {
@@ -402,8 +404,8 @@ public class MenuActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
-		
-		Mission.createMission(missionName, this, mapView,form);
+
+		Mission.createMission(missionName, this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
 		overlayManager.add(Mission.getInstance().getPolygonLayer());
 		overlayManager.add(Mission.getInstance().getLineLayer());
