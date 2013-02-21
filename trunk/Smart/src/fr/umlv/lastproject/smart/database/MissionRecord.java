@@ -14,7 +14,7 @@ import fr.umlv.lastproject.smart.form.Mission;
  */
 public class MissionRecord {
 
-	private int id;
+	private long id;
 	private String title;
 
 	// True if the mission is in progress
@@ -23,7 +23,7 @@ public class MissionRecord {
 	private Form form;
 
 	public MissionRecord() {
-		if(Mission.getInstance() != null){
+		if (Mission.getInstance() != null) {
 			this.title = Mission.getInstance().getTitle();
 			this.form = Mission.getInstance().getForm();
 			this.status = true;
@@ -31,15 +31,13 @@ public class MissionRecord {
 					"dd/MM/yyyy HH:mm:ss", Locale.FRENCH);
 			this.date = dateFormat.format(new Date());
 		}
-
-
 	}
 
 	/**
 	 * 
 	 * @return the id of the missionRecord
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -47,9 +45,9 @@ public class MissionRecord {
 	 * 
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
-		if(Mission.getInstance() != null){
+		if (Mission.getInstance() != null) {
 			Mission.getInstance().setId(id);
 		}
 	}

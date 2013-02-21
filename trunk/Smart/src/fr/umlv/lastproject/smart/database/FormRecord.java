@@ -18,13 +18,15 @@ public class FormRecord {
 	private String name;
 	private List<FieldRecord> fields;
 
+	public FormRecord() {
+	}
+	
 	/**
 	 * 
 	 * @param fields is the list of fielRecord in the form
 	 * @param name of the formRecord
 	 */
 	public FormRecord(List<FieldRecord> fields, String name) {
-		super();
 		this.fields = fields;
 		this.name = name;
 	}
@@ -34,7 +36,6 @@ public class FormRecord {
 	 * @param f is the form associated to the formRecord
 	 */
 	public FormRecord(Form f) {
-		super();
 		this.fields = new ArrayList<FieldRecord>();
 
 		ArrayList<Field> fieldslist = (ArrayList<Field>) f.getFieldsList();

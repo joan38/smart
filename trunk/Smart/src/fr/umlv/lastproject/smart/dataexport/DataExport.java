@@ -3,13 +3,9 @@ package fr.umlv.lastproject.smart.dataexport;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
@@ -61,17 +57,10 @@ public final class DataExport {
 	 * is <the name of the mission>.kml
 	 * 
 	 * @throws KmlExportException
+	 * @throws SmartException 
 	 */
-	public static void exportKml(String path, Mission mission)
-			throws KmlExportException {
-		try {
-			KmlExport.exportMission(new File(path), mission);
-		} catch (ParserConfigurationException e) {
-			throw new KmlExportException("Unable to export the mission "
-					+ mission.getTitle(), e);
-		} catch (TransformerException e) {
-			throw new KmlExportException("Unable to export the mission "
-					+ mission.getTitle(), e);
-		}
+	public static void exportKml(String path, int idMission, Context context)
+			throws KmlExportException, SmartException {
+			KmlExport.exportMission(new File(path), idMission, context);
 	}
 }

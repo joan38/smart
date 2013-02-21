@@ -14,7 +14,7 @@ public class PointRecord {
 	private double x;
 	private double y;
 	private double z;
-	private int idGeometry;
+	private long idGeometry;
 
 	public PointRecord() {
 	}
@@ -24,7 +24,6 @@ public class PointRecord {
 		this.x = p.getLatitude() / 1E6;
 		this.y = p.getLongitude() / 1E6;
 		this.z = -1;
-
 	}
 
 	public PointRecord(double x, double y, double z) {
@@ -66,11 +65,11 @@ public class PointRecord {
 		this.z = z;
 	}
 
-	public int getIdGeometry() {
+	public long getIdGeometry() {
 		return idGeometry;
 	}
 
-	public void setIdGeometry(int idGeometry) {
+	public void setIdGeometry(long idGeometry) {
 		this.idGeometry = idGeometry;
 	}
 
