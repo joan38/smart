@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -62,6 +61,7 @@ public class DbManager {
 	private static final String GEOMETRIES_COL_TYPE = "type";
 	private static final int GEOMETRIES_NUM_COL_TYPE = 1;
 	private static final String GEOMETRIES_COL_ID_MISSION = "idMission";
+	private static final String GEOMETRIES_COL_ID_FORM_RECORD = "idFormRecord";
 	private static final int GEOMETRIES_NUM_COL_ID_MISSION = 2;
 
 	public static final String TABLE_POINTS = "points";
@@ -86,15 +86,19 @@ public class DbManager {
 			+ "date TEXT NOT NULL, "
 			+ "form TEXT NOT NULL);";
 
-	private static final String CREATE_TABLE_GEOMETRIES = "CREATE TABLE IF NOT EXISTS geometries ( "
-			+ "id INTEGER PRIMARY KEY,"
-			+ "type INTEGER NOT NULL,"
-			+ "idMission INTEGER NOT NULL,"
-			+ "FOREIGN KEY (idMission) REFERENCES "
+	private static final String CREATE_TABLE_GEOMETRIES = "CREATE TABLE IF NOT EXISTS geometries ("
+			+ "id INTEGER PRIMARY KEY, "
+			+ "type INTEGER NOT NULL, "
+			+ GEOMETRIES_COL_ID_FORM_RECORD
+			+ " INTEGER NOT NULL, "
+			+ GEOMETRIES_COL_ID_MISSION
+			+ " INTEGER NOT NULL, "
+			+ "FOREIGN KEY (" + GEOMETRIES_COL_ID_MISSION + ") REFERENCES "
 			+ TABLE_MISSIONS
 			+ "("
-			+ MISSIONS_COL_ID + "));";
-
+			+ MISSIONS_COL_ID
+			+ "));";
+	
 	private static final String CREATE_TABLE_POINTS = "CREATE TABLE IF NOT EXISTS points ( "
 			+ "id INTEGER PRIMARY KEY,"
 			+ "x REAL NOT NULL,"
@@ -141,25 +145,23 @@ public class DbManager {
 		 * Open the database and create it if it's not exist
 		 * 
 		 * @return an access to database (read and write mode)
-		 * @throws SmartException 
+		 * @throws SmartException
 		 */
 		public SQLiteDatabase openDataBase() throws SmartException {
 			SQLiteDatabase dbRetour = null;
 
-			try{
+			try {
 				dbRetour = SQLiteDatabase.openOrCreateDatabase(DB_PATH
 						+ DB_NAME, null);
 				dbRetour.execSQL(CREATE_TABLE_MISSIONS);
 				dbRetour.execSQL(CREATE_TABLE_GEOMETRIES);
 				dbRetour.execSQL(CREATE_TABLE_POINTS);
-			} catch(SQLiteException e){
+			} catch (SQLiteException e) {
 				throw new SmartException("Open database error");
 			}
-			
+
 			return dbRetour;
-
 		}
-
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class DbManager {
 	 * 
 	 * @param context
 	 *            of application
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public void open(Context context) throws SmartException {
 		mDbHelper = new DbHelper(context);
@@ -188,12 +190,14 @@ public class DbManager {
 	 * @param form
 	 *            to create
 	 * @return 0 if the creation ok, -1 if it's not
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public int createTableForm(Form f) throws SmartException {
 		SQLiteDatabase db = null;
-		String sql = "CREATE TABLE IF NOT EXISTS " + f.getName()
-				+ "( id INTEGER PRIMARY KEY, " + "date TEXT NOT NULL, ";
+		StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
+		sql.append(f.getName());
+		sql.append("( id INTEGER PRIMARY KEY, date TEXT NOT NULL, ");
+
 		List<Field> listFields = f.getFieldsList();
 		for (Field field : listFields) {
 			int typeField = field.getType();
@@ -201,39 +205,46 @@ public class DbManager {
 			switch (typeField) {
 			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
-				sql += tf.getLabel() + " TEXT, ";
+				sql.append(tf.getLabel()).append(" TEXT, ");
 				break;
 			case SmartConstants.NUMERIC_FIELD:
 				NumericField nf = (NumericField) field;
-				sql += nf.getLabel() + " REAL CHECK (" + nf.getLabel() + " > "
-						+ nf.getMin() + " AND " + nf.getLabel() + " < "
-						+ nf.getMax() + " ),";
+				sql.append(nf.getLabel()).append(" REAL CHECK (")
+						.append(nf.getLabel()).append(" > ")
+						.append(nf.getMin()).append(" AND ")
+						.append(nf.getLabel()).append(" < ")
+						.append(nf.getMax()).append(" ), ");
 				break;
 			case SmartConstants.BOOLEAN_FIELD:
 				BooleanField bf = (BooleanField) field;
-				sql += bf.getLabel() + " INTEGER,";
+				sql.append(bf.getLabel()).append(" INTEGER, ");
 				break;
 			case SmartConstants.LIST_FIELD:
 				ListField lf = (ListField) field;
-				sql += lf.getLabel() + " TEXT,";
+				sql.append(lf.getLabel()).append(" TEXT, ");
 				break;
 			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
-				sql += pf.getLabel() + " TEXT,";
+				sql.append(pf.getLabel()).append(" TEXT, ");
 				break;
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
-				sql += hf.getLabel() + " TEXT,";
+				sql.append(hf.getLabel()).append(" TEXT, ");
 				break;
 			default:
 				break;
 			}
 		}
 
+		sql.delete(sql.length() - 3, sql.length() - 1);
+		sql.append(");");
+
+		Log.d("Cmd SQL", sql.toString());
+
 		try {
 			db = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null,
 					SQLiteDatabase.OPEN_READWRITE);
-			db.execSQL(sql);
+			db.execSQL(sql.toString());
 			db.close();
 		} catch (SQLException e) {
 			throw new SmartException("Database Error");
@@ -248,7 +259,7 @@ public class DbManager {
 	 * @param formRecord
 	 *            to insert
 	 * @return the id of the new insertion if the insertion ok or -1 if it's not
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public long insertFormRecord(FormRecord formRecord) throws SmartException {
 		ContentValues values = new ContentValues();
@@ -306,7 +317,7 @@ public class DbManager {
 	 * @param mission
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public long insertMission(MissionRecord mission) throws SmartException {
 		ContentValues values = new ContentValues();
@@ -351,7 +362,6 @@ public class DbManager {
 	}
 
 	/**
-<<<<<<< .mine
 	 * Get the mission from the given id.
 	 * 
 	 * @param idMission
@@ -370,15 +380,14 @@ public class DbManager {
 	}
 
 	/**
-=======
 	 * Stop the mission
 	 * 
 	 * @param idMission
 	 */
-	public void stopMission(long idMission){
+	public void stopMission(long idMission) {
 		ContentValues args = new ContentValues();
 		args.put(MISSIONS_COL_STATUS, 0);
-		mDb.update(TABLE_MISSIONS, args, "id="+idMission, null);
+		mDb.update(TABLE_MISSIONS, args, "id=" + idMission, null);
 	}
 
 	/**
@@ -386,18 +395,19 @@ public class DbManager {
 	 * 
 	 * @return id of the activated mission, -1 if no one is activated
 	 */
-	public long existsActivatedMission(){
+	public long existsActivatedMission() {
+		Cursor c = mDb
+				.rawQuery("SELECT " + MISSIONS_COL_ID + " FROM "
+						+ TABLE_MISSIONS + " WHERE " + MISSIONS_COL_STATUS
+						+ "=1", null);
 
-		Cursor c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_STATUS+"=1", null);
-
-		if(c.getCount()==0){
+		if (c.getCount() == 0) {
 			return -1;
 		} else {
 			c.moveToNext();
 			MissionRecord r = cursorToMission(c);
 			return r.getId();
 		}
-
 	}
 
 	/**
@@ -405,20 +415,20 @@ public class DbManager {
 	 * 
 	 * @return id of the activated mission, -1 if no one is activated
 	 */
-	public boolean existsMission(String name){
+	public boolean existsMission(String name) {
 		Cursor c = null;
-		c = mDb.rawQuery("SELECT "+MISSIONS_COL_ID+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_TITLE+"='"+name+"'", null);
+		c = mDb.rawQuery("SELECT " + MISSIONS_COL_ID + " FROM "
+				+ TABLE_MISSIONS + " WHERE " + MISSIONS_COL_TITLE + "='" + name
+				+ "'", null);
 
-		if(c.getCount()==0){
+		if (c.getCount() == 0) {
 			return false;
 		} else {
 			return true;
 		}
-
 	}
 
 	/**
->>>>>>> .r45
 	 * Request the table "missions" to get all rows
 	 * 
 	 * @return a list of Mission
@@ -452,18 +462,17 @@ public class DbManager {
 		MissionRecord mission = new MissionRecord();
 		mission.setId(c.getInt(MISSIONS_NUM_COL_ID));
 		mission.setTitle(c.getString(MISSIONS_NUM_COL_TITLE));
+
 		if (c.getInt(MISSIONS_NUM_COL_STATUS) == 0) {
 			mission.setStatus(false);
 		} else {
 			mission.setStatus(true);
 		}
+
 		mission.setDate(c.getString(MISSIONS_NUM_COL_DATE));
-		mission.setForm(new Form(c.getString(MISSIONS_NUM_COL_FORM))); // Retrieve
-																		// all
-																		// FormRecord
-																		// and
-																		// his
-																		// subfieds
+
+		// Retrieve all FormRecord and his subfieds
+		mission.setForm(new Form(c.getString(MISSIONS_NUM_COL_FORM)));
 
 		return mission;
 	}
@@ -474,13 +483,14 @@ public class DbManager {
 	 * @param geometry
 	 *            to insert
 	 * @return 0 if the insertion ok, -1 if it's not
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public long insertGeometry(GeometryRecord geometry) throws SmartException {
 		ContentValues values = new ContentValues();
 
 		values.put(GEOMETRIES_COL_TYPE, geometry.getType().getId());
 		values.put(GEOMETRIES_COL_ID_MISSION, geometry.getIdMission());
+		values.put(GEOMETRIES_COL_ID_FORM_RECORD, geometry.getIdFormRecord());
 
 		try {
 			long id = mDb.insertOrThrow(TABLE_GEOMETRIES, null, values);
@@ -502,7 +512,8 @@ public class DbManager {
 	public List<GeometryRecord> getAllGeometries() {
 		Cursor c = mDb.query(TABLE_GEOMETRIES, new String[] {
 				GEOMETRIES_COL_ID, GEOMETRIES_COL_TYPE,
-				GEOMETRIES_COL_ID_MISSION }, null, null, null, null, null);
+				GEOMETRIES_COL_ID_MISSION, GEOMETRIES_COL_ID_FORM_RECORD },
+				null, null, null, null, null);
 
 		LinkedList<GeometryRecord> geometries = new LinkedList<GeometryRecord>();
 		while (c.moveToNext()) {
@@ -515,8 +526,9 @@ public class DbManager {
 
 	public List<GeometryRecord> getGeometriesFromMission(long idMission) {
 		ArrayList<GeometryRecord> geometries = new ArrayList<GeometryRecord>();
-		Cursor c = mDb.rawQuery("SELECT * FROM geometries WHERE " + GEOMETRIES_COL_ID_MISSION + "=" + idMission, null);
-		
+		Cursor c = mDb.rawQuery("SELECT * FROM geometries WHERE "
+				+ GEOMETRIES_COL_ID_MISSION + "=" + idMission, null);
+
 		while (c.moveToNext()) {
 			geometries.add(cursorToGeometry(c));
 		}
@@ -539,7 +551,8 @@ public class DbManager {
 		GeometryRecord geometry = new GeometryRecord();
 		geometry.setId(c.getInt(GEOMETRIES_NUM_COL_ID));
 		geometry.setIdMission(c.getInt(GEOMETRIES_NUM_COL_ID_MISSION));
-		geometry.setType(GeometryType.getFromId(c.getInt(GEOMETRIES_NUM_COL_TYPE)));
+		geometry.setType(GeometryType.getFromId(c
+				.getInt(GEOMETRIES_NUM_COL_TYPE)));
 
 		for (PointRecord point : getPointsFromGeometry(geometry.getId())) {
 			geometry.addPoint(point);
@@ -558,8 +571,8 @@ public class DbManager {
 	public List<PointRecord> getPointsFromGeometry(long idGeometry) {
 		ArrayList<PointRecord> points = new ArrayList<PointRecord>();
 
-		Cursor c = mDb.rawQuery("SELECT * FROM points WHERE " + POINTS_COL_ID_GEOMETRY + "=" + idGeometry,
-				null);
+		Cursor c = mDb.rawQuery("SELECT * FROM points WHERE "
+				+ POINTS_COL_ID_GEOMETRY + "=" + idGeometry, null);
 
 		while (c.moveToNext()) {
 			points.add(cursorToPoint(c));
@@ -574,7 +587,7 @@ public class DbManager {
 	 * @param point
 	 *            to insert
 	 * @return the id of the inserted point if the insertion ok, -1 if it's not
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public long insertPoint(PointRecord point) throws SmartException {
 		ContentValues values = new ContentValues();
@@ -605,6 +618,7 @@ public class DbManager {
 		while (c.moveToNext()) {
 			points.add(cursorToPoint(c));
 		}
+
 		c.close();
 		return points;
 	}
@@ -641,7 +655,7 @@ public class DbManager {
 		if (c.getCount() == 0) {
 			return null;
 		}
-		
+
 		PointRecord point = new PointRecord();
 		point.setId(c.getInt(POINTS_NUM_COL_ID));
 		point.setX(c.getDouble(POINTS_NUM_COL_X));
@@ -664,27 +678,13 @@ public class DbManager {
 		if (c.getCount() == 0) {
 			return null;
 		}
-		
+
 		FormRecord form = new FormRecord();
 		for (int i = 0; c.moveToNext(); i++) {
 			TextField field = new TextField(c.getColumnName(i));
 			form.addField(new TextFieldRecord(field, c.getString(i)));
 		}
-		
+
 		return form;
 	}
-
-	/**
-	 * Request the last index assigned to a table
-	 * 
-	 * @param table
-	 * @return the id of the last index
-	 */
-	/*
-	 * public long getLastIndex(String table) { Cursor c =
-	 * mDb.rawQuery("SELECT last_insert_rowid() FROM " + table, null);
-	 * c.moveToNext(); long id = c.getLong(0);
-	 * 
-	 * return id; }
-	 */
 }
