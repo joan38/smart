@@ -1,10 +1,13 @@
-package fr.umlv.lastproject.smart.dataexport;
+package fr.umlv.lastproject.smart.kml;
 
+/**
+ * The exception class for the Kml export.
+ * 
+ * @author joan
+ *
+ */
 public class KmlExportException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7712793461879198944L;
 
 	public KmlExportException() {

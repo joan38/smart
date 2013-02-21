@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.dataexport;
+package fr.umlv.lastproject.smart.kml;
 
 import java.io.File;
 
@@ -12,8 +12,13 @@ import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.kml.Kml;
 
+/**
+ * 
+ * 
+ * @author joan
+ *
+ */
 public class KmlExport {
 	
 	public static void exportMission(File kmlFile, Mission mission) throws ParserConfigurationException, TransformerException {
@@ -56,7 +61,7 @@ public class KmlExport {
 	private static Element prepareCoordinatesElement(Document kml,
 			GeometryRecord geometry) {
 		// coordinates element
-		Element coordinatesElement = kml.createElement("coordinates");
+		Element coordinatesElement = kml.createElement(Kml.COORDINATESTAG);
 		StringBuilder coordinates = new StringBuilder();
 		for (PointRecord point : geometry.getPointsRecord()) {
 			coordinates.append(point.getY()).append(",");
@@ -76,10 +81,10 @@ public class KmlExport {
 	private static Element prepareOuterBoundaryIsElement(Document kml,
 			GeometryRecord geometry) {
 		// outerBoundaryIs element
-		Element outerBoundaryIsElement = kml.createElement("outerBoundaryIs");
+		Element outerBoundaryIsElement = kml.createElement(Kml.OUTERBOUNDARYTAG);
 
 		// LinearRing element
-		Element linearRingElement = kml.createElement("LinearRing");
+		Element linearRingElement = kml.createElement(Kml.LINEARRINGTAG);
 		outerBoundaryIsElement.appendChild(linearRingElement);
 
 		Element coordinatesElement = prepareCoordinatesElement(kml, geometry);

@@ -25,7 +25,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import fr.umlv.lastproject.smart.database.GeometryRecord;
-import fr.umlv.lastproject.smart.dataexport.KmlExport;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
@@ -42,23 +41,41 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
  */
 public class Kml {
 
-	private File file;
+	private final File file;
 	private final Map<GeometryType, List<Geometry>> geometries = new HashMap<GeometryType, List<Geometry>>();
 
-	private static final String GEOMETRIESTAGS = "Point|LineString|Polygon";
-	private static final String POINTTAG = "Point";
-	private static final String LINETAG = "LineString";
-	private static final String POLYGONTAG = "Polygon";
-	private static final String COORDINATESTAG = "coordinates";
+	static final String GEOMETRIESTAGS = "Point|LineString|Polygon";
+	static final String POINTTAG = "Point";
+	static final String LINETAG = "LineString";
+	static final String POLYGONTAG = "Polygon";
+	static final String COORDINATESTAG = "coordinates";
+	static final String KMLTAG = "kml";
+	static final String KMLNSTAG = "xmlns";
+	static final String KMLNSGXTAG = "xmlns:gx";
+	static final String XMLNSKMLTAG = "xmlns:kml";
+	static final String XMLNSATOMTAG = "xmlns:atom";
+	static final String DOCUMENTTAG = "Document";
+	static final String NAMETAG = "name";
+	static final String FOLDERTAG = "Folder";
+	static final String PLACEMARKTAG = "Placemark";
+	static final String DESCRIPTIONTAG = "description";
+	static final String OUTERBOUNDARYTAG = "outerBoundaryIs";
+	static final String LINEARRINGTAG = "LinearRing";
 
 	public Kml(File file) {
 		this.file = file;
-		
+
 		for (GeometryType type : GeometryType.values()) {
 			this.geometries.put(type, new ArrayList<Geometry>());
 		}
 	}
 
+	/**
+	 * Reader the Kml file given in the constructor.
+	 * 
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
 	public void readKml() throws XmlPullParserException, IOException {
 		// initialize the parser
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -153,48 +170,57 @@ public class Kml {
 		return geometries;
 	}
 
-	public void writeKml(List<GeometryRecord> geometries, String folderName) throws ParserConfigurationException, TransformerException {
+	/**
+	 * Write the geometries in the Kml file given in the constructor.
+	 * 
+	 * @param geometries
+	 * @param folderName
+	 * @throws ParserConfigurationException
+	 * @throws TransformerException
+	 */
+	public void writeKml(List<GeometryRecord> geometries, String folderName)
+			throws ParserConfigurationException, TransformerException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory
 				.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		Document kml = docBuilder.newDocument();
 
 		// kml element
-		Element kmlElement = kml.createElement("kml");
+		Element kmlElement = kml.createElement(KMLTAG);
 		kml.appendChild(kmlElement);
 
 		// Set attributes to kml element
-		Attr xmlns = kml.createAttribute("xmlns");
+		Attr xmlns = kml.createAttribute(KMLNSTAG);
 		xmlns.setValue("http://www.opengis.net/kml/2.2");
 		kmlElement.setAttributeNode(xmlns);
 
-		Attr xmlnsGx = kml.createAttribute("xmlns:gx");
+		Attr xmlnsGx = kml.createAttribute(KMLNSGXTAG);
 		xmlnsGx.setValue("http://www.google.com/kml/ext/2.2");
 		kmlElement.setAttributeNode(xmlnsGx);
 
-		Attr xmlnsKml = kml.createAttribute("xmlns:kml");
+		Attr xmlnsKml = kml.createAttribute(XMLNSKMLTAG);
 		xmlnsKml.setValue("http://www.opengis.net/kml/2.2");
 		kmlElement.setAttributeNode(xmlnsKml);
 
-		Attr xmlnsAtom = kml.createAttribute("xmlns:atom");
+		Attr xmlnsAtom = kml.createAttribute(XMLNSATOMTAG);
 		xmlnsAtom.setValue("http://www.w3.org/2005/Atom");
 		kmlElement.setAttributeNode(xmlnsAtom);
 
 		// Document element
-		Element documentElement = kml.createElement("Document");
+		Element documentElement = kml.createElement(DOCUMENTTAG);
 		kmlElement.appendChild(documentElement);
 
 		// name element
-		Element documentNameElement = kml.createElement("name");
+		Element documentNameElement = kml.createElement(NAMETAG);
 		documentNameElement.appendChild(kml.createTextNode(file.getName()));
 		documentElement.appendChild(documentNameElement);
 
 		// Folder element
-		Element folderElement = kml.createElement("Folder");
+		Element folderElement = kml.createElement(FOLDERTAG);
 		documentElement.appendChild(folderElement);
 
 		// name element
-		Element folderNameElement = kml.createElement("name");
+		Element folderNameElement = kml.createElement(NAMETAG);
 		folderNameElement.appendChild(kml.createTextNode(folderName));
 		folderElement.appendChild(folderNameElement);
 
@@ -205,17 +231,17 @@ public class Kml {
 
 		for (GeometryRecord geometry : geometries) {
 			// Placemark element
-			Element placemarkElement = kml.createElement("Placemark");
+			Element placemarkElement = kml.createElement(PLACEMARKTAG);
 			folderElement.appendChild(placemarkElement);
 
 			// name element
-			Element placemarkNameElement = kml.createElement("name");
+			Element placemarkNameElement = kml.createElement(NAMETAG);
 			placemarkNameElement.appendChild(kml.createTextNode(String
 					.valueOf(geometry.getId())));
 			placemarkElement.appendChild(placemarkNameElement);
 
 			// description element
-			Element descriptionElement = kml.createElement("description");
+			Element descriptionElement = kml.createElement(DESCRIPTIONTAG);
 			descriptionElement.appendChild(kml.createTextNode(" "));
 			placemarkElement.appendChild(descriptionElement);
 
