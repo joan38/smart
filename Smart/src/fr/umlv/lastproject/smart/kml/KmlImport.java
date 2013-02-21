@@ -113,7 +113,7 @@ public class KmlImport {
 		}
 		overlay.setSymbology(symbology);
 		overlay.setType(type);
-		overlay.setName(path.substring(path.lastIndexOf('/'),
+		overlay.setName(path.substring(path.lastIndexOf('/') + 1,
 				path.lastIndexOf('.')));
 
 		return overlay;

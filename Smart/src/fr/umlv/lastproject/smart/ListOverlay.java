@@ -2,13 +2,18 @@ package fr.umlv.lastproject.smart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import org.osmdroid.views.overlay.Overlay;
-
-import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 
+/**
+ * A class for stock the name of the map overlays
+ * 
+ * @author Thibault Douilly
+ * 
+ */
 public class ListOverlay implements Serializable {
 
 	/**
@@ -16,69 +21,128 @@ public class ListOverlay implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final List<String> overlays;
+	private final List<LayerState> overlays;
 
 	public ListOverlay() {
-		overlays = new ArrayList<String>();
+		overlays = new ArrayList<LayerState>();
 	}
 
 	public ListOverlay(List<GeometryLayer> layers) {
-		this.overlays = new ArrayList<String>();
+		this.overlays = new ArrayList<LayerState>();
 		for (GeometryLayer layer : layers) {
-			overlays.add(layer.getName());
+			overlays.add(new LayerState(layer.getName()));
 		}
 	}
 
-	public boolean add(GeometryLayer layer) {
-		return this.overlays.add(layer.getName());
+	/**
+	 * 
+	 * @param layer
+	 * @return
+	 */
+	public boolean add(String layer) {
+		return this.overlays.add(new LayerState(layer));
 	}
 
-	public boolean addAll(List<GeometryLayer> layers) {
-		for (GeometryLayer layer : layers) {
-			overlays.add(layer.getName());
+	/**
+	 * 
+	 * @param layers
+	 * @return
+	 */
+	public boolean addAll(List<String> layers) {
+		for (String layer : layers) {
+			overlays.add(new LayerState(layer));
 		}
 		return true;
 	}
 
-	public String get(int location) {
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
+	public LayerState get(int location) {
 		return this.overlays.get(location);
 	}
 
-	public String remove(int location) {
+	/**
+	 * 
+	 * @param location
+	 * @param visible
+	 */
+	public void setVisible(int location, boolean visible) {
+		this.overlays.get(location).setVisible(visible);
+	}
+
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
+	public LayerState remove(int location) {
 		return this.overlays.remove(location);
 	}
 
-	public boolean remove(Overlay overlay) {
-		return this.overlays.remove(overlay);
+	/**
+	 * 
+	 * @param overlay
+	 * @return
+	 */
+	public boolean remove(String layer) {
+		return this.overlays.remove(layer);
 	}
 
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 */
 	public void reorganize(int source, int destination) {
 		this.overlays.add(destination, this.overlays.remove(source));
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int size() {
 		return this.overlays.size();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String[] toArray() {
 		String[] array = new String[this.overlays.size()];
 		for (int i = 0; i < this.overlays.size(); i++) {
-			array[i] = this.overlays.get(i);
+			array[i] = this.overlays.get(i).getName();
 		}
 		return array;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<LayerState> toList() {
+		return Collections.unmodifiableCollection(this.overlays);
+	}
+
+	/**
+	 * 
+	 */
+	public void clear() {
+		this.overlays.clear();
 	}
 
 	@Override
 	public String toString() {
 		String data = "ListOverlay [ ";
 		for (int i = 0; i < this.overlays.size(); i++) {
-			data += this.overlays.get(i) + " ";
+			data += this.overlays.get(i).getName() + " : "
+					+ this.overlays.get(i).isVisible() + " ";
 		}
 		return data + "]";
-	}
-
-	public boolean add(TMSOverlay overlay) {
-		return this.overlays.add(overlay.getName());
 	}
 
 }

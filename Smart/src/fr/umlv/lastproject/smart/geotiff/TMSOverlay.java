@@ -6,8 +6,9 @@ import org.osmdroid.views.overlay.TilesOverlay;
 
 import android.content.Context;
 import android.graphics.Color;
+import fr.umlv.lastproject.smart.layers.Layer;
 
-public class TMSOverlay extends TilesOverlay {
+public class TMSOverlay extends TilesOverlay implements Layer {
 
 	private final int zoomLevelMax, zoomLevelMin;
 	private final String name;
