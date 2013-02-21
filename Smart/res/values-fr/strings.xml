@@ -85,6 +85,17 @@
     <string name="List">Liste</string>
     <string name="form_title">Formulaire</string>
     
+    <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
+        <string name="field_text">Champs texte : </string>
+    <string name="field_picture">Champs photo : </string>
+    <string name="field_list">Champs liste : </string>
+    <string name="field_boolean">Champs booléen : </string>
+    <string name="field_numeric">Champs numérique : </string>
+    
+        <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
+    
+    
+    
     
 
 </resources>

@@ -76,7 +76,7 @@ public class FileChooserActivity extends FragmentActivity implements
 		if (savedInstanceState == null) {
 			Bundle bundle=getIntent().getExtras();
 			mPath=(String) bundle.get(PATH);
-			addFragment(mPath);
+			addFragment();
 		} else {
 			mPath = savedInstanceState.getString(PATH);
 		}
@@ -122,7 +122,7 @@ public class FileChooserActivity extends FragmentActivity implements
 	 * 
 	 * @param path The absolute path of the file (directory) to display.
 	 */
-	private void addFragment(String path) {
+	private void addFragment() {
 		FileListFragment explorerFragment = FileListFragment.newInstance(mPath);
 		mFragmentManager.beginTransaction()
 				.add(R.id.explorer_fragment, explorerFragment).commit();

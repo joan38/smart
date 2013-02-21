@@ -24,7 +24,12 @@ import fr.umlv.lastproject.smart.layers.Symbology;
  * @Description : Import a Kml file
  * 
  */
-class KmlImport {
+final class KmlImport {
+	
+	private KmlImport(){
+		
+	}
+	
 
 	/**
 	 * Return a list of GeometryLayer with all the geometry type in the kml

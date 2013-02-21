@@ -116,7 +116,7 @@ public class GeometryRecord {
 	/**
 	 * Create the list of points forming the database
 	 */
-	public void createPoints() {
+	public final void createPoints() {
 
 		switch (type) {
 		case POINT:

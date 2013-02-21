@@ -89,5 +89,13 @@
     <string name="Name">Name</string>
     <string name="List">List</string>
     <string name="form_title">Form</string>
+    
+    <string name="field_name_already_used">Error : Field name already used</string>
+    <string name="field_text"> Text field : </string>
+    <string name="field_picture">Picture field : </string>
+    <string name="field_list">List field : </string>
+    <string name="field_boolean">Boolean field : </string>
+    <string name="field_numeric">Numeric field : </string>
+    <string name="field_error_min_max">Error : Min > Max</string>
        
 </resources>

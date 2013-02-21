@@ -124,7 +124,7 @@ public class FormDialog extends AlertDialog.Builder{
 		});
 	}
 	
-	public void buildForm(TableLayout l, final Context c, List<Field> fieldsList){
+	public final void buildForm(TableLayout l, final Context c, List<Field> fieldsList){
 
 		editTextList = new LinkedList<Object>();
 
