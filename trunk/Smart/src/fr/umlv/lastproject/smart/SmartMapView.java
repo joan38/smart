@@ -11,8 +11,10 @@ import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import fr.umlv.lastproject.smart.geotiff.TMSOverlay;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.SmartIcon;
 
 /**
  * MapView with geoTIFFOverlays & geometryLayers notion
@@ -65,12 +67,24 @@ public class SmartMapView extends MapView {
 	}
 
 	/**
+	 * 
+	 * @param name
+	 * @param overlay
+	 */
+	public void addOverlay(String name, SmartIcon symbologie, Overlay overlay) {
+		getOverlays().add(overlay);
+		stringToOverlay.put(new LayerState(name), overlay);
+		Log.d("debug", " addOverlay " + symbologie.getType());
+		listOverlay.add(name, symbologie);
+	}
+
+	/**
 	 * Adds a {@link TMSOverlay} (Tile Map Service Overlay)
 	 * 
 	 * @param overlay
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
-		addOverlay(overlay.getName(), overlay);
+		addOverlay(overlay.getName(), overlay.getOverview(), overlay);
 		geoTIFFOverlays.add(overlay);
 	}
 
@@ -80,7 +94,7 @@ public class SmartMapView extends MapView {
 	 * @param layer
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
-		addOverlay(layer.getName(), layer);
+		addOverlay(layer.getName(), layer.getOverview(), layer);
 	}
 
 	/**
@@ -90,7 +104,7 @@ public class SmartMapView extends MapView {
 	 */
 	public void addGeometryLayers(final List<GeometryLayer> layers) {
 		for (GeometryLayer geom : layers) {
-			addOverlay(geom.getName(), geom);
+			addOverlay(geom.getName(), geom.getOverview(), geom);
 		}
 	}
 

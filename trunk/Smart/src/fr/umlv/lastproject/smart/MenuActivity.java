@@ -6,6 +6,7 @@ import java.util.List;
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
+import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -108,13 +109,19 @@ public class MenuActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
 						LayersActivity.class);
+				Log.d("debug", "AAAAAA "
+						+ mapView.getListOverlay().get(1).getSymbologie()
+								.getType().toString());
+				Log.d("debug", "AAAAAAA2 "
+						+ mapView.getListOverlay().get(2).getSymbologie()
+								.getType().toString());
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
 			}
 		});
 
-		// importKML();
+		importKML();
 	}
 
 	private void importKML() {
@@ -182,8 +189,8 @@ public class MenuActivity extends Activity {
 		mapController.setZoom(SmartConstants.DEFAULT_ZOOM);
 		overlayManager.add(new ScaleBarOverlay(this));
 
-		// mapView.addGeoTIFFOverlay(new TMSOverlay(
-		// new MapTileProviderBasic(this), this, 10, 16, "geo1"));
+		mapView.addGeoTIFFOverlay(new TMSOverlay(
+				new MapTileProviderBasic(this), this, 10, 16, "geo1"));
 		//
 		// mapView.addGeoTIFFOverlay(new TMSOverlay(
 		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));

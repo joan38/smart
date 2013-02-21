@@ -3,19 +3,14 @@ package fr.umlv.lastproject.smart;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
  * 
- * @author Thibault
+ * @author Thibault Douilly
  * 
  */
 public class LayersActivity extends ListActivity {
@@ -29,20 +24,34 @@ public class LayersActivity extends ListActivity {
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 
-		setListAdapter(new ArrayAdapter<String>(this,
-				R.layout.listview_layers_items, listOverlay.toArray()));
+		Log.d("debug", "LLLLLLL "
+				+ listOverlay.get(1).getSymbologie().getType().toString());
+		Log.d("debug", "LLLLLLL2 "
+				+ listOverlay.get(2).getSymbologie().getType().toString());
 
+		// setListAdapter(new ArrayAdapter<String>(this,
+		// R.layout.listview_layers_items, listOverlay.toArray()));
+		//
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
+		//
+		// listView.setOnItemClickListener(new OnItemClickListener() {
+		// public void onItemClick(AdapterView<?> parent, View view,
+		// int position, long id) {
+		// // When clicked, show a toast with the TextView text
+		// Toast.makeText(getApplicationContext(),
+		// ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+		// }
+		// });
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(),
-						((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-			}
-		});
+		for (LayerState l : listOverlay.toList()) {
+			Log.d("debug", "LayerActivity " + l.getName() + " "
+					+ l.getSymbologie().getType());
+		}
+
+		SmartItemLayerAdapter adapter = new SmartItemLayerAdapter(this,
+				R.layout.listview_layers_items, listOverlay.toList());
+		listView.setAdapter(adapter);
 
 		/*
 		 * Log.d("debug", listOverlay.toString()); // (0)test_POINT (1)test_LINE

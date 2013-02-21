@@ -9,7 +9,6 @@ import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -376,12 +375,10 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	@Override
 	public SmartIcon getOverview() {
-		SmartIcon icon=SmartIcon.SYMBOLOGY;
+		SmartIcon icon = SmartIcon.SYMBOLOGY;
 		icon.setColor(getSymbology().getColor());
 		icon.setType(type);
 		return icon;
 	}
-
-	
 
 }

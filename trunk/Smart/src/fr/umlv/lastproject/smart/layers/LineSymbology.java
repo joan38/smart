@@ -1,12 +1,6 @@
 package fr.umlv.lastproject.smart.layers;
 
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Pair;
 
 /**
  * This class represent the symbology of the Line
@@ -60,12 +54,4 @@ public class LineSymbology extends Symbology {
 		this.thickness = thickness;
 	}
 
-	@Override
-	public Pair<Integer, GeometryType> getImage() {
-		return new Pair<Integer, Geometry.GeometryType>(getColor(), GeometryType.LINE);
-	}
-
-	
-
-	
 }

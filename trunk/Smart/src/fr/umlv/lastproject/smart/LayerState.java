@@ -2,6 +2,9 @@ package fr.umlv.lastproject.smart;
 
 import java.io.Serializable;
 
+import android.util.Log;
+import fr.umlv.lastproject.smart.layers.SmartIcon;
+
 public class LayerState implements Serializable {
 
 	/**
@@ -11,14 +14,22 @@ public class LayerState implements Serializable {
 
 	private final String name;
 	private boolean visible;
+	private SmartIcon symbologie;
 
-	public LayerState(String name, boolean visible) {
+	public LayerState(String name, boolean visible, SmartIcon symbologie) {
 		this.name = name;
 		this.visible = visible;
+		this.symbologie = symbologie;
+		if (symbologie != null)
+			Log.d("debug", " LayerState " + symbologie.getType());
+	}
+
+	public LayerState(String name, SmartIcon symbologie) {
+		this(name, true, symbologie);
 	}
 
 	public LayerState(String name) {
-		this(name, true);
+		this(name, true, null);
 	}
 
 	public String getName() {
@@ -31,6 +42,10 @@ public class LayerState implements Serializable {
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public SmartIcon getSymbologie() {
+		return symbologie;
 	}
 
 	@Override
