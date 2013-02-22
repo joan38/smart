@@ -2,9 +2,7 @@ package fr.umlv.lastproject.smart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 
 import fr.umlv.lastproject.smart.layers.Layer;
 
@@ -31,7 +29,7 @@ public class ListOverlay implements Serializable {
 		this.overlays = new ArrayList<LayerItem>();
 
 		for (Layer layer : layers) {
-			overlays.add(new LayerItem(layer.getName(),layer.getOverview()));
+			overlays.add(new LayerItem(layer.getName(), layer.getOverview()));
 
 		}
 	}
@@ -45,19 +43,17 @@ public class ListOverlay implements Serializable {
 		return overlays.add(item);
 	}
 
-
-//	/**
-//	 * 
-//	 * @param layers
-//	 * @return
-//	 */
-//	public boolean addAll(List<String> layers) {
-//		for (String layer : layers) {
-//			overlays.add(new LayerItem(layer));
-//		}
-//		return true;
-//	}
-
+	// /**
+	// *
+	// * @param layers
+	// * @return
+	// */
+	// public boolean addAll(List<String> layers) {
+	// for (String layer : layers) {
+	// overlays.add(new LayerItem(layer));
+	// }
+	// return true;
+	// }
 
 	/**
 	 * 
@@ -130,7 +126,7 @@ public class ListOverlay implements Serializable {
 	 */
 
 	public List<LayerItem> toList() {
-		return Collections.unmodifiableList(this.overlays);
+		return this.overlays;
 
 	}
 
@@ -150,7 +146,5 @@ public class ListOverlay implements Serializable {
 		}
 		return data + "]";
 	}
-	
-	
 
 }

@@ -3,9 +3,10 @@ package fr.umlv.lastproject.smart;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
+import fr.umlv.lastproject.smart.drag.DragSortListView;
+import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
 
 /**
  * 
@@ -16,36 +17,58 @@ import android.widget.ListView;
 public class LayersActivity extends ListActivity {
 
 	private ListOverlay listOverlay = new ListOverlay();
+	SmartItemLayerAdapter adapter;
+
+	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
+		@Override
+		public void drop(int from, int to) {
+			if (from != to) {
+				DragSortListView list = getListView();
+				LayerItem item = adapter.getItem(from);
+				adapter.remove(item);
+				adapter.insert(item, to);
+				list.moveCheckState(from, to);
+			}
+		}
+	};
+
+	private RemoveListener onRemove = new DragSortListView.RemoveListener() {
+		@Override
+		public void remove(int which) {
+			DragSortListView list = getListView();
+			LayerItem item = adapter.getItem(which);
+			adapter.remove(item);
+			list.removeCheckState(which);
+		}
+	};
+
+	@Override
+	public DragSortListView getListView() {
+		return (DragSortListView) super.getListView();
+	}
+
+	// ------------------------------
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
 
+		setContentView(R.layout.activity_layers);
+
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 
-		
-
-		
-				ListView listView = getListView();
+		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
-		
-		
 
-		SmartItemLayerAdapter adapter = new SmartItemLayerAdapter(this,
+		adapter = new SmartItemLayerAdapter(this,
 				R.layout.listview_layers_items, listOverlay.toList());
 		listView.setAdapter(adapter);
 
-		/*
-		 * Log.d("debug", listOverlay.toString()); // (0)test_POINT (1)test_LINE
-		 * (2)test_POLYGON (3)poly (4)geo1 (5)geo2
-		 * 
-		 * listOverlay.reorganize(3, 0); Log.d("debug", listOverlay.toString());
-		 * // 3 0 1 2 4 5
-		 * 
-		 * listOverlay.remove(2); Log.d("debug", listOverlay.toString()); // 3 0
-		 * 1 2 4 5
-		 */
+		DragSortListView list = getListView();
+		list.setDropListener(onDrop);
+		list.setRemoveListener(onRemove);
+
 	}
 
 	@Override
