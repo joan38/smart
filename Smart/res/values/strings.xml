@@ -38,7 +38,8 @@
         <item>Export KML</item>
         <item>Export CSV</item>
         <item>Measure</item> 
-        <item>Export Form</item>   
+        <item>Export Form</item>
+        <item>Delete mission</item>    
     </string-array>
     <string name="stopMission">Stop mission</string>
     
@@ -67,6 +68,7 @@
     <string name="formBrowser">Select form file</string>
     <string name="mission">Mission</string>
     <string name="export_mission">Export mission</string>
+    <string name="delete_mission">Delete mission</string>
     <string name="export_form">Export Form</string>
     
     
@@ -110,9 +112,14 @@
     <string name="field_error_min_max">Error : Min > Max</string>
     
     <string name="invalid">Invalid</string>
+
+    <string name="sure">Do you really want to delete </string>
+
     <string name="result">Result</string>
+
     
     <string name="menuFunctionalitiesTitle">Functionalities menu</string>
     <string name="menuLayersTitle">Layers managing</string>
+
        
 </resources>

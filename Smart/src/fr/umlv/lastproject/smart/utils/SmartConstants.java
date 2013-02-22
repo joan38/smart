@@ -21,6 +21,7 @@ public final class SmartConstants {
 	public static final int EXPORT_CSV = 10;
 	public static final int MEASURE = 11;
 	public static final int EXPORT_FORM = 12;
+	public static final int DELETE_MISSION = 13;
 
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;

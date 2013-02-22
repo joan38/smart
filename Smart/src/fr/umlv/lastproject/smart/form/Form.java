@@ -193,7 +193,7 @@ public class Form implements Serializable {
 
 
 					String type = null ;
-					String title = null ; ;
+					String title = null ;
 					int max = 0 ;
 					int min = 0 ;
 					String values = null ;
