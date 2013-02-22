@@ -54,6 +54,13 @@ public class GPSTrack {
 		 }
 	}
 	
+	/**
+	 * 
+	 * @param mode of the track
+	 * @param trackName name of the track
+	 * @param lm the locationManager
+	 * @param mapView the map where will be the track
+	 */
 	public GPSTrack(final TRACK_MODE mode, final String trackName, final LocationManager lm, final SmartMapView mapView){
 		
 		isFinished=false;

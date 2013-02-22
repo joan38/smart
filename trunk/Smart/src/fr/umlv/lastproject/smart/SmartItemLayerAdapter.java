@@ -17,6 +17,12 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 	private Context context;
 
+	/**
+	 * 
+	 * @param context of the application
+	 * @param resourceId xmlconfig
+	 * @param items to add
+	 */
 	public SmartItemLayerAdapter(Context context, int resourceId,
 			List<LayerItem> items) {
 		super(context, resourceId, items);
@@ -29,6 +35,9 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		private TextView txtTitle;
 	}
 
+	/**
+	 * return the view
+	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		SmartHolder smartHolder = null;

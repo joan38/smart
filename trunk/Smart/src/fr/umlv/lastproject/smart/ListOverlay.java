@@ -21,10 +21,16 @@ public class ListOverlay implements Serializable {
 
 	private final List<LayerItem> overlays;
 
+	/**
+	 * constructor of list overlay
+	 */
 	public ListOverlay() {
 		overlays = new ArrayList<LayerItem>();
 	}
 
+	/*
+	 * constructor of list overlay
+	 */
 	public ListOverlay(List<Layer> layers) {
 		this.overlays = new ArrayList<LayerItem>();
 
@@ -36,8 +42,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param layer
-	 * @return
+	 * @param layer to add
+	 * @return if true ok
 	 */
 	public boolean add(LayerItem item) {
 		return overlays.add(item);
@@ -47,7 +53,7 @@ public class ListOverlay implements Serializable {
 	/**
 	 * 
 	 * @param location
-	 * @return
+	 * @return the overlya
 	 */
 	public LayerItem get(int location) {
 		return this.overlays.get(location);
@@ -55,8 +61,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param location
-	 * @param visible
+	 * @param location the layer which will change the visibility
+	 * @param visible if true or false
 	 */
 	public void setVisible(int location, boolean visible) {
 		this.overlays.get(location).setVisible(visible);
@@ -64,8 +70,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param location
-	 * @return
+	 * @param location the layer which will be removed
+	 * @return the layeritem
 	 */
 	public LayerItem remove(int location) {
 		return this.overlays.remove(location);
@@ -73,8 +79,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param overlay
-	 * @return
+	 * @param overlay 
+	 * @return if the overlay has been removed
 	 */
 	public boolean remove(String layer) {
 		return this.overlays.remove(layer);
@@ -82,8 +88,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param source
-	 * @param destination
+	 * @param source the overlay to change with
+	 * @param destination this overlay
 	 */
 	public void reorganize(int source, int destination) {
 		this.overlays.add(destination, this.overlays.remove(source));
@@ -91,7 +97,7 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @return
+	 * @return the number of overlay
 	 */
 	public int size() {
 		return this.overlays.size();
@@ -99,7 +105,7 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @return
+	 * @return names of the layers
 	 */
 	public String[] toArray() {
 		String[] array = new String[this.overlays.size()];
@@ -111,7 +117,7 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @return
+	 * @return list of layers
 	 */
 
 	public List<LayerItem> toList() {
@@ -120,7 +126,7 @@ public class ListOverlay implements Serializable {
 	}
 
 	/**
-	 * 
+	 * clear all layers
 	 */
 	public void clear() {
 		this.overlays.clear();

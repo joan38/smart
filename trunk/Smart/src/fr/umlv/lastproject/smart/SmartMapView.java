@@ -29,6 +29,11 @@ public class SmartMapView extends MapView {
 
 	private final Map<String, Overlay> stringToOverlay;
 
+	/**
+	 * 
+	 * @param context of the application
+	 * @param set use to use findviewbyid
+	 */
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
@@ -44,8 +49,7 @@ public class SmartMapView extends MapView {
 
 	/**
 	 * 
-	 * @param name
-	 * @param overlay
+	 * @param layer which will be added
 	 */
 	public void addOverlay(Layer layer) {
 		Log.d("TEST2", "addOverlay " + layer.getName());
@@ -64,7 +68,7 @@ public class SmartMapView extends MapView {
 	/**
 	 * Adds a {@link TMSOverlay} (Tile Map Service Overlay)
 	 * 
-	 * @param overlay
+	 * @param overlay raster overlay to add
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
 		addOverlay(overlay);
@@ -75,7 +79,7 @@ public class SmartMapView extends MapView {
 	/**
 	 * Adds a {@link GeometryLayer}
 	 * 
-	 * @param layer
+	 * @param layer to add to the view
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
 		addOverlay(layer);
@@ -85,7 +89,7 @@ public class SmartMapView extends MapView {
 	/**
 	 * Adds a some {@link GeometryLayer}
 	 * 
-	 * @param layer
+	 * @param layer to add to the view
 	 */
 	public void addGeometryLayers(final List<GeometryLayer> layers) {
 		for (GeometryLayer geom : layers) {
@@ -96,7 +100,7 @@ public class SmartMapView extends MapView {
 
 	/**
 	 * 
-	 * @param overlay
+	 * @param overlay to removed
 	 */
 	private void removeOverlay(String name) {
 		getOverlays().remove(stringToOverlay.get(name));
@@ -107,7 +111,7 @@ public class SmartMapView extends MapView {
 	/**
 	 * Removes a {@link TMSOverlay}
 	 * 
-	 * @param overlay
+	 * @param overlay raster to remove
 	 */
 	public void removeGeoTIFFOverlay(final TMSOverlay overlay) {
 		removeOverlay(overlay.getName());
@@ -117,7 +121,7 @@ public class SmartMapView extends MapView {
 	/**
 	 * Removes a {@link GeometryLayer}
 	 * 
-	 * @param layer
+	 * @param layer to remove
 	 */
 	public void removeGeometryLayer(final GeometryLayer layer) {
 		removeOverlay(layer.getName());
@@ -125,7 +129,7 @@ public class SmartMapView extends MapView {
 
 	/**
 	 * 
-	 * @param overlays
+	 * @param overlays list of overlays to reorder
 	 */
 	public void setReorderedLayers(final ListOverlay overlays) {
 		if (this.listOverlay.equals(overlays)) {
@@ -168,7 +172,7 @@ public class SmartMapView extends MapView {
 
 	/**
 	 * 
-	 * @return
+	 * @return the list of layers
 	 */
 	public ListOverlay getListOverlay() {
 		return this.listOverlay;
@@ -176,7 +180,7 @@ public class SmartMapView extends MapView {
 
 	/**
 	 * 
-	 * @return
+	 * @return the list of raster layers
 	 */
 	public List<TMSOverlay> getGeoTIFFOverlays() {
 		return Collections.unmodifiableList(this.geoTIFFOverlays);
