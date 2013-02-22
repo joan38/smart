@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,8 +71,10 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 			@Override
 			public void onClick(View arg0) {
 				boolean checked = ((CheckBox) arg0).isChecked();
+
 				((CheckBox) arg0).setChecked(checked);
 				item.setVisible(checked);
+
 
 			}
 		});
