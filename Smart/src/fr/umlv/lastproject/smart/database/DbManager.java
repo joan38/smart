@@ -244,7 +244,7 @@ public class DbManager {
 			}
 		}
 
-		sql.delete(sql.length() - 3, sql.length() - 1);
+		sql.delete(sql.length() - 2, sql.length() - 1);
 		sql.append(");");
 
 		Log.d("Cmd SQL", sql.toString());

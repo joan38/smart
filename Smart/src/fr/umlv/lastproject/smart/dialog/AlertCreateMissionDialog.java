@@ -35,6 +35,9 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 	public AlertCreateMissionDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);
+		
+		
+		
 
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View createMissionDialog = inflater.inflate(
@@ -42,6 +45,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 		setView(createMissionDialog);
 		setTitle(R.string.mission);
+		
 
 		final Button openBrowser = (Button) createMissionDialog
 				.findViewById(R.id.selectFormButton);
@@ -49,6 +53,24 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 		final TextView textViewMissionName = ((TextView) createMissionDialog
 				.findViewById(R.id.missionNameValue));
+		
+		final AlertDialog dialog = this.setPositiveButton(R.string.validate, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				menu.startMission(textViewMissionName.getText().toString());
+			}
+		}).setNegativeButton(R.string.cancel, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+
+			}
+		}).create();
+		
+		dialog.show();
+		
+		
 
 		textViewMissionName.addTextChangedListener(new TextWatcher() {
 
@@ -80,8 +102,14 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 					
 					if(dbManager.existsMission(textViewMissionName.getText().toString())){
 						textViewMissionName.setError(menu.getResources().getString(R.string.invalid));
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					} else {
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+
 					}
 					dbManager.close();
+					
+					
 
 				}
 			}
@@ -116,21 +144,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			}
 		});
 
-		setPositiveButton(R.string.validate, new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				menu.startMission(textViewMissionName.getText().toString());
-			}
-		});
-
-		setNegativeButton(R.string.cancel, new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-
-			}
-		});
+		
 
 	}
 
