@@ -63,9 +63,7 @@ public class MenuActivity extends Activity {
 	 * @Description : This class contains the Menus container
 	 * 
 	 */
-
 	private SmartMapView mapView;
-
 	private MapController mapController;
 	private OverlayManager overlayManager;
 	private GPS gps;
@@ -84,7 +82,6 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private int zoomLevel;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
