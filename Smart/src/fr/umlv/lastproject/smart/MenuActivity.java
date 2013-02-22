@@ -84,6 +84,8 @@ public class MenuActivity extends Activity {
 	private AlertCreateMissionDialog missionDialog;
 	private int zoomLevel;
 
+	private String formPath;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -453,8 +455,10 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
 				Uri fileForm = data.getData();
-				kmlPath = fileForm.toString().split("file:///")[1];
-				missionDialog.setPathForm(kmlPath);
+				formPath = fileForm.toString().split("file:///")[1];
+				missionDialog.setPathForm(formPath);
+				
+				
 
 				break;
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
@@ -496,6 +500,17 @@ public class MenuActivity extends Activity {
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
 		Form form = new Form();
+		if(formPath != null){
+			try {
+				form.read(formPath);
+			} catch (XmlPullParserException e) {
+				Toast.makeText(this, "Can not read the file",Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			} catch (IOException e) {
+				Toast.makeText(this, "Can not read the file",Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
 		overlayManager.add(Mission.getInstance().getPolygonLayer());
@@ -529,9 +544,6 @@ public class MenuActivity extends Activity {
 					e.printStackTrace();
 				}
 				m.stop();
-
-				
-				
 			}
 		}) ;
 		
@@ -542,9 +554,6 @@ public class MenuActivity extends Activity {
 					lastPosition.getLatitudeE6()/1E6,
 					lastPosition.getLongitudeE6()/1E6)) ;
 		}
-		
-		
-		
 	}
 	
 	
