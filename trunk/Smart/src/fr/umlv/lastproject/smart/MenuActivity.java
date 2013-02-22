@@ -367,13 +367,11 @@ public class MenuActivity extends Activity {
 
 					} else {
 						missionDialog = new AlertCreateMissionDialog(this);
-						missionDialog.show();
 					}
 					break;
 				case SmartConstants.CREATE_FORM:
 					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(
 							this);
-					createFormDialog.show();
 
 					break;
 				case SmartConstants.POINT_SURVEY:
