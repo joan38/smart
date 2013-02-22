@@ -18,7 +18,7 @@
 
     <dimen name="list_padding">0dp</dimen>
     <dimen name="list_item_padding">6dp</dimen>
-    <dimen name="item_height">30dp</dimen>
+    <dimen name="item_height">35dp</dimen>
     <dimen name="section_div_height">20dp</dimen>
 
 </resources>

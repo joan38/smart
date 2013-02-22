@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fr.umlv.lastproject.smart.drag.CheckableLinearLayout
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
@@ -9,14 +9,14 @@
         android:id="@+id/layer_check"
         android:layout_gravity="left"
         android:layout_width="wrap_content"
-		android:layout_height="@dimen/item_height"/>
+		android:layout_height="wrap_content"/>
     
 	<ImageView
 		android:id="@+id/layer_symbo"
 		android:layout_gravity="left"
 		android:layout_width="wrap_content"
 		android:contentDescription="@string/symbo_desc"
-		android:layout_height="@dimen/item_height"/>
+		android:layout_height="wrap_content"/>
 
 	<TextView
 		android:id="@id/drag_handle"
@@ -24,7 +24,7 @@
 		android:layout_weight="0.5"
 		android:layout_gravity="center"
 		android:layout_width="0dp"
-		android:layout_height="@dimen/item_height"/>
+		android:layout_height="wrap_content"/>
 
 
-</fr.umlv.lastproject.smart.drag.CheckableLinearLayout>
+</LinearLayout>

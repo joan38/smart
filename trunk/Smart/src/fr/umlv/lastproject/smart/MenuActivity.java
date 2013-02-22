@@ -118,7 +118,7 @@ public class MenuActivity extends Activity {
 			}
 		});
 
-		importKML();
+		// importKML();
 	}
 
 	private void importKML() {
