@@ -22,6 +22,9 @@ public class MissionRecord {
 	private String date;
 	private Form form;
 
+	/**
+	 * Constructor
+	 */
 	public MissionRecord() {
 		if (Mission.getInstance() != null) {
 			this.title = Mission.getInstance().getTitle();
@@ -34,7 +37,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return the id of the missionRecord
 	 */
 	public long getId() {
@@ -42,7 +45,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param id
 	 */
 	public void setId(long id) {
@@ -50,7 +53,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return title of the missionRecord
 	 */
 	public String getTitle() {
@@ -58,7 +61,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param title
 	 */
 	public void setTitle(String title) {
@@ -74,7 +77,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param status
 	 */
 	public void setStatus(boolean status) {
@@ -82,7 +85,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return the date of the mission
 	 */
 	public String getDate() {
@@ -90,7 +93,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param date
 	 */
 	public void setDate(String date) {
@@ -98,7 +101,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return the form associated to the missionRecord
 	 */
 	public Form getForm() {
@@ -106,7 +109,7 @@ public class MissionRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param form
 	 */
 	public void setForm(Form form) {

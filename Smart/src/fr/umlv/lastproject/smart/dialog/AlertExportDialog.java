@@ -23,12 +23,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * This dialog is used to export a mission
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertExportDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor
+	 * @param c : the context
+	 */
 	public AlertExportDialog(final Context c) {
 		super(c);
 		setCancelable(false);

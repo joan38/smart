@@ -25,6 +25,10 @@ import android.widget.EditText;
  */
 public class AlertCreateFormDialog extends AlertDialog.Builder{
 
+	/**
+	 * Constructor
+	 * @param menu
+	 */
 	public AlertCreateFormDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);

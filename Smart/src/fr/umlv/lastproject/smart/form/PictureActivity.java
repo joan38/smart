@@ -91,6 +91,14 @@ public class PictureActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Geotag of a picture
+	 * 
+	 * @param filename
+	 * @param latitude
+	 * @param longitude
+	 * @param bearing
+	 */
 	public void geoTag(String filename, double latitude, double longitude,
 			float bearing) {
 		ExifInterface exif = null;

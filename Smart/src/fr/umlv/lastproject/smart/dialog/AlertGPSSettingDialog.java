@@ -8,8 +8,19 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
 
+/**
+ * This dialog is used to prevent the user that the GPS has to be activated
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertGPSSettingDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param menu
+	 */
 	public AlertGPSSettingDialog(final MenuActivity menu) {
 		super(menu);
 		setTitle(R.string.gpsSettings);
