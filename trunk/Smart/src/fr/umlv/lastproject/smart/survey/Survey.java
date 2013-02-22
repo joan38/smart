@@ -45,6 +45,12 @@ public class Survey {
 
 	}
 
+	/**
+	 * this method is use to start a survey
+	 * the type of survey is defined by the type of the layer
+	 * @param layer the layer wher the survey will be
+	 * 
+	 */
 	public void startSurvey(final GeometryLayer layer) {
 		if( layer==null || layer.getType()==null){
 			throw new IllegalArgumentException();
@@ -145,18 +151,32 @@ public class Survey {
 		
 	}
 
+	/**
+	 * 
+	 * @param listener the listener used when stop
+	 */
 	public void addStopListeners(SurveyStopListener listener) {
 		stopListeners.add(listener);
 	}
 
+	/**
+	 * 
+	 * @param listener the listener which will be unused 
+	 */
 	public void removeStopListeners(SurveyStopListener listener) {
 		stopListeners.remove(listener);
 	}
 	
+	/**
+	 * the survey is OK
+	 */
 	public void validateSurvey(){
 		lastGeometry=null;
 	}
 
+	/**
+	 * remove all listeners and clean the survey
+	 */
 	public void stop() {
 		geometryLayer.removeGeometryLayerDoubleTapListener(dlistener);
 		geometryLayer.removeGeometryLayerSingleTapListener(slistener);
