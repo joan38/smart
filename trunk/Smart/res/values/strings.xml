@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Smart</string>
@@ -94,6 +93,11 @@
     <string name="Name">Name</string>
     <string name="List">List</string>
     <string name="form_title">Form</string>
+    <string name="MeasureTitle">MeasureAbsoluteText>Measure</string>
+    <string name="MeasureRelative">Relative to your position</string>
+    <string name="MeasureAbsolute">Beetween two points on the map</string>
+    <string name="MeasureRelativeText">Select a point on the map</string>
+    <string name="MeasureAbsoluteText">Select two points on the map</string>
     
     <string name="field_name_already_used">Error : Field name already used</string>
     <string name="field_text"> Text field : </string>
@@ -106,6 +110,7 @@
     <string name="field_error_min_max">Error : Min > Max</string>
     
     <string name="invalid">Invalid</string>
+    <string name="result">Result</string>
     
     <string name="menuFunctionalitiesTitle">Functionalities menu</string>
     <string name="menuLayersTitle">Layers managing</string>
