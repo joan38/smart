@@ -71,7 +71,7 @@ public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 		}
 
 		if (!item.isEnabled()) {
-			convertView.setBackgroundColor(Color.argb(50, 0, 0, 0));
+			convertView.setBackgroundColor(Color.GRAY);
 		} else {
 			convertView.setBackgroundColor(Color.WHITE);
 		}
