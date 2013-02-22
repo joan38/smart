@@ -7,6 +7,7 @@ import android.content.Intent;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
+
 public class AlertGPSSettingDialog extends AlertDialog.Builder {
 
 	public AlertGPSSettingDialog(final MenuActivity menu) {

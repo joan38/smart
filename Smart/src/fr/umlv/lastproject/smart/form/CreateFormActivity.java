@@ -44,6 +44,8 @@ public class CreateFormActivity extends Activity {
 	
 	private static final String MIN = " Min : ";
 	private static final String MAX = " Max : ";
+	private static final int PADDING_LEFT = 40;
+	private static final int PADDING_TOP = 30;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -332,7 +334,7 @@ public class CreateFormActivity extends Activity {
 										}
 									});
 									row.addView(image);
-									view.setPadding(40, 30, 0, 0);
+									view.setPadding(PADDING_LEFT, PADDING_TOP, 0, 0);
 									row.addView(view);
 									layoutDynamic.addView(row);
 								}

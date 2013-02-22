@@ -44,7 +44,9 @@ import fr.umlv.lastproject.smart.browser.FileChooserActivity;
 public final class FileUtils {
 	/** TAG for log messages. */
 	private static final String TAG = "FileUtils";
-	private static final boolean DEBUG = false; // Set to true to enable logging
+	
+	// Set to true to enable logging
+	private static final boolean DEBUG = false; 
 
 	public static final String MIME_TYPE_AUDIO = "audio/*";
 	public static final String MIME_TYPE_TEXT = "text/*";

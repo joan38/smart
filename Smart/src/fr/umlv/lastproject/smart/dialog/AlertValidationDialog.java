@@ -13,15 +13,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This class is used to validate the deleting of a mission
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertValidationDialog extends AlertDialog.Builder{
 
-	long idMission=-1;
 	
 	public AlertValidationDialog(final Context c, final long idMission, String nameMission) {
 		super(c);
 		setCancelable(false);
 		
-		this.idMission = idMission;
 		
 		final LayoutInflater inflater = LayoutInflater.from(c);
 		final View exportMissionDialog = inflater.inflate(
@@ -54,7 +58,6 @@ public class AlertValidationDialog extends AlertDialog.Builder{
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				
 			}
 		});

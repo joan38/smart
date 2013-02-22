@@ -1,6 +1,5 @@
 package fr.umlv.lastproject.smart;
 
-import android.animation.AnimatorSet;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;

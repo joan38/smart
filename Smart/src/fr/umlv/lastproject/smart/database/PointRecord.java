@@ -15,14 +15,16 @@ public class PointRecord {
 	private double y;
 	private double z;
 	private long idGeometry;
+	
+	private static double VALUE_1E6 = 1E6;
 
 	public PointRecord() {
 	}
 
 	public PointRecord(PointGeometry p) {
 
-		this.x = p.getLatitude() / 1E6;
-		this.y = p.getLongitude() / 1E6;
+		this.x = p.getLatitude() / VALUE_1E6;
+		this.y = p.getLongitude() / VALUE_1E6;
 		this.z = -1;
 	}
 

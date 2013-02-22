@@ -39,7 +39,6 @@ public class AlertMeasureRequestDialog extends AlertDialog.Builder {
 		
 		final RadioGroup group= (RadioGroup) alertDialogView.findViewById(R.id.measureChoice) ;
 		final RadioButton b1 = (RadioButton) alertDialogView.findViewById(R.id.measureRadioRelative) ;
-		final RadioButton b2 = (RadioButton) alertDialogView.findViewById(R.id.measureRaduiAbsolute) ;
 		
 		final TextView tv = (TextView) alertDialogView.findViewById(R.id.measureTextExplain) ;
 		
@@ -66,8 +65,6 @@ public class AlertMeasureRequestDialog extends AlertDialog.Builder {
 			}
 		});
 
-		
-		// TODO Auto-generated constructor stub
 	}
 
 	

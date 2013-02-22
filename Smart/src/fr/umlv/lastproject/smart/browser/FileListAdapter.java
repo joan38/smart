@@ -53,8 +53,8 @@ public class FileListAdapter extends BaseAdapter {
 		mInflater = LayoutInflater.from(context);
 	}
 
-	public ArrayList<File> getListItems() {
-		return (ArrayList<File>) mFiles;
+	public List<File> getListItems() {
+		return (List<File>) mFiles;
 	}
 
 	public void setListItems(List<File> files) {

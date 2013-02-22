@@ -1,5 +1,11 @@
 package fr.umlv.lastproject.smart.utils;
 
+/**
+ * This class is used to define constants values used in many classes
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public final class SmartConstants {
 
 	public static final int HOME_VIEW = 1;
@@ -28,12 +34,12 @@ public final class SmartConstants {
 
 	public static final int DEFAULT_ZOOM = 15;
 
-	public final static int TEXT_FIELD = 0;
-	public final static int NUMERIC_FIELD = 1;
-	public final static int BOOLEAN_FIELD = 2;
-	public final static int LIST_FIELD = 3;
-	public final static int PICTURE_FIELD = 4;
-	public final static int HEIGHT_FIELD = 5;
+	public static final int TEXT_FIELD = 0;
+	public static final int NUMERIC_FIELD = 1;
+	public static final int BOOLEAN_FIELD = 2;
+	public static final int LIST_FIELD = 3;
+	public static final int PICTURE_FIELD = 4;
+	public static final int HEIGHT_FIELD = 5;
 
 	private SmartConstants() {
 

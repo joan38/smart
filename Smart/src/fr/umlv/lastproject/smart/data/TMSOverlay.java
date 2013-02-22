@@ -8,9 +8,7 @@ import org.osmdroid.views.overlay.TilesOverlay;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Layer;
 

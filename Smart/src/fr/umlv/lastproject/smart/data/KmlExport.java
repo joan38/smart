@@ -100,10 +100,7 @@ public abstract class KmlExport {
 					.appendChild(kml.createTextNode(mission.getTitle()));
 			folderElement.appendChild(folderNameElement);
 
-			// // open element
-			// Element openElement = kml.createElement("open");
-			// folderNameElement.appendChild(kml.createTextNode("1"));
-			// folderElement.appendChild(openElement);
+			
 
 			for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
 					.getId())) {

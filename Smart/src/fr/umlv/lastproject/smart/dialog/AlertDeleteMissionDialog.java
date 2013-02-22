@@ -21,6 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * This class is used to list the mission could be delete
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertDeleteMissionDialog extends AlertDialog {
 
 	public AlertDeleteMissionDialog(final Context c) {
@@ -48,8 +54,6 @@ public class AlertDeleteMissionDialog extends AlertDialog {
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
 
-				// Connect to export CSV
-				// Id mission = position + 1
 				String value = (String) adapter.getItemAtPosition(position);
 				long idMission = mapMissions.get(value);
 

@@ -25,34 +25,20 @@ import fr.umlv.lastproject.smart.layers.Layer;
  */
 public class SmartMapView extends MapView {
 
-	// private static final String WORLD_MAP_FOLDER = "Test";
-	// private static final int WORLD_MAP_MIN_ZOOM = 0;
-	// private static final int WORLD_MAP_MAX_ZOOM = 4;
-	// private static final String WORLD_MAP_EXTENSION = ".png";
+
 
 	private final Map<String, Overlay> stringToOverlay;
 
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
-		// this.geometryLayers = new ArrayList<GeometryLayer>();
 		this.listOverlay = new ListOverlay();
 
 		this.stringToOverlay = new HashMap<String, Overlay>();
-		// super.getOverlayManager().getTilesOverlay().setEnabled(false);
-
-		// TMSOverlay worldOverlay;
-		//
-		// worldOverlay = DataImport.importGeoTIFFFileZIP(WORLD_MAP_FOLDER,
-		// context, WORLD_MAP_MIN_ZOOM, WORLD_MAP_MAX_ZOOM,
-		// WORLD_MAP_EXTENSION);
-		//
-		// addGeoTIFFOverlay(worldOverlay);
 
 	}
 
 	private final List<TMSOverlay> geoTIFFOverlays;
-	// private final List<GeometryLayer> geometryLayers;
 
 	private ListOverlay listOverlay;
 

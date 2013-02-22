@@ -43,17 +43,6 @@ public class ListOverlay implements Serializable {
 		return overlays.add(item);
 	}
 
-	// /**
-	// *
-	// * @param layers
-	// * @return
-	// */
-	// public boolean addAll(List<String> layers) {
-	// for (String layer : layers) {
-	// overlays.add(new LayerItem(layer));
-	// }
-	// return true;
-	// }
 
 	/**
 	 * 

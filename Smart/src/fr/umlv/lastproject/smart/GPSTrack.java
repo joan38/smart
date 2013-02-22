@@ -20,6 +20,8 @@ import fr.umlv.lastproject.smart.layers.PointGeometry;
  */
 public class GPSTrack {
 	
+	private static final int LINE_THICKNESS = 5;
+	private static final int MULT = 1000;
 	private final TRACK_MODE trackMode;
 	private final GPS gps;
 	private final List<TrackPoint> trackPoints;
@@ -77,7 +79,7 @@ public class GPSTrack {
 		this.geometryLayer.setType(GeometryType.LINE);
 		lineGeometry=new LineGeometry();
 		this.geometryLayer.addGeometry(lineGeometry);
-		this.geometryLayer.setSymbology(new LineSymbology(5, Color.RED));
+		this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.RED));
 		mapView.getOverlays().add(geometryLayer);
 				
 	}
@@ -113,7 +115,7 @@ public class GPSTrack {
 				break;
 
 			default:
-				gps.start(trackMode.getParameter()*1000, 0);
+				gps.start(trackMode.getParameter()*MULT, 0);
 				break;
 			}
 		}

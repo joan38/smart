@@ -29,8 +29,8 @@ import fr.umlv.lastproject.smart.R;
 public class PictureActivity extends Activity {
 
 	private File picture;
-	private final static int PICTURE_RESULT = 1;
-	private final static String PICTURE_PATH = Environment
+	private static final  int PICTURE_RESULT = 1;
+	private static final  String PICTURE_PATH = Environment
 			.getExternalStorageDirectory() + "/SMART/pictures/";
 
 	private GPS gps;
@@ -51,7 +51,7 @@ public class PictureActivity extends Activity {
 
 		initGPS();
 
-		TakePhoto();
+		takePhoto();
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class PictureActivity extends Activity {
 	/**
 	 * Function which start camera intent and take the picture
 	 */
-	private void TakePhoto() {
+	private void takePhoto() {
 		takePicture = true;
 		namePicture = getIntent().getExtras().getString("namePicture");
 		picture = new File(PICTURE_PATH, namePicture + ".jpg");

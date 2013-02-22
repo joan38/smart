@@ -15,6 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+
+/**
+ * This class is used to define the name of form to create
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertCreateFormDialog extends AlertDialog.Builder{
 
 	public AlertCreateFormDialog(final MenuActivity menu) {

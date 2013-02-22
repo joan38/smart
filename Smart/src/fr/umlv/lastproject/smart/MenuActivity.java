@@ -57,6 +57,16 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class MenuActivity extends Activity {
 
+	private static final int POLYGON_THICKNESS = 3;
+
+	private static final int POLYGON_COLOR = 0xffff0000;
+
+	private static final int MIN_ZOOM_LEVEL = 10;
+
+	private static final int MAX_ZOOM_LEVEL = 16;
+
+	private static final double VALUE_1E6 = 1E6;
+
 	/**
 	 * 
 	 * @author thibault Brun
@@ -133,7 +143,7 @@ public class MenuActivity extends Activity {
 			GeometryLayer kml = DataImport.importKml(this, Environment
 					.getExternalStorageDirectory().getPath()
 					+ "/SMART/poly.kml", GeometryType.POLYGON);
-			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
+			kml.setSymbology(new PolygonSymbology(POLYGON_THICKNESS, POLYGON_COLOR));
 
 			mapView.addGeometryLayer(kml);
 
@@ -149,7 +159,7 @@ public class MenuActivity extends Activity {
 		mapView.addGeometryLayer(ge);
 		// Couche présentes
 		String s = "getOverlays() size = "
-				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
+				+ mapView.getOverlays().size() + "\ndata = ";
 		for (int i = 0; i < mapView.getOverlays().size(); i++) {
 			s += ((Overlay) mapView.getOverlays().get(i)).toString() + " ";
 		}
@@ -189,10 +199,8 @@ public class MenuActivity extends Activity {
 		overlayManager.add(new ScaleBarOverlay(this));
 
 		mapView.addGeoTIFFOverlay(new TMSOverlay(
-				new MapTileProviderBasic(this), this, 10, 16, "geo1"));
-		//
-		// mapView.addGeoTIFFOverlay(new TMSOverlay(
-		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
+				new MapTileProviderBasic(this), this, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, "geo1"));
+		
 
 		directedLocationOverlay = new DirectedLocationOverlay(this);
 		directedLocationOverlay.setShowAccuracy(true);
@@ -246,7 +254,6 @@ public class MenuActivity extends Activity {
 		});
 
 		infoOverlay = new InfoOverlay(findViewById(R.id.table));
-		// centerOverlay = new CenterOverlay(findViewById(R.id.centermap));
 		centerMap = findViewById(R.id.centermap);
 
 		centerMap.setOnClickListener(new View.OnClickListener() {
@@ -448,7 +455,6 @@ public class MenuActivity extends Activity {
 					break;
 
 				default:
-					// Mission.getInstance().stopMission();
 					break;
 				}
 				break;
@@ -557,8 +563,8 @@ public class MenuActivity extends Activity {
 		if (absolute) {
 			m.measure();
 		} else {
-			m.measure(new PointGeometry(lastPosition.getLatitudeE6() / 1E6,
-					lastPosition.getLongitudeE6() / 1E6));
+			m.measure(new PointGeometry(lastPosition.getLatitudeE6() / VALUE_1E6,
+					lastPosition.getLongitudeE6() / VALUE_1E6));
 		}
 	}
 

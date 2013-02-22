@@ -1,5 +1,11 @@
 package fr.umlv.lastproject.smart.utils;
 
+/**
+ * This class is used to generate a custom exception
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class SmartException extends Exception{
 	
 	/**
