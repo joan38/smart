@@ -20,7 +20,7 @@ public final class ShpImport {
 
 	public static GeometryLayer getLayerFromShp(String file, Context context) {
 
-		try {			
+		try {
 			String[] split = file.split("/");
 			String path = "";
 			for (int i = 0; i < split.length - 1; i++) {
@@ -29,7 +29,6 @@ public final class ShpImport {
 
 			String fn = split[split.length - 1];
 			fn = fn.replaceFirst(".shp", "");
-
 
 			ShapeFile shp = new ShapeFile(path, fn).READ();
 			ShpShape.Type type = shp.getSHP_shapeType();
@@ -70,7 +69,6 @@ public final class ShpImport {
 
 			for (int j = 0; j < polygon.getNumberOfPoints(); j++) {
 				p.addPoint(new PointGeometry(points[j][1], points[j][0]));
-				
 
 			}
 			gl.addGeometry(p);
@@ -92,7 +90,6 @@ public final class ShpImport {
 			double lon = point.getPoint()[0];
 			gl.addGeometry(new fr.umlv.lastproject.smart.layers.PointGeometry(
 					lat, lon));
-
 		}
 
 		return gl;

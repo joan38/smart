@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
-import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
@@ -44,7 +43,6 @@ import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
-import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
@@ -78,13 +76,14 @@ public class MenuActivity extends Activity {
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
 	private String kmlPath;
+	private String shpPath;
+	private String tiffPath;
+	private String formPath;
 	private boolean missionCreated = false;
 	private String missionName;
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private int zoomLevel;
-
-	private String formPath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -210,42 +209,42 @@ public class MenuActivity extends Activity {
 				return super.onScroll(event);
 			}
 
-			@Override
-			public boolean onZoom(ZoomEvent event) {
-				final int oldZoom = zoomLevel;
-				final int newZoom = mapView.getZoomLevel();
-
-				Log.d("TEST", "" + mapView.getGeoTIFFOverlays().size());
-
-				for (TMSOverlay o : mapView.getGeoTIFFOverlays()) {
-					Log.d("TEST",
-							"" + o.getZoomLevelMin() + " / "
-									+ o.getZoomLevelMax());
-				}
-
-				int zoomEvent = event.getZoomLevel();
-				Log.d("TEST", "" + zoomEvent);
-				for (TMSOverlay overlay : mapView.getGeoTIFFOverlays()) {
-					if (zoomEvent - overlay.getZoomLevelMax() == 1
-							&& oldZoom < newZoom) {
-						final AlertZoomDialog dialog = new AlertZoomDialog(
-								MenuActivity.this, true, mapView);
-						dialog.show();
-						return true;
-
-					} else if (overlay.getZoomLevelMin() - zoomEvent == 1
-							&& newZoom < oldZoom) {
-						final AlertZoomDialog dialog = new AlertZoomDialog(
-								MenuActivity.this, false, mapView);
-						dialog.show();
-						return true;
-					}
-
-				}
-				zoomLevel = newZoom;
-				return true;
-
-			}
+			// @Override
+			// public boolean onZoom(ZoomEvent event) {
+			// final int oldZoom = zoomLevel;
+			// final int newZoom = mapView.getZoomLevel();
+			//
+			// Log.d("TEST", "" + mapView.getGeoTIFFOverlays().size());
+			//
+			// for (TMSOverlay o : mapView.getGeoTIFFOverlays()) {
+			// Log.d("TEST",
+			// "" + o.getZoomLevelMin() + " / "
+			// + o.getZoomLevelMax());
+			// }
+			//
+			// int zoomEvent = event.getZoomLevel();
+			// Log.d("TEST", "" + zoomEvent);
+			// for (TMSOverlay overlay : mapView.getGeoTIFFOverlays()) {
+			// if (zoomEvent - overlay.getZoomLevelMax() == 1
+			// && oldZoom < newZoom) {
+			// final AlertZoomDialog dialog = new AlertZoomDialog(
+			// MenuActivity.this, true, mapView);
+			// dialog.show();
+			// return true;
+			//
+			// } else if (overlay.getZoomLevelMin() - zoomEvent == 1
+			// && newZoom < oldZoom) {
+			// final AlertZoomDialog dialog = new AlertZoomDialog(
+			// MenuActivity.this, false, mapView);
+			// dialog.show();
+			// return true;
+			// }
+			//
+			// }
+			// zoomLevel = newZoom;
+			// return true;
+			//
+			// }
 		});
 
 		infoOverlay = new InfoOverlay(findViewById(R.id.table));
@@ -413,11 +412,29 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.IMPORT_KML:
-					Intent exportKMLItent = FileUtils.createGetContentIntent(
+					Intent importKMLIntent = FileUtils.createGetContentIntent(
 							FileUtils.KML_TYPE,
 							Environment.getExternalStorageDirectory() + "");
-					startActivityForResult(exportKMLItent,
+					startActivityForResult(importKMLIntent,
 							SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
+
+					break;
+
+				case SmartConstants.IMPORT_SHAPE:
+					Intent importSHPItent = FileUtils.createGetContentIntent(
+							FileUtils.SHP_TYPE,
+							Environment.getExternalStorageDirectory() + "");
+					startActivityForResult(importSHPItent,
+							SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
+
+					break;
+
+				case SmartConstants.IMPORT_GEOTIFF:
+					Intent importTiffItent = FileUtils.createGetContentIntent(
+							FileUtils.TIF_TYPE,
+							Environment.getExternalStorageDirectory() + "");
+					startActivityForResult(importTiffItent,
+							SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
 
 					break;
 
@@ -462,8 +479,8 @@ public class MenuActivity extends Activity {
 				Uri fileForm = data.getData();
 				formPath = fileForm.toString().split("file:///")[1];
 				missionDialog.setPathForm(formPath);
-
 				break;
+
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
 				Uri file = data.getData();
 
@@ -488,6 +505,28 @@ public class MenuActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				break;
+
+			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
+				Uri fileSHP = data.getData();
+				shpPath = fileSHP.toString().split("file:///")[1];
+				mapView.addGeometryLayer(DataImport.importShapeFile(this,
+						shpPath));
+
+				break;
+
+			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
+				Uri fileTiff = data.getData();
+				tiffPath = fileTiff.toString().split("file:///")[1];
+				Log.d("tiff", tiffPath);
+				try {
+					mapView.addGeoTIFFOverlay((DataImport
+							.importGeoTIFFFileFolder(tiffPath, this, "geoTIFF")));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				break;
 			}
 
@@ -518,6 +557,7 @@ public class MenuActivity extends Activity {
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
+
 		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getPointLayer());
@@ -554,5 +594,4 @@ public class MenuActivity extends Activity {
 					lastPosition.getLongitudeE6() / 1E6));
 		}
 	}
-
 }
