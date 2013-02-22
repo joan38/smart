@@ -10,15 +10,19 @@
     <string name="centerMap">Recentrage de la carte</string>
     <string name="findGPS">Recherche du signal GPS..</string>
     <string name="gpsSettings">Paramétrages du GPS</string>
-    <string name="gpsMessage">Cette application require le GPS.\nValider pour accéder aux paramétrages. \nVous pouvez également y accéder par le menu de paramétrages.</string>
+    <string name="gpsMessage">Cette application require le GPS.\nValider pour accéder aux paramétrages.\nVous pouvez également y accéder par le menu de paramétrages.</string>
     <string name="cancel">Annuler</string>
     <string name="validate">Valider</string>
     <string name="hideInfoZone">Cacher la zone d\'informations</string>
     <string name="showInfoZone">Afficher la zone d\'informations</string>
     <string name="exit">Quitter ?</string>
     <string name="exitMsg">Êtes-vous sûr de vouloir quitter SMART ?</string>
+    <string name="help">Aide</string>
+    <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.</string>
+    <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="ok">Ok</string>
     <string name="option">Option</string>
     
     <string name="addShortcut">Ajouter un raccouci</string>

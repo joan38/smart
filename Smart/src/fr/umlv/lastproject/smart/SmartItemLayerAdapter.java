@@ -67,7 +67,6 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 				((CheckBox) arg0).setChecked(checked);
 				item.setVisible(checked);
 
-
 			}
 		});
 

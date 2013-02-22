@@ -41,6 +41,7 @@ import fr.umlv.lastproject.smart.dialog.AlertDeleteMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExportCSVDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
+import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
@@ -133,6 +134,7 @@ public class MenuActivity extends Activity {
 			GeometryLayer kml = DataImport.importKml(this, Environment
 					.getExternalStorageDirectory().getPath()
 					+ "/SMART/poly.kml", GeometryType.POLYGON);
+
 			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
 
 			mapView.addGeometryLayer(kml);
@@ -171,6 +173,7 @@ public class MenuActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_smart, menu);
 		menu.add(0, 1, 0, R.string.hideInfoZone);
 		menu.add(0, 2, 0, R.string.gpsSettings);
+		menu.add(0, 3, 0, R.string.help);
 		return true;
 	}
 
@@ -347,8 +350,12 @@ public class MenuActivity extends Activity {
 		case 2:
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivity(intent);
+			break;
+		case 3:
+			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+					R.string.helpMap);
+			helpDialog.show();
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -517,9 +524,9 @@ public class MenuActivity extends Activity {
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
-		overlayManager.add(Mission.getInstance().getPolygonLayer());
-		overlayManager.add(Mission.getInstance().getLineLayer());
-		overlayManager.add(Mission.getInstance().getPointLayer());
+		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
+		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
+		mapView.addGeometryLayer(Mission.getInstance().getPointLayer());
 	}
 
 	public String getMissionName() {
