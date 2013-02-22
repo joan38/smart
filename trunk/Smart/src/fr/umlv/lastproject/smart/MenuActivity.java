@@ -550,12 +550,6 @@ public class MenuActivity extends Activity {
 				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(
 						ma, distance);
 				amrd.show();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				m.stop();
 			}
 		});
