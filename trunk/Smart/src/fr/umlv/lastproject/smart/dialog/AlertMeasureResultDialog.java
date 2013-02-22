@@ -7,8 +7,20 @@ import android.widget.TextView;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
+/**
+ * This dialog is used to display the measure
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertMeasureResultDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param menuActivity
+	 * @param result of the measure
+	 */
 	public AlertMeasureResultDialog(MenuActivity menuActivity, double result) {
 		super(menuActivity);
 

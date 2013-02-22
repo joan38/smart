@@ -14,6 +14,10 @@ import fr.umlv.lastproject.smart.R;
  */
 public class AlertExitSmartDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor
+	 * @param menu
+	 */
 	public AlertExitSmartDialog(final MenuActivity menu) {
 		super(menu);
 		setTitle(R.string.exit);

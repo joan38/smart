@@ -21,7 +21,12 @@ import android.widget.Toast;
  */
 public class AlertValidationDialog extends AlertDialog.Builder{
 
-	
+	/**
+	 * Constructor
+	 * @param c
+	 * @param idMission
+	 * @param nameMission
+	 */
 	public AlertValidationDialog(final Context c, final long idMission, String nameMission) {
 		super(c);
 		setCancelable(false);

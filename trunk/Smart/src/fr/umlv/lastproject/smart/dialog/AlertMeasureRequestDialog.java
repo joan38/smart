@@ -24,6 +24,11 @@ import fr.umlv.lastproject.smart.R;
  */
 public class AlertMeasureRequestDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param menuActivity
+	 */
 	public AlertMeasureRequestDialog(final MenuActivity menuActivity) {
 		super(menuActivity);
 		setTitle(R.string.MeasureTitle) ;

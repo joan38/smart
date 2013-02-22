@@ -18,6 +18,13 @@ import android.widget.TextView;
  */
 public class AlertZoomDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param context
+	 * @param zoomIn
+	 * @param mapView
+	 */
 	public AlertZoomDialog(final Context context, final boolean zoomIn,
 			final MapView mapView) {
 		super(context);

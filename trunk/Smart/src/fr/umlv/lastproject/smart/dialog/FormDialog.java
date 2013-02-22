@@ -69,6 +69,13 @@ public class FormDialog extends AlertDialog.Builder {
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
 
+	/**
+	 * Constructor
+	 * @param context
+	 * @param form
+	 * @param g : the geometry
+	 * @param mission
+	 */
 	public FormDialog(final MenuActivity context, final Form form,
 			final Geometry g, final Mission mission) {
 		super(context);

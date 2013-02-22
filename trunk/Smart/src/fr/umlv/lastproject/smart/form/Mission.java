@@ -84,6 +84,10 @@ public final class Mission {
 
 	}
 
+	/**
+	 * 
+	 * @return mission instantiated
+	 */
 	public static Mission getInstance() {
 		return mission;
 	}
@@ -272,6 +276,12 @@ public final class Mission {
 		return id;
 	}
 
+	/**
+	 * Remove a geometry of the mission
+	 * 
+	 * @param g is the geometry to remove
+	 * 
+	 */
 	public void removeGeometry(Geometry g) {
 		if (g == null) {
 			Log.d("TEST2", "Trying to remove a null geometry");

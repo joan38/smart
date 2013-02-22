@@ -24,14 +24,22 @@ public class GeometryRecord {
 	private List<PointRecord> points = new ArrayList<PointRecord>();
 	private final long idFormRecord;
 
+
+	/**
+	 * Constructor
+	 * @param idMission
+	 * @param idFormRecord
+	 * @param type
+	 */
 	public GeometryRecord(long idMission, long idFormRecord, GeometryType type) {
 		this.type = type;
 		this.idMission = idMission;
 		this.idFormRecord = idFormRecord;
+
 	}
 	
 	/**
-	 * 
+	 * Constructor
 	 * @param g is the geometry associated to the GeometryRecord
 	 * @param idMission
 	 */
@@ -43,8 +51,9 @@ public class GeometryRecord {
 		createPoints();
 	}
 
+
 	/**
-	 * 
+	 * Getter
 	 * @return the id of the geometryRecord
 	 */
 	public long getId() {
@@ -52,7 +61,7 @@ public class GeometryRecord {
 	}
 	
 	/**
-	 * 
+	 * Getter
 	 * @return the id of the formRecord
 	 */
 	public long getIdFormRecord() {
@@ -60,7 +69,7 @@ public class GeometryRecord {
 	}
 
 	/**
-	 * 
+	 * Setter
 	 * @param id
 	 */
 	public void setId(long id) {
@@ -68,15 +77,16 @@ public class GeometryRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return the type of the GeometryRecord
 	 */
 	public GeometryType getType() {
 		return type;
 	}
 
+
 	/**
-	 * 
+	 * Getter
 	 * @return the id of the mission associated to the GeometryRecord
 	 */
 	public long getIdMission() {
@@ -84,17 +94,27 @@ public class GeometryRecord {
 	}
 
 	/**
-	 * 
+	 * Getter
 	 * @return the list of PointRecord corresponding to the GeometryRecord
 	 */
 	public List<PointRecord> getPointsRecord() {
 		return points;
 	}
 	
+	/**
+	 * Add a PointRecord of the GeometryRecord
+	 * @param point to add
+	 * @return true if the insert is ok
+	 */
 	public boolean addPoint(PointRecord point) {
 		return points.add(point);
 	}
 	
+	/**
+	 * Remove a PointRecord of the GeometryRecord
+	 * @param point to remove
+	 * @return true if the delete is ok
+	 */
 	public boolean removePoint(PointRecord point) {
 		return points.remove(point);
 	}

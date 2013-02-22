@@ -32,12 +32,14 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	private TextView formPath;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param menu
+	 */
 	public AlertCreateMissionDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);
-		
-		
-		
 
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View createMissionDialog = inflater.inflate(
@@ -148,6 +150,10 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	}
 
+	/**
+	 * Set the path of form in the textview
+	 * @param path
+	 */
 	public void setPathForm(String path) {
 		formPath.setText(path);
 

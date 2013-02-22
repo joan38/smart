@@ -6,33 +6,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
-import android.content.Context;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import fr.umlv.lastproject.smart.MenuActivity;
-import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Object form associated at a mission
@@ -48,7 +29,6 @@ public class Form implements Serializable {
 	private static final long serialVersionUID = -30424477427478579L;
 	private String name;
 	private List<Field> fieldsList;
-	private List<Object> editTextList;
 
 
 	private static final String FORM ="form" ;
@@ -62,10 +42,6 @@ public class Form implements Serializable {
 	private static final String DEFAULT_NAME="FormDefault";
 	private static final String CHARSET="UTF-8";
 
-
-	private static final int PADDING_LEFT = 20;
-	private static final int PADDING_TOP = 10;
-	private static final int PADDING_RIGHT = 5;
 	
 /**
  * 
@@ -239,140 +215,5 @@ public class Form implements Serializable {
 		}
 	}
 
-	public void buildForm(TableLayout l, final Context c){
-
-		editTextList = new LinkedList<Object>();
-
-		for(Field field : fieldsList){
-			int typeField = field.getType();
-			TextView textView = new TextView(c);
-			final EditText editText = new EditText(c);
-
-
-			switch (typeField) {
-			case SmartConstants.TEXT_FIELD:
-				TextField tf = (TextField) field;
-				textView.setTag(tf.getLabel());
-				textView.setText(tf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-
-				l.addView(textView);
-				l.addView(editText);
-				editTextList.add(editText);
-
-				break;
-			case SmartConstants.NUMERIC_FIELD:
-				final NumericField nf = (NumericField) field;
-				textView.setText(nf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-				editText.addTextChangedListener(new TextWatcher(){
-
-					@Override
-					public void afterTextChanged(Editable arg0) {
-						if(!editText.getText().toString().equals("")){
-							if(Double.parseDouble(editText.getText().toString()) > nf.getMax() 
-									|| Double.parseDouble(editText.getText().toString()) < nf.getMin()){
-								editText.setError("Invalid");
-							}
-						}
-					}
-
-					@Override
-					public void beforeTextChanged(
-							CharSequence arg0, int arg1, int arg2,
-							int arg3) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onTextChanged(CharSequence arg0,
-							int arg1, int arg2, int arg3) {
-
-					}
-
-				});
-
-				l.addView(textView);
-				l.addView(editText);
-				editTextList.add(editText);
-
-				break;
-			case SmartConstants.BOOLEAN_FIELD:
-				BooleanField bf = (BooleanField) field;
-				textView.setText(bf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-
-				RadioGroup group = new RadioGroup(c);
-				RadioButton buttonYes = new RadioButton(c);
-				buttonYes.setId(0);
-				buttonYes.setText(R.string.yes);
-				buttonYes.setChecked(true);
-				RadioButton buttonNo = new RadioButton(c);
-				buttonNo.setId(1);
-				buttonNo.setText(R.string.no);
-
-				group.addView(buttonYes);
-				group.addView(buttonNo);
-
-				l.addView(textView);
-				l.addView(group);
-
-				editTextList.add(group);
-
-				break;
-			case SmartConstants.LIST_FIELD:
-				final ListField lf = (ListField) field;
-				textView.setText(lf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-
-				Spinner spin = new Spinner(c);
-				List<String> strings = lf.getValues();
-				spin.setAdapter(new ArrayAdapter<String>(c, android.R.layout.simple_list_item_1,strings));
-
-				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-					@Override
-					public void onItemSelected(AdapterView<?> arg0, View arg1,
-							int position, long arg3) {
-						EditText et  = new EditText(c);
-						et.setText(lf.getValues().get(position));
-						editTextList.add(et);
-
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
-				l.addView(textView);
-				l.addView(spin);
-				break;
-			case SmartConstants.PICTURE_FIELD:
-				PictureField pf = (PictureField) field;
-				textView.setText(pf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				l.addView(textView);
-				editTextList.add(editText);
-
-				break;
-			case SmartConstants.HEIGHT_FIELD:
-				HeightField hf = (HeightField) field;
-				textView.setText(hf.getLabel());
-				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-				l.addView(textView);
-				l.addView(editText);
-				editTextList.add(editText);
-
-				break;
-			default:
-				break;
-			}
-		}
-	}
+	
 }

@@ -29,6 +29,11 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class AlertDeleteMissionDialog extends AlertDialog {
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param c
+	 */
 	public AlertDeleteMissionDialog(final Context c) {
 		super(c);
 		setCancelable(false);
@@ -80,7 +85,11 @@ public class AlertDeleteMissionDialog extends AlertDialog {
 	}
 
 
-
+	/**
+	 * Create a map of all no active missions with their ids
+	 * @param c
+	 * @return a map of missions with their id
+	 */
 	private Map<String, Long> getAllMissions(Context c){
 		DbManager dbm = new DbManager() ;
 		try {

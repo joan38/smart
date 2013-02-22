@@ -13,8 +13,19 @@ import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
+/**
+ * This dialog is used to set up the track
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertTrackDialog extends AlertDialog.Builder {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param menu
+	 */
 	public AlertTrackDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);
