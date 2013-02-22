@@ -27,9 +27,9 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class AlertExportCSVDialog extends AlertDialog.Builder {
+public class AlertExportDialog extends AlertDialog.Builder {
 
-	public AlertExportCSVDialog(final Context c) {
+	public AlertExportDialog(final Context c) {
 		super(c);
 		setCancelable(false);
 

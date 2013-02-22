@@ -23,31 +23,31 @@ public final class DataExport {
 	 * 
 	 * @throws IOException
 	 */
-	public static void exportCsv(File file, Mission mission) throws IOException {
-		FileWriter csv = new FileWriter(file);
-		DbManager dbm = new DbManager();
-		try {
-			dbm.open(mission.getContext());
-		} catch (SmartException e) {
-			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("", e.getMessage());
-		}
-		csv.write("Geometries,Points\n");
-
-		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
-				.getId())) {
-			csv.write(geometry.getType().name() + ",");
-
-			for (PointRecord point : geometry.getPointsRecord()) {
-				csv.write("[" + point.getX() + ";" + point.getY() + ";"
-						+ point.getZ() + "]");
-			}
-
-			csv.write("\n");
-		}
-
-		csv.close();
-		dbm.close();
+	public static void exportCsv(String path, long idMission) throws SmartException {
+//		FileWriter csv = new FileWriter(new File(path));
+//		DbManager dbm = new DbManager();
+//		try {
+//			dbm.open(mission.getContext());
+//		} catch (SmartException e) {
+//			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//			Log.e("", e.getMessage());
+//		}
+//		csv.write("Geometries,Points\n");
+//
+//		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
+//				.getId())) {
+//			csv.write(geometry.getType().name() + ",");
+//
+//			for (PointRecord point : geometry.getPointsRecord()) {
+//				csv.write("[" + point.getX() + ";" + point.getY() + ";"
+//						+ point.getZ() + "]");
+//			}
+//
+//			csv.write("\n");
+//		}
+//
+//		csv.close();
+//		dbm.close();
 	}
 
 	/**
@@ -57,8 +57,8 @@ public final class DataExport {
 	 * @throws KmlExportException
 	 * @throws SmartException 
 	 */
-	public static void exportKml(String path, int idMission, Context context)
+	public static void exportKml(String path, long idMission, Context context)
 			throws KmlExportException, SmartException {
-			KmlExport.exportMission(new File(path), idMission, context);
+			KmlExport.exportMission(path, idMission, context);
 	}
 }
