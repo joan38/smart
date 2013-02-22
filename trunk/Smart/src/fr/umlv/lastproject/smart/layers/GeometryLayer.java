@@ -31,16 +31,16 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	private static final double VALUE_1E6 = 1E6;
 	private GeometryType type;
-	private List<Geometry> geometries;
+	private final List<Geometry> geometries;
 	private Projection projection;
 	private Paint paint;
 	private Symbology symbology;
 	private boolean editable = false;
 	private String name;
-	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
-	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
+	private final List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
+	private final List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
 	private final Context context;
-	
+
 	private static final float cX = 24;
 	private static final float cY = 24;
 	private static final float radius = 12;
@@ -51,8 +51,6 @@ public class GeometryLayer extends Overlay implements Layer {
 	private static final float rectRight = 42;
 	private static final float rectBottom = 42;
 	private static final float strokeWidth = 5;
-
-
 
 	/**
 	 * 
@@ -136,6 +134,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	 * 
 	 * @return
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -285,7 +284,6 @@ public class GeometryLayer extends Overlay implements Layer {
 						canvas.drawLine(pixelA.x, pixelA.y, pixelB.x, pixelB.y,
 								paint);
 
-
 					}
 				}
 				break;
@@ -316,7 +314,35 @@ public class GeometryLayer extends Overlay implements Layer {
 
 		if (editable) {
 			float x = e.getX();
+
 			float y = e.getY();
+			if (e.getPointerCount() > 1) {
+				float x0 = e.getX(0);
+				float x1 = e.getX(1);
+				float y0 = e.getY(0);
+				float y1 = e.getY(1);
+				if (Math.abs(x1 - x0) < 5 && Math.abs(y1 - y0) < 5) {
+
+					IGeoPoint p = mapView.getProjection().fromPixels(x0, y0);
+					float latitude = (float) (p.getLatitudeE6() / VALUE_1E6);
+					float longitude = (float) (p.getLongitudeE6() / VALUE_1E6);
+
+					for (int i = 0; i < singleTapListeners.size(); i++) {
+						singleTapListeners.get(i).actionPerformed(
+								new PointGeometry(latitude, longitude));
+					}
+					IGeoPoint p1 = mapView.getProjection().fromPixels(x1, y1);
+					float latitude1 = (float) (p.getLatitudeE6() / VALUE_1E6);
+					float longitude1 = (float) (p.getLongitudeE6() / VALUE_1E6);
+
+					for (int i = 0; i < singleTapListeners.size(); i++) {
+						singleTapListeners.get(i).actionPerformed(
+								new PointGeometry(latitude, longitude));
+					}
+					return super.onDoubleTap(e, mapView);
+				}
+
+			}
 
 			IGeoPoint p = mapView.getProjection().fromPixels(x, y);
 			float latitude = (float) (p.getLatitudeE6() / VALUE_1E6);
@@ -395,12 +421,12 @@ public class GeometryLayer extends Overlay implements Layer {
 
 		final Bitmap bit = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.geometry);
-		
-		Bitmap bitmap=bit.copy(Config.ARGB_8888, true);
+
+		Bitmap bitmap = bit.copy(Config.ARGB_8888, true);
 		final Canvas canvas = new Canvas(bitmap);
 
 		final Paint paint = new Paint();
-		
+
 		paint.setColor(symbology.getColor());
 		switch (type) {
 		case POINT:
