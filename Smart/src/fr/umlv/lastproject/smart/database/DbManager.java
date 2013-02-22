@@ -509,8 +509,7 @@ public class DbManager {
 	/**
 	 * Convert a cursor to a Mission object
 	 * 
-	 * @param c
-	 *            the cursor
+	 * @param c the cursor
 	 * @return a Mission object
 	 */
 	private MissionRecord cursorToMission(Cursor c) {

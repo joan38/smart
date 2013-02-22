@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart.data;
 
+import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,15 +45,15 @@ public abstract class KmlExport {
 	 * @param kmlFile
 	 * @param mission
 	 * @throws KmlExportException
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public static void exportMission(String path, long idMission,
-			Context context) throws KmlExportException, SmartException {
-		DbManager dbm = new DbManager();
-		dbm.open(context);
-		MissionRecord mission = dbm.getMission(idMission);
-
+			Context context) throws KmlExportException {
 		try {
+			DbManager dbm = new DbManager();
+			dbm.open(context);
+			MissionRecord mission = dbm.getMission(idMission);
+			
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -84,7 +86,8 @@ public abstract class KmlExport {
 
 			// name element
 			Element documentNameElement = kml.createElement(Kml.NAMETAG);
-			documentNameElement.appendChild(kml.createTextNode(mission.getTitle() + ".kml"));
+			documentNameElement.appendChild(kml.createTextNode(mission
+					.getTitle() + ".kml"));
 			documentElement.appendChild(documentNameElement);
 
 			// Folder element
@@ -97,10 +100,12 @@ public abstract class KmlExport {
 					.appendChild(kml.createTextNode(mission.getTitle()));
 			folderElement.appendChild(folderNameElement);
 
+			List<GeometryRecord> geometries = dbm.getGeometriesFromMission(mission.getId());
+			if (geometries.size() < 1) {
+				throw new KmlExportException("No geometry in the given mission");
+			}
 			
-
-			for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
-					.getId())) {
+			for (GeometryRecord geometry : geometries) {
 				// Placemark element
 				Element placemarkElement = kml.createElement(Kml.PLACEMARKTAG);
 				folderElement.appendChild(placemarkElement);
@@ -113,7 +118,9 @@ public abstract class KmlExport {
 
 				// description element
 				Element descriptionElement = KmlExport
-						.pepareDescriptionElement(kml, dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName()));
+						.pepareDescriptionElement(kml, dbm.getFormRecord(
+								geometry.getIdFormRecord(), mission.getForm()
+										.getName()));
 				placemarkElement.appendChild(descriptionElement);
 
 				// Polygon or Point or LineString element
@@ -126,19 +133,23 @@ public abstract class KmlExport {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(kml);
-			StreamResult result = new StreamResult(path + "/" + mission.getTitle() + ".kml");
+			StreamResult result = new StreamResult(path + "/"
+					+ mission.getTitle() + ".kml");
 
 			transformer.transform(source, result);
+
+			dbm.close();
 		} catch (ParserConfigurationException e) {
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (TransformerException e) {
 			throw new KmlExportException("Unable to export the mission", e);
+		} catch (SmartException e) {
+			throw new KmlExportException("Unable to export the mission", e);
 		}
-
-		dbm.close();
 	}
 
-	private static Element pepareGeometryElement(Document kml, GeometryRecord geometry) {
+	private static Element pepareGeometryElement(Document kml,
+			GeometryRecord geometry) {
 		// Polygon or Point or LineString element
 		Element geomertryElement = kml.createElement(geometry.getType()
 				.getKmlName());
@@ -201,7 +212,8 @@ public abstract class KmlExport {
 		return outerBoundaryIsElement;
 	}
 
-	private static Element pepareDescriptionElement(Document kml, FormRecord formRecord) {
+	private static Element pepareDescriptionElement(Document kml,
+			FormRecord formRecord) {
 		Element descriptionElement = kml.createElement(Kml.DESCRIPTIONTAG);
 		StringBuilder description = new StringBuilder(formRecord.getName());
 
@@ -239,9 +251,9 @@ public abstract class KmlExport {
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException("Unkown field type");
 			}
-			
+
 			description.append("\n");
 		}
 

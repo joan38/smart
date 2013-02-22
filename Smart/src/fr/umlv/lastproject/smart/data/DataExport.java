@@ -3,13 +3,25 @@ package fr.umlv.lastproject.smart.data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
+
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
+import fr.umlv.lastproject.smart.database.FieldRecord;
+import fr.umlv.lastproject.smart.database.FormRecord;
 import fr.umlv.lastproject.smart.database.GeometryRecord;
+import fr.umlv.lastproject.smart.database.HeightFieldRecord;
+import fr.umlv.lastproject.smart.database.ListFieldRecord;
+import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.database.NumericFieldRecord;
+import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
+import fr.umlv.lastproject.smart.database.TextFieldRecord;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public final class DataExport {
@@ -23,31 +35,91 @@ public final class DataExport {
 	 * 
 	 * @throws IOException
 	 */
-	public static void exportCsv(String path, long idMission) throws SmartException {
-//		FileWriter csv = new FileWriter(new File(path));
-//		DbManager dbm = new DbManager();
-//		try {
-//			dbm.open(mission.getContext());
-//		} catch (SmartException e) {
-//			Toast.makeText(mission.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//			Log.e("", e.getMessage());
-//		}
-//		csv.write("Geometries,Points\n");
-//
-//		for (GeometryRecord geometry : dbm.getGeometriesFromMission(mission
-//				.getId())) {
-//			csv.write(geometry.getType().name() + ",");
-//
-//			for (PointRecord point : geometry.getPointsRecord()) {
-//				csv.write("[" + point.getX() + ";" + point.getY() + ";"
-//						+ point.getZ() + "]");
-//			}
-//
-//			csv.write("\n");
-//		}
-//
-//		csv.close();
-//		dbm.close();
+	public static void exportCsv(String path, long idMission, Context context)
+			throws CsvExportException {
+		try {
+			DbManager dbm = new DbManager();
+			dbm.open(context);
+			MissionRecord mission = dbm.getMission(idMission);
+			Iterator<GeometryRecord> geometryIterator = dbm.getGeometriesFromMission(mission.getId()).iterator();
+
+			if (!geometryIterator.hasNext()) {
+				throw new CsvExportException("No geometry in the given mission");
+			}
+			
+			FileWriter csv = new FileWriter(path + "/" + mission.getTitle() + ".csv");
+			csv.write("Geometries,Points");
+			
+			GeometryRecord geometry = geometryIterator.next();
+			FormRecord formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName());
+			for (FieldRecord field : formRecord.getFields()) {
+				csv.write("," + field.getField().getLabel());
+			}
+			csv.write("\n");
+
+			while (true) {
+				csv.write(geometry.getType().name() + ",");
+
+				for (PointRecord point : geometry.getPointsRecord()) {
+					csv.write("[" + point.getX() + ";" + point.getY() + ";"
+							+ point.getZ() + "]");
+				}
+				
+				for (FieldRecord field : formRecord.getFields()) {
+					csv.write(",");
+					
+					switch (field.getField().getType()) {
+					case SmartConstants.TEXT_FIELD:
+						TextFieldRecord tf = (TextFieldRecord) field;
+						csv.write(tf.getValue());
+						break;
+
+					case SmartConstants.NUMERIC_FIELD:
+						NumericFieldRecord nf = (NumericFieldRecord) field;
+						csv.write(String.valueOf(nf.getValue()));
+						break;
+
+					case SmartConstants.BOOLEAN_FIELD:
+						BooleanFieldRecord bf = (BooleanFieldRecord) field;
+						csv.write(String.valueOf(bf.getValue()));
+						break;
+
+					case SmartConstants.LIST_FIELD:
+						ListFieldRecord lf = (ListFieldRecord) field;
+						csv.write(lf.getValue());
+						break;
+
+					case SmartConstants.PICTURE_FIELD:
+						PictureFieldRecord pf = (PictureFieldRecord) field;
+						csv.write(pf.getValue());
+						break;
+
+					case SmartConstants.HEIGHT_FIELD:
+						HeightFieldRecord hf = (HeightFieldRecord) field;
+						csv.write(String.valueOf(hf.getValue()));
+						break;
+
+					default:
+						throw new IllegalStateException("Unkown field type");
+					}
+				}
+
+				csv.write("\n");
+				
+				if (!geometryIterator.hasNext()) {
+					break;
+				}
+				geometry = geometryIterator.next();
+				formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName());
+			}
+
+			csv.close();
+			dbm.close();
+		} catch (IOException e) {
+			throw new CsvExportException("Unable to export the mission", e);
+		} catch (SmartException e) {
+			throw new CsvExportException("Unable to export the mission", e);
+		}
 	}
 
 	/**
@@ -55,10 +127,10 @@ public final class DataExport {
 	 * is <the name of the mission>.kml
 	 * 
 	 * @throws KmlExportException
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public static void exportKml(String path, long idMission, Context context)
-			throws KmlExportException, SmartException {
-			KmlExport.exportMission(path, idMission, context);
+			throws KmlExportException {
+		KmlExport.exportMission(path, idMission, context);
 	}
 }

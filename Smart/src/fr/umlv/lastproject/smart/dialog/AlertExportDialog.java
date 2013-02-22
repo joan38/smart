@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.data.CsvExportException;
 import fr.umlv.lastproject.smart.data.DataExport;
 import fr.umlv.lastproject.smart.data.KmlExportException;
 import fr.umlv.lastproject.smart.database.DbManager;
@@ -76,7 +77,7 @@ public class AlertExportDialog extends AlertDialog.Builder {
 						// Export CSV
 						DataExport.exportCsv(Environment
 								.getExternalStorageDirectory().getPath() + "/SMART",
-								idMission);
+								idMission, c);
 						break;
 
 					case R.id.KmlExport:
@@ -90,7 +91,9 @@ public class AlertExportDialog extends AlertDialog.Builder {
 						throw new IllegalStateException("Id of the radiobutton unkown");
 					}
 				} catch (KmlExportException e) {
-				} catch (SmartException e) {
+					// TODO: Toast
+				} catch (CsvExportException e) {
+					// TODO: Toast
 				}
 			}
 		});
