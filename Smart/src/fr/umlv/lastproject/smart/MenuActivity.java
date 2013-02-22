@@ -13,7 +13,6 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -59,6 +58,7 @@ public class MenuActivity extends Activity {
 	 * 
 	 * @author thibault Brun
 	 * @author tanios Faddoul
+	 * @author EVERYBODY !
 	 * 
 	 * @Description : This class contains the Menus container
 	 * 
@@ -120,6 +120,9 @@ public class MenuActivity extends Activity {
 		// importKML();
 	}
 
+	/**
+	 * import the kml
+	 */
 	private void importKML() {
 		// import kml
 		try {

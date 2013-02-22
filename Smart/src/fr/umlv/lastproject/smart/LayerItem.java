@@ -20,28 +20,55 @@ public class LayerItem implements Serializable {
 	private boolean visible;
 	private  Bitmap overview;
 
+	/**
+	 * 
+	 * @param name of the layer
+	 * @param visible true or false
+	 * @param overview of the symbologie
+	 */
 	public LayerItem(String name, boolean visible, Bitmap overview) {
 		this.name = name;
 		this.visible = visible;
 		this.overview = overview;
 	}
 
+	/**
+	 * 
+	 * @param name of the layer
+	 * @param overview of the symbologie
+	 */
 	public LayerItem(String name, Bitmap overview) {
 		this(name, true, overview);
 	}
 
+	/**
+	 * 
+	 * @return the name of the layer
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @return visible or not
+	 */
 	public boolean isVisible() {
 		return visible;
 	}
 
+	/**
+	 * 
+	 * @param visible or not
+	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
+	/**
+	 * 
+	 * @return overview of the symbo
+	 */
 	public Bitmap getOverview() {
 		return overview;
 	}
@@ -87,6 +114,11 @@ public class LayerItem implements Serializable {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param out the object to get
+	 * @throws IOException if canot read
+	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(name);
 		out.writeBoolean(visible);
@@ -100,6 +132,12 @@ public class LayerItem implements Serializable {
 		out.write(imageByteArray);
 	}
 
+	/**
+	 * 
+	 * @param in object to read
+	 * @throws IOException if object not readable
+	 * @throws ClassNotFoundException if class does not exist
+	 */
 	private void readObject(ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		this.name = (String) in.readObject();

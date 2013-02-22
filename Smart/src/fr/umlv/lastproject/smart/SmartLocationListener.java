@@ -11,6 +11,10 @@ public class SmartLocationListener implements LocationListener {
 
 	private final List<IGPSListener> gpsListeners;
 
+	/**
+	 * 
+	 * @param listeners list of listeners
+	 */
 	public SmartLocationListener( List<IGPSListener> listeners) {
 		
 		this.gpsListeners = listeners;
