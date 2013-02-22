@@ -15,6 +15,8 @@ public class PolygonSymbology extends Symbology {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int thickness;
+	
+	private static final int VALUE_THICKNESS = 5;
 
 	/**
 	 * Polygon default constructor
@@ -22,7 +24,7 @@ public class PolygonSymbology extends Symbology {
 	 * Color : Black / Thickness : 5
 	 */
 	public PolygonSymbology() {
-		this(5,Color.BLACK);
+		this(VALUE_THICKNESS,Color.BLACK);
 	}
 
 	/**

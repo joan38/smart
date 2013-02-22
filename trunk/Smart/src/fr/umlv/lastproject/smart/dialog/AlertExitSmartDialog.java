@@ -6,6 +6,12 @@ import android.content.DialogInterface.OnClickListener;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
+/**
+ * This class is used to ask at the user if he really wants to exit the application
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertExitSmartDialog extends AlertDialog.Builder {
 
 	public AlertExitSmartDialog(final MenuActivity menu) {

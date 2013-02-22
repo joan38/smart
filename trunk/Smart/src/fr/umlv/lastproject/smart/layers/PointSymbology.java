@@ -14,6 +14,8 @@ public class PointSymbology extends Symbology {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int radius;
+	
+	private static final int VALUE_RADIUS = 5;
 
 	/**
 	 * Point default constructor
@@ -21,7 +23,7 @@ public class PointSymbology extends Symbology {
 	 * Color : Black / Radius : 5
 	 */
 	public PointSymbology() {
-		this(5, Color.BLACK);
+		this(VALUE_RADIUS, Color.BLACK);
 	}
 
 	/**

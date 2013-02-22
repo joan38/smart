@@ -27,6 +27,11 @@ import fr.umlv.lastproject.smart.utils.SmartException;
 public final class Mission {
 
 	private static Mission mission = null;
+	
+	private static final int POINT_RADIUS = 10;
+	private static final int LINE_THICKNESS = 10;
+	private static final int POLY_THICKNESS = 10;
+
 
 	/* three type of survey are available : line, polygon, point */
 	private GeometryLayer pointLayer;
@@ -62,15 +67,15 @@ public final class Mission {
 
 		pointLayer = new GeometryLayer(context);
 		pointLayer.setType(GeometryType.POINT);
-		pointLayer.setSymbology(new PointSymbology(10, Color.BLACK));
+		pointLayer.setSymbology(new PointSymbology(POINT_RADIUS, Color.BLACK));
 
 		lineLayer = new GeometryLayer(context);
 		lineLayer.setType(GeometryType.LINE);
-		lineLayer.setSymbology(new LineSymbology(10, Color.BLACK));
+		lineLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.BLACK));
 
 		polygonLayer = new GeometryLayer(context);
 		polygonLayer.setType(GeometryType.POLYGON);
-		polygonLayer.setSymbology(new PolygonSymbology(10, Color.BLACK));
+		polygonLayer.setSymbology(new PolygonSymbology(POLY_THICKNESS, Color.BLACK));
 
 		survey = new Survey(mapview);
 

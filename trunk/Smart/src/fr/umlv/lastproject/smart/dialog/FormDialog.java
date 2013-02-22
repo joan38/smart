@@ -53,10 +53,21 @@ import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
+/**
+ * This class is used to display the form
+ * The user can fill the differents fields
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class FormDialog extends AlertDialog.Builder {
 
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
+	
+	private static final int PADDING_LEFT = 20;
+	private static final int PADDING_TOP = 10;
+	private static final int PADDING_RIGHT = 5;
 
 	public FormDialog(final MenuActivity context, final Form form,
 			final Geometry g, final Mission mission) {
@@ -158,7 +169,6 @@ public class FormDialog extends AlertDialog.Builder {
 							Log.e("", e.getMessage());
 						}
 						dbManager.close();
-						// mission.addGeometry(g);
 					}
 				});
 
@@ -170,6 +180,13 @@ public class FormDialog extends AlertDialog.Builder {
 				});
 	}
 
+	/**
+	 * Build the form associated to the mission to display it
+	 * 
+	 * @param l
+	 * @param c
+	 * @param fieldsList
+	 */
 	public final void buildForm(TableLayout l, final MenuActivity c,
 			List<Field> fieldsList) {
 		editTextList = new LinkedList<Object>();
@@ -183,7 +200,7 @@ public class FormDialog extends AlertDialog.Builder {
 				TextField tf = (TextField) field;
 				textView.setTag(tf.getLabel());
 				textView.setText(tf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
 				l.addView(textView);
 				l.addView(editText);
@@ -193,7 +210,7 @@ public class FormDialog extends AlertDialog.Builder {
 			case SmartConstants.NUMERIC_FIELD:
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				editText.addTextChangedListener(new TextWatcher() {
 
@@ -232,7 +249,8 @@ public class FormDialog extends AlertDialog.Builder {
 			case SmartConstants.BOOLEAN_FIELD:
 				BooleanField bf = (BooleanField) field;
 				textView.setText(bf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
+
 
 				RadioGroup group = new RadioGroup(c);
 				RadioButton buttonYes = new RadioButton(c);
@@ -255,7 +273,8 @@ public class FormDialog extends AlertDialog.Builder {
 			case SmartConstants.LIST_FIELD:
 				final ListField lf = (ListField) field;
 				textView.setText(lf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
+
 
 				Spinner spin = new Spinner(c);
 				List<String> strings = lf.getValues();
@@ -288,7 +307,7 @@ public class FormDialog extends AlertDialog.Builder {
 				final EditText et = new EditText(c);
 
 				textView.setText(pf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
 				final TextView namePictureView = new TextView(c);
 
@@ -336,7 +355,7 @@ public class FormDialog extends AlertDialog.Builder {
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
 				textView.setText(hf.getLabel());
-				textView.setPadding(20, 10, 5, 0);
+				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
 				l.addView(textView);

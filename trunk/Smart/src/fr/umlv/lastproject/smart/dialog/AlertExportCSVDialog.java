@@ -22,6 +22,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * This class is used to export CSV. The user can choose the mission to export
+ * 
+ * @author Maellou
+ *
+ */
 public class AlertExportCSVDialog extends AlertDialog.Builder {
 
 	public AlertExportCSVDialog(Context c) {
@@ -64,7 +70,6 @@ public class AlertExportCSVDialog extends AlertDialog.Builder {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 
 			}
 		});

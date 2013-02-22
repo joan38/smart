@@ -59,25 +59,31 @@ public class LayerItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null){
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()){
 			return false;
+		}
 		LayerItem other = (LayerItem) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!name.equals(other.name)){
 			return false;
+		}
 		if (overview == null) {
 			if (other.overview != null)
 				return false;
-		} else if (!overview.equals(other.overview))
+		} else if (!overview.equals(other.overview)){
 			return false;
-		if (visible != other.visible)
+		}
+		if (visible != other.visible){
 			return false;
+		}
 		return true;
 	}
 

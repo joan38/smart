@@ -22,6 +22,12 @@ import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
+/**
+ * This class is used to create a new mission and define its name and the form associated
+ * 
+ * @author Maelle Cabot
+ *
+ */
 public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	private TextView formPath;

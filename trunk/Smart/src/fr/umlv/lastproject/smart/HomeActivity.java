@@ -26,8 +26,7 @@ public class HomeActivity extends Activity {
 	private List<ListViewItem> listItem;
 	private String[] items;
 
-	// public static final Integer[] images = { R.drawable.smart,
-	// R.drawable.smart, R.drawable.orange, R.drawable.mixed };
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

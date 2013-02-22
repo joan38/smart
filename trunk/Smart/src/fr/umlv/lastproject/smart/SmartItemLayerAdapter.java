@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,14 +55,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		smartHolder.txtTitle.setText(item.getName());
 
 		smartHolder.imageView.setImageBitmap(item.getOverview());
-		// smartHolder.imageView.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
+		
 
 		smartHolder.chkBox.setChecked(item.isVisible());
 		smartHolder.chkBox.setOnClickListener(new OnClickListener() {

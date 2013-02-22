@@ -12,8 +12,8 @@ import android.widget.TextView;
  * 
  */
 public class InfoOverlay {
-	private static final DecimalFormat locationFormat = new DecimalFormat("####0.00000");
-	private static final DecimalFormat accuracyFormat = new DecimalFormat("####0.00");
+	private static final DecimalFormat LOCATION_FORMAT = new DecimalFormat("####0.00000");
+	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat("####0.00");
 
 	private double latitude;
 	private double longitude;
@@ -81,22 +81,22 @@ public class InfoOverlay {
 		((TextView) infoView.findViewById(R.id.latitude))
 				.setText(R.string.latitude);
 		((TextView) infoView.findViewById(R.id.latitudeValue))
-				.setText(locationFormat.format(latitude));
+				.setText(LOCATION_FORMAT.format(latitude));
 
 		((TextView) infoView.findViewById(R.id.longitude))
 				.setText(R.string.longitude);
 		((TextView) infoView.findViewById(R.id.longitudeValue))
-				.setText(locationFormat.format(longitude));
+				.setText(LOCATION_FORMAT.format(longitude));
 
 		((TextView) infoView.findViewById(R.id.altitude))
 				.setText(R.string.altitude);
 		((TextView) infoView.findViewById(R.id.altitudeValue))
-				.setText(locationFormat.format(altitude));
+				.setText(LOCATION_FORMAT.format(altitude));
 
 		((TextView) infoView.findViewById(R.id.precision))
 				.setText(R.string.accuracy);
 		((TextView) infoView.findViewById(R.id.precisionValue))
-				.setText(accuracyFormat.format(accuracy));
+				.setText(ACCURACY_FORMAT.format(accuracy));
 
 	}
 }

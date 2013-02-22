@@ -77,6 +77,12 @@ public class DbManager {
 	private static final int POINTS_NUM_COL_Z = 3;
 	private static final String POINTS_COL_ID_GEOMETRY = "idGeometry";
 	private static final int POINTS_NUM_COL_ID_GEOMETRY = 4;
+	
+	private static final String TEXT = "TEXT";
+	private static final String SELECT = "SELECT ";
+	private static final String FROM = " FROM ";
+	private static final String WHERE = " WHERE ";
+
 
 	private DbHelper mDbHelper;
 	private SQLiteDatabase mDb;
@@ -207,7 +213,7 @@ public class DbManager {
 			switch (typeField) {
 			case SmartConstants.TEXT_FIELD:
 				TextField tf = (TextField) field;
-				sql.append(tf.getLabel()).append(" TEXT, ");
+				sql.append(tf.getLabel()).append(" "+TEXT+", ");
 				break;
 			case SmartConstants.NUMERIC_FIELD:
 				NumericField nf = (NumericField) field;
@@ -223,15 +229,15 @@ public class DbManager {
 				break;
 			case SmartConstants.LIST_FIELD:
 				ListField lf = (ListField) field;
-				sql.append(lf.getLabel()).append(" TEXT, ");
+				sql.append(lf.getLabel()).append(" "+TEXT+", ");
 				break;
 			case SmartConstants.PICTURE_FIELD:
 				PictureField pf = (PictureField) field;
-				sql.append(pf.getLabel()).append(" TEXT, ");
+				sql.append(pf.getLabel()).append(" "+TEXT+", ");
 				break;
 			case SmartConstants.HEIGHT_FIELD:
 				HeightField hf = (HeightField) field;
-				sql.append(hf.getLabel()).append(" TEXT, ");
+				sql.append(hf.getLabel()).append(" "+TEXT+", ");
 				break;
 			default:
 				break;
@@ -355,11 +361,11 @@ public class DbManager {
 	 */
 	public void deleteMission(long idMission){
 		
-		Cursor cNomForm = mDb.rawQuery("SELECT "+MISSIONS_COL_FORM+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_ID+"="+idMission, null);
+		Cursor cNomForm = mDb.rawQuery(SELECT+MISSIONS_COL_FORM+FROM+TABLE_MISSIONS+WHERE+MISSIONS_COL_ID+"="+idMission, null);
 		cNomForm.moveToNext();
 		String nomForm = cNomForm.getString(0);
 	
-		Cursor cGeometries = mDb.rawQuery("SELECT "+GEOMETRIES_COL_ID+","+GEOMETRIES_COL_ID_FORM_RECORD+" FROM "+TABLE_GEOMETRIES+" WHERE "+GEOMETRIES_COL_ID_MISSION+"="+idMission, null);
+		Cursor cGeometries = mDb.rawQuery(SELECT+GEOMETRIES_COL_ID+","+GEOMETRIES_COL_ID_FORM_RECORD+FROM+TABLE_GEOMETRIES+WHERE+GEOMETRIES_COL_ID_MISSION+"="+idMission, null);
 		
 		List<Long> idGeometries = new LinkedList<Long>();
 		List<Long> idForms = new LinkedList<Long>();
@@ -386,8 +392,8 @@ public class DbManager {
 	 * @return the id of the mission
 	 */
 	public int getMissionId(String name) {
-		Cursor c = mDb.rawQuery("SELECT " + MISSIONS_COL_ID + " FROM "
-				+ TABLE_MISSIONS + " WHERE " + MISSIONS_COL_TITLE + " = '"
+		Cursor c = mDb.rawQuery(SELECT + MISSIONS_COL_ID + FROM
+				+ TABLE_MISSIONS + WHERE + MISSIONS_COL_TITLE + " = '"
 				+ name + "'", null);
 
 		c.moveToNext();
@@ -405,7 +411,7 @@ public class DbManager {
 	 * @return the MissionRecord corresponding to the given id
 	 */
 	public MissionRecord getMission(long idMission) {
-		Cursor c = mDb.rawQuery("SELECT * FROM " + TABLE_MISSIONS + " WHERE "
+		Cursor c = mDb.rawQuery(SELECT+" * "+FROM + TABLE_MISSIONS + WHERE
 				+ MISSIONS_COL_ID + " = " + idMission, null);
 
 		c.moveToNext();
@@ -434,8 +440,8 @@ public class DbManager {
 	 */
 	public long existsActivatedMission() {
 		Cursor c = mDb
-				.rawQuery("SELECT " + MISSIONS_COL_ID + " FROM "
-						+ TABLE_MISSIONS + " WHERE " + MISSIONS_COL_STATUS
+				.rawQuery(SELECT + MISSIONS_COL_ID + FROM
+						+ TABLE_MISSIONS + WHERE + MISSIONS_COL_STATUS
 						+ "=1", null);
 
 		if (c.getCount() == 0) {
@@ -454,8 +460,8 @@ public class DbManager {
 	 */
 	public boolean existsMission(String name) {
 		Cursor c = null;
-		c = mDb.rawQuery("SELECT " + MISSIONS_COL_ID + " FROM "
-				+ TABLE_MISSIONS + " WHERE " + MISSIONS_COL_TITLE + "='" + name
+		c = mDb.rawQuery(SELECT + MISSIONS_COL_ID + FROM
+				+ TABLE_MISSIONS + WHERE + MISSIONS_COL_TITLE + "='" + name
 				+ "'", null);
 
 		if (c.getCount() == 0) {
@@ -471,7 +477,7 @@ public class DbManager {
 	 * @return a list of mission
 	 */
 	public List<MissionRecord> getAllMissionsNoActives(){
-		Cursor c = mDb.rawQuery("SELECT * FROM "+TABLE_MISSIONS+" WHERE status=0", null);
+		Cursor c = mDb.rawQuery(SELECT+" * "+FROM+TABLE_MISSIONS+WHERE+" status=0", null);
 		
 		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
 		while (c.moveToNext()) {
@@ -580,8 +586,7 @@ public class DbManager {
 
 	public List<GeometryRecord> getGeometriesFromMission(long idMission) {
 		ArrayList<GeometryRecord> geometries = new ArrayList<GeometryRecord>();
-		Cursor c = mDb.rawQuery("SELECT * FROM geometries WHERE "
-				+ GEOMETRIES_COL_ID_MISSION + "=" + idMission, null);
+		Cursor c = mDb.rawQuery(SELECT+" * "+FROM+TABLE_GEOMETRIES+WHERE+ GEOMETRIES_COL_ID_MISSION + "=" + idMission, null);
 
 		while (c.moveToNext()) {
 			geometries.add(cursorToGeometry(c));
@@ -625,7 +630,7 @@ public class DbManager {
 	public List<PointRecord> getPointsFromGeometry(long idGeometry) {
 		ArrayList<PointRecord> points = new ArrayList<PointRecord>();
 
-		Cursor c = mDb.rawQuery("SELECT * FROM points WHERE "
+		Cursor c = mDb.rawQuery(SELECT+" * "+ FROM+ TABLE_POINTS +WHERE 
 				+ POINTS_COL_ID_GEOMETRY + "=" + idGeometry, null);
 
 		while (c.moveToNext()) {
@@ -688,7 +693,7 @@ public class DbManager {
 
 		Cursor c = mDb
 				.rawQuery(
-						"SELECT * FROM points JOIN geometries ON geometries.id=points.idGeometry WHERE geometries.type=0 and geometries.idMission = "
+						SELECT+" * "+ FROM +TABLE_POINTS+" JOIN " +TABLE_GEOMETRIES+" ON geometries.id=points.idGeometry WHERE geometries.type=0 and geometries.idMission = "
 								+ idMission, null);
 		while (c.moveToNext()) {
 			points.add(cursorToPoint(c));
@@ -721,7 +726,7 @@ public class DbManager {
 	}
 
 	public FormRecord getFormRecord(long idFormRecord, String formName) {
-		Cursor c = mDb.rawQuery("SELECT * FROM " + formName + " WHERE id" + "="
+		Cursor c = mDb.rawQuery(SELECT+" * "+ FROM + formName + WHERE +" id" + "="
 				+ idFormRecord, null);
 
 		c.moveToNext();

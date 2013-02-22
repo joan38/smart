@@ -40,6 +40,19 @@ public class GeometryLayer extends Overlay implements Layer {
 	private List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	private List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
 	private final Context context;
+	
+	private static final float cX = 24;
+	private static final float cY = 24;
+	private static final float radius = 12;
+	private static final float lineStopX = 48;
+	private static final float lineStopY = 48;
+	private static final float rectLeft = 6;
+	private static final float rectTop = 6;
+	private static final float rectRight = 42;
+	private static final float rectBottom = 42;
+	private static final float strokeWidth = 5;
+
+
 
 	/**
 	 * 
@@ -239,7 +252,6 @@ public class GeometryLayer extends Overlay implements Layer {
 
 			case POLYGON:
 
-				// Log.d("", "polygon draw");
 				// Récupération de la géometrie et de sa symbologie
 				PolygonGeometry polygonGeometry = (PolygonGeometry) geometry;
 
@@ -273,7 +285,6 @@ public class GeometryLayer extends Overlay implements Layer {
 						canvas.drawLine(pixelA.x, pixelA.y, pixelB.x, pixelB.y,
 								paint);
 
-						// Log.d("", "polygon draw " + pixelA.x);
 
 					}
 				}
@@ -384,7 +395,6 @@ public class GeometryLayer extends Overlay implements Layer {
 
 		final Bitmap bit = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.geometry);
-		//Bitmap bitmap=Bitmap.createBitmap(48, 48, Config.ARGB_8888);
 		
 		Bitmap bitmap=bit.copy(Config.ARGB_8888, true);
 		final Canvas canvas = new Canvas(bitmap);
@@ -394,19 +404,18 @@ public class GeometryLayer extends Overlay implements Layer {
 		paint.setColor(symbology.getColor());
 		switch (type) {
 		case POINT:
-			canvas.drawCircle(24, 24, 12, paint);
+			canvas.drawCircle(cX, cY, radius, paint);
 			break;
 		case LINE:
-			paint.setStrokeWidth(5);
-			canvas.drawLine(0, 0, 48, 48, paint);
+			paint.setStrokeWidth(strokeWidth);
+			canvas.drawLine(0, 0, lineStopX, lineStopY, paint);
 			break;
 		case POLYGON:
-			canvas.drawRect(6, 6, 42, 42, paint);
+			canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint);
 			break;
 		default:
 			break;
 		}
-		//canvas.drawBitmap(bitmap, 0, 0, paint);
 		return bitmap;
 
 	}

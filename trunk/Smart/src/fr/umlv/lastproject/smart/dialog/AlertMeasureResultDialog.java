@@ -20,7 +20,7 @@ public class AlertMeasureResultDialog extends AlertDialog.Builder {
 		setView(alertDialogView);
 		setTitle(R.string.result);
 		TextView v = (TextView)  alertDialogView.findViewById(R.id.measureTextResult) ;
-		v.setText(String.valueOf(result) + " m") ;
+		v.setText(result + " m") ;
 
 		setPositiveButton(R.string.validate, null);
 	}
