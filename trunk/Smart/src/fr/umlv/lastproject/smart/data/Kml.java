@@ -31,23 +31,23 @@ public class Kml {
 	private final File file;
 	private final Map<GeometryType, List<Geometry>> geometries = new HashMap<GeometryType, List<Geometry>>();
 
-	static final String GEOMETRIESTAGS = "Point|LineString|Polygon";
-	static final String POINTTAG = "Point";
-	static final String LINETAG = "LineString";
-	static final String POLYGONTAG = "Polygon";
-	static final String COORDINATESTAG = "coordinates";
-	static final String KMLTAG = "kml";
-	static final String KMLNSTAG = "xmlns";
-	static final String KMLNSGXTAG = "xmlns:gx";
-	static final String XMLNSKMLTAG = "xmlns:kml";
-	static final String XMLNSATOMTAG = "xmlns:atom";
-	static final String DOCUMENTTAG = "Document";
-	static final String NAMETAG = "name";
-	static final String FOLDERTAG = "Folder";
-	static final String PLACEMARKTAG = "Placemark";
-	static final String DESCRIPTIONTAG = "description";
-	static final String OUTERBOUNDARYTAG = "outerBoundaryIs";
-	static final String LINEARRINGTAG = "LinearRing";
+	public static final String GEOMETRIESTAGS = "Point|LineString|Polygon";
+	public static final String POINTTAG = "Point";
+	public static final String LINETAG = "LineString";
+	public static final String POLYGONTAG = "Polygon";
+	public static final String COORDINATESTAG = "coordinates";
+	public static final String KMLTAG = "kml";
+	public static final String KMLNSTAG = "xmlns";
+	public static final String KMLNSGXTAG = "xmlns:gx";
+	public static final String XMLNSKMLTAG = "xmlns:kml";
+	public static final String XMLNSATOMTAG = "xmlns:atom";
+	public static final String DOCUMENTTAG = "Document";
+	public static final String NAMETAG = "name";
+	public static final String FOLDERTAG = "Folder";
+	public static final String PLACEMARKTAG = "Placemark";
+	public static final String DESCRIPTIONTAG = "description";
+	public static final String OUTERBOUNDARYTAG = "outerBoundaryIs";
+	public static final String LINEARRINGTAG = "LinearRing";
 
 	public Kml(File file) {
 		this.file = file;

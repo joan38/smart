@@ -10,11 +10,10 @@ import java.util.List;
  * 
  */
 public class PolygonGeometry extends Geometry {
-	private List<PointGeometry> points;
-	
-	public PolygonGeometry(){
-		points = new ArrayList<PointGeometry>();
-		setType(GeometryType.POLYGON);
+	private final List<PointGeometry> points;
+
+	public PolygonGeometry() {
+		this(new ArrayList<PointGeometry>());
 	}
 
 	/**
@@ -38,9 +37,8 @@ public class PolygonGeometry extends Geometry {
 	 *            : longitude of the point
 	 */
 	public PolygonGeometry(double latitude, double longitude) {
-		this.points = new ArrayList<PointGeometry>();
+		this();
 		this.points.add(new PointGeometry(latitude, longitude));
-		setType(GeometryType.POLYGON);
 
 	}
 

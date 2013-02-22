@@ -1,16 +1,14 @@
 package fr.umlv.lastproject.smart.layers;
 
+import fr.umlv.lastproject.smart.data.Kml;
+
 /**
- * Class which define the Geometry whith their symbology
+ * Class that defines the Geometry whith its symbology
  * 
  * @author Fad's
  * 
  */
 public abstract class Geometry {
-	
-	private static final String POINT_STRING="Point";
-	private static final String LINE_STRING="LineString";
-	private static final String POLYGON_STRING="Polygon";
 
 	/**
 	 * Enum of the geometry types
@@ -18,9 +16,7 @@ public abstract class Geometry {
 	 * @author thibault
 	 */
 	public enum GeometryType {
-		POINT(0, POINT_STRING),
-		LINE(1, LINE_STRING),
-		POLYGON(2, POLYGON_STRING);
+		POINT(0, Kml.POINTTAG), LINE(1, Kml.LINETAG), POLYGON(2, Kml.POLYGONTAG);
 
 		private final int dbId;
 		private final String kmlName;
@@ -34,10 +30,22 @@ public abstract class Geometry {
 			return dbId;
 		}
 
+		/**
+		 * Gets the KML Tag name
+		 * 
+		 * @return
+		 */
 		public String getKmlName() {
 			return kmlName;
 		}
 
+		/**
+		 * Returns the geometry corresponding to the id
+		 * 
+		 * @param id
+		 *            from DataBase
+		 * @return
+		 */
 		public static GeometryType getFromId(int id) {
 			for (GeometryType geometryType : values()) {
 				if (geometryType.dbId == id) {
@@ -48,8 +56,8 @@ public abstract class Geometry {
 			return null;
 		}
 	}
-	
-	private GeometryType type ;
+
+	private GeometryType type;
 
 	private Symbology symbology;
 
@@ -69,21 +77,22 @@ public abstract class Geometry {
 	public void setSymbology(Symbology symbology) {
 		this.symbology = symbology;
 	}
-	
+
 	/**
 	 * 
 	 * @return the type of the geometry
 	 */
-	public GeometryType getType(){
+	public GeometryType getType() {
 		return type;
 	}
-	
+
 	/**
 	 * 
-	 * @param type the type of the geometry
+	 * @param type
+	 *            the type of the geometry
 	 */
-	public void setType(GeometryType type){
-		this.type = type ;
+	public void setType(GeometryType type) {
+		this.type = type;
 	}
 
 }

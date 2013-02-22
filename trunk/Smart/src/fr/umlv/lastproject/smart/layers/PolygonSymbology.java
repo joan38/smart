@@ -5,6 +5,7 @@ import android.graphics.Color;
 /**
  * This class represent the symbology of the polygon
  * 
+ * 
  * @author Fad's
  * 
  */
@@ -15,8 +16,8 @@ public class PolygonSymbology extends Symbology {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int thickness;
-	
-	private static final int VALUE_THICKNESS = 5;
+
+	private static final int DEFAULT_THICKNESS = 5;
 
 	/**
 	 * Polygon default constructor
@@ -24,7 +25,7 @@ public class PolygonSymbology extends Symbology {
 	 * Color : Black / Thickness : 5
 	 */
 	public PolygonSymbology() {
-		this(VALUE_THICKNESS,Color.BLACK);
+		this(DEFAULT_THICKNESS, Color.BLACK);
 	}
 
 	/**
@@ -54,6 +55,5 @@ public class PolygonSymbology extends Symbology {
 	public void setThickness(int thickness) {
 		this.thickness = thickness;
 	}
-
 
 }

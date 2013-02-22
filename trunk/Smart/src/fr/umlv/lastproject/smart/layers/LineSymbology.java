@@ -16,7 +16,7 @@ public class LineSymbology extends Symbology {
 	private static final long serialVersionUID = 1L;
 	private int thickness;
 	
-	private static int VALUE_THICKNESS = 5;
+	private static int DEFAULT_THICKNESS = 5;
 
 	/**
 	 * Line default constructor
@@ -25,7 +25,7 @@ public class LineSymbology extends Symbology {
 	 */
 	public LineSymbology() {
 		super(Color.BLACK);
-		this.thickness = VALUE_THICKNESS;
+		this.thickness = DEFAULT_THICKNESS;
 	}
 
 	/**
