@@ -11,13 +11,11 @@ import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
+import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
-import android.util.Log;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.Layer;
-
 
 /**
  * MapView with geoTIFFOverlays & geometryLayers notion
@@ -64,7 +62,7 @@ public class SmartMapView extends MapView {
 	 * @param overlay
 	 */
 	public void addOverlay(Layer layer) {
-		Log.d("TEST2","addOverlay "+layer.getName());
+		Log.d("TEST2", "addOverlay " + layer.getName());
 		final String name = layer.getName();
 		if (stringToOverlay.containsKey(name)) {
 			Toast.makeText(getContext(), "Layer already exists",
@@ -76,8 +74,6 @@ public class SmartMapView extends MapView {
 		stringToOverlay.put(name, overlay);
 		listOverlay.add(new LayerItem(name, layer.getOverview()));
 	}
-
-
 
 	/**
 	 * Adds a {@link TMSOverlay} (Tile Map Service Overlay)
@@ -146,6 +142,9 @@ public class SmartMapView extends MapView {
 	 * @param overlays
 	 */
 	public void setReorderedLayers(final ListOverlay overlays) {
+		if (this.listOverlay.equals(overlays)) {
+			return;
+		}
 		List<TMSOverlay> newGeotiffoverlays = new ArrayList<TMSOverlay>();
 
 		for (LayerItem overlay : this.listOverlay.toList()) {
@@ -157,6 +156,7 @@ public class SmartMapView extends MapView {
 			Overlay o = this.stringToOverlay.get(overlays.get(i).getName());
 			getOverlays().add(i,
 					this.stringToOverlay.get(overlays.get(i).getName()));
+			getOverlays().get(i).setEnabled(overlays.get(i).isVisible());
 			boolean isTMSOverlay = geoTIFFOverlays.remove(o);
 			if (isTMSOverlay) {
 				newGeotiffoverlays.add((TMSOverlay) o);

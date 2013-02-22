@@ -111,7 +111,7 @@ public class MenuActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
 						LayersActivity.class);
-			
+
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
@@ -134,9 +134,8 @@ public class MenuActivity extends Activity {
 					.getExternalStorageDirectory().getPath()
 					+ "/SMART/poly.kml", GeometryType.POLYGON);
 			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
-			
+
 			mapView.addGeometryLayer(kml);
-			
 
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
@@ -145,10 +144,10 @@ public class MenuActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		GeometryLayer ge=new GeometryLayer(this);
-		
+		GeometryLayer ge = new GeometryLayer(this);
+
 		mapView.addGeometryLayer(ge);
-		// Couche prï¿½sentes
+		// Couche présentes
 		String s = "getOverlays() size = "
 				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
 		for (int i = 0; i < mapView.getOverlays().size(); i++) {
@@ -428,10 +427,11 @@ public class MenuActivity extends Activity {
 
 					break;
 
-				case SmartConstants.MEASURE : 
-					AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(this) ;
-					amrd.show() ;
-					break ;
+				case SmartConstants.MEASURE:
+					AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(
+							this);
+					amrd.show();
+					break;
 
 				case SmartConstants.EXPORT_FORM:
 					Intent intentForm = FileUtils.createGetContentIntent(
@@ -463,8 +463,6 @@ public class MenuActivity extends Activity {
 				Uri fileForm = data.getData();
 				formPath = fileForm.toString().split("file:///")[1];
 				missionDialog.setPathForm(formPath);
-				
-				
 
 				break;
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
@@ -506,14 +504,16 @@ public class MenuActivity extends Activity {
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
 		Form form = new Form();
-		if(formPath != null){
+		if (formPath != null) {
 			try {
 				form.read(formPath);
 			} catch (XmlPullParserException e) {
-				Toast.makeText(this, "Can not read the file",Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
+						.show();
 				e.printStackTrace();
 			} catch (IOException e) {
-				Toast.makeText(this, "Can not read the file",Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
+						.show();
 				e.printStackTrace();
 			}
 		}
@@ -531,16 +531,18 @@ public class MenuActivity extends Activity {
 	public void setMissionName(final String missionName) {
 		this.missionName = missionName;
 	}
-	
-	public void measure(boolean absolute){
-		final MenuActivity ma = this ;
 
-		final Measures m = new Measures(mapView) ;
+	public void measure(boolean absolute) {
+		final MenuActivity ma = this;
+
+		final Measures m = new Measures(mapView);
+
 		m.addStopListener(new MeasureStopListener() {
 			@Override
 			public void actionPerformed(double distance) {
 				Log.d("", "distance" + distance);
-				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(ma, distance);
+				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(
+						ma, distance);
 				amrd.show();
 				try {
 					Thread.sleep(1000);
@@ -550,16 +552,14 @@ public class MenuActivity extends Activity {
 				}
 				m.stop();
 			}
-		}) ;
-		
-		if(absolute){
-			m.measure() ;
-		}else{
-			m.measure(new PointGeometry(
-					lastPosition.getLatitudeE6()/1E6,
-					lastPosition.getLongitudeE6()/1E6)) ;
+		});
+
+		if (absolute) {
+			m.measure();
+		} else {
+			m.measure(new PointGeometry(lastPosition.getLatitudeE6() / 1E6,
+					lastPosition.getLongitudeE6() / 1E6));
 		}
 	}
-	
-	
+
 }

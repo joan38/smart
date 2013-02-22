@@ -4,10 +4,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -33,7 +32,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		SmartHolder smartHolder = null;
-		LayerItem item = getItem(position);
+		final LayerItem item = getItem(position);
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -42,7 +41,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 					.inflate(R.layout.listview_layers_items, null);
 			smartHolder = new SmartHolder();
 			smartHolder.txtTitle = (TextView) convertView
-					.findViewById(R.id.layer_name);
+					.findViewById(R.id.drag_handle);
 			smartHolder.imageView = (ImageView) convertView
 					.findViewById(R.id.layer_symbo);
 			convertView.setTag(smartHolder);
@@ -55,10 +54,27 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 		smartHolder.txtTitle.setText(item.getName());
 
-
 		smartHolder.imageView.setImageBitmap(item.getOverview());
+		// smartHolder.imageView.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 
 		smartHolder.chkBox.setChecked(item.isVisible());
+		smartHolder.chkBox.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				boolean checked = ((CheckBox) arg0).isChecked();
+				((CheckBox) arg0).setChecked(!checked);
+				item.setVisible(!checked);
+
+			}
+		});
 
 		return convertView;
 	}
