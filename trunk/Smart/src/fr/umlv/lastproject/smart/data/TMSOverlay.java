@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Layer;
 
@@ -48,9 +49,11 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 
 	@Override
 	public Bitmap getOverview() {
-		
-		return BitmapFactory.decodeResource(
-				context.getResources(), R.drawable.raster);
+		Bitmap b = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.raster);
+
+		Log.d("bitmap", b + "");
+		return b;
 	}
 
 	@Override
@@ -58,5 +61,4 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 		return this;
 	}
 
-	
 }
