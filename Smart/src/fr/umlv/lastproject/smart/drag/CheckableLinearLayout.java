@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart.drag;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 
@@ -23,7 +22,6 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
 	@Override
 	public boolean isChecked() {
-		Log.d("debug", child.isChecked() + "");
 		return child.isChecked();
 	}
 

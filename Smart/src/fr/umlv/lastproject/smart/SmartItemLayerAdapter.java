@@ -70,8 +70,8 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 			@Override
 			public void onClick(View arg0) {
 				boolean checked = ((CheckBox) arg0).isChecked();
-				((CheckBox) arg0).setChecked(!checked);
-				item.setVisible(!checked);
+				((CheckBox) arg0).setChecked(checked);
+				item.setVisible(checked);
 
 			}
 		});
