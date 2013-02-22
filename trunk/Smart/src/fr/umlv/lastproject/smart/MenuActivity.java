@@ -16,7 +16,6 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +37,7 @@ import fr.umlv.lastproject.smart.data.DataImport;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
+import fr.umlv.lastproject.smart.dialog.AlertDeleteMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExportCSVDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
@@ -441,6 +441,12 @@ public class MenuActivity extends Activity {
 							SmartConstants.FORM_BROWSER_ACTIVITY);
 					break;
 
+				case SmartConstants.DELETE_MISSION:
+					AlertDeleteMissionDialog deleteMissionDialog = new AlertDeleteMissionDialog(
+							this);
+					deleteMissionDialog.show();
+					break;
+
 				default:
 					// Mission.getInstance().stopMission();
 					break;
@@ -529,7 +535,6 @@ public class MenuActivity extends Activity {
 	public void measure(boolean absolute){
 		final MenuActivity ma = this ;
 
-		double distance ;
 		final Measures m = new Measures(mapView) ;
 		m.addStopListener(new MeasureStopListener() {
 			@Override

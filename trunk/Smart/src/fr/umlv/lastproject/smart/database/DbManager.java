@@ -60,9 +60,11 @@ public class DbManager {
 	private static final int GEOMETRIES_NUM_COL_ID = 0;
 	private static final String GEOMETRIES_COL_TYPE = "type";
 	private static final int GEOMETRIES_NUM_COL_TYPE = 1;
-	private static final String GEOMETRIES_COL_ID_MISSION = "idMission";
 	private static final String GEOMETRIES_COL_ID_FORM_RECORD = "idFormRecord";
-	private static final int GEOMETRIES_NUM_COL_ID_MISSION = 2;
+	private static final int GEOMETRIES_NUM_COL_ID_FORM_RECORD = 2;
+	private static final String GEOMETRIES_COL_ID_MISSION = "idMission";
+	private static final int GEOMETRIES_NUM_COL_ID_MISSION = 3;
+
 
 	public static final String TABLE_POINTS = "points";
 	private static final String POINTS_COL_ID = "id";
@@ -332,15 +334,49 @@ public class DbManager {
 		}
 		values.put(MISSIONS_COL_DATE, mission.getDate());
 		values.put(MISSIONS_COL_FORM, mission.getForm().getName());
+	
+		
 		try {
 			long id = mDb.insertOrThrow(TABLE_MISSIONS, null, values);
+			Mission.getInstance().setId(id);
 			mission.setId(id);
 			return id;
 		} catch (SQLException e) {
 			int id = getMissionId(Mission.getInstance().getTitle());
+			Mission.getInstance().setId(id);
 			mission.setId(id);
 			throw new SmartException("Insert database error");
 		}
+	}
+	
+	/**
+	 * Delete a mission and the geometries, points and form record associated
+	 * @param idMission
+	 */
+	public void deleteMission(long idMission){
+		
+		Cursor cNomForm = mDb.rawQuery("SELECT "+MISSIONS_COL_FORM+" FROM "+TABLE_MISSIONS+" WHERE "+MISSIONS_COL_ID+"="+idMission, null);
+		cNomForm.moveToNext();
+		String nomForm = cNomForm.getString(0);
+	
+		Cursor cGeometries = mDb.rawQuery("SELECT "+GEOMETRIES_COL_ID+","+GEOMETRIES_COL_ID_FORM_RECORD+" FROM "+TABLE_GEOMETRIES+" WHERE "+GEOMETRIES_COL_ID_MISSION+"="+idMission, null);
+		
+		List<Long> idGeometries = new LinkedList<Long>();
+		List<Long> idForms = new LinkedList<Long>();
+		while(cGeometries.moveToNext()){
+			idGeometries.add(cGeometries.getLong(0));
+			idForms.add(cGeometries.getLong(1));
+		}
+
+		for(long l : idGeometries ){
+			mDb.delete(TABLE_POINTS, POINTS_COL_ID_GEOMETRY+"="+l, null);
+			mDb.delete(TABLE_GEOMETRIES, "id="+l, null);
+		}
+		for(long l : idForms){
+			mDb.delete(nomForm,"id="+l, null);
+		}
+		mDb.delete(TABLE_MISSIONS, "id="+idMission, null);
+		
 	}
 
 	/**
@@ -385,6 +421,7 @@ public class DbManager {
 	 * @param idMission
 	 */
 	public void stopMission(long idMission) {
+		Log.d("TEST", "stop"+idMission);
 		ContentValues args = new ContentValues();
 		args.put(MISSIONS_COL_STATUS, 0);
 		mDb.update(TABLE_MISSIONS, args, "id=" + idMission, null);
@@ -426,6 +463,23 @@ public class DbManager {
 		} else {
 			return true;
 		}
+	}
+	
+	/**
+	 * Get all missions no active
+	 * 
+	 * @return a list of mission
+	 */
+	public List<MissionRecord> getAllMissionsNoActives(){
+		Cursor c = mDb.rawQuery("SELECT * FROM "+TABLE_MISSIONS+" WHERE status=0", null);
+		
+		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
+		while (c.moveToNext()) {
+			missions.add(cursorToMission(c));
+		}
+		c.close();
+		return missions;
+				
 	}
 
 	/**

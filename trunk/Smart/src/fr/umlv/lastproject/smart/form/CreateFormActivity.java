@@ -368,18 +368,7 @@ public class CreateFormActivity extends Activity {
 
 	}
 
-	// public int dipToPixel(int dip){
-	// return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
-	// getResources().getDisplayMetrics());
-	// }
-	//
-	// public void refresh(Context c){
-	// TextView v = new TextView(c);
-	// v.setText("Nom");
-	// EditText t = new EditText(c);
-	// layoutDynamicAddField.addView(v);
-	// layoutDynamicAddField.addView(t);
-	// }
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

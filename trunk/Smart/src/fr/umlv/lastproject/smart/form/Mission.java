@@ -92,7 +92,6 @@ public final class Mission {
 	 */
 	public static Mission createMission(String name, MenuActivity context,
 			SmartMapView mapview, Form f) {
-		// if(Mission.getInstance().getStatus()) return null ;
 		mission = new Mission(name, context, mapview, f);
 		// ecriture en base
 		DbManager dbm = new DbManager();
@@ -124,7 +123,6 @@ public final class Mission {
 	 * @return status of the mission
 	 */
 	public boolean stopMission() {
-
 
 		DbManager dbManager = new DbManager();
 		try {
@@ -193,7 +191,6 @@ public final class Mission {
 			survey.addStopListeners(new SurveyStopListener() {
 				@Override
 				public void actionPerformed(Geometry g) {
-					// lineLayer.addGeometry(g);
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 				}
@@ -205,7 +202,6 @@ public final class Mission {
 			survey.addStopListeners(new SurveyStopListener() {
 				@Override
 				public void actionPerformed(Geometry g) {
-					// pointLayer.addGeometry(g);
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 
@@ -218,9 +214,6 @@ public final class Mission {
 			survey.addStopListeners(new SurveyStopListener() {
 				@Override
 				public void actionPerformed(Geometry g) {
-
-					// polygonLayer.addGeometry(g);
-
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 

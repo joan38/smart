@@ -38,6 +38,7 @@
         <item>Export de CSV</item>
         <item>Mesure</item>
         <item>Export de formulaire</item>
+        <item>Supprimer une mission</item>
     </string-array>
     <string name="stopMission">Arrêter la mission</string>
     
@@ -71,6 +72,7 @@
      <string name="formBrowser">Selectionner le formulaire</string>
      <string name="mission">Mission</string>
      <string name="export_mission">Exporter une mission</string>
+     <string name="delete_mission">Supprimer une mission</string>
      <string name="export_form">Exporter un formulaire</string>
      
      
@@ -93,14 +95,20 @@
     <string name="MeasureRelativeText">Selectionnez un point sur la carte</string>
     <string name="MeasureAbsoluteText">Selectionnez deux points sur la carte</string>
     <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
+
     <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     <string name="field_text">Champ texte : </string>
+
     <string name="field_picture">Champ photo : </string>
     <string name="field_list">Champ liste : </string>
     <string name="field_boolean">Champ booléen : </string>
     <string name="field_numeric">Champ numérique : </string>
     <string name="field_height">Champ hauteur : </string>
+
     <string name="invalid">Invalide</string>
+
+    <string name="sure">Etes-vous sur(e) de vouloir supprimer la mission </string>    
+
     <string name="result">Résultat</string>
         
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
