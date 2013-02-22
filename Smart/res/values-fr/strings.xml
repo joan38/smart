@@ -87,17 +87,21 @@
     <string name="Name">Nom</string>
     <string name="List">Liste</string>
     <string name="form_title">Formulaire</string>
-    
+    <string name="MeasureTitle">Mesure</string>
+    <string name="MeasureRelative">Par rapport à votre position</string>
+    <string name="MeasureAbsolute">Entre deux points sur la carte</string>
+    <string name="MeasureRelativeText">Selectionnez un point sur la carte</string>
+    <string name="MeasureAbsoluteText">Selectionnez deux points sur la carte</string>
     <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
-        <string name="field_text">Champ texte : </string>
+    <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
+    <string name="field_text">Champ texte : </string>
     <string name="field_picture">Champ photo : </string>
     <string name="field_list">Champ liste : </string>
     <string name="field_boolean">Champ booléen : </string>
     <string name="field_numeric">Champ numérique : </string>
     <string name="field_height">Champ hauteur : </string>
-        <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
-    
     <string name="invalid">Invalide</string>
+    <string name="result">Résultat</string>
         
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
     <string name="menuLayersTitle">Gestion des couches</string>

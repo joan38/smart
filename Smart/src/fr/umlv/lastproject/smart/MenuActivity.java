@@ -16,6 +16,7 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,13 +41,18 @@ import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExportCSVDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
+import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
+import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertZoomDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
+import fr.umlv.lastproject.smart.survey.MeasureStopListener;
+import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class MenuActivity extends Activity {
@@ -71,17 +77,11 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-
 	private String kmlPath;
-
 	private boolean missionCreated = false;
-
 	private String missionName;
-
 	private GPSTrack gpsTrack;
-
 	private AlertCreateMissionDialog missionDialog;
-
 	private int zoomLevel;
 
 	@Override
@@ -426,6 +426,11 @@ public class MenuActivity extends Activity {
 
 					break;
 
+				case SmartConstants.MEASURE : 
+					AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(this) ;
+					amrd.show() ;
+					break ;
+
 				case SmartConstants.EXPORT_FORM:
 					Intent intentForm = FileUtils.createGetContentIntent(
 							FileUtils.XML_TYPE,
@@ -505,4 +510,42 @@ public class MenuActivity extends Activity {
 	public void setMissionName(final String missionName) {
 		this.missionName = missionName;
 	}
+	
+	public void measure(boolean absolute){
+		final MenuActivity ma = this ;
+
+		double distance ;
+		final Measures m = new Measures(mapView) ;
+		m.addStopListener(new MeasureStopListener() {
+			@Override
+			public void actionPerformed(double distance) {
+				Log.d("", "distance" + distance);
+				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(ma, distance);
+				amrd.show();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				m.stop();
+
+				
+				
+			}
+		}) ;
+		
+		if(absolute){
+			m.measure() ;
+		}else{
+			m.measure(new PointGeometry(
+					lastPosition.getLatitudeE6()/1E6,
+					lastPosition.getLongitudeE6()/1E6)) ;
+		}
+		
+		
+		
+	}
+	
+	
 }
