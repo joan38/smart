@@ -13,9 +13,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 
-import fr.umlv.lastproject.smart.browser.utils.FileUtils;
-
 import android.util.Log;
+import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 
 /**
  * Utility Class to compress a folder of tiles into a zip Its also permits to
@@ -27,16 +26,13 @@ import android.util.Log;
 public final class ZIPUtils {
 
 	private static final int BUFFER = 2048;
-	
-	private static final int METADATA_SIZE=4;
-	
-	private static final String ZIP_FOLDER="/mnt/sdcard/osmdroid/";
-	
-	
-	private ZIPUtils(){
+
+	private static final int METADATA_SIZE = 4;
+
+	private static final String ZIP_FOLDER = "/mnt/sdcard/osmdroid/";
+
+	private ZIPUtils() {
 	}
-	
-	
 
 	/**
 	 * 
@@ -49,47 +45,44 @@ public final class ZIPUtils {
 	 */
 	public static Object[] compress(final String directory) throws IOException {
 
-		if (directory == null){
+		if (directory == null) {
 			throw new IllegalArgumentException();
 		}
-			
 
 		/** We retrieve tiles metadata */
 		final Object[] metaData = getTilesMetaData(directory);
 
 		BufferedInputStream origin = null;
-		final FileOutputStream dest = new FileOutputStream(
-				ZIP_FOLDER
-						+ directory.substring(directory.lastIndexOf('/'))
-						+ ".zip");
+		final FileOutputStream dest = new FileOutputStream(ZIP_FOLDER
+				+ directory.substring(directory.lastIndexOf('/')) + ".zip");
 
 		final ZipOutputStream out = new ZipOutputStream(
 				new BufferedOutputStream(dest));
 		final byte data[] = new byte[BUFFER];
 
 		final File dir = new File(directory);
-		if (!dir.isDirectory()){
+		if (!dir.isDirectory()) {
 			throw new IllegalArgumentException("can't compress a file");
 		}
-			
-
+		ZipEntry entry = null;
+		final String rootFolder = metaData[0].toString() + "/";
+		out.putNextEntry(new ZipEntry(rootFolder));
 		final List<String> filenames = listFiles(directory, true);
 		for (int i = 0; i < filenames.size(); i++) {
 			String file = filenames.get(i);
 			final File lFile = new File(file);
-			ZipEntry entry = null;
-			FileInputStream inputStream = null;
 
-			Log.v("TEST2", "Adding: " + entry);
+			FileInputStream inputStream = null;
 
 			if (!lFile.isDirectory()) {
 
 				inputStream = new FileInputStream(file);
 				origin = new BufferedInputStream(inputStream, BUFFER);
-
-				entry = new ZipEntry(file.split(ZIP_FOLDER)[1]);
+				Log.d("TEST2", "file zip : " + file.toString());
+				entry = new ZipEntry(rootFolder + file.split(rootFolder)[1]);
 
 				out.putNextEntry(entry);
+				Log.v("TEST2", "Adding: " + entry);
 
 				int count;
 				while ((count = origin.read(data, 0, BUFFER)) != -1) {
@@ -107,40 +100,39 @@ public final class ZIPUtils {
 
 	/**
 	 * 
-	 * @param directory the directory to iterate
+	 * @param directory
+	 *            the directory to iterate
 	 * @param if the file is a directory (first time it's called must be true)
 	 * @return
 	 */
-	private static List<String> listFiles(final String directory,final  boolean root) {
+	private static List<String> listFiles(final String directory,
+			final boolean root) {
 		final File file = new File(directory);
 
 		final List<String> files = new ArrayList<String>();
-		if (root){
+		if (root) {
 			files.add(directory);
 		}
-			
+
 		final File[] tabFiles = file.listFiles();
 		for (File f : tabFiles) {
 			files.add(f.toString());
-			if (f.isDirectory()){
+			if (f.isDirectory()) {
 				files.addAll(listFiles(f.toString(), false));
 			}
-				
+
 		}
 		return files;
 
 	}
 
 	/**
-	 * 0 folderName 
-	 * 1 extension 
-	 * 2 min tile zoom level 
-	 * 3 max tile zoom level
+	 * 0 folderName 1 extension 2 min tile zoom level 3 max tile zoom level
 	 * 
 	 * @return
 	 */
 	private static Object[] getTilesMetaData(final String directory) {
-		if(directory==null){
+		if (directory == null) {
 			throw new IllegalArgumentException();
 		}
 		final Object[] metaData = new Object[METADATA_SIZE];
@@ -178,18 +170,19 @@ public final class ZIPUtils {
 
 	/**
 	 * Get the extension of a file (e.g ".png" )
+	 * 
 	 * @param file
-	 * @return 
+	 * @return
 	 */
 	private static String getExtension(final File file) {
-		if(file==null){
+		if (file == null) {
 			throw new IllegalArgumentException();
 		}
 		String extension = null;
-		if (file.isFile()){
+		if (file.isFile()) {
 			return FileUtils.getExtension(file.toString());
 		}
-			
+
 		else {
 			for (File f : file.listFiles()) {
 				extension = getExtension(f);

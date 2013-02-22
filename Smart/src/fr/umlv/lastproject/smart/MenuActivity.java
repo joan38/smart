@@ -11,7 +11,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
@@ -153,7 +152,7 @@ public class MenuActivity extends Activity {
 		String s = "getOverlays() size = "
 				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
 		for (int i = 0; i < mapView.getOverlays().size(); i++) {
-			s += ((Overlay) mapView.getOverlays().get(i)).toString() + " ";
+			s += mapView.getOverlays().get(i).toString() + " ";
 		}
 		Log.d("debug", s);
 		Log.d("debug", "getListOverlay() size = "
@@ -440,7 +439,7 @@ public class MenuActivity extends Activity {
 
 				case SmartConstants.EXPORT_FORM:
 					Intent intentForm = FileUtils.createGetContentIntent(
-							FileUtils.XML_TYPE,
+							FileUtils.FORM_TYPE,
 							Environment.getExternalStorageDirectory() + "");
 					startActivityForResult(intentForm,
 							SmartConstants.FORM_BROWSER_ACTIVITY);
