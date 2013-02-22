@@ -1,8 +1,10 @@
 package fr.umlv.lastproject.smart;
 
+import android.animation.AnimatorSet;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
@@ -23,6 +25,7 @@ public class LayersActivity extends ListActivity {
 		@Override
 		public void drop(int from, int to) {
 			if (from != to) {
+				Log.d("TEST2","test pd encule");
 				DragSortListView list = getListView();
 				LayerItem item = adapter.getItem(from);
 				adapter.remove(item);
@@ -53,7 +56,7 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
-
+		
 		setContentView(R.layout.activity_layers);
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
@@ -68,6 +71,7 @@ public class LayersActivity extends ListActivity {
 		DragSortListView list = getListView();
 		list.setDropListener(onDrop);
 		list.setRemoveListener(onRemove);
+		
 
 	}
 
