@@ -127,6 +127,9 @@ public final class Measures {
 		listeners.remove(l);
 	}
 
+	/**
+	 * stop all listeners and remove overlays
+	 */
 	public void stop() {
 		listeners = new ArrayList<MeasureStopListener>() ;
 		mapview.getOverlayManager().remove(gl);
