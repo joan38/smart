@@ -6,11 +6,17 @@ import java.util.List;
 import android.location.Criteria;
 import android.location.LocationManager;
 
+/**
+ * This class is used to listen to GPS events If GPS is not activated, user is
+ * warned and invited to activate it
+ * 
+ * @author Marc
+ * 
+ */
 public class GPS {
-	private LocationManager locationManager;
-	private Criteria criteria;
 
-
+	private final LocationManager locationManager;
+	private final Criteria criteria;
 	private final List<IGPSListener> gpsListeners;
 
 	/**
@@ -20,7 +26,7 @@ public class GPS {
 	 *            : LocationManager of the GPS
 	 */
 	public GPS(LocationManager lm) {
-		if(lm==null){
+		if (lm == null) {
 			throw new IllegalArgumentException();
 		}
 		gpsListeners = new ArrayList<IGPSListener>();
@@ -33,10 +39,10 @@ public class GPS {
 	}
 
 	/**
-	 * Function which try if the LocationManager is enable
+	 * Is location manager enabled
 	 * 
 	 * @param lm
-	 *            : the location manager to try
+	 *            : the location manager to test
 	 * @return true if GPS is enable
 	 */
 	public boolean isEnabled(LocationManager lm) {
@@ -44,16 +50,9 @@ public class GPS {
 	}
 
 	/**
-	 * Function which return the list of compatible GPS with criteria
-	 * 
-	 * @return the list of compatible GPS
-	 */
-	public List<String> getValidateGPS() {
-		return  locationManager.getProviders(criteria, true);
-	}
-
-	/**
 	 * Function which start the GPS Location Updates
+	 * 
+	 * Warning : Test if the gps isEnabled() first
 	 * 
 	 * @param ms
 	 *            : time to refresh location
@@ -61,13 +60,11 @@ public class GPS {
 	 *            : distance to refresh location
 	 */
 	public void start(int ms, int meter) {
-		// TODO Attention: test isEnabled a faire dans la classe qui appel le
-		// start !
+
 		this.locationManager.requestLocationUpdates(
 				LocationManager.GPS_PROVIDER, ms, meter,
 				new SmartLocationListener(gpsListeners));
 
-					
 	}
 
 	/**
@@ -79,10 +76,9 @@ public class GPS {
 	public void addGPSListener(IGPSListener listener) {
 		gpsListeners.add(listener);
 	}
-	
-	public void removeGPSListener(IGPSListener listener){
+
+	public void removeGPSListener(IGPSListener listener) {
 		gpsListeners.remove(listener);
 	}
-
 
 }

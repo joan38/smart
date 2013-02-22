@@ -11,10 +11,9 @@ import java.util.List;
  */
 public class LineGeometry extends Geometry {
 	private List<PointGeometry> points;
-	
-	public LineGeometry(){
-		points = new ArrayList<PointGeometry>();
-		setType(GeometryType.LINE);
+
+	public LineGeometry() {
+		this(new ArrayList<PointGeometry>());
 	}
 
 	/**
@@ -38,9 +37,8 @@ public class LineGeometry extends Geometry {
 	 *            : longitude of the point
 	 */
 	public LineGeometry(double latitude, double longitude) {
-		this.points = new ArrayList<PointGeometry>();
+		this();
 		this.points.add(new PointGeometry(latitude, longitude));
-		setType(GeometryType.LINE);
 
 	}
 
@@ -62,7 +60,5 @@ public class LineGeometry extends Geometry {
 	public List<PointGeometry> getPoints() {
 		return this.points;
 	}
-
-	
 
 }

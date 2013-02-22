@@ -21,7 +21,7 @@ import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 
 /**
- * This class represent the geometry layer and draw it if it is contained in the
+ * This class represent the geometry layer and draw it if it is contained on the
  * screen
  * 
  * @author Fad's, thibault brun
@@ -29,6 +29,9 @@ import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
  */
 public class GeometryLayer extends Overlay implements Layer {
 
+	/**
+	 * To work with OSMDROID
+	 */
 	private static final double VALUE_1E6 = 1E6;
 	private GeometryType type;
 	private final List<Geometry> geometries;
@@ -37,9 +40,11 @@ public class GeometryLayer extends Overlay implements Layer {
 	private Symbology symbology;
 	private boolean editable = false;
 	private String name;
-	private final List<GeometryLayerSingleTapListener> singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
-	private final List<GeometryLayerDoubleTapListener> doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
+	private final List<GeometryLayerSingleTapListener> singleTapListeners;
+	private final List<GeometryLayerDoubleTapListener> doubleTapListeners;
 	private final Context context;
+
+	private static final String DEFAULT_NAME = "default";
 
 	private static final float cX = 24;
 	private static final float cY = 24;
@@ -65,7 +70,7 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	public GeometryLayer(final Context ctx, List<Geometry> geometries) {
 		this(ctx, geometries, GeometryType.POLYGON, new PolygonSymbology(),
-				"default");
+				DEFAULT_NAME);
 
 	}
 
@@ -77,18 +82,28 @@ public class GeometryLayer extends Overlay implements Layer {
 		this.type = type;
 		this.symbology = symbologie;
 		this.name = name;
+		this.doubleTapListeners = new ArrayList<GeometryLayerDoubleTapListener>();
+		this.singleTapListeners = new ArrayList<GeometryLayerSingleTapListener>();
 	}
 
+	/**
+	 * Gets all the geometries contained in this layer
+	 * 
+	 * @return {@link List}<{@link Geometry}> contained
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Edits symbology
+	 */
 	public void editSymbology() {
 
 	}
 
 	/**
-	 * Funcion which add geometry to the geometries list
+	 * Adds geometry to the geometry list
 	 * 
 	 * @param geometry
 	 */
@@ -115,6 +130,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	/**
+	 * Gets the {@link GeometryType}
 	 * 
 	 * @return the type
 	 */
@@ -123,6 +139,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	/**
+	 * Gives a name to the layer
 	 * 
 	 * @param name
 	 */
@@ -131,8 +148,9 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	/**
+	 * Gets the name of the layer
 	 * 
-	 * @return
+	 * @return {@link String}
 	 */
 	@Override
 	public String getName() {
@@ -167,11 +185,8 @@ public class GeometryLayer extends Overlay implements Layer {
 	 * @return true the geometry is contened in the screen else false
 	 */
 	public boolean isInBoundingBox(Rect clipBound, Rect geometryBoundingBox) {
-		if (clipBound.contains(geometryBoundingBox)
-				|| geometryBoundingBox.contains(clipBound)) {
-			return true;
-		}
-		return false;
+		return (clipBound.contains(geometryBoundingBox) || geometryBoundingBox
+				.contains(clipBound));
 	}
 
 	/**
@@ -187,18 +202,18 @@ public class GeometryLayer extends Overlay implements Layer {
 
 			switch (type) {
 			case POINT:
-				// Récupération de la géometrie et de la symbologie
-				PointGeometry pointGeometry = (PointGeometry) geometry;
-				PointSymbology pointSymbology = (PointSymbology) symbology;
-				int radius = pointSymbology.getRadius();
+				// Retrieving geometry and symbology
+				final PointGeometry pointGeometry = (PointGeometry) geometry;
+				final PointSymbology pointSymbology = (PointSymbology) symbology;
+				final int radius = pointSymbology.getRadius();
 
-				// Si le point est contenu dans la boundinBox
-				// Transforme les coordonnées (lat/long) en pixels
+				// If point is contained in the screen bounding box
+				// Transform coordinates (lat/long) in pixels
 
 				Point point = projection.toPixels(
 						pointGeometry.getCoordinates(), null);
-				// Dessin du point
-				// Si le point est contenu dans la boundinBox
+				// Draws the point
+				// If point is contained in the screen bounding box
 				if (canvas.getClipBounds().contains(point.x, point.y)) {
 					canvas.drawCircle(point.x, point.y, radius, paint);
 
@@ -206,13 +221,13 @@ public class GeometryLayer extends Overlay implements Layer {
 				break;
 
 			case LINE:
-				// Récupération de la géometrie et de sa symbologie
-				LineGeometry lineGeometry = (LineGeometry) geometry;
-				LineSymbology lineSymbology = (LineSymbology) symbology;
+				// Retrieving geometry and symbology
+				final LineGeometry lineGeometry = (LineGeometry) geometry;
+				final LineSymbology lineSymbology = (LineSymbology) symbology;
 				paint.setStrokeWidth(lineSymbology.getThickness());
 
-				// Récupéartion de la liste de points de la géometrie
-				List<PointGeometry> linePoints = lineGeometry.getPoints();
+				// Retrieving list of points contained
+				final List<PointGeometry> linePoints = lineGeometry.getPoints();
 
 				for (int j = 0; j < linePoints.size() - 1; j++) {
 
@@ -251,13 +266,13 @@ public class GeometryLayer extends Overlay implements Layer {
 
 			case POLYGON:
 
-				// Récupération de la géometrie et de sa symbologie
+				// Retrieving geometry and symbology
 				PolygonGeometry polygonGeometry = (PolygonGeometry) geometry;
 
 				PolygonSymbology polygonSymbology = (PolygonSymbology) symbology;
 				paint.setStrokeWidth(polygonSymbology.getThickness());
 
-				// Récupéartion de la liste de points de la géometrie
+				// Retrieving list of points contained
 				List<PointGeometry> polygonPoints = polygonGeometry.getPoints();
 
 				for (int j = 0; j < polygonPoints.size(); j++) {
@@ -267,14 +282,13 @@ public class GeometryLayer extends Overlay implements Layer {
 					PointGeometry pointB = polygonPoints.get((j + 1)
 							% polygonPoints.size());
 
-					// Projection des coordonnées en pixel
+					// Converting coordinates in pixel
 					Point pixelA = projection.toPixels(pointA.getCoordinates(),
 							null);
 					Point pixelB = projection.toPixels(pointB.getCoordinates(),
 							null);
 
-					// Dessine la geometrie si elle est contenue dans la
-					// boundingBox
+					// Draws the geometry if it is contained in the bounding box
 					if (isInBoundingBox(
 							canvas.getClipBounds(),
 							new Rect(Math.max(pixelA.x, pixelB.x), Math.max(
@@ -294,21 +308,27 @@ public class GeometryLayer extends Overlay implements Layer {
 		}
 	}
 
+	/**
+	 * Gets the {@link GeometryType} of the layer
+	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return type.toString();
 	}
 
 	/**
+	 * Indicates if we want the layer to be editable or not
 	 * 
 	 * @param editable
-	 *            is the layer editable ?
+	 * 
 	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
 
+	/**
+	 * Usually used to stop an edition
+	 */
 	@Override
 	public boolean onDoubleTap(MotionEvent e, MapView mapView) {
 
@@ -321,32 +341,43 @@ public class GeometryLayer extends Overlay implements Layer {
 				float x1 = e.getX(1);
 				float y0 = e.getY(0);
 				float y1 = e.getY(1);
+				// If we tapped really quickly on the map but not at the same
+				// coordinate, then we want to add two points
 				if (Math.abs(x1 - x0) < 5 && Math.abs(y1 - y0) < 5) {
 
-					IGeoPoint p = mapView.getProjection().fromPixels(x0, y0);
-					float latitude = (float) (p.getLatitudeE6() / VALUE_1E6);
-					float longitude = (float) (p.getLongitudeE6() / VALUE_1E6);
+					final IGeoPoint firstPoint = mapView.getProjection()
+							.fromPixels(x0, y0);
+					final float firstLatitude = (float) (firstPoint
+							.getLatitudeE6() / VALUE_1E6);
+					final float firstLongitude = (float) (firstPoint
+							.getLongitudeE6() / VALUE_1E6);
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
-						singleTapListeners.get(i).actionPerformed(
-								new PointGeometry(latitude, longitude));
+						singleTapListeners.get(i)
+								.actionPerformed(
+										new PointGeometry(firstLatitude,
+												firstLongitude));
 					}
-					IGeoPoint p1 = mapView.getProjection().fromPixels(x1, y1);
-					float latitude1 = (float) (p.getLatitudeE6() / VALUE_1E6);
-					float longitude1 = (float) (p.getLongitudeE6() / VALUE_1E6);
+					final IGeoPoint secondPoint = mapView.getProjection()
+							.fromPixels(x1, y1);
+					final float secondLatitude = (float) (secondPoint
+							.getLatitudeE6() / VALUE_1E6);
+					final float secondLongitude = (float) (secondPoint
+							.getLongitudeE6() / VALUE_1E6);
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
 						singleTapListeners.get(i).actionPerformed(
-								new PointGeometry(latitude, longitude));
+								new PointGeometry(secondLatitude,
+										secondLongitude));
 					}
 					return super.onDoubleTap(e, mapView);
 				}
 
 			}
 
-			IGeoPoint p = mapView.getProjection().fromPixels(x, y);
-			float latitude = (float) (p.getLatitudeE6() / VALUE_1E6);
-			float longitude = (float) (p.getLongitudeE6() / VALUE_1E6);
+			final IGeoPoint point = mapView.getProjection().fromPixels(x, y);
+			float latitude = (float) (point.getLatitudeE6() / VALUE_1E6);
+			float longitude = (float) (point.getLongitudeE6() / VALUE_1E6);
 
 			for (int i = 0; i < singleTapListeners.size(); i++) {
 				doubleTapListeners.get(i).actionPerformed(
@@ -357,16 +388,19 @@ public class GeometryLayer extends Overlay implements Layer {
 		return super.onDoubleTap(e, mapView);
 	}
 
+	/**
+	 * Adds a single point
+	 */
 	@Override
 	public boolean onSingleTapUp(MotionEvent e, MapView mapView) {
 
 		if (editable) {
-			float x = e.getX();
-			float y = e.getY();
+			final float x = e.getX();
+			final float y = e.getY();
 
-			IGeoPoint p = mapView.getProjection().fromPixels(x, y);
-			float latitude = (float) (p.getLatitudeE6() / VALUE_1E6);
-			float longitude = (float) (p.getLongitudeE6() / VALUE_1E6);
+			final IGeoPoint point = mapView.getProjection().fromPixels(x, y);
+			float latitude = (float) (point.getLatitudeE6() / VALUE_1E6);
+			float longitude = (float) (point.getLongitudeE6() / VALUE_1E6);
 
 			for (int i = 0; i < singleTapListeners.size(); i++) {
 				singleTapListeners.get(i).actionPerformed(
@@ -377,6 +411,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	/**
+	 * Add a listener for adding points
 	 * 
 	 * @param listener
 	 *            the listener which will listen
@@ -388,6 +423,8 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	/**
 	 * 
+	 * Removes a listener if exists or does nothing if not
+	 * 
 	 * @param listener
 	 *            the listener wich will listen
 	 */
@@ -398,6 +435,8 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	/**
 	 * 
+	 * Adds a double tap listener
+	 * 
 	 * @param listener
 	 *            the listener wich will listen
 	 */
@@ -407,6 +446,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	/**
+	 * Removes a listener if exists or does nothing if not
 	 * 
 	 * @param listener
 	 *            the listener which will listen
@@ -416,6 +456,9 @@ public class GeometryLayer extends Overlay implements Layer {
 		doubleTapListeners.remove(listener);
 	}
 
+	/**
+	 * Generates an overview with the symbology parameter
+	 */
 	@Override
 	public Bitmap getOverview() {
 
@@ -446,6 +489,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	}
 
+	/**
+	 * Cast it as an overlay
+	 */
 	@Override
 	public Overlay getOverlay() {
 		return this;

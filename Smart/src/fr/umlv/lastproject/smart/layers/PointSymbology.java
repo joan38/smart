@@ -9,12 +9,10 @@ import android.graphics.Color;
  * 
  */
 public class PointSymbology extends Symbology {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private int radius;
-	
+
 	private static final int VALUE_RADIUS = 5;
 
 	/**
@@ -47,11 +45,10 @@ public class PointSymbology extends Symbology {
 	}
 
 	/**
-	 * Function which set the Point radius
-	 * 
 	 * @param radius
+	 *            the radius to set
 	 */
-	public void setRadio(int radius) {
+	public void setRadius(int radius) {
 		this.radius = radius;
 	}
 
