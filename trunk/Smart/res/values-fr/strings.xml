@@ -38,8 +38,7 @@
         <item>Import de KML</item>
         <item>Import de GeoTIFF</item>
         <item>Import de ShapeFile</item>
-        <item>Export de KML</item>
-        <item>Export de CSV</item>
+        <item>Exporter</item>
         <item>Mesure</item>
         <item>Export de formulaire</item>
         <item>Supprimer une mission</item>
@@ -117,6 +116,8 @@
         
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
     <string name="menuLayersTitle">Gestion des couches</string>
+    <string name="CsvFormat">CSV</string>
+    <string name="KmlFormat">KML</string>
     
 
 </resources>

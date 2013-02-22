@@ -17,16 +17,19 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
  */
 public class GeometryRecord {
 	private long id;
-	private GeometryType type;
+	private final GeometryType type;
 
 	private Geometry g;
-	private long idMission;
+	private final long idMission;
 	private List<PointRecord> points = new ArrayList<PointRecord>();
-	private long idFormRecord;
+	private final long idFormRecord;
 
-	public GeometryRecord() {
+	public GeometryRecord(long idMission, long idFormRecord, GeometryType type) {
+		this.type = type;
+		this.idMission = idMission;
+		this.idFormRecord = idFormRecord;
 	}
-
+	
 	/**
 	 * 
 	 * @param g is the geometry associated to the GeometryRecord
@@ -38,16 +41,6 @@ public class GeometryRecord {
 		this.idMission = idMission;
 		this.idFormRecord = idFormRecord;
 		createPoints();
-	}
-
-	/**
-	 * 
-	 * @param type of the geometry
-	 * @param idMission
-	 */
-	public GeometryRecord(GeometryType type, int idMission) {
-		this.type = type;
-		this.idMission = idMission;
 	}
 
 	/**
@@ -84,26 +77,10 @@ public class GeometryRecord {
 
 	/**
 	 * 
-	 * @param type
-	 */
-	public void setType(GeometryType type) {
-		this.type = type;
-	}
-
-	/**
-	 * 
 	 * @return the id of the mission associated to the GeometryRecord
 	 */
 	public long getIdMission() {
 		return idMission;
-	}
-
-	/**
-	 * 
-	 * @param idMission
-	 */
-	public void setIdMission(long idMission) {
-		this.idMission = idMission;
 	}
 
 	/**

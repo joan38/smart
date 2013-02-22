@@ -15,10 +15,12 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
  */
 public class FormRecord {
 
-	private String name;
-	private List<FieldRecord> fields;
+	private final String name;
+	private final List<FieldRecord> fields;
 
-	public FormRecord() {
+	public FormRecord(String name) {
+		this.fields = new ArrayList<FieldRecord>();
+		this.name = name;
 	}
 	
 	/**
@@ -40,42 +42,42 @@ public class FormRecord {
 
 		ArrayList<Field> fieldslist = (ArrayList<Field>) f.getFieldsList();
 		for (Field fld : fieldslist) {
-
 			switch (fld.getType()) {
 			case SmartConstants.TEXT_FIELD:
 				TextFieldRecord fr = new TextFieldRecord(fld, null);
 				this.fields.add(fr);
-
 				break;
+				
 			case SmartConstants.NUMERIC_FIELD:
 				NumericFieldRecord nf = new NumericFieldRecord(fld, 0);
 				this.fields.add(nf);
-
 				break;
+				
 			case SmartConstants.BOOLEAN_FIELD:
 				BooleanFieldRecord bf = new BooleanFieldRecord(fld, false);
 				this.fields.add(bf);
-
 				break;
+				
 			case SmartConstants.LIST_FIELD:
 				ListFieldRecord lf = new ListFieldRecord(fld, null);
 				this.fields.add(lf);
-
 				break;
+				
 			case SmartConstants.PICTURE_FIELD:
 				PictureFieldRecord pf = new PictureFieldRecord(fld, null);
 				this.fields.add(pf);
-
 				break;
+				
 			case SmartConstants.HEIGHT_FIELD:
 				HeightFieldRecord hf = new HeightFieldRecord(fld, 0);
 				this.fields.add(hf);
-
 				break;
+				
 			default:
 				break;
 			}
 		}
+		
 		this.name = f.getName();
 	}
 
@@ -89,26 +91,10 @@ public class FormRecord {
 
 	/**
 	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * 
 	 * @return the list of fieldRecord
 	 */
 	public List<FieldRecord> getFields() {
 		return fields;
-	}
-
-	/**
-	 * 
-	 * @param fields
-	 */
-	public void setFields(List<FieldRecord> fields) {
-		this.fields = fields;
 	}
 
 	/**
@@ -118,5 +104,4 @@ public class FormRecord {
 	public void addField(FieldRecord f) {
 		this.fields.add(f);
 	}
-
 }

@@ -38,7 +38,7 @@ import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertDeleteMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
-import fr.umlv.lastproject.smart.dialog.AlertExportCSVDialog;
+import fr.umlv.lastproject.smart.dialog.AlertExportDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
@@ -148,7 +148,8 @@ public class MenuActivity extends Activity {
 		GeometryLayer ge = new GeometryLayer(this);
 
 		mapView.addGeometryLayer(ge);
-		// Couche présentes
+
+		// Couche presentes
 		String s = "getOverlays() size = "
 				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
 		for (int i = 0; i < mapView.getOverlays().size(); i++) {
@@ -360,7 +361,6 @@ public class MenuActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case SmartConstants.HOME_VIEW:
@@ -421,14 +421,9 @@ public class MenuActivity extends Activity {
 
 					break;
 
-				case SmartConstants.EXPORT_CSV:
-					AlertExportCSVDialog exportCSVDialog = new AlertExportCSVDialog(
-							this);
-					exportCSVDialog.show();
-					break;
-
-				case SmartConstants.EXPORT_KML:
-
+				case SmartConstants.EXPORT:
+					AlertExportDialog exportDialog = new AlertExportDialog(this);
+					exportDialog.show();
 					break;
 
 				case SmartConstants.MEASURE:

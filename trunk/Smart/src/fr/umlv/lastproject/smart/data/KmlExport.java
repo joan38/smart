@@ -1,7 +1,5 @@
 package fr.umlv.lastproject.smart.data;
 
-import java.io.File;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,7 +45,7 @@ public abstract class KmlExport {
 	 * @throws KmlExportException
 	 * @throws SmartException 
 	 */
-	public static void exportMission(File kmlFile, int idMission,
+	public static void exportMission(String path, long idMission,
 			Context context) throws KmlExportException, SmartException {
 		DbManager dbm = new DbManager();
 		dbm.open(context);
@@ -86,8 +84,7 @@ public abstract class KmlExport {
 
 			// name element
 			Element documentNameElement = kml.createElement(Kml.NAMETAG);
-			documentNameElement.appendChild(kml.createTextNode(kmlFile
-					.getName()));
+			documentNameElement.appendChild(kml.createTextNode(mission.getTitle() + ".kml"));
 			documentElement.appendChild(documentNameElement);
 
 			// Folder element
@@ -129,7 +126,7 @@ public abstract class KmlExport {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(kml);
-			StreamResult result = new StreamResult(kmlFile);
+			StreamResult result = new StreamResult(path + "/" + mission.getTitle() + ".kml");
 
 			transformer.transform(source, result);
 		} catch (ParserConfigurationException e) {
@@ -209,7 +206,7 @@ public abstract class KmlExport {
 		StringBuilder description = new StringBuilder(formRecord.getName());
 
 		for (FieldRecord field : formRecord.getFields()) {
-			description.append(field.getField().getLabel() + " : ");
+			description.append(field.getField().getLabel() + ": ");
 			switch (field.getField().getType()) {
 			case SmartConstants.TEXT_FIELD:
 				TextFieldRecord tf = (TextFieldRecord) field;
@@ -244,6 +241,8 @@ public abstract class KmlExport {
 			default:
 				throw new IllegalStateException("Unkown field");
 			}
+			
+			description.append("\n");
 		}
 
 		descriptionElement.appendChild(kml.createTextNode(description
