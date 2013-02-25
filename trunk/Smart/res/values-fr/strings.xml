@@ -118,6 +118,9 @@
     <string name="menuLayersTitle">Gestion des couches</string>
     <string name="CsvFormat">CSV</string>
     <string name="KmlFormat">KML</string>
+    <string name="symbo">Symbologie</string>
+    <string name="color">Couleur</string>
+    <string name="taille">Taille</string>
     
 
 </resources>
