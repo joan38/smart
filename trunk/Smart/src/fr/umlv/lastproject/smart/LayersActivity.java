@@ -3,9 +3,11 @@ package fr.umlv.lastproject.smart;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import fr.umlv.lastproject.smart.dialog.AlertDeleteLayerDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
@@ -20,6 +22,7 @@ public class LayersActivity extends ListActivity {
 
 	private ListOverlay listOverlay = new ListOverlay();
 	SmartItemLayerAdapter adapter;
+	private String mission;
 
 	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
 		@Override
@@ -37,12 +40,30 @@ public class LayersActivity extends ListActivity {
 	private RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		@Override
 		public void remove(int which) {
-			DragSortListView list = getListView();
-			LayerItem item = adapter.getItem(which);
-			adapter.remove(item);
-			list.removeCheckState(which);
+			AlertDeleteLayerDialog removeDialog;
+			Log.d("debug", mission + " = " + adapter.getItem(which).getName());
+			if (mission != null
+					&& adapter.getItem(which).getName().contains(mission)) {
+				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
+						which, false);
+			} else {
+				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
+						which, true);
+			}
+			removeDialog.show();
 		}
 	};
+
+	public void removeLayer(int which, boolean remove) {
+		DragSortListView list = getListView();
+		LayerItem item = adapter.getItem(which);
+		adapter.remove(item);
+		if (remove) {
+			list.removeCheckState(which);
+		} else {
+			adapter.insert(item, which);
+		}
+	}
 
 	@Override
 	public DragSortListView getListView() {
@@ -59,6 +80,7 @@ public class LayersActivity extends ListActivity {
 		setContentView(R.layout.activity_layers);
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
+		mission = (String) getIntent().getExtras().getString("mission");
 
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);

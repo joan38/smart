@@ -21,13 +21,16 @@
     <string name="helpMap">This is the Map screen.\nYou can move the map by dragging with your finger.\nTo zoom in or out, pinch or spread the screen.\nIf your GPS was activated, touch the target icon to locate your position on the map.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="option">Option</string>
     <string name="addShortcut">Add shortcut</string>
     <string name="removeShortcut">Remove shortcut</string>
     <string name="symbo_desc">Symbologie</string>
+    <string name="delete">Remove Layer</string>
+    <string name="deleteLayer">Do you really want to remove this layer ?</string>
+    <string name="deleteLayerFalse">You can\'t remove this layer, it is link to a mission started.</string>
 
     <string-array name="items">
         <item>Start mission</item>

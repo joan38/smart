@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 public class LayerItem implements Serializable {
 
@@ -133,15 +134,16 @@ public class LayerItem implements Serializable {
 		out.writeBoolean(visible);
 
 		// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		FileOutputStream stream = new FileOutputStream(new File(
-				"/mnt/sdcard/Smart/tmp/" + name + ".png"));
+		FileOutputStream stream = new FileOutputStream(new File(Environment
+				.getExternalStorageDirectory().getPath() + "/" + name + ".png"));
 		overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		// byte[] imageByteArray = stream.toByteArray();
 
 		// int length = imageByteArray.length;
 		// out.writeInt(length);
 		// out.write(imageByteArray);
-		out.writeObject("/mnt/sdcard/Smart/tmp/" + name + ".png");
+		out.writeObject(Environment.getExternalStorageDirectory().getPath()
+				+ "/" + name + ".png");
 	}
 
 	/**
