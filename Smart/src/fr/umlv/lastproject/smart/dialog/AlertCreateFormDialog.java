@@ -16,17 +16,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-
 /**
  * This class is used to define the name of form to create
  * 
  * @author Maelle Cabot
- *
+ * 
  */
-public class AlertCreateFormDialog extends AlertDialog.Builder{
+public class AlertCreateFormDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param menu
 	 */
 	public AlertCreateFormDialog(final MenuActivity menu) {
@@ -37,38 +37,38 @@ public class AlertCreateFormDialog extends AlertDialog.Builder{
 		final View alertDialogView = factory.inflate(
 				fr.umlv.lastproject.smart.R.layout.name_form, null);
 
-
 		setView(alertDialogView);
 		setTitle(alertDialogView.getResources().getString(R.string.CreateForm));
 
 		final EditText et = (EditText) alertDialogView
 				.findViewById(fr.umlv.lastproject.smart.R.id.nameForm);
 
-		final AlertDialog dialog = this.setPositiveButton(R.string.validate, new OnClickListener() {
+		final AlertDialog dialog = this
+				.setPositiveButton(R.string.validate, new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				Intent intent = new Intent(
-						menu,
-						CreateFormActivity.class);
-				intent.putExtra("nameForm", et.getText()
-						.toString());
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						Intent intent = new Intent(menu,
+								CreateFormActivity.class);
+						intent.putExtra("nameForm", et.getText().toString());
 
-				menu.startActivity(intent);			}
-		}).setNegativeButton(R.string.cancel, new OnClickListener() {
+						menu.startActivity(intent);
+					}
+				}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
 
-			}
-		}).create();
+					}
+				}).create();
 
 		dialog.show();
 
 		et.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				// TODO Auto-generated method stub
 
 			}
@@ -82,20 +82,19 @@ public class AlertCreateFormDialog extends AlertDialog.Builder{
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				File folder = new File(Environment.getExternalStorageDirectory()
-						+ "/SMART/form/"+et.getText().toString()+".xml");
+				File folder = new File(Environment
+						.getExternalStorageDirectory()
+						+ "/SMART/form/"
+						+ et.getText().toString() + ".xml");
 				if (folder.exists()) {
 					et.setError(menu.getResources().getString(R.string.invalid));
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+							false);
 				} else {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+							true);
 				}
-
 			}
 		});
-
-		
 	}
-
 }

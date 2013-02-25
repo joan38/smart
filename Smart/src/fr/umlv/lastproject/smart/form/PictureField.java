@@ -1,7 +1,5 @@
 package fr.umlv.lastproject.smart.form;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 /**
  * Field of type Picture
  * 
@@ -21,8 +19,6 @@ public class PictureField extends Field {
 	 * @param name of the picture field
 	 */
 	public PictureField(String name) {
-		super(name, SmartConstants.PICTURE_FIELD);
+		super(name, FieldType.PICTURE);
 	}
-
-
 }

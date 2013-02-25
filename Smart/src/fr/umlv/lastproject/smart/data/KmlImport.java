@@ -9,8 +9,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import fr.umlv.lastproject.smart.layers.Geometry;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;

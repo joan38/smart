@@ -6,8 +6,8 @@ import diewald_shapeFile.files.shp.shapeTypes.ShpPolyLine;
 import diewald_shapeFile.files.shp.shapeTypes.ShpPolygon;
 import diewald_shapeFile.files.shp.shapeTypes.ShpShape;
 import diewald_shapeFile.shapeFile.ShapeFile;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonGeometry;
@@ -15,11 +15,9 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 public final class ShpImport {
 
 	private ShpImport() {
-
 	}
 
 	public static GeometryLayer getLayerFromShp(String file, Context context) {
-
 		try {
 			String[] split = file.split("/");
 			String path = "";

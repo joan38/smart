@@ -13,7 +13,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import fr.umlv.lastproject.smart.layers.Geometry;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonGeometry;

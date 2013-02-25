@@ -3,11 +3,10 @@ package fr.umlv.lastproject.smart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import android.graphics.Color;
 import android.location.LocationManager;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
@@ -133,7 +132,6 @@ public class GPSTrack {
 				break;
 			}
 		}
-
 	}
 
 	/**
@@ -150,5 +148,4 @@ public class GPSTrack {
 		}
 
 	}
-
 }

@@ -1,7 +1,5 @@
 package fr.umlv.lastproject.smart.form;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 /**
  * Field of type Height
  * 
@@ -21,7 +19,7 @@ public class HeightField extends Field {
 	 * @param label
 	 */
 	public HeightField(String label) {
-		super("Height", SmartConstants.HEIGHT_FIELD);
+		super("Height", FieldType.HEIGHT);
 		this.name = label;
 	}
 

@@ -1,7 +1,5 @@
 package fr.umlv.lastproject.smart.form;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 /**
  * Field of type Numeric
  * 
@@ -24,7 +22,7 @@ public class NumericField extends Field {
 	 * @param max of the value
 	 */
 	public NumericField(String label, int min, int max) {
-		super(label, SmartConstants.NUMERIC_FIELD);
+		super(label, FieldType.NUMERIC);
 		this.min = min;
 		this.max = max;
 	}

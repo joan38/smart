@@ -3,8 +3,6 @@ package fr.umlv.lastproject.smart.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 /**
  * Field of type List
  * 
@@ -25,7 +23,7 @@ public class ListField extends Field {
 	 * @param list
 	 */
 	public ListField(String label, List<String> list) {
-		super(label, SmartConstants.LIST_FIELD);
+		super(label, FieldType.LIST);
 		values = new ArrayList<String>();
 		values.addAll(list);
 	}
