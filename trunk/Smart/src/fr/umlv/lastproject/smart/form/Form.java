@@ -208,10 +208,10 @@ public class Form implements Serializable {
 							title = xpp.getAttributeValue(i).replace(" ", "");
 						} else if (xpp.getAttributeName(i).equals(MAXTAG)) {
 							max = Integer.valueOf(xpp.getAttributeValue(i));
-						} else if (xpp.getAttributeName(i).equals(MINTAG)) {
-							min = Integer.getInteger(xpp.getAttributeValue(i));
-						} else if (xpp.getAttributeName(i).equals(VALUESTAG)) {
-							values = xpp.getAttributeValue(i);
+						}else if(xpp.getAttributeName(i).equals(MINTAG)){
+							min = Integer.valueOf(xpp.getAttributeValue(i)) ;
+						}else if(xpp.getAttributeName(i).equals(VALUESTAG)){
+							values= xpp.getAttributeValue(i) ;
 						}
 					}
 
@@ -227,6 +227,8 @@ public class Form implements Serializable {
 								Arrays.asList(list))));
 					} else if (type.equalsIgnoreCase(FieldType.NUMERIC.name())) {
 						addField(new NumericField(title, min, max));
+					}else if(type.equals("text")){
+						addField(new TextField(title));
 					}
 				}
 			}

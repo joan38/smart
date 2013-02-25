@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart.dialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -32,53 +32,45 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
+import fr.umlv.lastproject.smart.database.FieldRecord;
 import fr.umlv.lastproject.smart.database.FormRecord;
-import fr.umlv.lastproject.smart.database.GeometryRecord;
 import fr.umlv.lastproject.smart.database.HeightFieldRecord;
 import fr.umlv.lastproject.smart.database.ListFieldRecord;
 import fr.umlv.lastproject.smart.database.NumericFieldRecord;
 import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
-import fr.umlv.lastproject.smart.form.BooleanField;
 import fr.umlv.lastproject.smart.form.Field;
 import fr.umlv.lastproject.smart.form.Form;
-import fr.umlv.lastproject.smart.form.HeightField;
 import fr.umlv.lastproject.smart.form.ListField;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.NumericField;
 import fr.umlv.lastproject.smart.form.PictureActivity;
-import fr.umlv.lastproject.smart.form.PictureField;
-import fr.umlv.lastproject.smart.form.TextField;
-import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
- * This class is used to display the form The user can fill the differents
- * fields
+ * This class is used to display the form and change the values of differents fields
  * 
  * @author Maelle Cabot
- * 
+ *
  */
-public class FormDialog extends AlertDialog.Builder {
+public class AlertModifFormDialog extends AlertDialog.Builder {
 
-	private Object[] valuesList;
+	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
-
+	
 	private static final int PADDING_LEFT = 20;
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
 
 	/**
 	 * Constructor
-	 * 
 	 * @param context
 	 * @param form
-	 * @param g
-	 *            : the geometry
+	 * @param g : the geometry
 	 * @param mission
 	 */
-	public FormDialog(final MenuActivity context, final Form form,
-			final Geometry g, final Mission mission) {
+	public AlertModifFormDialog(final MenuActivity context, final Form form,
+			final int idGeometry) {
 		super(context);
 		setCancelable(false);
 		final LayoutInflater factory = LayoutInflater.from(context);
@@ -89,11 +81,14 @@ public class FormDialog extends AlertDialog.Builder {
 		layoutDynamic = (TableLayout) alertDialogView
 				.findViewById(R.id.layoutDynamicFormulaire);
 		layoutDynamic.setVerticalScrollBarEnabled(true);
-		
-		valuesList = new Object[form.getFieldsList().size()];
-		
 
-		buildForm(layoutDynamic, context, form.getFieldsList());
+		try {
+			buildForm(layoutDynamic, context, form.getFieldsList(), idGeometry);
+		} catch (SmartException e) {
+			Toast.makeText(context, e.getMessage(),
+					Toast.LENGTH_LONG).show();
+			Log.e("", e.getMessage());
+		}
 
 		setView(alertDialogView);
 		setTitle(R.string.form_title);
@@ -105,12 +100,13 @@ public class FormDialog extends AlertDialog.Builder {
 						FormRecord formRecord = new FormRecord(form);
 
 						for (int i = 0; i < formRecord.getFields().size(); i++) {
+
 							switch (formRecord.getFields().get(i).getField()
 									.getType()) {
 							case TEXT:
 								TextFieldRecord text = (TextFieldRecord) formRecord
 										.getFields().get(i);
-								text.setValue(((EditText) valuesList[i])
+								text.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
 
@@ -118,15 +114,15 @@ public class FormDialog extends AlertDialog.Builder {
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
 										.getFields().get(i);
 								num.setValue(Double
-										.parseDouble(((EditText) valuesList[i]).getText().toString()));
+										.parseDouble(((EditText) editTextList
+												.get(i)).getText().toString()));
 								break;
 
 							case BOOLEAN:
 								BooleanFieldRecord b = (BooleanFieldRecord) formRecord
 										.getFields().get(i);
-
-								Integer idChecked = (Integer) valuesList[i];
-								if (idChecked == 0) {
+								RadioGroup g = (RadioGroup) editTextList.get(i);
+								if (g.getCheckedRadioButtonId() == 0) {
 									b.setValue(true);
 								} else {
 									b.setValue(false);
@@ -138,8 +134,9 @@ public class FormDialog extends AlertDialog.Builder {
 										.getFields().get(i);
 								Log.d("TEST",
 										"edit "
-												+ ((EditText) valuesList[i]).getText());
-								l.setValue(((EditText) valuesList[i])
+												+ ((EditText) editTextList
+														.get(i)).getText());
+								l.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
 
@@ -147,9 +144,9 @@ public class FormDialog extends AlertDialog.Builder {
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
 								Log.d("TEST", "picture "
-										+ ((EditText) valuesList[i])
+										+ ((EditText) editTextList.get(i))
 												.getText().toString());
-								p.setValue(((EditText) valuesList[i])
+								p.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
 
@@ -157,21 +154,20 @@ public class FormDialog extends AlertDialog.Builder {
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
 										.getFields().get(i);
 								h.setValue(Double
-										.parseDouble(((EditText) valuesList[i]).getText().toString()));
+										.parseDouble(((EditText) editTextList
+												.get(i)).getText().toString()));
 								break;
 
 							default:
-								throw new IllegalStateException(
-										"Unkown field type");
+								throw new IllegalStateException("Unkown field");
 							}
 						}
 
 						try {
 							dbManager.open(context);
-							long idForm = dbManager
-									.insertFormRecord(formRecord);
-							dbManager.insertGeometry(new GeometryRecord(g,
-									Mission.getInstance().getId(), idForm));
+//							long idForm = dbManager
+//									.insertFormRecord(formRecord);
+							
 						} catch (SmartException e) {
 							Toast.makeText(context, e.getMessage(),
 									Toast.LENGTH_LONG).show();
@@ -184,7 +180,6 @@ public class FormDialog extends AlertDialog.Builder {
 		setNegativeButton(R.string.cancel,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						mission.removeGeometry(g);
 					}
 				});
 	}
@@ -195,41 +190,63 @@ public class FormDialog extends AlertDialog.Builder {
 	 * @param l
 	 * @param c
 	 * @param fieldsList
+	 * @throws SmartException 
 	 */
 	public final void buildForm(TableLayout l, final MenuActivity c,
-			List<Field> fieldsList) {
+			List<Field> fieldsList, int idGeometry) throws SmartException {
+		editTextList = new LinkedList<Object>();
 		
+		DbManager dbManager = new DbManager();
+		dbManager.open(c);
+		int idForm = dbManager.getIdForm(idGeometry);
+		FormRecord formRecord = dbManager.getFormRecordTyped(idForm, Mission.getInstance().getForm().getName());
+		List<FieldRecord> fieldRecords = formRecord.getFields();
+		for (FieldRecord f : fieldRecords){
+			Log.d("TEST", f.getField().getLabel());
+		}
+//		fieldRecords.remove(0);
+//		fieldRecords.remove(1);
+//		
+//		Log.d("TEST", "fieldRecords "+fieldRecords.toString());
+//		
+//		
+//		List<Field> fields = Mission.getInstance().getForm().getFieldsList();
+//
+//		Log.d("TEST", "fields "+fields.toString());
 
-		for (int i=0;i<fieldsList.size();i++) {
-			Field field = fieldsList.get(i);
+		
+		for(int i=0; i<fieldRecords.size();i++){
+	
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
-			switch (field.getType()) {
+			switch (fieldRecords.get(i).getField().getType()) {
 			case TEXT:
-				TextField tf = (TextField) field;
-				textView.setTag(tf.getLabel());
-				textView.setText(tf.getLabel());
+				TextFieldRecord tf = (TextFieldRecord) fieldRecords.get(i);
+				textView.setTag(fieldRecords.get(i).getField().getLabel());
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
 				l.addView(textView);
+				editText.setText(tf.getValue());
 				l.addView(editText);
-				valuesList[i]=editText;
+				editTextList.add(editText);
 				break;
 
 			case NUMERIC:
-				final NumericField nf = (NumericField) field;
-				textView.setText(nf.getLabel());
+				final NumericFieldRecord nf = (NumericFieldRecord) fieldRecords.get(i);
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+				editText.setText(String.valueOf(nf.getValue()));
 				editText.addTextChangedListener(new TextWatcher() {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
 						if (!editText.getText().toString().equals("")) {
 							if (Double.parseDouble(editText.getText()
-									.toString()) > nf.getMax()
+									.toString()) > ((NumericField)nf.getField()).getMax()
 									|| Double.parseDouble(editText.getText()
-											.toString()) < nf.getMin()) {
+											.toString()) < ((NumericField)nf.getField()).getMin()) {
 								editText.setError("Invalid");
 							}
 						}
@@ -252,63 +269,61 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(textView);
 				l.addView(editText);
-				valuesList[i]=editText;
+				editTextList.add(editText);
 				break;
 
 			case BOOLEAN:
-				BooleanField bf = (BooleanField) field;
-				textView.setText(bf.getLabel());
+				BooleanFieldRecord bf = (BooleanFieldRecord) fieldRecords.get(i);
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
+				
 				RadioGroup group = new RadioGroup(c);
 				RadioButton buttonYes = new RadioButton(c);
 				buttonYes.setId(0);
 				buttonYes.setText(R.string.yes);
-				buttonYes.setChecked(true);
+				
 				RadioButton buttonNo = new RadioButton(c);
 				buttonNo.setId(1);
 				buttonNo.setText(R.string.no);
-				valuesList[i]=0;
-
+				if(bf.getValue()){
+					buttonNo.setChecked(true);
+				} else {
+					buttonYes.setChecked(true);
+				}
 				group.addView(buttonYes);
 				group.addView(buttonNo);
-				final int j = i;
-				group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					
-					@Override
-					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						
-						valuesList[j]=checkedId;
-					}
-				});
 
 				l.addView(textView);
 				l.addView(group);
 
-				
+				editTextList.add(group);
 				break;
 
 			case LIST:
-				final ListField lf = (ListField) field;
-				textView.setText(lf.getLabel());
+				final ListFieldRecord lf = (ListFieldRecord) fieldRecords.get(i);
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
+				
 				Spinner spin = new Spinner(c);
-				List<String> strings = lf.getValues();
+				List<String> strings = ((ListField) fieldRecords.get(i).getField()).getValues();
 				spin.setAdapter(new ArrayAdapter<String>(c,
 						android.R.layout.simple_list_item_1, strings));
+				for(int h=0;h<strings.size();h++){
+					if(strings.get(h).equals(lf.getValue())){
+						spin.setSelection(h);
+					}
+				}
 				
-				final int h = i;
-
 				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 					@Override
 					public void onItemSelected(AdapterView<?> arg0, View arg1,
 							int position, long arg3) {
 						EditText et = new EditText(c);
-						et.setText(lf.getValues().get(position));
-						Log.d("TEST", "selected "+lf.getValues().get(position));
-						valuesList[h]=et;
+						et.setText(((ListField) lf.getField()).getValues().get(position));
+						editTextList.add(et);
 					}
 
 					@Override
@@ -323,10 +338,9 @@ public class FormDialog extends AlertDialog.Builder {
 				break;
 
 			case PICTURE:
-				PictureField pf = (PictureField) field;
+				PictureFieldRecord pf = (PictureFieldRecord) fieldRecords.get(i);
 				final EditText et = new EditText(c);
-
-				textView.setText(pf.getLabel());
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
 				final TextView namePictureView = new TextView(c);
@@ -365,26 +379,28 @@ public class FormDialog extends AlertDialog.Builder {
 				LinearLayout ll = new LinearLayout(c);
 				ll.addView(textView);
 				ll.addView(takePicture);
+				namePictureView.setText(pf.getValue());
+
 				ll.addView(namePictureView);
 
 				l.addView(ll);
-
-				valuesList[i]=et;
+				et.setText(pf.getValue());
+				editTextList.add(et);
 				break;
 
 			case HEIGHT:
-				HeightField hf = (HeightField) field;
-				textView.setText(hf.getLabel());
+				HeightFieldRecord hf = (HeightFieldRecord) fieldRecords.get(i);
+				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
+				editText.setText(String.valueOf(hf.getValue()));
 				l.addView(textView);
 				l.addView(editText);
-				valuesList[i]=editText;
+				editTextList.add(editText);
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field type");
+				throw new IllegalStateException("Unkown field");
 			}
 		}
 	}

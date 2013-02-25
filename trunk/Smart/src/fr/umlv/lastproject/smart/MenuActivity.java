@@ -41,6 +41,7 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
@@ -460,6 +461,8 @@ public class MenuActivity extends Activity {
 					AlertDeleteMissionDialog deleteMissionDialog = new AlertDeleteMissionDialog(
 							this);
 					deleteMissionDialog.show();
+					
+				
 					break;
 
 				default:
