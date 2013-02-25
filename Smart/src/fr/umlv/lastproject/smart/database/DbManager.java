@@ -208,36 +208,36 @@ public class DbManager {
 				TextField tf = (TextField) field;
 				sql.append(tf.getLabel()).append(" " + TEXT + ", ");
 				break;
-				
+
 			case NUMERIC:
 				NumericField nf = (NumericField) field;
 				sql.append(nf.getLabel()).append(" REAL CHECK (")
-						.append(nf.getLabel()).append(" > ")
-						.append(nf.getMin()).append(" AND ")
-						.append(nf.getLabel()).append(" < ")
-						.append(nf.getMax()).append(" ), ");
+				.append(nf.getLabel()).append(" > ")
+				.append(nf.getMin()).append(" AND ")
+				.append(nf.getLabel()).append(" < ")
+				.append(nf.getMax()).append(" ), ");
 				break;
-				
+
 			case BOOLEAN:
 				BooleanField bf = (BooleanField) field;
 				sql.append(bf.getLabel()).append(" INTEGER, ");
 				break;
-				
+
 			case LIST:
 				ListField lf = (ListField) field;
 				sql.append(lf.getLabel()).append(" " + TEXT + ", ");
 				break;
-				
+
 			case PICTURE:
 				PictureField pf = (PictureField) field;
 				sql.append(pf.getLabel()).append(" " + TEXT + ", ");
 				break;
-				
+
 			case HEIGHT:
 				HeightField hf = (HeightField) field;
 				sql.append(hf.getLabel()).append(" " + TEXT + ", ");
 				break;
-				
+
 			default:
 				throw new IllegalStateException("Unkown field");
 			}
@@ -281,32 +281,32 @@ public class DbManager {
 				TextFieldRecord tf = (TextFieldRecord) field;
 				values.put(tf.getField().getLabel(), tf.getValue());
 				break;
-				
+
 			case NUMERIC:
 				NumericFieldRecord nf = (NumericFieldRecord) field;
 				values.put(nf.getField().getLabel(), nf.getValue());
 				break;
-				
+
 			case BOOLEAN:
 				BooleanFieldRecord bf = (BooleanFieldRecord) field;
 				values.put(bf.getField().getLabel(), bf.getValue());
 				break;
-				
+
 			case LIST:
 				ListFieldRecord lf = (ListFieldRecord) field;
 				values.put(lf.getField().getLabel(), lf.getValue());
 				break;
-				
+
 			case PICTURE:
 				PictureFieldRecord pf = (PictureFieldRecord) field;
 				values.put(pf.getField().getLabel(), pf.getValue());
 				break;
-				
+
 			case HEIGHT:
 				HeightFieldRecord hf = (HeightFieldRecord) field;
 				values.put(hf.getField().getLabel(), hf.getValue());
 				break;
-				
+
 			default:
 				throw new IllegalStateException("Unkown field");
 			}
@@ -698,13 +698,13 @@ public class DbManager {
 		Cursor c = mDb
 				.rawQuery(
 						SELECT
-								+ " * "
-								+ FROM
-								+ TABLE_POINTS
-								+ " JOIN "
-								+ TABLE_GEOMETRIES
-								+ " ON geometries.id=points.idGeometry WHERE geometries.type=0 and geometries.idMission = "
-								+ idMission, null);
+						+ " * "
+						+ FROM
+						+ TABLE_POINTS
+						+ " JOIN "
+						+ TABLE_GEOMETRIES
+						+ " ON geometries.id=points.idGeometry WHERE geometries.type=0 and geometries.idMission = "
+						+ idMission, null);
 		while (c.moveToNext()) {
 			points.add(cursorToPoint(c));
 		}
@@ -735,6 +735,19 @@ public class DbManager {
 		return point;
 	}
 
+	/**
+	 * 
+	 * @param idGeometry
+	 * @return id of the form
+	 */
+	public int getIdForm(int idGeometry){
+
+		Cursor c = mDb.rawQuery(SELECT + GEOMETRIES_COL_ID_FORM_RECORD + FROM + TABLE_GEOMETRIES + WHERE + GEOMETRIES_COL_ID+"="+idGeometry, null);
+		c.moveToNext();
+		return c.getInt(0);
+
+	}
+
 	public FormRecord getFormRecord(long idFormRecord, String formName) {
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + formName + WHERE
 				+ " id" + "=" + idFormRecord, null);
@@ -742,6 +755,8 @@ public class DbManager {
 		c.moveToNext();
 		return fillFormRecordFromCursor(new FormRecord(formName), c);
 	}
+
+
 
 	/**
 	 * Fill the given FormRecord with the datas found in the given Cursor.
@@ -754,12 +769,79 @@ public class DbManager {
 		if (c.getCount() == 0) {
 			return null;
 		}
-		
+
 		for (int i = 0; i < c.getColumnCount(); i++) {
 			TextField field = new TextField(c.getColumnName(i));
 			formRecord.addField(new TextFieldRecord(field, c.getString(i)));
 		}
-		
+
+		return formRecord;
+	}
+
+	public FormRecord getFormRecordTyped(long idFormRecord, String formName) {
+		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + formName + WHERE
+				+ " id" + "=" + idFormRecord, null);
+
+		c.moveToNext();
+		return fillFormRecordTypedFromCursor(new FormRecord(formName), c);
+	}
+
+	/**
+	 * Fill the given FormRecord with the datas found in the given Cursor.
+	 * 
+	 * @param formRecord
+	 * @param c
+	 * @return the given FormRecord filled or null if an error occured
+	 */
+	private FormRecord fillFormRecordTypedFromCursor(FormRecord formRecord, Cursor c) {
+		if (c.getCount() == 0) {
+			return null;
+		}
+
+		Form f = Mission.getInstance().getForm();
+		List<Field> fields = f.getFieldsList();
+
+		for (int j = 0; j < fields.size(); j++) {
+			int i=j+2;
+			switch(fields.get(j).getType()){
+			case TEXT:
+				TextField t = new TextField(c.getColumnName(i));
+				formRecord.addField(new TextFieldRecord(t, c.getString(i)));
+				break;
+			case NUMERIC:
+				NumericField n = new NumericField(c.getColumnName(i), ((NumericField)fields.get(j)).getMin(), ((NumericField)fields.get(j)).getMax());
+				formRecord.addField(new NumericFieldRecord(n, c.getDouble(i)));
+				break;
+			case BOOLEAN:
+				BooleanField b = new BooleanField(c.getColumnName(i));
+				boolean v;
+				if(c.getString(i).equals("oui")){
+					v=true;
+				} else {
+					v=false;
+				}
+
+				formRecord.addField(new BooleanFieldRecord(b, v));
+				break;
+			case LIST:
+				ListField l = new ListField(c.getColumnName(i),((ListField)fields.get(j)).getValues() );
+				formRecord.addField(new ListFieldRecord(l, c.getString(i)));
+				break;
+			case PICTURE:
+				PictureField p = new PictureField(c.getColumnName(i));
+				formRecord.addField(new PictureFieldRecord(p, c.getString(i)));
+				break;
+			case HEIGHT:
+				HeightField h = new HeightField(c.getColumnName(i));
+				formRecord.addField(new HeightFieldRecord(h, c.getDouble(i)));
+				break;
+
+			default:
+				throw new IllegalStateException("Unkown field");
+			}
+
+		}
+
 		return formRecord;
 	}
 }
