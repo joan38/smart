@@ -42,7 +42,6 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
-import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
@@ -113,12 +112,19 @@ public class MenuActivity extends Activity {
 						LayersActivity.class);
 
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
+				if (Mission.getInstance() != null) {
+					layersActivity.putExtra("mission", Mission.getInstance()
+							.getTitle());
+				} else {
+					String mission = null;
+					layersActivity.putExtra("mission", mission);
+				}
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
 			}
 		});
 
-		// importKML();
+		importKML();
 	}
 
 	/**
@@ -495,8 +501,7 @@ public class MenuActivity extends Activity {
 					AlertDeleteMissionDialog deleteMissionDialog = new AlertDeleteMissionDialog(
 							this);
 					deleteMissionDialog.show();
-					
-				
+
 					break;
 
 				default:
@@ -571,7 +576,6 @@ public class MenuActivity extends Activity {
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
 		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
 		gpsTrack.startTrack();
-
 	}
 
 	public void startMission(final String missionName) {

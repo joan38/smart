@@ -78,7 +78,6 @@ public class SmartMapView extends MapView {
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
 		addOverlay(overlay);
-
 		geoTIFFOverlays.add(overlay);
 	}
 
@@ -90,7 +89,6 @@ public class SmartMapView extends MapView {
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
 		addOverlay(layer);
-
 	}
 
 	/**
