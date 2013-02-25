@@ -170,8 +170,9 @@ public class FormDialog extends AlertDialog.Builder {
 							dbManager.open(context);
 							long idForm = dbManager
 									.insertFormRecord(formRecord);
-							dbManager.insertGeometry(new GeometryRecord(g,
+							long idGeom = dbManager.insertGeometry(new GeometryRecord(g,
 									Mission.getInstance().getId(), idForm));
+							g.setId(idGeom);
 						} catch (SmartException e) {
 							Toast.makeText(context, e.getMessage(),
 									Toast.LENGTH_LONG).show();
