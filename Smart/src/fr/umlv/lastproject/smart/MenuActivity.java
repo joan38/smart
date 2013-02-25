@@ -13,6 +13,7 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
+import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -189,9 +191,36 @@ public class MenuActivity extends Activity {
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
-		mapController.setZoom(SmartConstants.DEFAULT_ZOOM);
+		mapController.setZoom(0);
 		overlayManager.add(new ScaleBarOverlay(this));
-
+		// final WMSMapTileProviderBasic tileProvider = new
+		// WMSMapTileProviderBasic(
+		// getApplicationContext());
+		// final ITileSource tileSource = new WMSTileSource(
+		// "WMS",
+		// null,
+		// 0,
+		// 15,
+		// 256,
+		// ".png",
+		// "http://sampleserver1.arcgisonline.com/arcgis/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"
+		// +
+		// "?REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=0&STYLES=default&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT="
+		// + "TRUE&SRS=EPSG:4326&WIDTH=256&HEIGHT=256&QUERY_LAYERS=0&BBOX=");
+		// tileProvider.setTileSource(tileSource);
+		// final TilesOverlay tilesOverlay = new TilesOverlay(tileProvider,
+		// this.getBaseContext());
+		//
+		// tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
+		//
+		// // mapView.getOverlays().add(tilesOverlay);
+		//
+		// mapView.getOverlays().clear();
+		// // mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
+		// mapView.getOverlays().add(0, tilesOverlay);
+		// mapView.invalidate();
+		// if (true)
+		// return;
 		mapView.addGeoTIFFOverlay(new TMSOverlay(
 				new MapTileProviderBasic(this), this, 10, 16, "geo1"));
 		//
@@ -438,6 +467,11 @@ public class MenuActivity extends Activity {
 							SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
 					break;
 
+				case SmartConstants.IMPORT_WMS:
+					final WMSDialog dialog = new WMSDialog(mapView);
+					dialog.show();
+					break;
+
 				case SmartConstants.EXPORT:
 					AlertExportDialog exportDialog = new AlertExportDialog(this);
 					exportDialog.show();
@@ -529,6 +563,7 @@ public class MenuActivity extends Activity {
 					e.printStackTrace();
 				}
 				break;
+
 			}
 		}
 	}
