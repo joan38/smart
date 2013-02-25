@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,15 +17,18 @@ public class LayerItem implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private  String name;
+	private String name;
 	private boolean visible;
-	private  Bitmap overview;
+	private Bitmap overview;
 
 	/**
 	 * 
-	 * @param name of the layer
-	 * @param visible true or false
-	 * @param overview of the symbologie
+	 * @param name
+	 *            of the layer
+	 * @param visible
+	 *            true or false
+	 * @param overview
+	 *            of the symbologie
 	 */
 	public LayerItem(String name, boolean visible, Bitmap overview) {
 		this.name = name;
@@ -34,8 +38,10 @@ public class LayerItem implements Serializable {
 
 	/**
 	 * 
-	 * @param name of the layer
-	 * @param overview of the symbologie
+	 * @param name
+	 *            of the layer
+	 * @param overview
+	 *            of the symbologie
 	 */
 	public LayerItem(String name, Bitmap overview) {
 		this(name, true, overview);
@@ -59,7 +65,8 @@ public class LayerItem implements Serializable {
 
 	/**
 	 * 
-	 * @param visible or not
+	 * @param visible
+	 *            or not
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
@@ -86,29 +93,29 @@ public class LayerItem implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj){
+		if (this == obj) {
 			return true;
 		}
-		if (obj == null){
+		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()){
+		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		LayerItem other = (LayerItem) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name)){
+		} else if (!name.equals(other.name)) {
 			return false;
 		}
 		if (overview == null) {
 			if (other.overview != null)
 				return false;
-		} else if (!overview.equals(other.overview)){
+		} else if (!overview.equals(other.overview)) {
 			return false;
 		}
-		if (visible != other.visible){
+		if (visible != other.visible) {
 			return false;
 		}
 		return true;
@@ -116,39 +123,48 @@ public class LayerItem implements Serializable {
 
 	/**
 	 * 
-	 * @param out the object to get
-	 * @throws IOException if canot read
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
 	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(name);
 		out.writeBoolean(visible);
 
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		// ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		FileOutputStream stream = new FileOutputStream(new File(
+				"/mnt/sdcard/Smart/tmp/" + name + ".png"));
 		overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] imageByteArray = stream.toByteArray();
+		// byte[] imageByteArray = stream.toByteArray();
 
-		int length = imageByteArray.length;
-		out.writeInt(length);
-		out.write(imageByteArray);
+		// int length = imageByteArray.length;
+		// out.writeInt(length);
+		// out.write(imageByteArray);
+		out.writeObject("/mnt/sdcard/Smart/tmp/" + name + ".png");
 	}
 
 	/**
 	 * 
-	 * @param in object to read
-	 * @throws IOException if object not readable
-	 * @throws ClassNotFoundException if class does not exist
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
 	 */
 	private void readObject(ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		this.name = (String) in.readObject();
 		this.visible = in.readBoolean();
 
-		int imageByteArrayLength = in.readInt();
-		byte[] imageByteArray = new byte[imageByteArrayLength];
-		in.read(imageByteArray, 0, imageByteArrayLength);
+		// int imageByteArrayLength = in.readInt();
+		// byte[] imageByteArray = new byte[imageByteArrayLength];
+		// in.read(imageByteArray, 0, imageByteArrayLength);
 
-		this.overview = BitmapFactory.decodeByteArray(imageByteArray, 0,
-				imageByteArrayLength);
+		// this.overview = BitmapFactory.decodeByteArray(imageByteArray, 0,
+		// imageByteArrayLength);
+		this.overview = BitmapFactory.decodeFile((String) in.readObject());
 
 	}
 

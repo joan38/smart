@@ -6,7 +6,7 @@ import android.graphics.Color;
  * This class is used to define constants values used in many classes
  * 
  * @author Maelle Cabot
- *
+ * 
  */
 public final class SmartConstants {
 
@@ -27,17 +27,30 @@ public final class SmartConstants {
 	public static final int IMPORT_KML = 6;
 	public static final int IMPORT_GEOTIFF = 7;
 	public static final int IMPORT_SHAPE = 8;
-	public static final int EXPORT = 9;
-	public static final int MEASURE = 10;
-	public static final int EXPORT_FORM = 11;
-	public static final int DELETE_MISSION = 12;
+	public static final int IMPORT_WMS = 9;
+	public static final int EXPORT = 10;
+	public static final int MEASURE = 11;
+	public static final int EXPORT_FORM = 12;
+	public static final int DELETE_MISSION = 13;
 
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
 
 	public static final int DEFAULT_ZOOM = 15;
 
-	public static int[] colors = new int[] { Color.rgb(100,149,237),Color.rgb(0,0,128),Color.rgb(238,203,173),Color.rgb(34,139,34), Color.rgb(255,140,0),Color.rgb(152,251,152),Color.rgb(178,34,34),Color.rgb(255,215,0),Color.rgb(49,79,79), Color.rgb(139,69,19)};
+	public static final int TEXT_FIELD = 0;
+	public static final int NUMERIC_FIELD = 1;
+	public static final int BOOLEAN_FIELD = 2;
+	public static final int LIST_FIELD = 3;
+	public static final int PICTURE_FIELD = 4;
+	public static final int HEIGHT_FIELD = 5;
+
+	public static final int[] colors = new int[] { Color.rgb(100, 149, 237),
+			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),
+			Color.rgb(34, 139, 34), Color.rgb(255, 140, 0),
+			Color.rgb(152, 251, 152), Color.rgb(178, 34, 34),
+			Color.rgb(255, 215, 0), Color.rgb(49, 79, 79),
+			Color.rgb(139, 69, 19) };
 
 	private SmartConstants() {
 	}

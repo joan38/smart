@@ -32,13 +32,14 @@
     <string-array name="items">
         <item>Start mission</item>
         <item>Create form</item>
-        <item>Point Survay</item>
-        <item>Line Survay</item>
-        <item>Polygon Survay</item>
+        <item>Point Survey</item>
+        <item>Line Survey</item>
+        <item>Polygon Survey</item>
         <item>Track GPS</item>
         <item>Import KML</item>
-        <item>Import GeoTIFF</item>
-        <item>Import ShapeFile</item>
+        <item>GeoTIFF Import</item>
+        <item>ShapeFile Import</item>
+        <item>WMS Import</item>
         <item>Export</item>
         <item>Measure</item>
         <item>Export Form</item>
@@ -116,5 +117,9 @@
     <string name="symbo">Symbology</string>
     <string name="color">Color</string>
     <string name="taille">Size</string>
-    
+    <string name="wmsurl">Enter WMS URL </string>
+    <string name="wmstitle">Import WMS Layer </string>
+    <string name="wms_error">Error while importing wms : url is not reachable</string>
+    <string name="wms_name">Enter a name for WMS Layer</string>
+
 </resources>
