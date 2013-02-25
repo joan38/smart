@@ -18,7 +18,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 
 /**
  * This class represent the geometry layer and draw it if it is contained on the
@@ -236,7 +235,7 @@ public class GeometryLayer extends Overlay implements Layer {
 
 					Point pointT = projection.toPixels(pointA.getCoordinates(),
 							null);
-					// Projection des coordonnées en pixel
+					// Projection des coordonnï¿½es en pixel
 
 					Point pixelA = projection.toPixels(pointA.getCoordinates(),
 							null);

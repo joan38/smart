@@ -1,6 +1,6 @@
 <form title="mon form">
     <fields>
-        <field type="photo" title="une photo"/>
+        <field type="picture" title="une photo"/>
         <field type="list" title="une liste" values="element1/element2/element3" />
         <field type="boolean" title="un boolean"/>
         <field type="numeric" title="un numeric" min="0" max="20"/>

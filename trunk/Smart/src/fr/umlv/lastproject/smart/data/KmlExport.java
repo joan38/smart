@@ -28,7 +28,6 @@ import fr.umlv.lastproject.smart.database.NumericFieldRecord;
 import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
@@ -37,7 +36,7 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Joan Goyeau
  * 
  */
-public abstract class KmlExport {
+public final class KmlExport {
 
 	/**
 	 * Export the given mission in a Kml file.
@@ -53,7 +52,7 @@ public abstract class KmlExport {
 			DbManager dbm = new DbManager();
 			dbm.open(context);
 			MissionRecord mission = dbm.getMission(idMission);
-			
+
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -100,11 +99,12 @@ public abstract class KmlExport {
 					.appendChild(kml.createTextNode(mission.getTitle()));
 			folderElement.appendChild(folderNameElement);
 
-			List<GeometryRecord> geometries = dbm.getGeometriesFromMission(mission.getId());
+			List<GeometryRecord> geometries = dbm
+					.getGeometriesFromMission(mission.getId());
 			if (geometries.size() < 1) {
 				throw new KmlExportException("No geometry in the given mission");
 			}
-			
+
 			for (GeometryRecord geometry : geometries) {
 				// Placemark element
 				Element placemarkElement = kml.createElement(Kml.PLACEMARKTAG);
@@ -215,37 +215,38 @@ public abstract class KmlExport {
 	private static Element pepareDescriptionElement(Document kml,
 			FormRecord formRecord) {
 		Element descriptionElement = kml.createElement(Kml.DESCRIPTIONTAG);
-		StringBuilder description = new StringBuilder(formRecord.getName());
+		StringBuilder description = new StringBuilder(formRecord.getName())
+				.append("\n");
 
 		for (FieldRecord field : formRecord.getFields()) {
 			description.append(field.getField().getLabel() + ": ");
 			switch (field.getField().getType()) {
-			case SmartConstants.TEXT_FIELD:
+			case TEXT:
 				TextFieldRecord tf = (TextFieldRecord) field;
 				description.append(tf.getValue());
 				break;
 
-			case SmartConstants.NUMERIC_FIELD:
+			case NUMERIC:
 				NumericFieldRecord nf = (NumericFieldRecord) field;
 				description.append(nf.getValue());
 				break;
 
-			case SmartConstants.BOOLEAN_FIELD:
+			case BOOLEAN:
 				BooleanFieldRecord bf = (BooleanFieldRecord) field;
 				description.append(bf.getValue());
 				break;
 
-			case SmartConstants.LIST_FIELD:
+			case LIST:
 				ListFieldRecord lf = (ListFieldRecord) field;
 				description.append(lf.getValue());
 				break;
 
-			case SmartConstants.PICTURE_FIELD:
+			case PICTURE:
 				PictureFieldRecord pf = (PictureFieldRecord) field;
 				description.append(pf.getValue());
 				break;
 
-			case SmartConstants.HEIGHT_FIELD:
+			case HEIGHT:
 				HeightFieldRecord hf = (HeightFieldRecord) field;
 				description.append(hf.getValue());
 				break;
@@ -260,5 +261,8 @@ public abstract class KmlExport {
 		descriptionElement.appendChild(kml.createTextNode(description
 				.toString()));
 		return descriptionElement;
+	}
+
+	private KmlExport() {
 	}
 }

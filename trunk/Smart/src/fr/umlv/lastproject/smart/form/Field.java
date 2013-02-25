@@ -15,14 +15,14 @@ public abstract class Field implements Serializable {
 	 */
 	private static final long serialVersionUID = -1486832698681988189L;
 	private String label;
-	private int type;
+	private FieldType type;
 
 	/**
 	 * 
 	 * @param label of the field
 	 * @param type of the field
 	 */
-	public Field(String label, int type) {
+	public Field(String label, FieldType type) {
 		this.label = label;
 		this.type = type;
 	}
@@ -31,7 +31,7 @@ public abstract class Field implements Serializable {
 	 * 
 	 * @return the type of field
 	 */
-	public int getType() {
+	public FieldType getType() {
 		return type;
 	}
 
@@ -39,7 +39,7 @@ public abstract class Field implements Serializable {
 	 * 
 	 * @param type
 	 */
-	public void setType(int type) {
+	public void setType(FieldType type) {
 		this.type = type;
 	}
 

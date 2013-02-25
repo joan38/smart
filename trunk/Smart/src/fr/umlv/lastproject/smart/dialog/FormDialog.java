@@ -50,30 +50,31 @@ import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
- * This class is used to display the form
- * The user can fill the differents fields
+ * This class is used to display the form The user can fill the differents
+ * fields
  * 
  * @author Maelle Cabot
- *
+ * 
  */
 public class FormDialog extends AlertDialog.Builder {
 
 	private List<Object> editTextList;
 	private TableLayout layoutDynamic;
-	
+
 	private static final int PADDING_LEFT = 20;
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
 
 	/**
 	 * Constructor
+	 * 
 	 * @param context
 	 * @param form
-	 * @param g : the geometry
+	 * @param g
+	 *            : the geometry
 	 * @param mission
 	 */
 	public FormDialog(final MenuActivity context, final Form form,
@@ -101,18 +102,16 @@ public class FormDialog extends AlertDialog.Builder {
 						FormRecord formRecord = new FormRecord(form);
 
 						for (int i = 0; i < formRecord.getFields().size(); i++) {
-							int type = formRecord.getFields().get(i).getField()
-									.getType();
-
-							switch (type) {
-							case SmartConstants.TEXT_FIELD:
+							switch (formRecord.getFields().get(i).getField()
+									.getType()) {
+							case TEXT:
 								TextFieldRecord text = (TextFieldRecord) formRecord
 										.getFields().get(i);
 								text.setValue(((EditText) editTextList.get(i))
 										.getText().toString());
 								break;
 
-							case SmartConstants.NUMERIC_FIELD:
+							case NUMERIC:
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
 										.getFields().get(i);
 								num.setValue(Double
@@ -120,7 +119,7 @@ public class FormDialog extends AlertDialog.Builder {
 												.get(i)).getText().toString()));
 								break;
 
-							case SmartConstants.BOOLEAN_FIELD:
+							case BOOLEAN:
 								BooleanFieldRecord b = (BooleanFieldRecord) formRecord
 										.getFields().get(i);
 								RadioGroup g = (RadioGroup) editTextList.get(i);
@@ -131,7 +130,7 @@ public class FormDialog extends AlertDialog.Builder {
 								}
 								break;
 
-							case SmartConstants.LIST_FIELD:
+							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
 								Log.d("TEST",
@@ -142,7 +141,7 @@ public class FormDialog extends AlertDialog.Builder {
 										.getText().toString());
 								break;
 
-							case SmartConstants.PICTURE_FIELD:
+							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
 								Log.d("TEST", "picture "
@@ -152,7 +151,7 @@ public class FormDialog extends AlertDialog.Builder {
 										.getText().toString());
 								break;
 
-							case SmartConstants.HEIGHT_FIELD:
+							case HEIGHT:
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
 										.getFields().get(i);
 								h.setValue(Double
@@ -161,6 +160,8 @@ public class FormDialog extends AlertDialog.Builder {
 								break;
 
 							default:
+								throw new IllegalStateException(
+										"Unkown field type");
 							}
 						}
 
@@ -199,11 +200,10 @@ public class FormDialog extends AlertDialog.Builder {
 		editTextList = new LinkedList<Object>();
 
 		for (Field field : fieldsList) {
-			int typeField = field.getType();
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
-			switch (typeField) {
-			case SmartConstants.TEXT_FIELD:
+			switch (field.getType()) {
+			case TEXT:
 				TextField tf = (TextField) field;
 				textView.setTag(tf.getLabel());
 				textView.setText(tf.getLabel());
@@ -214,7 +214,7 @@ public class FormDialog extends AlertDialog.Builder {
 				editTextList.add(editText);
 				break;
 
-			case SmartConstants.NUMERIC_FIELD:
+			case NUMERIC:
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
@@ -253,11 +253,10 @@ public class FormDialog extends AlertDialog.Builder {
 				editTextList.add(editText);
 				break;
 
-			case SmartConstants.BOOLEAN_FIELD:
+			case BOOLEAN:
 				BooleanField bf = (BooleanField) field;
 				textView.setText(bf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-
 
 				RadioGroup group = new RadioGroup(c);
 				RadioButton buttonYes = new RadioButton(c);
@@ -277,11 +276,10 @@ public class FormDialog extends AlertDialog.Builder {
 				editTextList.add(group);
 				break;
 
-			case SmartConstants.LIST_FIELD:
+			case LIST:
 				final ListField lf = (ListField) field;
 				textView.setText(lf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-
 
 				Spinner spin = new Spinner(c);
 				List<String> strings = lf.getValues();
@@ -309,7 +307,7 @@ public class FormDialog extends AlertDialog.Builder {
 				l.addView(spin);
 				break;
 
-			case SmartConstants.PICTURE_FIELD:
+			case PICTURE:
 				PictureField pf = (PictureField) field;
 				final EditText et = new EditText(c);
 
@@ -359,7 +357,7 @@ public class FormDialog extends AlertDialog.Builder {
 				editTextList.add(et);
 				break;
 
-			case SmartConstants.HEIGHT_FIELD:
+			case HEIGHT:
 				HeightField hf = (HeightField) field;
 				textView.setText(hf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
@@ -371,6 +369,7 @@ public class FormDialog extends AlertDialog.Builder {
 				break;
 
 			default:
+				throw new IllegalStateException("Unkown field type");
 			}
 		}
 	}

@@ -44,8 +44,8 @@ import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
@@ -82,6 +82,7 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private int zoomLevel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -374,11 +375,12 @@ public class MenuActivity extends Activity {
 						missionDialog = new AlertCreateMissionDialog(this);
 					}
 					break;
+
 				case SmartConstants.CREATE_FORM:
 					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(
 							this);
-
 					break;
+
 				case SmartConstants.POINT_SURVEY:
 					Mission.getInstance().startSurvey(GeometryType.POINT);
 					break;
@@ -417,7 +419,6 @@ public class MenuActivity extends Activity {
 							Environment.getExternalStorageDirectory() + "");
 					startActivityForResult(importKMLIntent,
 							SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
-
 					break;
 
 				case SmartConstants.IMPORT_SHAPE:
@@ -426,7 +427,6 @@ public class MenuActivity extends Activity {
 							Environment.getExternalStorageDirectory() + "");
 					startActivityForResult(importSHPItent,
 							SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-
 					break;
 
 				case SmartConstants.IMPORT_GEOTIFF:
@@ -435,7 +435,6 @@ public class MenuActivity extends Activity {
 							Environment.getExternalStorageDirectory() + "");
 					startActivityForResult(importTiffItent,
 							SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
-
 					break;
 
 				case SmartConstants.EXPORT:
@@ -526,10 +525,8 @@ public class MenuActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 				break;
 			}
-
 		}
 	}
 

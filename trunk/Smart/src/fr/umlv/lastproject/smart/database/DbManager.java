@@ -25,9 +25,8 @@ import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.NumericField;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
-import fr.umlv.lastproject.smart.layers.Geometry.GeometryType;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.layers.GeometryType;;
 
 /**
  * Class to manage the database and the static tables (missions, geometries,
@@ -36,7 +35,6 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Maelle Cabot
  * 
  */
-
 public class DbManager {
 
 	public static final String DB_NAME = "smart.db";
@@ -205,14 +203,13 @@ public class DbManager {
 
 		List<Field> listFields = f.getFieldsList();
 		for (Field field : listFields) {
-			int typeField = field.getType();
-
-			switch (typeField) {
-			case SmartConstants.TEXT_FIELD:
+			switch (field.getType()) {
+			case TEXT:
 				TextField tf = (TextField) field;
 				sql.append(tf.getLabel()).append(" " + TEXT + ", ");
 				break;
-			case SmartConstants.NUMERIC_FIELD:
+				
+			case NUMERIC:
 				NumericField nf = (NumericField) field;
 				sql.append(nf.getLabel()).append(" REAL CHECK (")
 						.append(nf.getLabel()).append(" > ")
@@ -220,24 +217,29 @@ public class DbManager {
 						.append(nf.getLabel()).append(" < ")
 						.append(nf.getMax()).append(" ), ");
 				break;
-			case SmartConstants.BOOLEAN_FIELD:
+				
+			case BOOLEAN:
 				BooleanField bf = (BooleanField) field;
 				sql.append(bf.getLabel()).append(" INTEGER, ");
 				break;
-			case SmartConstants.LIST_FIELD:
+				
+			case LIST:
 				ListField lf = (ListField) field;
 				sql.append(lf.getLabel()).append(" " + TEXT + ", ");
 				break;
-			case SmartConstants.PICTURE_FIELD:
+				
+			case PICTURE:
 				PictureField pf = (PictureField) field;
 				sql.append(pf.getLabel()).append(" " + TEXT + ", ");
 				break;
-			case SmartConstants.HEIGHT_FIELD:
+				
+			case HEIGHT:
 				HeightField hf = (HeightField) field;
 				sql.append(hf.getLabel()).append(" " + TEXT + ", ");
 				break;
+				
 			default:
-				break;
+				throw new IllegalStateException("Unkown field");
 			}
 		}
 
@@ -274,33 +276,37 @@ public class DbManager {
 		fields = formRecord.getFields();
 		Log.d("TEST", "f " + fields.toString() + " " + formRecord.getName());
 		for (FieldRecord field : fields) {
-			int typeField = field.getField().getType();
-
-			switch (typeField) {
-			case SmartConstants.TEXT_FIELD:
+			switch (field.getField().getType()) {
+			case TEXT:
 				TextFieldRecord tf = (TextFieldRecord) field;
 				values.put(tf.getField().getLabel(), tf.getValue());
 				break;
-			case SmartConstants.NUMERIC_FIELD:
+				
+			case NUMERIC:
 				NumericFieldRecord nf = (NumericFieldRecord) field;
 				values.put(nf.getField().getLabel(), nf.getValue());
 				break;
-			case SmartConstants.BOOLEAN_FIELD:
+				
+			case BOOLEAN:
 				BooleanFieldRecord bf = (BooleanFieldRecord) field;
 				values.put(bf.getField().getLabel(), bf.getValue());
 				break;
-			case SmartConstants.LIST_FIELD:
+				
+			case LIST:
 				ListFieldRecord lf = (ListFieldRecord) field;
 				values.put(lf.getField().getLabel(), lf.getValue());
 				break;
-			case SmartConstants.PICTURE_FIELD:
+				
+			case PICTURE:
 				PictureFieldRecord pf = (PictureFieldRecord) field;
 				values.put(pf.getField().getLabel(), pf.getValue());
 				break;
-			case SmartConstants.HEIGHT_FIELD:
+				
+			case HEIGHT:
 				HeightFieldRecord hf = (HeightFieldRecord) field;
 				values.put(hf.getField().getLabel(), hf.getValue());
 				break;
+				
 			default:
 				throw new IllegalStateException("Unkown field");
 			}
@@ -357,7 +363,6 @@ public class DbManager {
 	 * @param idMission
 	 */
 	public void deleteMission(long idMission) {
-
 		Cursor cNomForm = mDb.rawQuery(SELECT + MISSIONS_COL_FORM + FROM
 				+ TABLE_MISSIONS + WHERE + MISSIONS_COL_ID + "=" + idMission,
 				null);
@@ -687,7 +692,7 @@ public class DbManager {
 	 * @param idMission
 	 * @return a list of PointRecord
 	 */
-	public List<PointRecord> getGeometriesPointsOfMission(int idMission) {
+	public List<PointRecord> getGeometriesPointsOfMission(long idMission) {
 		LinkedList<PointRecord> points = new LinkedList<PointRecord>();
 
 		Cursor c = mDb

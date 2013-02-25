@@ -1,7 +1,5 @@
 package fr.umlv.lastproject.smart.form;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-
 /**
  * Field of type Text
  * 
@@ -21,8 +19,6 @@ public class TextField extends Field {
 	 * @param label of field
 	 */
 	public TextField(String label) {
-		super(label, SmartConstants.TEXT_FIELD);
+		super(label, FieldType.TEXT);
 	}
-
-	
 }

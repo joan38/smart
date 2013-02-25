@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Creation's activity to make a new form
@@ -36,12 +36,12 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
  */
 public class CreateFormActivity extends Activity {
 
-	private final Form form = new Form();
+	private Form form;
 	private TableLayout layoutDynamic;
 	private Spinner spin;
 	private final List<EditText> allEds = new ArrayList<EditText>();
-	private int type;
-	
+	private FieldType fieldType;
+
 	private static final String MIN = " Min : ";
 	private static final String MAX = " Max : ";
 	private static final int PADDING_LEFT = 40;
@@ -56,8 +56,7 @@ public class CreateFormActivity extends Activity {
 		layoutDynamic.removeAllViewsInLayout();
 
 		String name = (String) getIntent().getSerializableExtra("nameForm");
-
-		form.setName(name);
+		form = new Form(name);
 
 		final Context c = this;
 
@@ -93,51 +92,48 @@ public class CreateFormActivity extends Activity {
 							int position, long arg3) {
 
 						allEds.clear();
+						fieldType = FieldType.getFromId(position);
 
-						switch (position) {
-						case SmartConstants.TEXT_FIELD:
-
+						switch (fieldType) {
+						case TEXT:
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-							type = SmartConstants.TEXT_FIELD;
 							break;
-						case SmartConstants.NUMERIC_FIELD:
+
+						case NUMERIC:
 							rowMax.setVisibility(View.VISIBLE);
 							rowMin.setVisibility(View.VISIBLE);
 							rowList.setVisibility(View.GONE);
-
-							type = SmartConstants.NUMERIC_FIELD;
 							break;
-						case SmartConstants.BOOLEAN_FIELD:
+
+						case BOOLEAN:
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-							type = SmartConstants.BOOLEAN_FIELD;
 							break;
-						case SmartConstants.LIST_FIELD:
+
+						case LIST:
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.VISIBLE);
-							type = SmartConstants.LIST_FIELD;
 							break;
-						case SmartConstants.PICTURE_FIELD:
+
+						case PICTURE:
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-
-							type = SmartConstants.PICTURE_FIELD;
 							break;
-						case SmartConstants.HEIGHT_FIELD:
+
+						case HEIGHT:
 							rowMax.setVisibility(View.GONE);
 							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
-
-							type = SmartConstants.HEIGHT_FIELD;
 							break;
+
 						default:
+							throw new IllegalStateException("Unkown field type");
 						}
-
 					}
 
 					@Override
@@ -170,8 +166,8 @@ public class CreateFormActivity extends Activity {
 								int max = -1;
 								int min = -1;
 
-								switch (type) {
-								case SmartConstants.TEXT_FIELD:
+								switch (fieldType) {
+								case TEXT:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -191,8 +187,8 @@ public class CreateFormActivity extends Activity {
 										form.addField(t);
 									}
 									break;
-								case SmartConstants.NUMERIC_FIELD:
-
+									
+								case NUMERIC:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -223,16 +219,16 @@ public class CreateFormActivity extends Activity {
 												label, min, max);
 										view.setText(getString(R.string.field_numeric)
 												+ num.getLabel()
-												+ MAX 
+												+ MAX
 												+ num.getMax()
 												+ MIN
 												+ num.getMin());
 
 										form.addField(num);
 									}
-
 									break;
-								case SmartConstants.BOOLEAN_FIELD:
+									
+								case BOOLEAN:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -252,7 +248,8 @@ public class CreateFormActivity extends Activity {
 										form.addField(b);
 									}
 									break;
-								case SmartConstants.LIST_FIELD:
+									
+								case LIST:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -279,7 +276,7 @@ public class CreateFormActivity extends Activity {
 
 									}
 									break;
-								case SmartConstants.PICTURE_FIELD:
+								case PICTURE:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -297,7 +294,8 @@ public class CreateFormActivity extends Activity {
 										form.addField(p);
 									}
 									break;
-								case SmartConstants.HEIGHT_FIELD:
+									
+								case HEIGHT:
 									labelValue = (EditText) alertDialogView
 											.findViewById(R.id.valueName);
 									label = labelValue.getText().toString();
@@ -316,7 +314,11 @@ public class CreateFormActivity extends Activity {
 										form.addField(h);
 									}
 									break;
+
+								default:
+									throw new IllegalStateException("Unkown field type");
 								}
+								
 								if (erreur) {
 									erreur = false;
 								} else {
@@ -334,7 +336,8 @@ public class CreateFormActivity extends Activity {
 										}
 									});
 									row.addView(image);
-									view.setPadding(PADDING_LEFT, PADDING_TOP, 0, 0);
+									view.setPadding(PADDING_LEFT, PADDING_TOP,
+											0, 0);
 									row.addView(view);
 									layoutDynamic.addView(row);
 								}
@@ -357,6 +360,13 @@ public class CreateFormActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Save the form
+				try {
+					form.write(Environment
+							.getExternalStorageDirectory().getPath() + "/SMART");
+				} catch (FormExportException e) {
+					// TODO: Toast
+				}
+				
 				Toast.makeText(getApplicationContext(),
 						form.getName() + " " + form.getFieldsList().size(),
 						Toast.LENGTH_LONG).show();
@@ -364,13 +374,9 @@ public class CreateFormActivity extends Activity {
 					Log.d("TEST", f.getLabel());
 				}
 				finish();
-
 			}
 		});
-
 	}
-
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

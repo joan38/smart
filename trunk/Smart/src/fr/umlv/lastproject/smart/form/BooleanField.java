@@ -1,6 +1,5 @@
 package fr.umlv.lastproject.smart.form;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Field of type boolean
@@ -21,7 +20,7 @@ public class BooleanField extends Field {
 	 * @param label of the field
 	 */
 	public BooleanField(String label) {
-		super(label, SmartConstants.BOOLEAN_FIELD);
+		super(label, FieldType.BOOLEAN);
 	}
 
 }

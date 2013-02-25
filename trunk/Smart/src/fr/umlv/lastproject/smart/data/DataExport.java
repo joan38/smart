@@ -1,13 +1,10 @@
 package fr.umlv.lastproject.smart.data;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.FieldRecord;
@@ -20,8 +17,6 @@ import fr.umlv.lastproject.smart.database.NumericFieldRecord;
 import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
-import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public final class DataExport {
@@ -69,32 +64,32 @@ public final class DataExport {
 					csv.write(",");
 					
 					switch (field.getField().getType()) {
-					case SmartConstants.TEXT_FIELD:
+					case TEXT:
 						TextFieldRecord tf = (TextFieldRecord) field;
 						csv.write(tf.getValue());
 						break;
 
-					case SmartConstants.NUMERIC_FIELD:
+					case NUMERIC:
 						NumericFieldRecord nf = (NumericFieldRecord) field;
 						csv.write(String.valueOf(nf.getValue()));
 						break;
 
-					case SmartConstants.BOOLEAN_FIELD:
+					case BOOLEAN:
 						BooleanFieldRecord bf = (BooleanFieldRecord) field;
 						csv.write(String.valueOf(bf.getValue()));
 						break;
 
-					case SmartConstants.LIST_FIELD:
+					case LIST:
 						ListFieldRecord lf = (ListFieldRecord) field;
 						csv.write(lf.getValue());
 						break;
 
-					case SmartConstants.PICTURE_FIELD:
+					case PICTURE:
 						PictureFieldRecord pf = (PictureFieldRecord) field;
 						csv.write(pf.getValue());
 						break;
 
-					case SmartConstants.HEIGHT_FIELD:
+					case HEIGHT:
 						HeightFieldRecord hf = (HeightFieldRecord) field;
 						csv.write(String.valueOf(hf.getValue()));
 						break;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import fr.umlv.lastproject.smart.form.Field;
 import fr.umlv.lastproject.smart.form.Form;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Class uses to model a record of form's instance
@@ -43,38 +42,38 @@ public class FormRecord {
 		ArrayList<Field> fieldslist = (ArrayList<Field>) f.getFieldsList();
 		for (Field fld : fieldslist) {
 			switch (fld.getType()) {
-			case SmartConstants.TEXT_FIELD:
+			case TEXT:
 				TextFieldRecord fr = new TextFieldRecord(fld, null);
 				this.fields.add(fr);
 				break;
 				
-			case SmartConstants.NUMERIC_FIELD:
+			case NUMERIC:
 				NumericFieldRecord nf = new NumericFieldRecord(fld, 0);
 				this.fields.add(nf);
 				break;
 				
-			case SmartConstants.BOOLEAN_FIELD:
+			case BOOLEAN:
 				BooleanFieldRecord bf = new BooleanFieldRecord(fld, false);
 				this.fields.add(bf);
 				break;
 				
-			case SmartConstants.LIST_FIELD:
+			case LIST:
 				ListFieldRecord lf = new ListFieldRecord(fld, null);
 				this.fields.add(lf);
 				break;
 				
-			case SmartConstants.PICTURE_FIELD:
+			case PICTURE:
 				PictureFieldRecord pf = new PictureFieldRecord(fld, null);
 				this.fields.add(pf);
 				break;
 				
-			case SmartConstants.HEIGHT_FIELD:
+			case HEIGHT:
 				HeightFieldRecord hf = new HeightFieldRecord(fld, 0);
 				this.fields.add(hf);
 				break;
-				
+
 			default:
-				break;
+				throw new IllegalStateException("Unkown field type");
 			}
 		}
 		

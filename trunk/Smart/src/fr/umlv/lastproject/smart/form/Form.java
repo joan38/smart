@@ -7,9 +7,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
 import android.util.Log;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
@@ -27,53 +41,56 @@ public class Form implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -30424477427478579L;
-	private String name;
+	private String title;
 	private List<Field> fieldsList;
 
+	private static final String VALUESTAG = "values";
+	private static final String MINTAG = "min";
+	private static final String MAXTAG = "max";
+	private static final String COMMENTS = "Commentaires";
+	private static final String DEFAULT_NAME = "FormDefault";
+	private static final String CHARSET = "UTF-8";
+	private static final String FORMTAG = "form";
+	private static final String TITLETAG = "title";
+	private static final String FIELDSTAG = "fields";
+	private static final String FIELDTAG = "field";
+	private static final String TYPETAG = "type";
 
-	private static final String FORM ="form" ;
-	private static final String FIELD="field" ;
-	private static final String TYPE="type" ;
-	private static final String TITLE="title"; 
-	private static final String VALUES="values" ;
-	private static final String MIN="min" ;
-	private static final String MAX="max" ;
-	private static final String COMMENTS="Commentaires";
-	private static final String DEFAULT_NAME="FormDefault";
-	private static final String CHARSET="UTF-8";
-
-	
-/**
- * 
- * @param name of the form
- */
+	/**
+	 * Create a Form with a specified name.
+	 * 
+	 * @param name
+	 *            of the form
+	 */
 	public Form(String name) {
-		this.name = name;
+		this.title = name;
 		this.fieldsList = new ArrayList<Field>();
 		this.fieldsList.add(new TextField(COMMENTS));
 	}
 
 	/**
-	 * Form by default
+	 * Create a default Form.
 	 */
 	public Form() {
 		this(DEFAULT_NAME);
 	}
 
 	/**
+	 * Get the name of the form.
 	 * 
 	 * @return the name of form
 	 */
 	public String getName() {
-		return name;
+		return title;
 	}
 
 	/**
+	 * Set the name of the form.
 	 * 
 	 * @param name
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.title = name;
 	}
 
 	/**
@@ -94,7 +111,8 @@ public class Form implements Serializable {
 
 	/**
 	 * 
-	 * @param f is the field to add at the form
+	 * @param f
+	 *            is the field to add at the form
 	 */
 	public void addField(Field f) {
 		this.fieldsList.add(f);
@@ -102,11 +120,12 @@ public class Form implements Serializable {
 
 	/**
 	 * 
-	 * @param label of the field to delete
+	 * @param label
+	 *            of the field to delete
 	 */
-	public void deleteField(String label){
-		for(int i=0;i<fieldsList.size();i++){
-			if(fieldsList.get(i).getLabel().equals(label)){
+	public void deleteField(String label) {
+		for (int i = 0; i < fieldsList.size(); i++) {
+			if (fieldsList.get(i).getLabel().equals(label)) {
 				fieldsList.remove(i);
 			}
 		}
@@ -114,15 +133,17 @@ public class Form implements Serializable {
 
 	/**
 	 * 
-	 * @param label of the field to search
+	 * @param label
+	 *            of the field to search
 	 * @return true if the field exists
 	 */
-	public boolean searchLabel(String label){
-		for(int i=0;i<fieldsList.size();i++){
-			if(fieldsList.get(i).getLabel().equals(label)){
+	public boolean searchLabel(String label) {
+		for (int i = 0; i < fieldsList.size(); i++) {
+			if (fieldsList.get(i).getLabel().equals(label)) {
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -134,91 +155,173 @@ public class Form implements Serializable {
 	 * @param g
 	 *            geometry to insert
 	 */
-	public void openForm(final MenuActivity context, final Geometry g, final Mission mission) {
-		final FormDialog dialog=new FormDialog(context, this, g, mission);
+	public void openForm(final MenuActivity context, final Geometry g,
+			final Mission mission) {
+		final FormDialog dialog = new FormDialog(context, this, g, mission);
 		dialog.show();
 	}
+
 	/**
 	 * 
-	 * @param s the file to load
-	 * @throws XmlPullParserException if the xml is malformatted
-	 * @throws IOException 
+	 * @param path
+	 *            the file to load
+	 * @throws XmlPullParserException
+	 *             if the xml is malformatted
+	 * @throws IOException
 	 */
-	public void read(String s) throws XmlPullParserException, IOException{
-
-		XmlPullParserFactory xml = XmlPullParserFactory.newInstance() ;
+	public void read(String path) throws XmlPullParserException, IOException {
+		XmlPullParserFactory xml = XmlPullParserFactory.newInstance();
 		xml.setNamespaceAware(true);
 		XmlPullParser xpp = xml.newPullParser();
-		FileInputStream fis = new FileInputStream(new File(s));
-		xpp.setInput(fis,CHARSET);
-		int eventype = xpp.getEventType() ;
+		FileInputStream fis = new FileInputStream(new File(path));
+		xpp.setInput(fis, CHARSET);
+		int eventype = xpp.getEventType();
 
-		while(eventype != XmlPullParser.END_DOCUMENT){
-
-			if(eventype == XmlPullParser.START_TAG){
+		while (eventype != XmlPullParser.END_DOCUMENT) {
+			if (eventype == XmlPullParser.START_TAG) {
 				String tag = xpp.getName();
-				Log.d("", "tag"+xpp.getName());
-				Log.d("", "tag count attribute "+ xpp.getAttributeCount() );
+				Log.d("", "tag" + xpp.getName());
+				Log.d("", "tag count attribute " + xpp.getAttributeCount());
 
-				if(FORM.equals(tag)){
-					for(int i =0 ; i< xpp.getAttributeCount() ; i++){
-						Log.d("", "tag form "+xpp.getAttributeName(i));
+				if (FORMTAG.equals(tag)) {
+					for (int i = 0; i < xpp.getAttributeCount(); i++) {
+						Log.d("", "tag form " + xpp.getAttributeName(i));
 
-						if(xpp.getAttributeName(i).equals(TITLE) ){
-							setName(xpp.getAttributeValue(i).replace(" ", "")) ;
+						if (xpp.getAttributeName(i).equals(TITLETAG)) {
+							setName(xpp.getAttributeValue(i).replace(" ", ""));
 						}
 					}
-				}else if(FIELD.equals(tag)){
-					
+				} else if (FIELDTAG.equals(tag)) {
+					String type = null;
+					String title = null;
+					int max = 0;
+					int min = 0;
+					String values = null;
 
-
-					String type = null ;
-					String title = null ;
-					int max = 0 ;
-					int min = 0 ;
-					String values = null ;
-
-					for(int i = 0 ; i < xpp.getAttributeCount() ; i++){
-						Log.d("", "tag type"+xpp.getAttributeName(i));
-						if(xpp.getAttributeName(i).equals(TYPE)){
+					for (int i = 0; i < xpp.getAttributeCount(); i++) {
+						Log.d("", "tag type" + xpp.getAttributeName(i));
+						if (xpp.getAttributeName(i).equals(TYPETAG)) {
 							type = xpp.getAttributeValue(i);
-							Log.d("", "tag att"+xpp.getAttributeValue(i));
+							Log.d("", "tag att" + xpp.getAttributeValue(i));
 
-						}else if(xpp.getAttributeName(i).equals(TITLE)){
-							title = xpp.getAttributeValue(i).replace(" ", "") ;
-						}else if(xpp.getAttributeName(i).equals(MAX)){
+						} else if (xpp.getAttributeName(i).equals(TITLETAG)) {
+							title = xpp.getAttributeValue(i).replace(" ", "");
+						} else if (xpp.getAttributeName(i).equals(MAXTAG)) {
 							max = Integer.valueOf(xpp.getAttributeValue(i));
-						}else if(xpp.getAttributeName(i).equals(MIN)){
-							min = Integer.getInteger(xpp.getAttributeValue(i)) ;
-						}else if(xpp.getAttributeName(i).equals(VALUES)){
-							values= xpp.getAttributeValue(i) ;
+						} else if (xpp.getAttributeName(i).equals(MINTAG)) {
+							min = Integer.getInteger(xpp.getAttributeValue(i));
+						} else if (xpp.getAttributeName(i).equals(VALUESTAG)) {
+							values = xpp.getAttributeValue(i);
 						}
 					}
 
-					if( type.equals("photo") ){
-						addField(new PictureField(title)) ;
-					}else if(type.equals("height")){
+					if (type.equalsIgnoreCase(FieldType.PICTURE.name())) {
+						addField(new PictureField(title));
+					} else if (type.equalsIgnoreCase(FieldType.HEIGHT.name())) {
 						addField(new HeightField(title));
-					}else if(type.equals("boolean")){
+					} else if (type.equalsIgnoreCase(FieldType.BOOLEAN.name())) {
 						addField(new BooleanField(title));
-					}else if(type.equals("list")){
+					} else if (type.equalsIgnoreCase(FieldType.LIST.name())) {
 						String[] list = values.split("/");
-						addField(new ListField(title, new ArrayList<String>(Arrays.asList(list)))) ;
-					}else if(type.equals("num")){
+						addField(new ListField(title, new ArrayList<String>(
+								Arrays.asList(list))));
+					} else if (type.equalsIgnoreCase(FieldType.NUMERIC.name())) {
 						addField(new NumericField(title, min, max));
 					}
 				}
 			}
-			
-			eventype = xpp.next() ;
-			
+
+			eventype = xpp.next();
 		}
 	}
 
-	
-	
-	
-	public void write(String path){
-		
+	public void write(String path) throws FormExportException {
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document xml = docBuilder.newDocument();
+
+			// Form element
+			Element formElement = xml.createElement(FORMTAG);
+			xml.appendChild(formElement);
+
+			// Set attributes to form element
+			Attr titleAttribute = xml.createAttribute(TITLETAG);
+			titleAttribute.setValue(title);
+			formElement.setAttributeNode(titleAttribute);
+
+			// Fields element
+			Element fieldsElement = xml.createElement(FIELDSTAG);
+			formElement.appendChild(fieldsElement);
+
+			if (fieldsList.size() < 1) {
+				throw new FormExportException("No field in the given Form");
+			}
+			for (Field field : fieldsList) {
+				// Field element
+				Element fieldElement = xml.createElement(FIELDTAG);
+				fieldsElement.appendChild(fieldElement);
+
+				// Set attributes to field element
+				Attr typeAttribute = xml.createAttribute(TYPETAG);
+				typeAttribute.setValue(field.getType().name());
+				fieldElement.setAttributeNode(typeAttribute);
+
+				Attr titleFieldAttribute = xml.createAttribute(TITLETAG);
+				titleFieldAttribute.setValue(field.getLabel());
+				fieldElement.setAttributeNode(titleFieldAttribute);
+
+				switch (field.getType()) {
+				case BOOLEAN:
+				case HEIGHT:
+				case TEXT:
+				case PICTURE:
+					// Nothing more
+					break;
+
+				case NUMERIC:
+					NumericField nf = (NumericField) field;
+					
+					Attr minAttribute = xml.createAttribute(MINTAG);
+					minAttribute.setValue(String.valueOf(nf.getMin()));
+					fieldElement.setAttributeNode(minAttribute);
+					
+					Attr maxAttribute = xml.createAttribute(MINTAG);
+					maxAttribute.setValue(String.valueOf(nf.getMax()));
+					fieldElement.setAttributeNode(maxAttribute);
+					break;
+
+				case LIST:
+					ListField lf = (ListField) field;
+					Attr valueAttribute = xml.createAttribute(VALUESTAG);
+					
+					StringBuilder values = new StringBuilder();
+					for (String value : lf.getValues()) {
+						values.append(value).append("/");
+					}
+					values.deleteCharAt(values.length() - 1);
+					valueAttribute.setValue(values.toString());
+					
+					fieldElement.setAttributeNode(valueAttribute);
+					break;
+
+				default:
+					throw new IllegalStateException("Unkown field");
+				}
+			}
+
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(xml);
+			StreamResult result = new StreamResult(path + "/" + title + ".xml");
+
+			transformer.transform(source, result);
+		} catch (ParserConfigurationException e) {
+			throw new FormExportException("Unable to export the form", e);
+		} catch (TransformerException e) {
+			throw new FormExportException("Unable to export the form", e);
+		}
 	}
 }
