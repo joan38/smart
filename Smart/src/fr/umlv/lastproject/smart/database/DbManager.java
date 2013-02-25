@@ -740,7 +740,7 @@ public class DbManager {
 	 * @param idGeometry
 	 * @return id of the form
 	 */
-	public int getIdForm(int idGeometry){
+	public int getIdForm(long idGeometry){
 
 		Cursor c = mDb.rawQuery(SELECT + GEOMETRIES_COL_ID_FORM_RECORD + FROM + TABLE_GEOMETRIES + WHERE + GEOMETRIES_COL_ID+"="+idGeometry, null);
 		c.moveToNext();

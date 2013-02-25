@@ -70,7 +70,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 * @param mission
 	 */
 	public AlertModifFormDialog(final MenuActivity context, final Form form,
-			final int idGeometry) {
+			final long idGeometry) {
 		super(context);
 		setCancelable(false);
 		final LayoutInflater factory = LayoutInflater.from(context);
@@ -193,7 +193,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 * @throws SmartException 
 	 */
 	public final void buildForm(TableLayout l, final MenuActivity c,
-			List<Field> fieldsList, int idGeometry) throws SmartException {
+			List<Field> fieldsList, long idGeometry) throws SmartException {
 		editTextList = new LinkedList<Object>();
 		
 		DbManager dbManager = new DbManager();

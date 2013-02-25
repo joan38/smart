@@ -8,6 +8,7 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.SmartMapView;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -63,22 +64,39 @@ public final class Mission {
 		this.context = context;
 		this.mapView = mapview;
 		this.form = f;
+		
+		SelectedGeometryListener list = new SelectedGeometryListener() {
+			
+			@Override
+			public void actionPerformed(Geometry g) {
+				Log.d("", "mission select");
+				AlertModifFormDialog d = new AlertModifFormDialog(context, getForm(), g.getId()) ;
+				d.show();
+				g.setSelected(false);
+			}
+		};
 
 		pointLayer = new GeometryLayer(context);
 		pointLayer.setType(GeometryType.POINT);
 		pointLayer.setName(title + "_POINT");
 		pointLayer.setSymbology(new PointSymbology(POINT_RADIUS, Color.BLACK));
+		pointLayer.setSelectable(true);
+		pointLayer.addSelectedGeometryListener(list);
 
 		lineLayer = new GeometryLayer(context);
 		lineLayer.setType(GeometryType.LINE);
 		lineLayer.setName(title + "_LINE");
 		lineLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.BLACK));
+		lineLayer.setSelectable(true) ;
+		lineLayer.addSelectedGeometryListener(list);
 
 		polygonLayer = new GeometryLayer(context);
 		polygonLayer.setType(GeometryType.POLYGON);
 		polygonLayer.setName(title + "_POLYGON");
 		polygonLayer.setSymbology(new PolygonSymbology(POLY_THICKNESS,
 				Color.BLACK));
+		polygonLayer.setSelectable(true);
+		polygonLayer.addSelectedGeometryListener(list);
 
 		survey = new Survey(mapview);
 
@@ -146,6 +164,9 @@ public final class Mission {
 		dbManager.stopMission(id);
 		dbManager.close();
 		status = false;
+		pointLayer.setSelectable(false);
+		lineLayer.setSelectable(false);
+		polygonLayer.setSelectable(false);
 		return status;
 	}
 
@@ -304,4 +325,5 @@ public final class Mission {
 
 		mapView.invalidate();
 	}
+	
 }
