@@ -1,9 +1,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
+        android:id="@+id/select_options"
+        android:title="@string/editInfo">
+        <menu>
+            <group android:checkableBehavior="all" >
+                <item
+                    android:id="@+id/latitudeChkbx"
+                    android:checkable="true"
+                    android:title="@string/displayLatitude"/>
+                <item
+                    android:id="@+id/longitudeChkbx"
+                    android:checkable="true"
+                    android:title="@string/displayLongitude"/>
+                <item
+                    android:id="@+id/altitudeChkbx"
+                    android:checkable="true"
+                    android:title="@string/displayAltitude"/>
+                <item
+                    android:id="@+id/accuracyChkbx"
+                    android:checkable="true"
+                    android:title="@string/displayAccuracy"/>
+                <item
+                    android:id="@+id/bearingChkbx"
+                    android:checkable="true"
+                    android:title="@string/displayBearing"/>
+                <item
+                    android:id="@+id/speedChkbx"
+                    android:checkable="true"
+                    android:title="@string/displaySpeed"/>
+            </group>
+
+            <Button
+                android:id="@+id/infoValidate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/validate" />
+        </menu>
+    </item>
 
 </menu>

@@ -6,6 +6,8 @@
     <string name="longitude">Longitude :</string>
     <string name="altitude">Altitude :</string>
     <string name="accuracy">Accuracy :</string>
+    <string name="speed">Speed :</string>
+    <string name="bearing">Bearing :</string>
     <string name="centerMap">Recentering the map</string>
     <string name="findGPS">Finding GPS signal..</string>
     <string name="gpsSettings">GPS settings</string>
@@ -126,6 +128,17 @@
     <string name="wmstitle">Import WMS Layer </string>
     <string name="wms_error">Error while importing wms : url is not reachable</string>
     <string name="wms_name">Enter a name for WMS Layer</string>
+
+    
+    <string name="editInfo">Edit info zone</string>
+    <string name="displayLatitude">Display latitude :</string>
+    <string name="displayLongitude">Display longitude :</string>
+    <string name="displayAltitude">Display altitude :</string>
+    <string name="displayAccuracy">Display accuracy :</string>
+    <string name="displayBearing">Display bearing :</string>
+    <string name="displaySpeed">Display speed :</string>
+
+
     <string name="noMission">Impossible : no mission in progress</string>
    	<string name="theme">Theme</string>
     
