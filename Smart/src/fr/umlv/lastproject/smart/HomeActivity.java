@@ -34,6 +34,8 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		int theme = Theme.getInstance().getIntTheme();
+		setTheme(theme);
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
 
@@ -81,7 +83,7 @@ public class HomeActivity extends Activity {
 		SmartItemHomeAdapter adapter = new SmartItemHomeAdapter(this,
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
-		listView.setClickable(false);
+		//listView.setClickable(false);
 		listView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -102,7 +104,7 @@ public class HomeActivity extends Activity {
 				intentReturn.putExtra("position", position);
 				intentReturn.putExtra("shortcut", shortcut.toArray());
 				setResult(RESULT_OK, intentReturn);
-				view.setEnabled(false);
+				//view.setEnabled(false);
 				finish();
 
 			}

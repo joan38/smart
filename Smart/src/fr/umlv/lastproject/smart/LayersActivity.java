@@ -75,7 +75,8 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
-
+		int theme = Theme.getInstance().getIntTheme();
+		setTheme(theme);
 		setContentView(R.layout.activity_layers);
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");

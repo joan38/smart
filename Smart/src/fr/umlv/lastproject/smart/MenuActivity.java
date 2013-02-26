@@ -13,6 +13,7 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
@@ -40,6 +41,7 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
@@ -86,12 +88,19 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+	
+		String s = getIntent().getStringExtra("theme");
+		Theme.createTheme(s);
+		int theme = Theme.getInstance().getIntTheme();
+		setTheme(theme);
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
 		initMap();
 		initGps();
 
-		ImageButton home = (ImageButton) findViewById(R.id.home);
+		ImageView home = (ImageView) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -102,7 +111,7 @@ public class MenuActivity extends Activity {
 			}
 		});
 
-		ImageButton layers = (ImageButton) findViewById(R.id.layers);
+		ImageView layers = (ImageView) findViewById(R.id.layers);
 		layers.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -137,6 +146,7 @@ public class MenuActivity extends Activity {
 		menu.add(0, 1, 0, R.string.hideInfoZone);
 		menu.add(0, 2, 0, R.string.gpsSettings);
 		menu.add(0, 3, 0, R.string.help);
+		menu.add(0, 4, 0, R.string.theme);
 		return true;
 	}
 
@@ -348,10 +358,19 @@ public class MenuActivity extends Activity {
 			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
 					R.string.helpMap);
 			helpDialog.show();
+			break;
+		case 4:
+//			if(!missionCreated){
+				new AlertThemeDialog(this, getApplication());
+//			} else {
+//				Toast.makeText(this, "Stop the mission before", Toast.LENGTH_LONG).show();
+//			}
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
@@ -368,6 +387,7 @@ public class MenuActivity extends Activity {
 				Integer index = (Integer) data.getSerializableExtra("position");
 
 				switch (index) {
+				
 				case SmartConstants.CREATE_MISSION:
 					if (missionCreated) {
 						missionCreated = Mission.getInstance().stopMission();
@@ -382,15 +402,27 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.POINT_SURVEY:
-					Mission.getInstance().startSurvey(GeometryType.POINT);
+					if(Mission.getInstance() == null){
+						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					} else {
+						Mission.getInstance().startSurvey(GeometryType.POINT);
+					}
 					break;
 
 				case SmartConstants.LINE_SURVEY:
-					Mission.getInstance().startSurvey(GeometryType.LINE);
+					if(Mission.getInstance() == null){
+						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					} else {
+						Mission.getInstance().startSurvey(GeometryType.LINE);
+					}
 					break;
 
 				case SmartConstants.POLYGON_SURVEY:
-					Mission.getInstance().startSurvey(GeometryType.POLYGON);
+					if(Mission.getInstance() == null){
+						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					} else {
+						Mission.getInstance().startSurvey(GeometryType.POLYGON);
+					}
 					break;
 
 				case SmartConstants.GPS_TRACK:

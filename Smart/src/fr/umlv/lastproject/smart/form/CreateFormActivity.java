@@ -27,6 +27,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.Theme;
 
 /**
  * Creation's activity to make a new form
@@ -50,6 +51,8 @@ public class CreateFormActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		int theme = Theme.getInstance().getIntTheme();
+		setTheme(theme);
 		setContentView(R.layout.activity_create_form);
 
 		layoutDynamic = (TableLayout) findViewById(R.id.layoutDynamicCreateFormulaire);
