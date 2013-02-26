@@ -52,8 +52,18 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
+	 * @param layer
+	 *            to add
+	 * @return if true ok
+	 */
+	public void add(int pos, LayerItem item) {
+		overlays.add(pos, item);
+	}
+
+	/**
+	 * 
 	 * @param location
-	 * @return the overlya
+	 * @return the LayerItem
 	 */
 	public LayerItem get(int location) {
 		return this.overlays.get(location);

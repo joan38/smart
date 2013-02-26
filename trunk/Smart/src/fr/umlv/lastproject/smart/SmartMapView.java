@@ -188,6 +188,16 @@ public class SmartMapView extends MapView {
 	}
 
 	/**
+	 * find the layer
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Overlay getOverlay(String name) {
+		return this.stringToOverlay.get(name);
+	}
+
+	/**
 	 * 
 	 * @return the list of raster layers
 	 */
