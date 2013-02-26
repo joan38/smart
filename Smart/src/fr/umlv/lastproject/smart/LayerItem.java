@@ -21,6 +21,7 @@ public class LayerItem implements Serializable {
 	private String name;
 	private boolean visible;
 	private Bitmap overview;
+
 	private boolean isEditable;
 
 	private static final String TMP_BITMAP = Environment
@@ -150,6 +151,7 @@ public class LayerItem implements Serializable {
 		appFolder.mkdirs();
 
 		// ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
 		final String fileName = TMP_BITMAP + "/" + name + ".png";
 		final FileOutputStream stream = new FileOutputStream(new File(fileName));
 		if (!overview.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
@@ -158,15 +160,8 @@ public class LayerItem implements Serializable {
 		stream.flush();
 		stream.close();
 		out.writeObject(fileName);
+
 		out.writeBoolean(isEditable);
-
-		// byte[] imageByteArray = stream.toByteArray();
-
-		// int length = imageByteArray.length;
-		// out.writeInt(length);
-		// out.write(imageByteArray);
-		// out.writeObject(Environment.getExternalStorageDirectory() + "/SMART/"
-		// + name + ".png");
 
 	}
 
