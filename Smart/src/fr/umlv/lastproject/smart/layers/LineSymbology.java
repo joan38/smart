@@ -14,8 +14,7 @@ public class LineSymbology extends Symbology {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int thickness;
-	
+
 	private static int DEFAULT_THICKNESS = 5;
 
 	/**
@@ -24,8 +23,7 @@ public class LineSymbology extends Symbology {
 	 * Color : Black / Thickness : 5
 	 */
 	public LineSymbology() {
-		super(Color.BLACK);
-		this.thickness = DEFAULT_THICKNESS;
+		super(Color.BLACK, DEFAULT_THICKNESS);
 	}
 
 	/**
@@ -35,25 +33,7 @@ public class LineSymbology extends Symbology {
 	 * @param color
 	 */
 	public LineSymbology(int thickness, int color) {
-		super(color);
-		this.thickness = thickness;
-	}
-
-	/**
-	 * 
-	 * @return the line thickness
-	 */
-	public int getThickness() {
-		return this.thickness;
-	}
-
-	/**
-	 * Function which set the Line thickness
-	 * 
-	 * @param thickness
-	 */
-	public void setThickness(int thickness) {
-		this.thickness = thickness;
+		super(color, thickness);
 	}
 
 }

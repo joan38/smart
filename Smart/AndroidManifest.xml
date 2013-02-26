@@ -63,7 +63,7 @@
         </activity>
         <activity
             android:name="fr.umlv.lastproject.smart.form.PictureActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

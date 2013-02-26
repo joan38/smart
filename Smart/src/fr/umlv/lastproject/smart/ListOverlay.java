@@ -35,20 +35,20 @@ public class ListOverlay implements Serializable {
 		this.overlays = new ArrayList<LayerItem>();
 
 		for (Layer layer : layers) {
-			overlays.add(new LayerItem(layer.getName(), layer.getOverview()));
-
+			overlays.add(new LayerItem(layer.getName(), layer.getOverview(),
+					layer.hasSymbologyEditable()));
 		}
 	}
 
 	/**
 	 * 
-	 * @param layer to add
+	 * @param layer
+	 *            to add
 	 * @return if true ok
 	 */
 	public boolean add(LayerItem item) {
 		return overlays.add(item);
 	}
-
 
 	/**
 	 * 
@@ -61,8 +61,10 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param location the layer which will change the visibility
-	 * @param visible if true or false
+	 * @param location
+	 *            the layer which will change the visibility
+	 * @param visible
+	 *            if true or false
 	 */
 	public void setVisible(int location, boolean visible) {
 		this.overlays.get(location).setVisible(visible);
@@ -70,7 +72,8 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param location the layer which will be removed
+	 * @param location
+	 *            the layer which will be removed
 	 * @return the layeritem
 	 */
 	public LayerItem remove(int location) {
@@ -79,7 +82,7 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param overlay 
+	 * @param overlay
 	 * @return if the overlay has been removed
 	 */
 	public boolean remove(String layer) {
@@ -88,8 +91,10 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
-	 * @param source the overlay to change with
-	 * @param destination this overlay
+	 * @param source
+	 *            the overlay to change with
+	 * @param destination
+	 *            this overlay
 	 */
 	public void reorganize(int source, int destination) {
 		this.overlays.add(destination, this.overlays.remove(source));

@@ -31,7 +31,7 @@ public class PointSymbology extends Symbology {
 	 * @param color
 	 */
 	public PointSymbology(int radius, int color) {
-		super(color);
+		super(color, radius);
 		this.radius = radius;
 	}
 

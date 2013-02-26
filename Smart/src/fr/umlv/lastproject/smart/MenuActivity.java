@@ -1,7 +1,6 @@
 package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
@@ -22,7 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +40,7 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
@@ -49,7 +48,6 @@ import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
-import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -124,51 +122,6 @@ public class MenuActivity extends Activity {
 						SmartConstants.LAYERS_VIEW);
 			}
 		});
-
-		// importKML();
-	}
-
-	/**
-	 * import the kml
-	 */
-	private void importKML() {
-		// import kml
-		try {
-			List<GeometryLayer> kmls = DataImport.importKml(this, Environment
-					.getExternalStorageDirectory().getPath()
-					+ "/SMART/test.kml");
-			Log.d("TEST2", "" + kmls.size());
-			mapView.addGeometryLayers(kmls);
-
-			GeometryLayer kml = DataImport.importKml(this, Environment
-					.getExternalStorageDirectory().getPath()
-					+ "/SMART/poly.kml", GeometryType.POLYGON);
-
-			kml.setSymbology(new PolygonSymbology(3, 0xffff0000));
-
-			mapView.addGeometryLayer(kml);
-
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		GeometryLayer ge = new GeometryLayer(this);
-
-		mapView.addGeometryLayer(ge);
-
-		// Couche presentes
-		String s = "getOverlays() size = "
-				+ String.valueOf(mapView.getOverlays().size()) + "\ndata = ";
-		for (int i = 0; i < mapView.getOverlays().size(); i++) {
-			s += mapView.getOverlays().get(i).toString() + " ";
-		}
-		Log.d("debug", s);
-		Log.d("debug", "getListOverlay() size = "
-				+ mapView.getListOverlay().size() + "\ndata = "
-				+ mapView.getListOverlay().toString());
 	}
 
 	@Override
@@ -374,6 +327,9 @@ public class MenuActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case 0:
+
+			break;
 		case 1:
 			if (findViewById(R.id.table).getVisibility() == View.INVISIBLE) {
 				item.setTitle(R.string.hideInfoZone);
@@ -399,6 +355,14 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
+
+			// TODO on recupere la liste des shortcut
+			// final Object[] shortcut = (Object[]) data
+			// .getSerializableExtra("shortcut");
+			// for (Object o : shortcut) {
+			// Log.d("test", o.toString());
+			// }
+
 			switch (requestCode) {
 			case SmartConstants.HOME_VIEW:
 				Integer index = (Integer) data.getSerializableExtra("position");
@@ -414,8 +378,7 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.CREATE_FORM:
-					AlertCreateFormDialog createFormDialog = new AlertCreateFormDialog(
-							this);
+					new AlertCreateFormDialog(this);
 					break;
 
 				case SmartConstants.POINT_SURVEY:
@@ -512,9 +475,28 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.LAYERS_VIEW:
+
 				ListOverlay listOverlay = (ListOverlay) data
-						.getSerializableExtra("layers");
+						.getSerializableExtra("overlays");
+
+				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
+				// "layers");
 				mapView.setReorderedLayers(listOverlay);
+
+				if ((Boolean) data.getSerializableExtra("editSymbo")) {
+					GeometryLayer layer = (GeometryLayer) mapView.getOverlays()
+							.get((Integer) data
+									.getSerializableExtra("symboToEdit"));
+					new AlertSymbologyDialog(this, layer,
+							listOverlay.get((Integer) data
+									.getSerializableExtra("symboToEdit")));
+
+					// GeometryLayer layer = (GeometryLayer)
+					// mapView.getOverlays()
+					// .get((Integer) data
+					// .getSerializableExtra("symboToEdit")));
+					// layer.getOverview();
+				}
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
@@ -560,7 +542,6 @@ public class MenuActivity extends Activity {
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				Uri fileTiff = data.getData();
 				tiffPath = fileTiff.toString().split("file:///")[1];
-				Log.d("tiff", tiffPath);
 				try {
 					mapView.addGeoTIFFOverlay((DataImport
 							.importGeoTIFFFileFolder(tiffPath, this, "geoTIFF")));
@@ -619,7 +600,6 @@ public class MenuActivity extends Activity {
 		m.addStopListener(new MeasureStopListener() {
 			@Override
 			public void actionPerformed(double distance) {
-				Log.d("", "distance" + distance);
 				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(
 						ma, distance);
 				amrd.show();
@@ -633,5 +613,9 @@ public class MenuActivity extends Activity {
 			m.measure(new PointGeometry(lastPosition.getLatitudeE6() / 1E6,
 					lastPosition.getLongitudeE6() / 1E6));
 		}
+	}
+
+	public SmartMapView getMapView() {
+		return this.mapView;
 	}
 }

@@ -32,6 +32,7 @@ public class LayersActivity extends ListActivity {
 				adapter.remove(item);
 				adapter.insert(item, to);
 				list.moveCheckState(from, to);
+
 			}
 		}
 	};
@@ -84,7 +85,9 @@ public class LayersActivity extends ListActivity {
 		listView.setTextFilterEnabled(true);
 
 		adapter = new SmartItemLayerAdapter(this,
-				R.layout.listview_layers_items, listOverlay.toList(), mission);
+				R.layout.listview_layers_items, listOverlay.toList(), this,
+				listOverlay, mission);
+
 		listView.setAdapter(adapter);
 
 		DragSortListView list = getListView();
@@ -117,7 +120,8 @@ public class LayersActivity extends ListActivity {
 	public void onBackPressed() {
 		Intent intentReturn = new Intent(LayersActivity.this,
 				MenuActivity.class);
-		intentReturn.putExtra("layers", listOverlay);
+		intentReturn.putExtra("overlays", listOverlay);
+		intentReturn.putExtra("editSymbo", false);
 		setResult(RESULT_OK, intentReturn);
 		finish();
 	}

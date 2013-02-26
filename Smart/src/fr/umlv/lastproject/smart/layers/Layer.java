@@ -39,4 +39,6 @@ public interface Layer {
 	 */
 	Overlay getOverlay();
 
+	boolean hasSymbologyEditable();
+
 }

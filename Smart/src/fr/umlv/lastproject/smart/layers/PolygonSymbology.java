@@ -35,7 +35,7 @@ public class PolygonSymbology extends Symbology {
 	 * @param color
 	 */
 	public PolygonSymbology(int thickness, int color) {
-		super(color);
+		super(color, thickness);
 		this.thickness = thickness;
 	}
 

@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.utils;
 
 import android.graphics.Color;
+import fr.umlv.lastproject.smart.R;
 
 /**
  * This class is used to define constants values used in many classes
@@ -45,12 +46,21 @@ public final class SmartConstants {
 	public static final int PICTURE_FIELD = 4;
 	public static final int HEIGHT_FIELD = 5;
 
-	public static final int[] colors = new int[] { Color.rgb(100, 149, 237),
+	public static int[] colors = new int[] { Color.rgb(100, 149, 237),
 			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),
 			Color.rgb(34, 139, 34), Color.rgb(255, 140, 0),
 			Color.rgb(152, 251, 152), Color.rgb(178, 34, 34),
 			Color.rgb(255, 215, 0), Color.rgb(49, 79, 79),
 			Color.rgb(139, 69, 19) };
+
+	// Icons array for functionalities list
+	public static int[] icons = { R.drawable.smart, R.drawable.basket,
+			R.drawable.smart, R.drawable.basket, R.drawable.smart,
+			R.drawable.basket, R.drawable.smart, R.drawable.basket,
+			R.drawable.smart, R.drawable.basket, R.drawable.smart,
+			R.drawable.basket, R.drawable.smart, R.drawable.basket,
+			R.drawable.smart, R.drawable.basket, R.drawable.smart,
+			R.drawable.basket, R.drawable.smart, R.drawable.basket };
 
 	private SmartConstants() {
 	}
