@@ -31,7 +31,9 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public Bitmap getOverview() {
 		return BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.raster2);
+
+		R.drawable.globe);
+
 	}
 
 	@Override
