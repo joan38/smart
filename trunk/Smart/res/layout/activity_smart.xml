@@ -9,19 +9,21 @@
         android:layout_height="wrap_content" 
          android:background="#6F000000">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/home"/>
+            android:src="@drawable/homemenu"
+            android:contentDescription="desc"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/layers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/layers"/>"
+            android:src="@drawable/layersmenu"
+            android:contentDescription="desc"/>
     </RelativeLayout>
 
 

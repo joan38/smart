@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +45,11 @@ public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 	/**
 	 * @return the item status
 	 */
-	@Override
-	public boolean isEnabled(int position) {
-		return this.getItem(position).isEnabled();
-	}
+// TODO
+//	@Override
+//	public boolean isEnabled(int position) {
+//		return this.getItem(position).isEnabled();
+//	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -70,11 +70,11 @@ public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 			smartHolder = (SmartHolder) convertView.getTag();
 		}
 
-		if (!item.isEnabled()) {
-			convertView.setBackgroundColor(Color.LTGRAY);
-		} else {
-			convertView.setBackgroundColor(Color.WHITE);
-		}
+//		if (!item.isEnabled()) {
+//			convertView.setBackgroundColor(Color.LTGRAY);
+//		} else {
+//			convertView.setBackgroundColor(Color.WHITE);
+//		}
 
 		smartHolder.txtTitle.setText(item.getTitle());
 		smartHolder.imageView.setImageResource(item.getImageId());

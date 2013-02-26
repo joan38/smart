@@ -126,5 +126,7 @@
     <string name="wmstitle">Import WMS Layer </string>
     <string name="wms_error">Error while importing wms : url is not reachable</string>
     <string name="wms_name">Enter a name for WMS Layer</string>
-
+    <string name="noMission">Impossible : no mission in progress</string>
+   	<string name="theme">Theme</string>
+    
 </resources>

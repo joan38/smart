@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.Theme;
 
 /**
  * Main Activity that handles the FileListFragments 
@@ -67,7 +68,8 @@ public class FileChooserActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		int theme = Theme.getInstance().getIntTheme();
+		setTheme(theme);
 		setContentView(R.layout.chooser);
 
 		mFragmentManager = getSupportFragmentManager();

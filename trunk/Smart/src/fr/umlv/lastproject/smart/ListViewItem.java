@@ -68,9 +68,10 @@ public class ListViewItem {
 	 * 
 	 * @return true if the item is enable, else false
 	 */
-	public boolean isEnabled() {
-		return this.isEnabled;
-	}
+// TODO
+//	public boolean isEnabled() {
+//		return this.isEnabled;
+//	}
 
 	/**
 	 * 

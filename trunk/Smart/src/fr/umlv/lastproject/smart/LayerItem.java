@@ -150,8 +150,7 @@ public class LayerItem implements Serializable {
 		final File appFolder = new File(TMP_BITMAP);
 		appFolder.mkdirs();
 
-		// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
+		
 		final String fileName = TMP_BITMAP + "/" + name + ".png";
 		final FileOutputStream stream = new FileOutputStream(new File(fileName));
 		if (!overview.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
@@ -160,7 +159,6 @@ public class LayerItem implements Serializable {
 		stream.flush();
 		stream.close();
 		out.writeObject(fileName);
-
 		out.writeBoolean(isEditable);
 
 	}
