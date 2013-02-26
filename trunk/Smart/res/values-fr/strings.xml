@@ -7,6 +7,8 @@
     <string name="longitude">Longitude :</string>
     <string name="altitude">Altitude :</string>
     <string name="accuracy">Précision :</string>
+    <string name="speed">Vitesse :</string>
+    <string name="bearing">Orientation :</string>
     <string name="centerMap">Recentrage de la carte</string>
     <string name="findGPS">Recherche du signal GPS..</string>
     <string name="gpsSettings">Paramétrages du GPS</string>
@@ -129,10 +131,19 @@
     <string name="wmsurl">Renseignez l\'URL WMS </string>
     <string name="wmstitle">Importer une couche WMS </string>
     <string name="wms_error">L\'url WMS semble ne pas être accessible</string>
+
+
     <string name="wms_name">Nom de la couche WMS</string>
    	<string name="noMission">Impossible : aucune mission en cours</string>
    	<string name="theme">Thème</string>
    	
-    
+
+       <string name="editInfo">Editer la zone d\'info</string>
+    <string name="displayLatitude">Afficher la latitude :</string>
+    <string name="displayLongitude">Afficher la longitude :</string>
+    <string name="displayAltitude">Afficher l\'altitude :</string>
+    <string name="displayAccuracy">Afficher la précision :</string>
+    <string name="displayBearing">Afficher l\'orientation :</string>
+    <string name="displaySpeed">Afficher la vitesse :</string>
 
 </resources>

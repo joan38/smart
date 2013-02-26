@@ -149,6 +149,24 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.latitudeChkbx).setChecked(
+				findViewById(R.id.latitude).getVisibility() == View.VISIBLE);
+		menu.findItem(R.id.longitudeChkbx).setChecked(
+				findViewById(R.id.longitude).getVisibility() == View.VISIBLE);
+		menu.findItem(R.id.altitudeChkbx).setChecked(
+				findViewById(R.id.altitude).getVisibility() == View.VISIBLE);
+		menu.findItem(R.id.accuracyChkbx).setChecked(
+				findViewById(R.id.precision).getVisibility() == View.VISIBLE);
+		menu.findItem(R.id.bearingChkbx).setChecked(
+				findViewById(R.id.bearing).getVisibility() == View.VISIBLE);
+		menu.findItem(R.id.speedChkbx).setChecked(
+				findViewById(R.id.speed).getVisibility() == View.VISIBLE);
+
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	/**
 	 * This method is use to init the map
 	 */
@@ -340,14 +358,7 @@ public class MenuActivity extends Activity {
 
 			break;
 		case 1:
-			if (findViewById(R.id.table).getVisibility() == View.INVISIBLE) {
-				item.setTitle(R.string.hideInfoZone);
-				findViewById(R.id.table).setVisibility(View.VISIBLE);
-			} else {
-				item.setTitle(R.string.showInfoZone);
-				findViewById(R.id.table).setVisibility(View.INVISIBLE);
-
-			}
+			infoOverlay.hideInfoZone(findViewById(R.id.table), item);
 			break;
 		case 2:
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -358,6 +369,43 @@ public class MenuActivity extends Activity {
 					R.string.helpMap);
 			helpDialog.show();
 			break;
+
+		case R.id.longitudeChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.longitude),
+					findViewById(R.id.longitudeValue), !item.isChecked());
+
+			break;
+
+		case R.id.altitudeChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.altitude),
+					findViewById(R.id.altitudeValue), !item.isChecked());
+
+			break;
+
+		case R.id.accuracyChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.precision),
+					findViewById(R.id.precisionValue), !item.isChecked());
+
+			break;
+
+		case R.id.latitudeChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.latitude),
+					findViewById(R.id.latitudeValue), !item.isChecked());
+			break;
+
+		case R.id.bearingChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.bearing),
+					findViewById(R.id.bearingValue), !item.isChecked());
+			break;
+
+		case R.id.speedChkbx:
+			infoOverlay.setVisibility(findViewById(R.id.speed),
+					findViewById(R.id.speedValue), !item.isChecked());
+			break;
+
+		case R.id.infoValidate:
+			Toast.makeText(this, R.string.validate, Toast.LENGTH_LONG).show();
+			break;
 		case 4:
 			// if(!missionCreated){
 			new AlertThemeDialog(this, getApplication());
@@ -367,6 +415,7 @@ public class MenuActivity extends Activity {
 			// }
 			break;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -533,11 +582,6 @@ public class MenuActivity extends Activity {
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
-					// GeometryLayer layer = (GeometryLayer)
-					// mapView.getOverlays()
-					// .get((Integer) data
-					// .getSerializableExtra("symboToEdit")));
-					// layer.getOverview();
 
 				}
 				Collections.reverse(listOverlay.toList());
