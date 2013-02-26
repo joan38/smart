@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
@@ -12,6 +13,7 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,8 +41,8 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
-import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
+import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
@@ -86,13 +88,12 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-	
+
 		String s = getIntent().getStringExtra("theme");
 		Theme.createTheme(s);
 		int theme = Theme.getInstance().getIntTheme();
 		setTheme(theme);
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
 		initMap();
@@ -358,11 +359,12 @@ public class MenuActivity extends Activity {
 			helpDialog.show();
 			break;
 		case 4:
-//			if(!missionCreated){
-				new AlertThemeDialog(this, getApplication());
-//			} else {
-//				Toast.makeText(this, "Stop the mission before", Toast.LENGTH_LONG).show();
-//			}
+			// if(!missionCreated){
+			new AlertThemeDialog(this, getApplication());
+			// } else {
+			// Toast.makeText(this, "Stop the mission before",
+			// Toast.LENGTH_LONG).show();
+			// }
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -384,7 +386,7 @@ public class MenuActivity extends Activity {
 				Integer index = (Integer) data.getSerializableExtra("position");
 
 				switch (index) {
-				
+
 				case SmartConstants.CREATE_MISSION:
 					if (missionCreated) {
 						missionCreated = Mission.getInstance().stopMission();
@@ -399,24 +401,30 @@ public class MenuActivity extends Activity {
 					break;
 
 				case SmartConstants.POINT_SURVEY:
-					if(Mission.getInstance() == null){
-						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					if (Mission.getInstance() == null) {
+						Toast.makeText(this,
+								getResources().getText(R.string.noMission),
+								Toast.LENGTH_LONG).show();
 					} else {
 						Mission.getInstance().startSurvey(GeometryType.POINT);
 					}
 					break;
 
 				case SmartConstants.LINE_SURVEY:
-					if(Mission.getInstance() == null){
-						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					if (Mission.getInstance() == null) {
+						Toast.makeText(this,
+								getResources().getText(R.string.noMission),
+								Toast.LENGTH_LONG).show();
 					} else {
 						Mission.getInstance().startSurvey(GeometryType.LINE);
 					}
 					break;
 
 				case SmartConstants.POLYGON_SURVEY:
-					if(Mission.getInstance() == null){
-						Toast.makeText(this, getResources().getText(R.string.noMission), Toast.LENGTH_LONG).show();
+					if (Mission.getInstance() == null) {
+						Toast.makeText(this,
+								getResources().getText(R.string.noMission),
+								Toast.LENGTH_LONG).show();
 					} else {
 						Mission.getInstance().startSurvey(GeometryType.POLYGON);
 					}
@@ -510,22 +518,30 @@ public class MenuActivity extends Activity {
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
-				mapView.setReorderedLayers(listOverlay);
 
 				if ((Boolean) data.getSerializableExtra("editSymbo")) {
-					GeometryLayer layer = (GeometryLayer) mapView.getOverlays()
-							.get((Integer) data
-									.getSerializableExtra("symboToEdit"));
+					// mapView.setReorderedLayers(listOverlay);
+					// GeometryLayer layer = (GeometryLayer)
+					// mapView.getOverlays()
+					// .get((String) data
+					// .getSerializableExtra("symboToEdit"));
+					GeometryLayer layer = (GeometryLayer) mapView
+							.getOverlay(listOverlay
+									.get((Integer) data
+											.getSerializableExtra("symboToEdit"))
+									.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
-
 					// GeometryLayer layer = (GeometryLayer)
 					// mapView.getOverlays()
 					// .get((Integer) data
 					// .getSerializableExtra("symboToEdit")));
 					// layer.getOverview();
+
 				}
+				Collections.reverse(listOverlay.toList());
+				mapView.setReorderedLayers(listOverlay);
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:

@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart;
 
+import java.util.Collections;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,10 +82,12 @@ public class LayersActivity extends ListActivity {
 		setContentView(R.layout.activity_layers);
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
-		mission = (String) getIntent().getExtras().getString("mission");
+		mission = getIntent().getExtras().getString("mission");
 
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
+
+		Collections.reverse(listOverlay.toList());
 
 		adapter = new SmartItemLayerAdapter(this,
 				R.layout.listview_layers_items, listOverlay.toList(), this,
