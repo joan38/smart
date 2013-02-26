@@ -39,10 +39,12 @@ public class KmlImport {
 		Kml kml = new Kml(new File(path));
 		kml.readKml();
 		List<GeometryLayer> overlays = new ArrayList<GeometryLayer>();
-		for (GeometryType type : GeometryType.values()) {
+		for (GeometryType type : kml.getGeometries().keySet()) {
 			List<Geometry> geometries = (ArrayList<Geometry>) kml
 					.getGeometries().get(type);
-			
+			if (geometries == null) {
+				break;
+			}
 			GeometryLayer overlay = new GeometryLayer(contexte, geometries);
 
 			Symbology symbology = null;

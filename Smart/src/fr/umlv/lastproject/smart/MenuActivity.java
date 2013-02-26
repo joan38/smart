@@ -439,7 +439,9 @@ public class MenuActivity extends Activity {
 				case SmartConstants.CREATE_MISSION:
 					if (missionCreated) {
 						missionCreated = Mission.getInstance().stopMission();
-
+						Toast.makeText(this,
+								getResources().getText(R.string.noMission),
+								Toast.LENGTH_LONG).show();
 					} else {
 						missionDialog = new AlertCreateMissionDialog(this);
 					}
@@ -611,11 +613,14 @@ public class MenuActivity extends Activity {
 				try {
 					mapView.addGeometryLayers(DataImport.importKml(this,
 							kmlPath));
+					Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
+							.show();
 				} catch (XmlPullParserException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Toast.makeText(this, R.string.kmlParseError,
+							Toast.LENGTH_SHORT).show();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					Toast.makeText(this, R.string.kmlReadError,
+							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
 				break;
@@ -625,7 +630,8 @@ public class MenuActivity extends Activity {
 				shpPath = fileSHP.toString().split("file:///")[1];
 				mapView.addGeometryLayer(DataImport.importShapeFile(this,
 						shpPath));
-
+				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+						.show();
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
@@ -634,9 +640,11 @@ public class MenuActivity extends Activity {
 				try {
 					mapView.addGeoTIFFOverlay((DataImport
 							.importGeoTIFFFileFolder(tiffPath, this, "geoTIFF")));
+					Toast.makeText(this, R.string.geotiffImport,
+							Toast.LENGTH_SHORT).show();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Toast.makeText(this, R.string.geotiffReadError,
+							Toast.LENGTH_SHORT).show();
 				}
 				break;
 

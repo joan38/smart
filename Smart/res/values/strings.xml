@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Smart</string>
@@ -19,7 +20,7 @@
     <string name="exit">Exit ?</string>
     <string name="exitMsg">Are you sure you want to quit SMART ?</string>
     <string name="help">Help</string>
-    <string name="helpLayer">This is the layer menu.\nYou can unchecked a layer to hide it or slide to remove it.\nTo reorganize, long pressed on a layer to drag and grop in the list.</string>
+    <string name="helpLayer">This is the layer menu.\nYou can unchecked a layer to hide it or slide to remove it.\nTo reorganize, long pressed on a layer to drag and grop in the list.\nTo modify a symbology, select a picture.</string>
     <string name="helpMap">This is the Map screen.\nYou can move the map by dragging with your finger.\nTo zoom in or out, pinch or spread the screen.\nIf your GPS was activated, touch the target icon to locate your position on the map.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -35,6 +36,13 @@
     <string name="warning">Warning</string>
     <string name="visibilityLayer">You can\'t modify the visibility of this layer, it is link to a mission started.</string>
     <string name="deleteLayerFalse">You can\'t remove this layer, it is link to a mission started.</string>
+    <string name="error">Error</string>
+    <string name="kmlParseError">Error. The Kml file is invalid</string>
+    <string name="kmlReadError">Error. The Kml file can\'t be read</string>
+    <string name="kmlImport">Kml layer import : success</string>
+    <string name="geotiffReadError">Error. The GeoTiff repertory can\'t be read</string>
+    <string name="geotiffImport">GeoTiff layer import : success</string>
+    <string name="shpImport">ShapeFile layer import : success</string>
 
     <string-array name="items">
         <item>Start mission</item>
@@ -140,6 +148,8 @@
 
 
     <string name="noMission">Impossible : no mission in progress</string>
-   	<string name="theme">Theme</string>
-    
+    <string name="missionStop">Mission stop</string>
+    <string name="missionStart">Mission start</string>
+    <string name="theme">Theme</string>
+
 </resources>
