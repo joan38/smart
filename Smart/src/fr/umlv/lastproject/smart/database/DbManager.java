@@ -323,6 +323,60 @@ public class DbManager {
 	}
 
 	/**
+	 * Update the formRecord with the news values
+	 * @param formRecord
+	 * @param idForm
+	 */
+	public void updateFormRecord(FormRecord formRecord, int idForm) {
+
+		List<FieldRecord> fields = new ArrayList<FieldRecord>();
+		String nameTableForm = formRecord.getName();
+		ContentValues values = new ContentValues();
+
+		fields = formRecord.getFields();
+
+		for (FieldRecord field : fields) {
+			switch (field.getField().getType()) {
+			case TEXT:
+				TextFieldRecord tf = (TextFieldRecord) field;
+				values.put(tf.getField().getLabel(), tf.getValue());
+				break;
+
+			case NUMERIC:
+				NumericFieldRecord nf = (NumericFieldRecord) field;
+				values.put(nf.getField().getLabel(), nf.getValue());
+				break;
+
+			case BOOLEAN:
+				BooleanFieldRecord bf = (BooleanFieldRecord) field;
+				values.put(bf.getField().getLabel(), bf.getValue());
+				break;
+
+			case LIST:
+				ListFieldRecord lf = (ListFieldRecord) field;
+				values.put(lf.getField().getLabel(), lf.getValue());
+				break;
+
+			case PICTURE:
+				PictureFieldRecord pf = (PictureFieldRecord) field;
+				values.put(pf.getField().getLabel(), pf.getValue());
+				break;
+
+			case HEIGHT:
+				HeightFieldRecord hf = (HeightFieldRecord) field;
+				values.put(hf.getField().getLabel(), hf.getValue());
+				break;
+
+			default:
+				throw new IllegalStateException("Unkown field");
+			}
+		}
+
+		mDb.update(nameTableForm, values, "id=" + idForm, null);
+
+	}
+
+	/**
 	 * Insert a new mission in the table "missions"
 	 * 
 	 * @param mission
@@ -390,6 +444,19 @@ public class DbManager {
 		mDb.delete(TABLE_MISSIONS, "id=" + idMission, null);
 
 	}
+
+	/**
+	 * Delete a mission and the geometries, points and form record associated
+	 * 
+	 * @param idMission
+	 */
+	public void deleteRecord(long idGeometry, int idForm, String nameForm) {
+
+		mDb.delete(TABLE_POINTS, POINTS_COL_ID_GEOMETRY + "=" + idGeometry, null);
+		mDb.delete(TABLE_GEOMETRIES, "id=" + idGeometry, null);
+		mDb.delete(nameForm, "id=" + idForm, null);
+	}
+	
 
 	/**
 	 * Request the table "missions" with a criterion of name
@@ -587,6 +654,11 @@ public class DbManager {
 		return geometries;
 	}
 
+	/**
+	 * 
+	 * @param idMission
+	 * @return list of GeometryRecord for a mission
+	 */
 	public List<GeometryRecord> getGeometriesFromMission(long idMission) {
 		ArrayList<GeometryRecord> geometries = new ArrayList<GeometryRecord>();
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + TABLE_GEOMETRIES
@@ -748,6 +820,12 @@ public class DbManager {
 
 	}
 
+	/**
+	 * 
+	 * @param idFormRecord
+	 * @param formName
+	 * @return FormRecord
+	 */
 	public FormRecord getFormRecord(long idFormRecord, String formName) {
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + formName + WHERE
 				+ " id" + "=" + idFormRecord, null);
@@ -778,6 +856,12 @@ public class DbManager {
 		return formRecord;
 	}
 
+	/**
+	 * Return a formRecord with each FieldRecord typed
+	 * @param idFormRecord
+	 * @param formName
+	 * @return formRecord
+	 */
 	public FormRecord getFormRecordTyped(long idFormRecord, String formName) {
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + formName + WHERE
 				+ " id" + "=" + idFormRecord, null);
@@ -815,7 +899,7 @@ public class DbManager {
 			case BOOLEAN:
 				BooleanField b = new BooleanField(c.getColumnName(i));
 				boolean v;
-				if(c.getString(i).equals("oui")){
+				if(c.getInt(i)==1){
 					v=true;
 				} else {
 					v=false;
@@ -844,4 +928,6 @@ public class DbManager {
 
 		return formRecord;
 	}
+
+
 }

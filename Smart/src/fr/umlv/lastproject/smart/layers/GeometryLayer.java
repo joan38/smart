@@ -453,7 +453,7 @@ public class GeometryLayer extends Overlay implements Layer {
 								Log.d("", "Selected" + g.getId());
 								g.setSelected(true);
 								for (SelectedGeometryListener lis : selectedListener) {
-									lis.actionPerformed(g);
+									lis.actionPerformed(g,this);
 								}
 								return super.onSingleTapUp(e, m);
 							}
@@ -471,7 +471,7 @@ public class GeometryLayer extends Overlay implements Layer {
 							Log.d("", "Selected" + g.getId());
 							p.setSelected(true);
 							for (SelectedGeometryListener lis : selectedListener) {
-								lis.actionPerformed(g);
+								lis.actionPerformed(g,this);
 							}
 
 							return super.onSingleTapUp(e, m);
@@ -488,7 +488,7 @@ public class GeometryLayer extends Overlay implements Layer {
 								Log.d("", "Selected" + g.getId());
 								g.setSelected(true);
 								for (SelectedGeometryListener lis : selectedListener) {
-									lis.actionPerformed(g);
+									lis.actionPerformed(g,this);
 								}
 								return super.onSingleTapUp(e, m);
 							}
@@ -630,6 +630,11 @@ public class GeometryLayer extends Overlay implements Layer {
 	 */
 	public void removeGeometryListener(SelectedGeometryListener l) {
 		selectedListener.remove(l);
+	}
+	
+	public void removeGeometry(Geometry g){
+		geometries.remove(g);
+		
 	}
 
 }

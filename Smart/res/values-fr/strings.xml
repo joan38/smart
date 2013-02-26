@@ -26,7 +26,7 @@
     <string name="no">Non</string>
     <string name="ok">Ok</string>
     <string name="option">Option</string>
-    <string name="delete">Suppression de couche</string>
+    <string name="delete">Supprimer</string>
     <string name="deleteLayer">Êtes-vous vraiment sûr de vouloir supprimer cette couche ?</string>
     <string name="warning">Attention</string>
     <string name="deleteLayerFalse">Impossible de supprimer la couche, celle-ci appartient à une mission encore en cours.</string>

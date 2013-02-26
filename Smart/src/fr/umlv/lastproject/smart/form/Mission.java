@@ -68,10 +68,10 @@ public final class Mission {
 		SelectedGeometryListener list = new SelectedGeometryListener() {
 
 			@Override
-			public void actionPerformed(Geometry g) {
+			public void actionPerformed(Geometry g, GeometryLayer l ) {
 				Log.d("", "mission select");
 				AlertModifFormDialog d = new AlertModifFormDialog(context,
-						getForm(), g.getId());
+						getForm(), g,l);
 				d.show();
 				g.setSelected(false);
 			}
@@ -101,6 +101,10 @@ public final class Mission {
 
 		survey = new Survey(mapview);
 
+	}
+
+	public SmartMapView getMapView() {
+		return mapView;
 	}
 
 	/**
