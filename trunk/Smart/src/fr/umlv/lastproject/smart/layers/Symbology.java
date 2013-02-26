@@ -17,6 +17,7 @@ public abstract class Symbology implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int color;
+	private int size;
 
 	/**
 	 * @param color
@@ -26,8 +27,17 @@ public abstract class Symbology implements Serializable {
 		this.color = color;
 	}
 
-	public Symbology(int color) {
+	/**
+	 * @param size
+	 *            the size to set
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public Symbology(int color, int size) {
 		this.color = color;
+		this.size = size;
 	}
 
 	/**
@@ -38,6 +48,14 @@ public abstract class Symbology implements Serializable {
 	public int getColor() {
 
 		return this.color;
+	}
+
+	/**
+	 * 
+	 * @return the symbology size
+	 */
+	public int getSize() {
+		return this.size;
 	}
 
 }

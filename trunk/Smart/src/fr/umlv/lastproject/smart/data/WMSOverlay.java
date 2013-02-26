@@ -31,12 +31,18 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public Bitmap getOverview() {
 		return BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.raster);
+				R.drawable.raster2);
 	}
 
 	@Override
 	public Overlay getOverlay() {
 		return this;
+	}
+
+	@Override
+	public boolean hasSymbologyEditable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

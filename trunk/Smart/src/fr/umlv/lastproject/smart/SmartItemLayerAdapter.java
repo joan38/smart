@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +19,8 @@ import fr.umlv.lastproject.smart.dialog.AlertLayerVisibilityDialog;
 public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 	private Context context;
+	private Activity activity;
+	private ListOverlay listOverlay;
 	private String mission;
 
 	/**
@@ -29,9 +33,12 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 	 *            to add
 	 */
 	public SmartItemLayerAdapter(Context context, int resourceId,
-			List<LayerItem> items, final String mission) {
+			List<LayerItem> items, Activity activity, ListOverlay listOverlay,
+			final String mission) {
 		super(context, resourceId, items);
 		this.context = context;
+		this.activity = activity;
+		this.listOverlay = listOverlay;
 		this.mission = mission;
 	}
 
@@ -44,7 +51,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 	/**
 	 * return the view
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		SmartHolder smartHolder = new SmartHolder();
 		final LayerItem item = getItem(position);
@@ -91,6 +98,26 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 					boolean checked = ((CheckBox) arg0).isChecked();
 					((CheckBox) arg0).setChecked(checked);
 					item.setVisible(checked);
+				}
+
+			});
+
+		}
+
+		// if the layer symbology is editable, we add listener on the ImageView
+		if (listOverlay.get(position).isEditable()) {
+			Log.d("symbo", listOverlay.get(position).isEditable() + "");
+			smartHolder.imageView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intentReturn = new Intent(activity,
+							MenuActivity.class);
+					intentReturn.putExtra("overlays", listOverlay);
+					intentReturn.putExtra("editSymbo", true);
+					intentReturn.putExtra("symboToEdit", position);
+					activity.setResult(activity.RESULT_OK, intentReturn);
+					activity.finish();
 
 				}
 			});

@@ -14,7 +14,6 @@ import org.osmdroid.views.overlay.Overlay;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.data.WMSOverlay;
@@ -57,7 +56,6 @@ public class SmartMapView extends MapView {
 	 *            which will be added
 	 */
 	public void addOverlay(Layer layer) {
-		Log.d("TEST2", "addOverlay " + layer.getName());
 		final String name = layer.getName();
 		if (stringToOverlay.containsKey(name)) {
 			Toast.makeText(getContext(), "Layer already exists",
@@ -67,7 +65,8 @@ public class SmartMapView extends MapView {
 		final Overlay overlay = layer.getOverlay();
 		getOverlays().add(overlay);
 		stringToOverlay.put(name, overlay);
-		listOverlay.add(new LayerItem(name, layer.getOverview()));
+		listOverlay.add(new LayerItem(name, layer.getOverview(), layer
+				.hasSymbologyEditable()));
 	}
 
 	/**

@@ -21,6 +21,10 @@ public class LayerItem implements Serializable {
 	private String name;
 	private boolean visible;
 	private Bitmap overview;
+	private boolean isEditable;
+
+	private static final String TMP_BITMAP = Environment
+			.getExternalStorageDirectory() + "/SMART/" + "tmp/";
 
 	/**
 	 * 
@@ -31,10 +35,12 @@ public class LayerItem implements Serializable {
 	 * @param overview
 	 *            of the symbologie
 	 */
-	public LayerItem(String name, boolean visible, Bitmap overview) {
+	public LayerItem(String name, boolean visible, Bitmap overview,
+			boolean isEditable) {
 		this.name = name;
 		this.visible = visible;
 		this.overview = overview;
+		this.isEditable = isEditable;
 	}
 
 	/**
@@ -44,8 +50,8 @@ public class LayerItem implements Serializable {
 	 * @param overview
 	 *            of the symbologie
 	 */
-	public LayerItem(String name, Bitmap overview) {
-		this(name, true, overview);
+	public LayerItem(String name, Bitmap overview, boolean isEditable) {
+		this(name, true, overview, isEditable);
 	}
 
 	/**
@@ -73,12 +79,20 @@ public class LayerItem implements Serializable {
 		this.visible = visible;
 	}
 
+	public boolean isEditable() {
+		return this.isEditable;
+	}
+
 	/**
 	 * 
 	 * @return overview of the symbo
 	 */
 	public Bitmap getOverview() {
 		return overview;
+	}
+
+	public void setOverview(Bitmap overview) {
+		this.overview = overview;
 	}
 
 	@Override
@@ -132,18 +146,28 @@ public class LayerItem implements Serializable {
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(name);
 		out.writeBoolean(visible);
+		final File appFolder = new File(TMP_BITMAP);
+		appFolder.mkdirs();
 
 		// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		FileOutputStream stream = new FileOutputStream(new File(Environment
-				.getExternalStorageDirectory().getPath() + "/" + name + ".png"));
-		overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		final String fileName = TMP_BITMAP + "/" + name + ".png";
+		final FileOutputStream stream = new FileOutputStream(new File(fileName));
+		if (!overview.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+			throw new IllegalArgumentException();
+		}
+		stream.flush();
+		stream.close();
+		out.writeObject(fileName);
+		out.writeBoolean(isEditable);
+
 		// byte[] imageByteArray = stream.toByteArray();
 
 		// int length = imageByteArray.length;
 		// out.writeInt(length);
 		// out.write(imageByteArray);
-		out.writeObject(Environment.getExternalStorageDirectory().getPath()
-				+ "/" + name + ".png");
+		// out.writeObject(Environment.getExternalStorageDirectory() + "/SMART/"
+		// + name + ".png");
+
 	}
 
 	/**
@@ -167,6 +191,7 @@ public class LayerItem implements Serializable {
 		// this.overview = BitmapFactory.decodeByteArray(imageByteArray, 0,
 		// imageByteArrayLength);
 		this.overview = BitmapFactory.decodeFile((String) in.readObject());
+		this.isEditable = in.readBoolean();
 
 	}
 

@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -25,8 +28,8 @@ public class HomeActivity extends Activity {
 
 	private List<ListViewItem> listItem;
 	private String[] items;
-
-	
+	private int[] icons;
+	private List<Integer> shortcut = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class HomeActivity extends Activity {
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
+		icons = SmartConstants.icons;
 
 		listItem = new ArrayList<ListViewItem>();
 		for (int i = 0; i < items.length; i++) {
@@ -47,32 +51,30 @@ public class HomeActivity extends Activity {
 			switch (i) {
 			case SmartConstants.CREATE_MISSION:
 				if (enabled) {
-					item = new ListViewItem(R.drawable.centermap,
-							getString(R.string.stopMission), enabled);
+					item = new ListViewItem(icons[i],
+							getString(R.string.stopMission), true);
 				} else {
-					item = new ListViewItem(R.drawable.centermap, items[i],
-							!enabled);
+					item = new ListViewItem(icons[i], items[i], true);
 				}
 				break;
 
 			case SmartConstants.POINT_SURVEY:
-				item = new ListViewItem(R.drawable.centermap, items[i], enabled);
+				item = new ListViewItem(icons[i], items[i], enabled);
 				break;
 
 			case SmartConstants.LINE_SURVEY:
-				item = new ListViewItem(R.drawable.centermap, items[i], enabled);
+				item = new ListViewItem(icons[i], items[i], enabled);
 				break;
 
 			case SmartConstants.POLYGON_SURVEY:
-				item = new ListViewItem(R.drawable.centermap, items[i], enabled);
+				item = new ListViewItem(icons[i], items[i], enabled);
 				break;
 			default:
-				item = new ListViewItem(R.drawable.centermap, items[i], true);
+				item = new ListViewItem(icons[i], items[i], true);
 				break;
 			}
 
 			listItem.add(item);
-			item.setImageId(R.drawable.smart);
 		}
 
 		ListView listView = (ListView) findViewById(R.id.listView);
@@ -80,6 +82,15 @@ public class HomeActivity extends Activity {
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
 		listView.setClickable(false);
+		listView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				return false;
+			}
+		});
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -89,12 +100,15 @@ public class HomeActivity extends Activity {
 						MenuActivity.class);
 				intentReturn.putExtra("function", items[position]);
 				intentReturn.putExtra("position", position);
+				intentReturn.putExtra("shortcut", shortcut.toArray());
 				setResult(RESULT_OK, intentReturn);
 				view.setEnabled(false);
 				finish();
 
 			}
 		});
+
+		registerForContextMenu(listView);
 	}
 
 	@Override
@@ -107,9 +121,35 @@ public class HomeActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle("Option");
-		menu.add(0, v.getId(), 0, R.string.addShortcut);
-		menu.add(0, v.getId(), 0, R.string.removeShortcut);
+		if (v.getId() == R.id.listView) {
+			menu.setHeaderTitle("Option");
+			menu.add(0, 1, 0, R.string.addShortcut);
+			menu.add(0, 2, 0, R.string.removeShortcut);
+		}
 	}
 
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+
+		int index = shortcut.indexOf(info.position);
+		if (item.getItemId() == 1) {
+			if (index == -1) {
+				shortcut.add(info.position);
+				// Toast.makeText(this,
+				// item.getTitle() + " : " + items[info.position],
+				// Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			if (index != -1) {
+				shortcut.remove(index);
+				// Toast.makeText(this,
+				// item.getTitle() + " : " + items[info.position],
+				// Toast.LENGTH_SHORT).show();
+			}
+		}
+		return super.onContextItemSelected(item);
+	}
 }
