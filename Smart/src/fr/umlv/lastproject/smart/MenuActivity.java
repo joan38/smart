@@ -112,7 +112,8 @@ public class MenuActivity extends Activity {
 						LayersActivity.class);
 
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
-				if (Mission.getInstance() != null) {
+				if (Mission.getInstance() != null
+						&& Mission.getInstance().isStatus()) {
 					layersActivity.putExtra("mission", Mission.getInstance()
 							.getTitle());
 				} else {
@@ -124,7 +125,7 @@ public class MenuActivity extends Activity {
 			}
 		});
 
-		importKML();
+		// importKML();
 	}
 
 	/**

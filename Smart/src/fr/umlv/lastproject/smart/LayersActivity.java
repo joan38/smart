@@ -3,7 +3,6 @@ package fr.umlv.lastproject.smart;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -41,7 +40,6 @@ public class LayersActivity extends ListActivity {
 		@Override
 		public void remove(int which) {
 			AlertDeleteLayerDialog removeDialog;
-			Log.d("debug", mission + " = " + adapter.getItem(which).getName());
 			if (mission != null
 					&& adapter.getItem(which).getName().contains(mission)) {
 				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
@@ -86,7 +84,7 @@ public class LayersActivity extends ListActivity {
 		listView.setTextFilterEnabled(true);
 
 		adapter = new SmartItemLayerAdapter(this,
-				R.layout.listview_layers_items, listOverlay.toList());
+				R.layout.listview_layers_items, listOverlay.toList(), mission);
 		listView.setAdapter(adapter);
 
 		DragSortListView list = getListView();

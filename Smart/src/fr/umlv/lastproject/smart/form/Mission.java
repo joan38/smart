@@ -64,13 +64,14 @@ public final class Mission {
 		this.context = context;
 		this.mapView = mapview;
 		this.form = f;
-		
+
 		SelectedGeometryListener list = new SelectedGeometryListener() {
-			
+
 			@Override
 			public void actionPerformed(Geometry g) {
 				Log.d("", "mission select");
-				AlertModifFormDialog d = new AlertModifFormDialog(context, getForm(), g.getId()) ;
+				AlertModifFormDialog d = new AlertModifFormDialog(context,
+						getForm(), g.getId());
 				d.show();
 				g.setSelected(false);
 			}
@@ -87,7 +88,7 @@ public final class Mission {
 		lineLayer.setType(GeometryType.LINE);
 		lineLayer.setName(title + "_LINE");
 		lineLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.BLACK));
-		lineLayer.setSelectable(true) ;
+		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
 
 		polygonLayer = new GeometryLayer(context);
@@ -298,9 +299,19 @@ public final class Mission {
 	}
 
 	/**
+	 * Get the status (on/off) of the mission.
+	 * 
+	 * @return
+	 */
+	public boolean isStatus() {
+		return status;
+	}
+
+	/**
 	 * Remove a geometry of the mission
 	 * 
-	 * @param g is the geometry to remove
+	 * @param g
+	 *            is the geometry to remove
 	 * 
 	 */
 	public void removeGeometry(Geometry g) {
@@ -325,5 +336,5 @@ public final class Mission {
 
 		mapView.invalidate();
 	}
-	
+
 }

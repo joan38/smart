@@ -12,21 +12,27 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import fr.umlv.lastproject.smart.dialog.AlertLayerVisibilityDialog;
 
 public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 	private Context context;
+	private String mission;
 
 	/**
 	 * 
-	 * @param context of the application
-	 * @param resourceId xmlconfig
-	 * @param items to add
+	 * @param context
+	 *            of the application
+	 * @param resourceId
+	 *            xmlconfig
+	 * @param items
+	 *            to add
 	 */
 	public SmartItemLayerAdapter(Context context, int resourceId,
-			List<LayerItem> items) {
+			List<LayerItem> items, final String mission) {
 		super(context, resourceId, items);
 		this.context = context;
+		this.mission = mission;
 	}
 
 	private class SmartHolder {
@@ -40,7 +46,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		SmartHolder smartHolder = null;
+		SmartHolder smartHolder = new SmartHolder();
 		final LayerItem item = getItem(position);
 
 		LayoutInflater inflater = (LayoutInflater) context
@@ -48,7 +54,6 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		if (convertView == null) {
 			convertView = inflater
 					.inflate(R.layout.listview_layers_items, null);
-			smartHolder = new SmartHolder();
 			smartHolder.txtTitle = (TextView) convertView
 					.findViewById(R.id.drag_handle);
 			smartHolder.imageView = (ImageView) convertView
@@ -64,21 +69,32 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		smartHolder.txtTitle.setText(item.getName());
 
 		smartHolder.imageView.setImageBitmap(item.getOverview());
-		
 
 		smartHolder.chkBox.setChecked(item.isVisible());
-		smartHolder.chkBox.setOnClickListener(new OnClickListener() {
+		if (mission != null && item.getName().contains(mission)) {
+			smartHolder.chkBox.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				boolean checked = ((CheckBox) arg0).isChecked();
+				@Override
+				public void onClick(View arg0) {
+					AlertLayerVisibilityDialog dialog = new AlertLayerVisibilityDialog(
+							(LayersActivity) context);
+					dialog.show();
+					((CheckBox) arg0).setChecked(true);
 
-				((CheckBox) arg0).setChecked(checked);
-				item.setVisible(checked);
+				}
+			});
+		} else {
+			smartHolder.chkBox.setOnClickListener(new OnClickListener() {
 
-			}
-		});
+				@Override
+				public void onClick(View arg0) {
+					boolean checked = ((CheckBox) arg0).isChecked();
+					((CheckBox) arg0).setChecked(checked);
+					item.setVisible(checked);
 
+				}
+			});
+		}
 		return convertView;
 	}
 }

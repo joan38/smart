@@ -30,6 +30,8 @@
     <string name="symbo_desc">Symbologie</string>
     <string name="delete">Remove Layer</string>
     <string name="deleteLayer">Do you really want to remove this layer ?</string>
+    <string name="warning">Warning</string>
+    <string name="visibilityLayer">You can\'t modify the visibility of this layer, it is link to a mission started.</string>
     <string name="deleteLayerFalse">You can\'t remove this layer, it is link to a mission started.</string>
 
     <string-array name="items">
