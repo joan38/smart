@@ -1,9 +1,11 @@
 package fr.umlv.lastproject.smart.form;
 
 import fr.umlv.lastproject.smart.layers.Geometry;
+import fr.umlv.lastproject.smart.layers.GeometryLayer;
 
 public interface SelectedGeometryListener {
 	
-	public void actionPerformed(Geometry g);
+
+	void actionPerformed(Geometry g, GeometryLayer l);
 
 }
