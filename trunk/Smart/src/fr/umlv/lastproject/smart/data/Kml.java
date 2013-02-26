@@ -51,10 +51,10 @@ public class Kml {
 
 	public Kml(File file) {
 		this.file = file;
-
-		for (GeometryType type : GeometryType.values()) {
-			this.geometries.put(type, new ArrayList<Geometry>());
-		}
+		//
+		// for (GeometryType type : GeometryType.values()) {
+		// this.geometries.put(type, new ArrayList<Geometry>());
+		// }
 	}
 
 	/**
@@ -100,10 +100,33 @@ public class Kml {
 					}
 				}
 
+				// if a geometry tag was found
+			} else if (eventType == XmlPullParser.START_TAG
+					&& GEOMETRIESTAGS.contains(xpp.getName())) {
+				if (xpp.getName().equals(POINTTAG)) {
+					this.geometries.put(GeometryType.POINT,
+							new ArrayList<Geometry>());
+				} else if (xpp.getName().equals(LINETAG)) {
+					this.geometries.put(GeometryType.LINE,
+							new ArrayList<Geometry>());
+				} else if (xpp.getName().equals(POLYGONTAG)) {
+					this.geometries.put(GeometryType.POLYGON,
+							new ArrayList<Geometry>());
+				}
+
 				// if a <coordinates> tag was found
 			} else if (eventType == XmlPullParser.START_TAG
 					&& COORDINATESTAG.contains(xpp.getName())) {
-
+				if (xpp.getName().equals(POINTTAG)) {
+					this.geometries.put(GeometryType.POINT,
+							new ArrayList<Geometry>());
+				} else if (xpp.getName().equals(LINETAG)) {
+					this.geometries.put(GeometryType.LINE,
+							new ArrayList<Geometry>());
+				} else if (xpp.getName().equals(POLYGONTAG)) {
+					this.geometries.put(GeometryType.POLYGON,
+							new ArrayList<Geometry>());
+				}
 				filter = true;
 
 				// if the end of a <coordinates> tag was found

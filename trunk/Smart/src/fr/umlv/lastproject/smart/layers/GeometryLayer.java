@@ -48,15 +48,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	private static final String DEFAULT_NAME = "default";
 
-	private static final float cX = 24;
-	private static final float cY = 24;
 	private static final float radius = 12;
-	private static final float lineStopX = 48;
-	private static final float lineStopY = 48;
-	private static final float rectLeft = 6;
-	private static final float rectTop = 6;
-	private static final float rectRight = 42;
-	private static final float rectBottom = 42;
+	private static final float lineSize = 12;
+	private static final float rectSize = 12;
 	private static final float strokeWidth = 5;
 
 	/**
@@ -558,9 +552,15 @@ public class GeometryLayer extends Overlay implements Layer {
 	public Bitmap getOverview() {
 
 		final Bitmap bit = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.geometry);
+				R.drawable.geometry_blank);
 
 		Bitmap bitmap = bit.copy(Config.ARGB_8888, true);
+
+		int height = (bitmap.getHeight());
+		int width = (bitmap.getWidth());
+		int middlex = (bitmap.getHeight() / 2);
+		int middley = (bitmap.getWidth() / 2);
+
 		final Canvas canvas = new Canvas(bitmap);
 
 		final Paint paint = new Paint();
@@ -568,14 +568,16 @@ public class GeometryLayer extends Overlay implements Layer {
 		paint.setColor(symbology.getColor());
 		switch (type) {
 		case POINT:
-			canvas.drawCircle(cX, cY, radius, paint);
+			canvas.drawCircle(middlex, middley, radius, paint);
 			break;
 		case LINE:
 			paint.setStrokeWidth(strokeWidth);
-			canvas.drawLine(0, 0, lineStopX, lineStopY, paint);
+			canvas.drawLine(lineSize, lineSize, height - lineSize, width
+					- lineSize, paint);
 			break;
 		case POLYGON:
-			canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, paint);
+			canvas.drawRect(rectSize, rectSize, height - rectSize, width
+					- rectSize, paint);
 			break;
 		default:
 			break;
