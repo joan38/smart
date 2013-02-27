@@ -51,7 +51,7 @@
 
                 <data android:scheme="file" />
                 <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.xml" />
+                <data android:pathPattern=".*\\.form" />
                 <data android:host="*" />
             </intent-filter>
         </activity>
@@ -75,21 +75,5 @@
             android:name="fr.umlv.lastproject.smart.form.PictureActivity"
             android:screenOrientation="portrait" >
         </activity>
-
-        <receiver
-            android:name=".receivers.PhoneIntentReceiver"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.form" />
-                <data android:host="*" />
-            </intent-filter>
-        </receiver>
     </application>
-
 </manifest>
