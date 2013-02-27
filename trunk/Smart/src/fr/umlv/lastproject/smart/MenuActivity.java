@@ -91,7 +91,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		pref = new Preferences(this);
+		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -686,5 +686,11 @@ public class MenuActivity extends Activity {
 
 	public SmartMapView getMapView() {
 		return this.mapView;
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }

@@ -40,14 +40,14 @@ public class CreateFormActivity extends Activity {
 	private TableLayout tableLayout;
 	private final List<EditText> allEds = new ArrayList<EditText>();
 	private FieldType fieldType;
-
+	Preferences pref;
 	private static final int PADDING_LEFT = 40;
 	private static final int PADDING_TOP = 30;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Preferences pref = new Preferences(this);
+		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_create_form);
 		setTitle(getString(R.string.title_activity_create_form));
@@ -342,5 +342,11 @@ public class CreateFormActivity extends Activity {
 		row.addView(text);
 
 		tableLayout.addView(row);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }

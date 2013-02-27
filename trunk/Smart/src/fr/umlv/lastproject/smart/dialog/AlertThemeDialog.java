@@ -18,7 +18,7 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 	public AlertThemeDialog(final Context c, final Application app) {
 		super(c);
 		setCancelable(false);
-		final Preferences pref = new Preferences(c);
+		final Preferences pref = Preferences.getInstance();
 
 		LayoutInflater factory = LayoutInflater.from(c);
 		final View alertThemeView = factory.inflate(
@@ -43,7 +43,6 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						pref.save();
 						AlertDialog alertDialog = new AlertDialog.Builder(c).create();
 						alertDialog.setMessage(c.getString(R.string.shouldRestartApp));
 						alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, c.getString(R.string.ok), (OnClickListener) null);

@@ -79,7 +79,7 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
-		pref = new Preferences(this);
+		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_layers);
 
@@ -131,5 +131,11 @@ public class LayersActivity extends ListActivity {
 		intentReturn.putExtra("editSymbo", false);
 		setResult(RESULT_OK, intentReturn);
 		finish();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }
