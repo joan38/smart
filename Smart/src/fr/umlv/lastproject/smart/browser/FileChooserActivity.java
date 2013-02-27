@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
- */ 
+ */
 
 package fr.umlv.lastproject.smart.browser;
 
@@ -36,7 +36,7 @@ import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
 
 /**
- * Main Activity that handles the FileListFragments 
+ * Main Activity that handles the FileListFragments
  * 
  * @version 2012-10-28
  * 
@@ -46,28 +46,25 @@ import fr.umlv.lastproject.smart.R;
 public class FileChooserActivity extends FragmentActivity implements
 		OnBackStackChangedListener {
 
-	public static final String PATH = "path";
-	
-	public static final String EXTERNAL_BASE_PATH = Environment
-			.getExternalStorageDirectory().getAbsolutePath();
-
 	private FragmentManager mFragmentManager;
-	
-	
+	private String mPath;
+	private Preferences pref;
 	private BroadcastReceiver mStorageListener = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Toast.makeText(context, R.string.storage_removed, Toast.LENGTH_LONG).show();
+			Toast.makeText(context, R.string.storage_removed, Toast.LENGTH_LONG)
+					.show();
 			finishWithResult(null);
 		}
 	};
-	
-	private String mPath;
-	
+	public static final String PATH = "path";
+	public static final String EXTERNAL_BASE_PATH = Environment
+			.getExternalStorageDirectory().getAbsolutePath();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Preferences pref = new Preferences(this);
+		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		setContentView(R.layout.chooser);
 
@@ -75,8 +72,8 @@ public class FileChooserActivity extends FragmentActivity implements
 		mFragmentManager.addOnBackStackChangedListener(this);
 
 		if (savedInstanceState == null) {
-			Bundle bundle=getIntent().getExtras();
-			mPath=(String) bundle.get(PATH);
+			Bundle bundle = getIntent().getExtras();
+			mPath = (String) bundle.get(PATH);
 			addFragment();
 		} else {
 			mPath = savedInstanceState.getString(PATH);
@@ -89,6 +86,7 @@ public class FileChooserActivity extends FragmentActivity implements
 	protected void onPause() {
 		super.onPause();
 		unregisterStorageListener();
+		pref.save();
 	}
 
 	@Override
@@ -100,28 +98,29 @@ public class FileChooserActivity extends FragmentActivity implements
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
+
 		outState.putString(PATH, mPath);
 	}
 
 	@Override
 	public void onBackStackChanged() {
 		mPath = EXTERNAL_BASE_PATH;
-		
+
 		int count = mFragmentManager.getBackStackEntryCount();
 		if (count > 0) {
 			BackStackEntry fragment = mFragmentManager
 					.getBackStackEntryAt(count - 1);
 			mPath = fragment.getName();
 		}
-		
+
 		setTitle(mPath);
 	}
 
 	/**
 	 * Add the initial Fragment with given path.
 	 * 
-	 * @param path The absolute path of the file (directory) to display.
+	 * @param path
+	 *            The absolute path of the file (directory) to display.
 	 */
 	private void addFragment() {
 		FileListFragment explorerFragment = FileListFragment.newInstance(mPath);
@@ -130,10 +129,11 @@ public class FileChooserActivity extends FragmentActivity implements
 	}
 
 	/**
-	 * "Replace" the existing Fragment with a new one using given path.
-	 * We're really adding a Fragment to the back stack.
+	 * "Replace" the existing Fragment with a new one using given path. We're
+	 * really adding a Fragment to the back stack.
 	 * 
-	 * @param path The absolute path of the file (directory) to display.
+	 * @param path
+	 *            The absolute path of the file (directory) to display.
 	 */
 	private void replaceFragment(String path) {
 		FileListFragment explorerFragment = FileListFragment.newInstance(path);
@@ -146,7 +146,8 @@ public class FileChooserActivity extends FragmentActivity implements
 	/**
 	 * Finish this Activity with a result code and URI of the selected file.
 	 * 
-	 * @param file The file selected.
+	 * @param file
+	 *            The file selected.
 	 */
 	private void finishWithResult(File file) {
 		if (file != null) {
@@ -154,33 +155,32 @@ public class FileChooserActivity extends FragmentActivity implements
 			setResult(RESULT_OK, new Intent().setData(uri));
 			finish();
 		} else {
-			setResult(RESULT_CANCELED);	
+			setResult(RESULT_CANCELED);
 			finish();
 		}
 	}
-	
+
 	/**
 	 * Called when the user selects a File
 	 * 
-	 * @param file The file that was selected
+	 * @param file
+	 *            The file that was selected
 	 */
 	protected void onFileSelected(File file) {
 		if (file != null) {
 			mPath = file.getAbsolutePath();
-			
+
 			if (file.isDirectory()) {
 				replaceFragment(mPath);
 			} else {
-				finishWithResult(file);	
+				finishWithResult(file);
 			}
 		} else {
-			Toast.makeText(FileChooserActivity.this, R.string.error_selecting_file, Toast.LENGTH_SHORT).show();
+			Toast.makeText(FileChooserActivity.this,
+					R.string.error_selecting_file, Toast.LENGTH_SHORT).show();
 		}
 	}
-	
-	
-	
-	
+
 	/**
 	 * Register the external storage BroadcastReceiver.
 	 */
@@ -196,20 +196,16 @@ public class FileChooserActivity extends FragmentActivity implements
 	private void unregisterStorageListener() {
 		unregisterReceiver(mStorageListener);
 	}
-	
-	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_smart, menu);
 		menu.add(0, 1, 0, "Select current directory");
-		
-		
+
 		return true;
 	}
-	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		finishWithResult(new File(mPath));

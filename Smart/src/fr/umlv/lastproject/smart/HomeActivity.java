@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +35,7 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		pref = new Preferences(this);
+		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
@@ -176,5 +175,11 @@ public class HomeActivity extends Activity {
 		intentReturn.putExtra("shortcut", shortcut.toArray());
 		setResult(RESULT_CANCELED, intentReturn);
 		finish();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }
