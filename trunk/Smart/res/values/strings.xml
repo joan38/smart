@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Smart</string>
     <string name="menu_settings">Settings</string>
+    <string name="infoSettings">Information parameters</string>
     <string name="latitude">Latitude :</string>
     <string name="longitude">Longitude :</string>
     <string name="altitude">Altitude :</string>
@@ -137,12 +138,12 @@
     <string name="wms_error">Error while importing wms : url is not reachable</string>
     <string name="wms_name">Enter a name for WMS Layer</string>
     <string name="editInfo">Edit info zone</string>
-    <string name="displayLatitude">Display latitude :</string>
-    <string name="displayLongitude">Display longitude :</string>
-    <string name="displayAltitude">Display altitude :</string>
-    <string name="displayAccuracy">Display accuracy :</string>
-    <string name="displayBearing">Display bearing :</string>
-    <string name="displaySpeed">Display speed :</string>
+    <string name="displayLatitude">Display latitude</string>
+    <string name="displayLongitude">Display longitude</string>
+    <string name="displayAltitude">Display altitude</string>
+    <string name="displayAccuracy">Display accuracy</string>
+    <string name="displayBearing">Display bearing</string>
+    <string name="displaySpeed">Display speed</string>
     <string name="noMission">Impossible : no mission in progress</string>
     <string name="missionStop">Mission stop</string>
     <string name="missionStart">Mission start</string>

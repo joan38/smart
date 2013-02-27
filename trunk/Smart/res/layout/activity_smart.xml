@@ -152,15 +152,15 @@
                 android:id="@+id/bearingValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:gravity="left"
+                android:textColor="#FFFFFF"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-				android:gravity="right"
+                android:gravity="right"
                 android:textColor="#FFFFFF"
                 android:visibility="gone" />
 
@@ -168,8 +168,8 @@
                 android:id="@+id/speedValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:gravity="right"
+                android:textColor="#FFFFFF"
                 android:visibility="gone" />
         </TableRow>
     </TableLayout>

@@ -39,6 +39,7 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.AlertSettingInfoDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
@@ -134,29 +135,13 @@ public class MenuActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_smart, menu);
+		menu.add(0, 0, 0, R.string.infoSettings);
 		menu.add(0, 1, 0, R.string.hideInfoZone);
 		menu.add(0, 2, 0, R.string.gpsSettings);
 		menu.add(0, 3, 0, R.string.help);
 		menu.add(0, 4, 0, R.string.theme);
+
 		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.latitudeChkbx).setChecked(
-				findViewById(R.id.latitude).getVisibility() == View.VISIBLE);
-		menu.findItem(R.id.longitudeChkbx).setChecked(
-				findViewById(R.id.longitude).getVisibility() == View.VISIBLE);
-		menu.findItem(R.id.altitudeChkbx).setChecked(
-				findViewById(R.id.altitude).getVisibility() == View.VISIBLE);
-		menu.findItem(R.id.accuracyChkbx).setChecked(
-				findViewById(R.id.precision).getVisibility() == View.VISIBLE);
-		menu.findItem(R.id.bearingChkbx).setChecked(
-				findViewById(R.id.bearing).getVisibility() == View.VISIBLE);
-		menu.findItem(R.id.speedChkbx).setChecked(
-				findViewById(R.id.speed).getVisibility() == View.VISIBLE);
-
-		return super.onPrepareOptionsMenu(menu);
 	}
 
 	/**
@@ -347,7 +332,8 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
-
+			new AlertSettingInfoDialog(this, findViewById(R.id.table),
+					infoOverlay);
 			break;
 		case 1:
 			infoOverlay.hideInfoZone(findViewById(R.id.table), item);
@@ -362,42 +348,6 @@ public class MenuActivity extends Activity {
 			helpDialog.show();
 			break;
 
-		case R.id.longitudeChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.longitude),
-					findViewById(R.id.longitudeValue), !item.isChecked());
-
-			break;
-
-		case R.id.altitudeChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.altitude),
-					findViewById(R.id.altitudeValue), !item.isChecked());
-
-			break;
-
-		case R.id.accuracyChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.precision),
-					findViewById(R.id.precisionValue), !item.isChecked());
-
-			break;
-
-		case R.id.latitudeChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.latitude),
-					findViewById(R.id.latitudeValue), !item.isChecked());
-			break;
-
-		case R.id.bearingChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.bearing),
-					findViewById(R.id.bearingValue), !item.isChecked());
-			break;
-
-		case R.id.speedChkbx:
-			infoOverlay.setVisibility(findViewById(R.id.speed),
-					findViewById(R.id.speedValue), !item.isChecked());
-			break;
-
-		case R.id.infoValidate:
-			Toast.makeText(this, R.string.validate, Toast.LENGTH_LONG).show();
-			break;
 		case 4:
 			// if(!missionCreated){
 			new AlertThemeDialog(this, getApplication());
