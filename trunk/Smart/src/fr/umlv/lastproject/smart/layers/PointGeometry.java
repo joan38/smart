@@ -2,9 +2,6 @@ package fr.umlv.lastproject.smart.layers;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-
-import fr.umlv.lastproject.smart.form.SelectedGeometryListener;
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;

@@ -11,15 +11,16 @@ import fr.umlv.lastproject.smart.database.MissionRecord;
 import fr.umlv.lastproject.smart.utils.SmartException;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * This class is used to list the mission could be delete
@@ -27,7 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author Maelle Cabot
  *
  */
-public class AlertDeleteMissionDialog extends AlertDialog {
+public class AlertDeleteMissionDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor 
@@ -37,51 +38,59 @@ public class AlertDeleteMissionDialog extends AlertDialog {
 	public AlertDeleteMissionDialog(final Context c) {
 		super(c);
 		setCancelable(false);
-
+		
 		final LayoutInflater inflater = LayoutInflater.from(c);
-		final View exportMissionDialog = inflater.inflate(
+		final View deleteMissionDialog = inflater.inflate(
 				R.layout.delete_mission_dialog, null);
+		LinearLayout layout = (LinearLayout) deleteMissionDialog.findViewById(R.id.linearDelete);
 
-		setView(exportMissionDialog);
+		setView(deleteMissionDialog);
 		setTitle(R.string.delete_mission);
 
-		final ListView listView = (ListView) exportMissionDialog.findViewById(R.id.listViewMission);
 
 		final Map<String, Long> mapMissions = getAllMissions(c);
 		List<String> titleMissions = new ArrayList<String>(mapMissions.keySet());
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
-				android.R.layout.simple_list_item_1,titleMissions);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
+		final List<Long> missionsToDelete = new ArrayList<Long>();
+		
+		for(final String s : titleMissions){
+			CheckBox checkBox = new CheckBox(c);
+			checkBox.setText(s);
+			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked){
+						long idMission = mapMissions.get(s);
+						missionsToDelete.add(idMission);
+					}
+					
+				}
+			});
+			layout.addView(checkBox);
+		}
+		
+		
+		
+		setPositiveButton(R.string.validate, new OnClickListener() {
+			
 			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-
-				String value = (String) adapter.getItemAtPosition(position);
-				long idMission = mapMissions.get(value);
-
-				Log.d("TEST", "id de la mission "+value+" "+idMission);
-
-				dismiss();
-
-				AlertValidationDialog alertValidationDialog = new AlertValidationDialog(c, idMission, value);
+			public void onClick(DialogInterface dialog, int which) {
+				AlertValidationDialog alertValidationDialog = new AlertValidationDialog(c, missionsToDelete);
 				alertValidationDialog.show();
-
-
+				
 			}
 		});
-
-		TextView cancel = (TextView) exportMissionDialog.findViewById(R.id.cancelDeleteMission);
-		cancel.setOnClickListener(new View.OnClickListener() {
-
+		setNegativeButton(R.string.cancel, new OnClickListener() {
+			
 			@Override
-			public void onClick(View v) {
-				dismiss();				
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
+		
 
+		
 	}
 
 

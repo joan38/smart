@@ -29,7 +29,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
 

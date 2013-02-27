@@ -4,7 +4,6 @@ import org.osmdroid.views.MapView;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import fr.umlv.lastproject.smart.SmartMapView;
 
 
 /**
