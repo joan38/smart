@@ -2,9 +2,11 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -41,6 +43,10 @@ public class HomeActivity extends Activity {
 
 		// Retry the mission status
 		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
+		boolean trackStarted = getIntent().getExtras().getBoolean(
+				"trackStarted");
+
+		Log.d("", "" + trackStarted);
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
@@ -53,26 +59,35 @@ public class HomeActivity extends Activity {
 			switch (i) {
 			case SmartConstants.CREATE_MISSION:
 				if (enabled) {
-					item = new ListViewItem(icons[i],
-							getString(R.string.stopMission), true);
+					item = new ListViewItem(R.drawable.stopmission,
+							getString(R.string.stopMission));
 				} else {
-					item = new ListViewItem(icons[i], items[i], true);
+					item = new ListViewItem(icons[i], items[i]);
+				}
+				break;
+
+			case SmartConstants.GPS_TRACK:
+				if (trackStarted) {
+					item = new ListViewItem(R.drawable.stopgpstrack,
+							getString(R.string.stopGPSTrack));
+				} else {
+					item = new ListViewItem(icons[i], items[i]);
 				}
 				break;
 
 			case SmartConstants.POINT_SURVEY:
-				item = new ListViewItem(icons[i], items[i], enabled);
+				item = new ListViewItem(icons[i], items[i]);
 				break;
 
 			case SmartConstants.LINE_SURVEY:
-				item = new ListViewItem(icons[i], items[i], enabled);
+				item = new ListViewItem(icons[i], items[i]);
 				break;
 
 			case SmartConstants.POLYGON_SURVEY:
-				item = new ListViewItem(icons[i], items[i], enabled);
+				item = new ListViewItem(icons[i], items[i]);
 				break;
 			default:
-				item = new ListViewItem(icons[i], items[i], true);
+				item = new ListViewItem(icons[i], items[i]);
 				break;
 			}
 
@@ -83,7 +98,7 @@ public class HomeActivity extends Activity {
 		SmartItemHomeAdapter adapter = new SmartItemHomeAdapter(this,
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
-		//listView.setClickable(false);
+		// listView.setClickable(false);
 		listView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -104,7 +119,7 @@ public class HomeActivity extends Activity {
 				intentReturn.putExtra("position", position);
 				intentReturn.putExtra("shortcut", shortcut.toArray());
 				setResult(RESULT_OK, intentReturn);
-				//view.setEnabled(false);
+				// view.setEnabled(false);
 				finish();
 
 			}

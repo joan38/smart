@@ -23,7 +23,7 @@ public class ListViewItem {
 	 * @param enabled
 	 *            : the item status
 	 */
-	public ListViewItem(int imageId, String title, boolean enabled) {
+	public ListViewItem(int imageId, String title) {
 		this.imageId = imageId;
 		this.title = title;
 	}
@@ -61,6 +61,4 @@ public class ListViewItem {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-
 }
