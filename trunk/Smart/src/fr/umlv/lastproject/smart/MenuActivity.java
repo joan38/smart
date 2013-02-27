@@ -22,11 +22,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
@@ -368,148 +371,18 @@ public class MenuActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
 
-			// TODO on recupere la liste des shortcut
-			// final Object[] shortcut = (Object[]) data
-			// .getSerializableExtra("shortcut");
-			// for (Object o : shortcut) {
-			// Log.d("test", o.toString());
-			// }
+		if (resultCode == RESULT_OK) {
+			Object[] shortcuts = (Object[]) data
+					.getSerializableExtra("shortcut");
+			Integer index = (Integer) data.getSerializableExtra("position");
+			createShortcut(shortcuts);
 
 			switch (requestCode) {
+
 			case SmartConstants.HOME_VIEW:
-				Integer index = (Integer) data.getSerializableExtra("position");
 
-				switch (index) {
-
-				case SmartConstants.CREATE_MISSION:
-					if (missionCreated) {
-						missionCreated = Mission.getInstance().stopMission();
-						Toast.makeText(this,
-								getResources().getText(R.string.missionStop),
-								Toast.LENGTH_LONG).show();
-					} else {
-						missionDialog = new AlertCreateMissionDialog(this);
-					}
-					break;
-
-				case SmartConstants.CREATE_FORM:
-					new AlertCreateFormDialog(this);
-					break;
-
-				case SmartConstants.POINT_SURVEY:
-					if (Mission.getInstance() == null) {
-						Toast.makeText(this,
-								getResources().getText(R.string.noMission),
-								Toast.LENGTH_LONG).show();
-					} else {
-						Mission.getInstance().startSurvey(GeometryType.POINT);
-					}
-					break;
-
-				case SmartConstants.LINE_SURVEY:
-					if (Mission.getInstance() == null) {
-						Toast.makeText(this,
-								getResources().getText(R.string.noMission),
-								Toast.LENGTH_LONG).show();
-					} else {
-						Mission.getInstance().startSurvey(GeometryType.LINE);
-					}
-					break;
-
-				case SmartConstants.POLYGON_SURVEY:
-					if (Mission.getInstance() == null) {
-						Toast.makeText(this,
-								getResources().getText(R.string.noMission),
-								Toast.LENGTH_LONG).show();
-					} else {
-						Mission.getInstance().startSurvey(GeometryType.POLYGON);
-					}
-					break;
-
-				case SmartConstants.GPS_TRACK:
-					if (gpsTrack == null) {
-						final AlertTrackDialog trackDialog = new AlertTrackDialog(
-								this);
-						trackDialog.show();
-						trackStarted = true;
-						break;
-
-					} else {
-						try {
-							gpsTrack.stopTrack();
-							gpsTrack = null;
-							trackStarted = false;
-						} catch (IOException e) {
-							gpsTrack = null;
-							trackStarted = false;
-							Toast.makeText(this, R.string.track_error,
-									Toast.LENGTH_LONG).show();
-						}
-					}
-
-					break;
-
-				case SmartConstants.IMPORT_KML:
-					Intent importKMLIntent = FileUtils.createGetContentIntent(
-							FileUtils.KML_TYPE,
-							Environment.getExternalStorageDirectory() + "");
-					startActivityForResult(importKMLIntent,
-							SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
-					break;
-
-				case SmartConstants.IMPORT_SHAPE:
-					Intent importSHPItent = FileUtils.createGetContentIntent(
-							FileUtils.SHP_TYPE,
-							Environment.getExternalStorageDirectory() + "");
-					startActivityForResult(importSHPItent,
-							SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-					break;
-
-				case SmartConstants.IMPORT_GEOTIFF:
-					Intent importTiffItent = FileUtils.createGetContentIntent(
-							FileUtils.TIF_TYPE,
-							Environment.getExternalStorageDirectory() + "");
-					startActivityForResult(importTiffItent,
-							SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
-					break;
-
-				case SmartConstants.IMPORT_WMS:
-					final WMSDialog dialog = new WMSDialog(mapView);
-					dialog.show();
-					break;
-
-				case SmartConstants.EXPORT:
-					AlertExportDialog exportDialog = new AlertExportDialog(this);
-					exportDialog.show();
-					break;
-
-				case SmartConstants.MEASURE:
-					AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(
-							this);
-					amrd.show();
-					break;
-
-				case SmartConstants.EXPORT_FORM:
-					Intent intentForm = FileUtils.createGetContentIntent(
-							FileUtils.FORM_TYPE,
-							Environment.getExternalStorageDirectory() + "");
-					startActivityForResult(intentForm,
-							SmartConstants.FORM_BROWSER_ACTIVITY);
-					break;
-
-				case SmartConstants.DELETE_MISSION:
-					AlertDeleteMissionDialog deleteMissionDialog = new AlertDeleteMissionDialog(
-							this);
-					deleteMissionDialog.show();
-
-					break;
-
-				default:
-					// Mission.getInstance().stopMission();
-					break;
-				}
+				doAction(index);
 				break;
 
 			case SmartConstants.LAYERS_VIEW:
@@ -594,9 +467,167 @@ public class MenuActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}
 				break;
-
 			}
 		}
+		if (resultCode == RESULT_CANCELED) {
+			if (requestCode == SmartConstants.HOME_VIEW) {
+				Object[] shortcuts = (Object[]) data
+						.getSerializableExtra("shortcut");
+
+				createShortcut(shortcuts);
+			}
+		}
+	}
+
+	private void createShortcut(Object[] shortcuts) {
+		if (shortcuts != null) {
+			LinearLayout shortcutsView = (LinearLayout) findViewById(R.id.shortcuts);
+			for (final Object o : shortcuts) {
+				ImageView shortcut = new ImageView(this);
+				shortcut.setImageResource(SmartConstants.icons[((Integer) o)
+						.intValue()]);
+				shortcut.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						doAction(((Integer) o).intValue());
+					}
+				});
+				shortcutsView.addView(shortcut);
+				Log.d("debug", o.toString());
+			}
+			shortcutsView.invalidate();
+		}
+	}
+
+	private void doAction(int index) {
+
+		switch (index) {
+		case SmartConstants.CREATE_MISSION:
+			if (missionCreated) {
+				missionCreated = Mission.getInstance().stopMission();
+				Toast.makeText(this,
+						getResources().getText(R.string.missionStop),
+						Toast.LENGTH_LONG).show();
+			} else {
+				missionDialog = new AlertCreateMissionDialog(this);
+			}
+			break;
+
+		case SmartConstants.CREATE_FORM:
+			new AlertCreateFormDialog(this);
+			break;
+
+		case SmartConstants.POINT_SURVEY:
+			if (Mission.getInstance() == null) {
+				Toast.makeText(this,
+						getResources().getText(R.string.noMission),
+						Toast.LENGTH_LONG).show();
+			} else {
+				Mission.getInstance().startSurvey(GeometryType.POINT);
+			}
+			break;
+
+		case SmartConstants.LINE_SURVEY:
+			if (Mission.getInstance() == null) {
+				Toast.makeText(this,
+						getResources().getText(R.string.noMission),
+						Toast.LENGTH_LONG).show();
+			} else {
+				Mission.getInstance().startSurvey(GeometryType.LINE);
+			}
+			break;
+
+		case SmartConstants.POLYGON_SURVEY:
+			if (Mission.getInstance() == null) {
+				Toast.makeText(this,
+						getResources().getText(R.string.noMission),
+						Toast.LENGTH_LONG).show();
+			} else {
+				Mission.getInstance().startSurvey(GeometryType.POLYGON);
+			}
+			break;
+
+		case SmartConstants.GPS_TRACK:
+			if (gpsTrack == null) {
+				final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
+				trackDialog.show();
+				trackStarted = true;
+				break;
+
+			} else {
+				try {
+					gpsTrack.stopTrack();
+					gpsTrack = null;
+					trackStarted = false;
+				} catch (IOException e) {
+					gpsTrack = null;
+					trackStarted = false;
+					Toast.makeText(this, R.string.track_error,
+							Toast.LENGTH_LONG).show();
+				}
+			}
+
+			break;
+
+		case SmartConstants.IMPORT_KML:
+			Intent importKMLIntent = FileUtils.createGetContentIntent(
+					FileUtils.KML_TYPE,
+					Environment.getExternalStorageDirectory() + "");
+			startActivityForResult(importKMLIntent,
+					SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
+			break;
+
+		case SmartConstants.IMPORT_SHAPE:
+			Intent importSHPItent = FileUtils.createGetContentIntent(
+					FileUtils.SHP_TYPE,
+					Environment.getExternalStorageDirectory() + "");
+			startActivityForResult(importSHPItent,
+					SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
+			break;
+
+		case SmartConstants.IMPORT_GEOTIFF:
+			Intent importTiffItent = FileUtils.createGetContentIntent(
+					FileUtils.TIF_TYPE,
+					Environment.getExternalStorageDirectory() + "");
+			startActivityForResult(importTiffItent,
+					SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
+			break;
+
+		case SmartConstants.IMPORT_WMS:
+			final WMSDialog dialog = new WMSDialog(mapView);
+			dialog.show();
+			break;
+
+		case SmartConstants.EXPORT:
+			AlertExportDialog exportDialog = new AlertExportDialog(this);
+			exportDialog.show();
+			break;
+
+		case SmartConstants.MEASURE:
+			AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(this);
+			amrd.show();
+			break;
+
+		case SmartConstants.EXPORT_FORM:
+			Intent intentForm = FileUtils.createGetContentIntent(
+					FileUtils.FORM_TYPE,
+					Environment.getExternalStorageDirectory() + "");
+			startActivityForResult(intentForm,
+					SmartConstants.FORM_BROWSER_ACTIVITY);
+			break;
+
+		case SmartConstants.DELETE_MISSION:
+			AlertDeleteMissionDialog deleteMissionDialog = new AlertDeleteMissionDialog(
+					this);
+			deleteMissionDialog.show();
+
+			break;
+
+		default:
+			// Mission.getInstance().stopMission();
+			break;
+		}
+
 	}
 
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {

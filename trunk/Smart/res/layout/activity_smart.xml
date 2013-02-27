@@ -2,7 +2,8 @@
     android:id="@+id/zoneInfo"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:scrollbars="horizontal" >
 
     <RelativeLayout
         android:id="@+id/top"
@@ -16,7 +17,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:contentDescription="desc"
+            android:padding="5dp"
             android:src="@drawable/homemenu" />
+
+        <HorizontalScrollView
+            android:id="@+id/scroll"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/layers"
+            android:layout_toRightOf="@+id/home"
+            android:fadingEdge="horizontal"
+            android:scrollbars="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/shortcuts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:scrollbars="horizontal" >
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <ImageView
             android:id="@+id/layers"
@@ -24,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:contentDescription="desc"
+            android:padding="5dp"
             android:src="@drawable/layersmenu" />
     </RelativeLayout>
 

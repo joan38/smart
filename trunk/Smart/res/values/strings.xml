@@ -44,6 +44,7 @@
     <string name="geotiffReadError">Error. The GeoTiff repertory can\'t be read</string>
     <string name="geotiffImport">GeoTiff layer import : success</string>
     <string name="shpImport">ShapeFile layer import : success</string>
+    <string name="layerAlreadyExists">Layer already exists</string>
 
     <string-array name="items">
         <item>Start mission</item>
@@ -148,6 +149,7 @@
     <string name="noMission">Impossible : no mission in progress</string>
     <string name="missionStop">Mission stop</string>
     <string name="missionStart">Mission start</string>
+    <string name="missionDelete">Mission delete</string>
     <string name="theme">Theme</string>
     <string name="title_activity_height">HeightActivity</string>
     <string name="user_height_text">Enter the height of your Point Of View (usually your height minus 25 cm)</string>

@@ -57,9 +57,9 @@ public class SmartMapView extends MapView {
 	 */
 	public void addOverlay(Layer layer) {
 		final String name = layer.getName();
-		if (stringToOverlay.containsKey(name)) {
-			Toast.makeText(getContext(), "Layer already exists",
-					Toast.LENGTH_LONG).show();
+		if (listOverlay.search(name) != null) {
+			Toast.makeText(getContext(), R.string.layerAlreadyExists,
+					Toast.LENGTH_SHORT).show();
 			return;
 		}
 		final Overlay overlay = layer.getOverlay();
