@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Smart</string>
     <string name="menu_settings">Paramètres</string>
+    <string name="infoSettings">Paramètres d\'informations</string>
     <string name="latitude">Latitude :</string>
     <string name="longitude">Longitude :</string>
     <string name="altitude">Altitude :</string>
@@ -140,13 +141,15 @@
     <string name="height_title"> Hauteur du point de vue</string>
     <string name="height_field_missing"> La hauteur ne peut être nulle</string>
     <string name="height_field_invalid"> La hauteur est incorrecte</string>
-    <string name="displayLatitude">Afficher la latitude :</string>
-    <string name="displayLongitude">Afficher la longitude :</string>
-    <string name="displayAltitude">Afficher l\'altitude :</string>
-    <string name="displayAccuracy">Afficher la précision :</string>
-    <string name="displayBearing">Afficher l\'orientation :</string>
-    <string name="displaySpeed">Afficher la vitesse :</string>
-    <string name="height_bottom_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le pied de l\'objet visé.\n Appuyez ensuite sur l\'écran.</string>
-    <string name="height_top_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le sommet de l\'objet visé. \n Appuyez à nouveau sur l\'écran.</string>
+
+    <string name="displayLatitude">Afficher la latitude</string>
+    <string name="displayLongitude">Afficher la longitude</string>
+    <string name="displayAltitude">Afficher l\'altitude</string>
+    <string name="displayAccuracy">Afficher la précision</string>
+    <string name="displayBearing">Afficher l\'orientation</string>
+    <string name="displaySpeed">Afficher la vitesse</string>
+    <string name="height_bottom_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le pied de l\'objet visé.\nAppuyez ensuite sur l\'écran.</string>
+    <string name="height_top_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le sommet de l\'objet visé.Appuyez à nouveau sur l\'écran.</string>
+
 
 </resources>

@@ -138,6 +138,17 @@ public class InfoOverlay {
 
 	}
 
+	/**
+	 * This function set the visibility of informations based on the state of
+	 * checkbox. If number of visible informations is 0, the information zone
+	 * became invisible.
+	 * 
+	 * @param view
+	 *            : textview (name)
+	 * @param viewValue
+	 *            : textview (value)
+	 * @param visibility
+	 */
 	public void setVisibility(View view, View viewValue, boolean visibility) {
 		if (visibility) {
 			view.setVisibility(View.VISIBLE);
@@ -156,6 +167,14 @@ public class InfoOverlay {
 		}
 	}
 
+	/**
+	 * This function hide / display the informations zone
+	 * 
+	 * @param view
+	 *            : the view to change
+	 * @param item
+	 *            : the menu item to change name
+	 */
 	public void hideInfoZone(View view, MenuItem item) {
 		if (view.getVisibility() == View.INVISIBLE && nbInfoVisible > 0) {
 			item.setTitle(R.string.hideInfoZone);
