@@ -145,7 +145,7 @@
     <string name="displayAccuracy">Afficher la précision :</string>
     <string name="displayBearing">Afficher l\'orientation :</string>
     <string name="displaySpeed">Afficher la vitesse :</string>
-    <string name="height_bottom_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le pied de l'objet visé.\nAppuyez ensuite sur l\'écran.</string>
-    <string name="height_top_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le sommet de l'objet visé.Appuyez à nouveau sur l\'écran.</string>
+    <string name="height_bottom_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le pied de l\'objet visé.\n Appuyez ensuite sur l\'écran.</string>
+    <string name="height_top_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le sommet de l\'objet visé. \n Appuyez à nouveau sur l\'écran.</string>
 
 </resources>
