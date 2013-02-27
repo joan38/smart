@@ -71,6 +71,20 @@ public class ListOverlay implements Serializable {
 
 	/**
 	 * 
+	 * @param name
+	 * @return
+	 */
+	public LayerItem search(String name) {
+		for (LayerItem layer : overlays) {
+			if (layer.getName().equals(name)) {
+				return layer;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
 	 * @param location
 	 *            the layer which will change the visibility
 	 * @param visible

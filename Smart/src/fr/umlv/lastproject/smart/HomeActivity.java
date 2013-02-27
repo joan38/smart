@@ -169,4 +169,12 @@ public class HomeActivity extends Activity {
 		}
 		return super.onContextItemSelected(item);
 	}
+
+	@Override
+	public void onBackPressed() {
+		Intent intentReturn = new Intent(HomeActivity.this, MenuActivity.class);
+		intentReturn.putExtra("shortcut", shortcut.toArray());
+		setResult(RESULT_CANCELED, intentReturn);
+		finish();
+	}
 }

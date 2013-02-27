@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
@@ -23,10 +23,11 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
- * This class is used to create a new mission and define its name and the form associated
+ * This class is used to create a new mission and define its name and the form
+ * associated
  * 
  * @author Maelle Cabot
- *
+ * 
  */
 public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
@@ -47,7 +48,6 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 		setView(createMissionDialog);
 		setTitle(R.string.mission);
-		
 
 		final Button openBrowser = (Button) createMissionDialog
 				.findViewById(R.id.selectFormButton);
@@ -55,30 +55,32 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 		final TextView textViewMissionName = ((TextView) createMissionDialog
 				.findViewById(R.id.missionNameValue));
-		
-		final AlertDialog dialog = this.setPositiveButton(R.string.validate, new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				menu.startMission(textViewMissionName.getText().toString());
-			}
-		}).setNegativeButton(R.string.cancel, new OnClickListener() {
+		final AlertDialog dialog = this
+				.setPositiveButton(R.string.validate, new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						menu.startMission(textViewMissionName.getText()
+								.toString());
+						Toast.makeText(menu, R.string.missionStart,
+								Toast.LENGTH_SHORT).show();
+					}
+				}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
-			}
-		}).create();
-		
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+
+					}
+				}).create();
+
 		dialog.show();
-		
-		
 
 		textViewMissionName.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 			}
 
 			@Override
@@ -89,22 +91,30 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+
 				if (!textViewMissionName.getText().toString().equals("")) {
 					DbManager dbManager = new DbManager();
 					try {
 						dbManager.open(menu);
 					} catch (SmartException e) {
-						Toast.makeText(menu, e.getMessage(), Toast.LENGTH_LONG).show();
+						Toast.makeText(menu, e.getMessage(), Toast.LENGTH_LONG)
+								.show();
 						Log.e("", e.getMessage());
 					}
-					
-					if(dbManager.existsMission(textViewMissionName.getText().toString())){
-						textViewMissionName.setError(menu.getResources().getString(R.string.invalid));
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+					if (dbManager.existsMission(textViewMissionName.getText()
+							.toString())) {
+						textViewMissionName.setError(menu.getResources()
+								.getString(R.string.invalid));
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+								.setEnabled(false);
+
 					} else {
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+								.setEnabled(true);
 					}
 					dbManager.close();
+
 				}
 			}
 		});
@@ -136,10 +146,12 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
 		});
+
 	}
 
 	/**
 	 * Set the path of form in the textview
+	 * 
 	 * @param path
 	 */
 	public void setPathForm(String path) {

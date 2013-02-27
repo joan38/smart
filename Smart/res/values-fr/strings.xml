@@ -37,10 +37,11 @@
     <string name="error">Erreur</string>
     <string name="kmlParseError">Erreur. Le fichier Kml est invalide</string>
     <string name="kmlReadError">Erreur. Le fichier Kml ne peut être lu</string>
-    <string name="kmlImport">Import de couche kml : réussite</string>
+    <string name="kmlImport">Import de couche kml : réussit</string>
     <string name="geotiffReadError">Erreur. Le répertoire GéoTiff ne peut être lu</string>
-    <string name="geotiffImport">Import de couche GeoTiff : réussite</string>
-    <string name="shpImport">Import de couche ShapeFile : réussite</string>
+    <string name="geotiffImport">Import de couche GeoTiff : réussit</string>
+    <string name="shpImport">Import de couche ShapeFile : réussit</string>
+    <string name="layerAlreadyExists">La couche existe déjà</string>
 
     <string-array name="items">
         <item>Créer mission</item>
@@ -134,7 +135,8 @@
     <string name="wms_name">Nom de la couche WMS</string>
     <string name="noMission">Impossible : aucune mission en cours</string>
     <string name="missionStop">Mission arrêtée</string>
-    <string name="missionStart">Mission démarré</string>
+    <string name="missionStart">Mission démarrée</string>
+    <string name="missionDelete">Mission supprimée</string>
     <string name="theme">Thème</string>
     <string name="editInfo">Editer la zone d\'info</string>
     <string name="user_height_text">Entrez la hauteur du point de vue (par exemple votre taille moins 25 cm)</string>
