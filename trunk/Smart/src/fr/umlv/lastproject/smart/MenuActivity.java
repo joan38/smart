@@ -654,10 +654,4 @@ public class MenuActivity extends Activity {
 	public SmartMapView getMapView() {
 		return this.mapView;
 	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		pref.save();
-	}
 }

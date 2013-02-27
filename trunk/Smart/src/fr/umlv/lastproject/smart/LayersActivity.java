@@ -132,10 +132,4 @@ public class LayersActivity extends ListActivity {
 		setResult(RESULT_OK, intentReturn);
 		finish();
 	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		pref.save();
-	}
 }
