@@ -1,4 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -11,15 +12,13 @@
         -->
     </style>
 
-    <style name="AppLightTheme" parent="android:Theme.Holo.Light">
-    </style>
-    
-    
-    
+    <style name="AppLightTheme" parent="android:Theme.Holo.Light"></style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
     <style name="fileChooserName">
         <item name="android:layout_marginLeft">@dimen/list_item_padding</item>
         <item name="android:layout_marginRight">@dimen/list_item_padding</item>
@@ -27,8 +26,9 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">18sp</item>
     </style>
+
     <style name="fileChooserIcon">
         <item name="android:layout_marginLeft">@dimen/list_item_padding</item>
-	</style>
+    </style>
 
 </resources>

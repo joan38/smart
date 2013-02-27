@@ -154,10 +154,4 @@ public class HomeActivity extends Activity {
 		}
 		return super.onContextItemSelected(item);
 	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		pref.save();
-	}
 }

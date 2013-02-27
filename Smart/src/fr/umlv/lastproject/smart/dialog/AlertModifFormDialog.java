@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
@@ -17,18 +17,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
@@ -72,8 +71,8 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 * @param g : the geometry
 	 * @param mission
 	 */
-	public AlertModifFormDialog(final MenuActivity context, final Form form,
-			final Geometry g , final GeometryLayer l) {
+	public AlertModifFormDialog(final Context context, final Form form,
+			final Geometry g, final GeometryLayer l) {
 		super(context);
 		final long idGeometry = g.getId();
 		setCancelable(false);
@@ -213,7 +212,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 * @param fieldsList
 	 * @throws SmartException 
 	 */
-	public final int buildForm(TableLayout l, final MenuActivity c,
+	public final int buildForm(TableLayout l, final Context c,
 			List<Field> fieldsList, long idGeometry) throws SmartException {
 
 		DbManager dbManager = new DbManager();

@@ -11,42 +11,30 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.Theme;
 
 public class AlertThemeDialog extends AlertDialog.Builder {
-
-	private int theme = R.style.AppBaseTheme;
 
 	public AlertThemeDialog(final Context c, final Application app) {
 		super(c);
 		setCancelable(false);
-		final Preferences preferences = new Preferences(c);
+		final Preferences pref = new Preferences(c);
 
 		LayoutInflater factory = LayoutInflater.from(c);
 		final View alertThemeView = factory.inflate(
-				fr.umlv.lastproject.smart.R.layout.theme_dialog, null);
+				R.layout.theme_dialog, null);
 
 		setView(alertThemeView);
-		setTitle(alertThemeView.getResources().getString(R.string.theme));
-
+		setTitle(c.getString(R.string.theme));
+		
 		RadioGroup themeRadioGroup = (RadioGroup) alertThemeView
 				.findViewById(R.id.groupTheme);
-		
+		themeRadioGroup.check(Theme.getByThemeId(pref.theme).getRadioButtonId());
 		themeRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				switch (checkedId) {
-				case R.id.buttonTheme1:
-					// Light
-					theme = R.style.AppLightTheme;
-					break;
-					
-				case R.id.buttonTheme2:
-					// Dark
-				default:
-					// Dark
-					theme = R.style.AppLightTheme;
-				}
+				pref.theme = Theme.getByRadioButtonId(checkedId).getThemeId();
 			}
 		});
 
@@ -55,9 +43,8 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						preferences.theme = theme;
+						pref.save();
 						AlertDialog alertDialog = new AlertDialog.Builder(c).create();
-						//alertDialog.setTitle("");
 						alertDialog.setMessage(c.getString(R.string.shouldRestartApp));
 						alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, c.getString(R.string.ok), (OnClickListener) null);
 						alertDialog.show();

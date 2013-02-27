@@ -5,13 +5,13 @@
     android:id="@+id/groupTheme">
     
     <RadioButton
-        android:id="@+id/buttonTheme1"
+        android:id="@+id/buttonLightTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Light" />
 
     <RadioButton
-        android:id="@+id/buttonTheme2"
+        android:id="@+id/buttonDarkTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dark" />
