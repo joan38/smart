@@ -124,7 +124,7 @@
     <string name="field_height">Height field : </string>
     <string name="field_error_min_max">Error : Min > Max</string>
     <string name="invalid">Invalid</string>
-    <string name="sure">Do you really want to delete </string>
+    <string name="sure">Delete mission(s) ?</string>
     <string name="result">Result</string>
     <string name="menuFunctionalitiesTitle">Functionalities menu</string>
     <string name="menuLayersTitle">Layers managing</string>

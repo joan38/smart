@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.util.List;
+
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.utils.SmartException;
@@ -10,7 +12,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -27,7 +28,7 @@ public class AlertValidationDialog extends AlertDialog.Builder{
 	 * @param idMission
 	 * @param nameMission
 	 */
-	public AlertValidationDialog(final Context c, final long idMission, String nameMission) {
+	public AlertValidationDialog(final Context c, final List<Long> missionsToDelete) {
 		super(c);
 		setCancelable(false);
 		
@@ -39,9 +40,6 @@ public class AlertValidationDialog extends AlertDialog.Builder{
 		setView(exportMissionDialog);
 		setTitle(R.string.delete_mission);
 		
-		TextView textView = (TextView) exportMissionDialog.findViewById(R.id.areusure);
-		String text = textView.getText()+" "+nameMission+" ?";
-		textView.setText(text);
 		
 		setPositiveButton(R.string.validate, new OnClickListener() {
 			
@@ -54,7 +52,9 @@ public class AlertValidationDialog extends AlertDialog.Builder{
 					Toast.makeText(c, e.getMessage(), Toast.LENGTH_LONG).show();
 					Log.e("", e.getMessage());
 				}
-				dbm.deleteMission(idMission);
+				for(Long l : missionsToDelete){
+					dbm.deleteMission(l);
+				}
 				dbm.close();
 			}
 		});

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
@@ -14,13 +13,8 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Path.FillType;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Region;
-import android.util.Log;
 import android.view.MotionEvent;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.form.SelectedGeometryListener;

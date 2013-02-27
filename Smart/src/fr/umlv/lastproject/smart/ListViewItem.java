@@ -12,7 +12,6 @@ public class ListViewItem {
 
 	private int imageId;
 	private String title;
-	private boolean isEnabled;
 
 	/**
 	 * ListViewItem constructor
@@ -27,7 +26,6 @@ public class ListViewItem {
 	public ListViewItem(int imageId, String title, boolean enabled) {
 		this.imageId = imageId;
 		this.title = title;
-		this.isEnabled = enabled;
 	}
 
 	/**
@@ -64,22 +62,5 @@ public class ListViewItem {
 		this.title = title;
 	}
 
-	/**
-	 * 
-	 * @return true if the item is enable, else false
-	 */
-// TODO
-//	public boolean isEnabled() {
-//		return this.isEnabled;
-//	}
-
-	/**
-	 * 
-	 * @param enabled
-	 *            : status to set
-	 */
-	public void setEnabled(boolean enabled) {
-		this.isEnabled = enabled;
-	}
 
 }

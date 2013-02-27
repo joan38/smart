@@ -118,7 +118,7 @@
     <string name="field_numeric">Champ numérique : </string>
     <string name="field_height">Champ hauteur : </string>
     <string name="invalid">Invalide</string>
-    <string name="sure">Etes-vous sur(e) de vouloir supprimer la mission </string>
+    <string name="sure">Etes-vous sur(e) de vouloir supprimer la/les mission(s) ? </string>    
     <string name="result">Résultat</string>
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
     <string name="menuLayersTitle">Gestion des couches</string>

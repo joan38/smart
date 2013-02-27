@@ -349,12 +349,12 @@ public class MenuActivity extends Activity {
 			break;
 
 		case 4:
-			// if(!missionCreated){
-			new AlertThemeDialog(this, getApplication());
-			// } else {
-			// Toast.makeText(this, "Stop the mission before",
-			// Toast.LENGTH_LONG).show();
-			// }
+			if(!missionCreated){
+				new AlertThemeDialog(this, getApplication());
+			} else {
+				Toast.makeText(this, "Stop the mission before",
+						Toast.LENGTH_LONG).show();
+			}
 			break;
 		}
 
@@ -382,7 +382,7 @@ public class MenuActivity extends Activity {
 					if (missionCreated) {
 						missionCreated = Mission.getInstance().stopMission();
 						Toast.makeText(this,
-								getResources().getText(R.string.noMission),
+								getResources().getText(R.string.missionStop),
 								Toast.LENGTH_LONG).show();
 					} else {
 						missionDialog = new AlertCreateMissionDialog(this);
@@ -507,7 +507,7 @@ public class MenuActivity extends Activity {
 			case SmartConstants.LAYERS_VIEW:
 
 				ListOverlay listOverlay = (ListOverlay) data
-						.getSerializableExtra("overlays");
+				.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -522,7 +522,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-									.getName());
+											.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -604,11 +604,11 @@ public class MenuActivity extends Activity {
 				Form.read(formPath);
 			} catch (XmlPullParserException e) {
 				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
-						.show();
+				.show();
 				e.printStackTrace();
 			} catch (IOException e) {
 				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
-						.show();
+				.show();
 				e.printStackTrace();
 			}
 		}

@@ -11,10 +11,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Region;
 import android.graphics.Paint.Style;
-import android.graphics.Path.FillType;
 import android.graphics.Rect;
-import fr.umlv.lastproject.smart.SmartMapView;
-import fr.umlv.lastproject.smart.form.SelectedGeometryListener;
 
 /**
  * This class represent the line geometry to draw
