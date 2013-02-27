@@ -17,7 +17,6 @@
 package fr.umlv.lastproject.smart.browser;
 
 import java.io.File;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +32,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.Theme;
 
 /**
  * Main Activity that handles the FileListFragments 
@@ -68,8 +67,8 @@ public class FileChooserActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		int theme = Theme.getInstance().getIntTheme();
-		setTheme(theme);
+		Preferences pref = new Preferences(this);
+		setTheme(pref.theme);
 		setContentView(R.layout.chooser);
 
 		mFragmentManager = getSupportFragmentManager();

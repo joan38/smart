@@ -1,25 +1,25 @@
 package fr.umlv.lastproject.smart.dialog;
 
-import fr.umlv.lastproject.smart.MenuActivity;
-import fr.umlv.lastproject.smart.R;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import fr.umlv.lastproject.smart.Preferences;
+import fr.umlv.lastproject.smart.R;
 
 public class AlertThemeDialog extends AlertDialog.Builder {
-	
-	private String name;
 
-	public AlertThemeDialog(final MenuActivity c, final Application app) {
+	private int theme = R.style.AppBaseTheme;
+
+	public AlertThemeDialog(final Context c, final Application app) {
 		super(c);
-		
 		setCancelable(false);
+		final Preferences preferences = new Preferences(c);
 
 		LayoutInflater factory = LayoutInflater.from(c);
 		final View alertThemeView = factory.inflate(
@@ -28,36 +28,39 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 		setView(alertThemeView);
 		setTitle(alertThemeView.getResources().getString(R.string.theme));
 
-		RadioGroup group = (RadioGroup) alertThemeView.findViewById(R.id.groupTheme);
+		RadioGroup themeRadioGroup = (RadioGroup) alertThemeView
+				.findViewById(R.id.groupTheme);
 		
-		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+		themeRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				switch(checkedId){
-					case R.id.buttonTheme1:
-						name="dark";
-						break;
-					case R.id.buttonTheme2:
-						name="light";
-						break;
+				switch (checkedId) {
+				case R.id.buttonTheme1:
+					// Light
+					theme = R.style.AppLightTheme;
+					break;
+					
+				case R.id.buttonTheme2:
+					// Dark
+				default:
+					// Dark
+					theme = R.style.AppLightTheme;
 				}
-				
-
 			}
 		});
-		
-		
+
 		final AlertDialog dialog = this
 				.setPositiveButton(R.string.validate, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						Intent i = c.getPackageManager()
-					             .getLaunchIntentForPackage( c.getPackageName() );
-						i.putExtra("theme", name);
-						i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						c.startActivity(i);
+						preferences.theme = theme;
+						AlertDialog alertDialog = new AlertDialog.Builder(c).create();
+						//alertDialog.setTitle("");
+						alertDialog.setMessage(c.getString(R.string.shouldRestartApp));
+						alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, c.getString(R.string.ok), (OnClickListener) null);
+						alertDialog.show();
 					}
 				}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
@@ -69,5 +72,4 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 
 		dialog.show();
 	}
-
 }

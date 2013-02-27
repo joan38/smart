@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
 import java.util.Collections;
-
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -74,24 +73,18 @@ public class MenuActivity extends Activity {
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
-	private String kmlPath;
-	private String shpPath;
-	private String tiffPath;
 	private String formPath;
 	private boolean missionCreated = false;
 	private String missionName;
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
-	private int zoomLevel;
+	private Preferences pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		String s = getIntent().getStringExtra("theme");
-		Theme.createTheme(s);
-		int theme = Theme.getInstance().getIntTheme();
-		setTheme(theme);
+		pref = new Preferences(this);
+		setTheme(pref.theme);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
@@ -171,7 +164,6 @@ public class MenuActivity extends Activity {
 	 */
 	public void initMap() {
 		mapView = (SmartMapView) findViewById(R.id.mapview);
-		zoomLevel = mapView.getZoomLevel();
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -591,8 +583,7 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
-				Uri fileForm = data.getData();
-				formPath = fileForm.toString().split("file:///")[1];
+				formPath = data.getData().getPath();
 				missionDialog.setPathForm(formPath);
 				break;
 
@@ -608,8 +599,7 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.IMPORT_KML_BROWSER_ACTIVITY:
-				Uri fileKML = data.getData();
-				kmlPath = fileKML.toString().split("file:///")[1];
+				String kmlPath = data.getData().getPath();
 				try {
 					mapView.addGeometryLayers(DataImport.importKml(this,
 							kmlPath));
@@ -626,17 +616,16 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-				Uri fileSHP = data.getData();
-				shpPath = fileSHP.toString().split("file:///")[1];
+				String shpPath = data.getData().getPath();
 				mapView.addGeometryLayer(DataImport.importShapeFile(this,
 						shpPath));
+				
 				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
 						.show();
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
-				Uri fileTiff = data.getData();
-				tiffPath = fileTiff.toString().split("file:///")[1];
+				String tiffPath = data.getData().getPath();
 				try {
 					mapView.addGeoTIFFOverlay((DataImport
 							.importGeoTIFFFileFolder(tiffPath, this, "geoTIFF")));
@@ -662,7 +651,7 @@ public class MenuActivity extends Activity {
 		Form form = new Form();
 		if (formPath != null) {
 			try {
-				form.read(formPath);
+				Form.read(formPath);
 			} catch (XmlPullParserException e) {
 				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
 						.show();
@@ -714,5 +703,11 @@ public class MenuActivity extends Activity {
 
 	public SmartMapView getMapView() {
 		return this.mapView;
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }

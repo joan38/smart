@@ -120,7 +120,7 @@ public final class KmlExport {
 				Element descriptionElement = KmlExport
 						.pepareDescriptionElement(kml, dbm.getFormRecord(
 								geometry.getIdFormRecord(), mission.getForm()
-										.getName()));
+										.getTitle()));
 				placemarkElement.appendChild(descriptionElement);
 
 				// Polygon or Point or LineString element
