@@ -80,7 +80,7 @@ public class Form implements Serializable {
 	 * 
 	 * @return the name of form
 	 */
-	public String getName() {
+	public String getTitle() {
 		return title;
 	}
 
@@ -89,7 +89,7 @@ public class Form implements Serializable {
 	 * 
 	 * @param name
 	 */
-	public void setName(String name) {
+	public void setTitle(String name) {
 		this.title = name;
 	}
 
@@ -114,8 +114,13 @@ public class Form implements Serializable {
 	 * @param f
 	 *            is the field to add at the form
 	 */
-	public void addField(Field f) {
-		this.fieldsList.add(f);
+	public boolean addField(Field f) {
+		if (isLabelExist(f.getLabel())) {
+			return false;
+		}
+		
+		fieldsList.add(f);
+		return true;
 	}
 
 	/**
@@ -123,12 +128,14 @@ public class Form implements Serializable {
 	 * @param label
 	 *            of the field to delete
 	 */
-	public void deleteField(String label) {
+	public Field deleteField(String label) {
 		for (int i = 0; i < fieldsList.size(); i++) {
 			if (fieldsList.get(i).getLabel().equals(label)) {
-				fieldsList.remove(i);
+				return fieldsList.remove(i);
 			}
 		}
+		
+		return null;
 	}
 
 	/**
@@ -137,14 +144,14 @@ public class Form implements Serializable {
 	 *            of the field to search
 	 * @return true if the field exists
 	 */
-	public boolean searchLabel(String label) {
-		for (int i = 0; i < fieldsList.size(); i++) {
-			if (fieldsList.get(i).getLabel().equals(label)) {
-				return false;
+	public boolean isLabelExist(String label) {
+		for (Field field : fieldsList) {
+			if (field.getLabel().equals(label)) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -169,13 +176,14 @@ public class Form implements Serializable {
 	 *             if the xml is malformatted
 	 * @throws IOException
 	 */
-	public void read(String path) throws XmlPullParserException, IOException {
+	public static Form read(String path) throws XmlPullParserException, IOException {
 		XmlPullParserFactory xml = XmlPullParserFactory.newInstance();
 		xml.setNamespaceAware(true);
 		XmlPullParser xpp = xml.newPullParser();
 		FileInputStream fis = new FileInputStream(new File(path));
 		xpp.setInput(fis, CHARSET);
 		int eventype = xpp.getEventType();
+		Form form = new Form();
 
 		while (eventype != XmlPullParser.END_DOCUMENT) {
 			if (eventype == XmlPullParser.START_TAG) {
@@ -183,15 +191,15 @@ public class Form implements Serializable {
 				Log.d("", "tag" + xpp.getName());
 				Log.d("", "tag count attribute " + xpp.getAttributeCount());
 
-				if (FORMTAG.equals(tag)) {
+				if (FORMTAG.equalsIgnoreCase(tag)) {
 					for (int i = 0; i < xpp.getAttributeCount(); i++) {
 						Log.d("", "tag form " + xpp.getAttributeName(i));
 
-						if (xpp.getAttributeName(i).equals(TITLETAG)) {
-							setName(xpp.getAttributeValue(i).replace(" ", ""));
+						if (xpp.getAttributeName(i).equalsIgnoreCase(TITLETAG)) {
+							form.setTitle(xpp.getAttributeValue(i).replace(" ", ""));
 						}
 					}
-				} else if (FIELDTAG.equals(tag)) {
+				} else if (FIELDTAG.equalsIgnoreCase(tag)) {
 					String type = null;
 					String title = null;
 					int max = 0;
@@ -200,43 +208,67 @@ public class Form implements Serializable {
 
 					for (int i = 0; i < xpp.getAttributeCount(); i++) {
 						Log.d("", "tag type" + xpp.getAttributeName(i));
-						if (xpp.getAttributeName(i).equals(TYPETAG)) {
+						if (xpp.getAttributeName(i).equalsIgnoreCase(TYPETAG)) {
 							type = xpp.getAttributeValue(i);
 							Log.d("", "tag att" + xpp.getAttributeValue(i));
-
-						} else if (xpp.getAttributeName(i).equals(TITLETAG)) {
+						} else if (xpp.getAttributeName(i).equalsIgnoreCase(TITLETAG)) {
 							title = xpp.getAttributeValue(i).replace(" ", "");
-						} else if (xpp.getAttributeName(i).equals(MAXTAG)) {
+						} else if (xpp.getAttributeName(i).equalsIgnoreCase(MAXTAG)) {
 							max = Integer.valueOf(xpp.getAttributeValue(i));
-						}else if(xpp.getAttributeName(i).equals(MINTAG)){
-							min = Integer.valueOf(xpp.getAttributeValue(i)) ;
-						}else if(xpp.getAttributeName(i).equals(VALUESTAG)){
-							values= xpp.getAttributeValue(i) ;
+						} else if (xpp.getAttributeName(i).equalsIgnoreCase(MINTAG)) {
+							min = Integer.valueOf(xpp.getAttributeValue(i));
+						} else if (xpp.getAttributeName(i).equalsIgnoreCase(VALUESTAG)) {
+							values = xpp.getAttributeValue(i);
 						}
 					}
 
-					if (type.equalsIgnoreCase(FieldType.PICTURE.name())) {
-						addField(new PictureField(title));
-					} else if (type.equalsIgnoreCase(FieldType.HEIGHT.name())) {
-						addField(new HeightField(title));
-					} else if (type.equalsIgnoreCase(FieldType.BOOLEAN.name())) {
-						addField(new BooleanField(title));
-					} else if (type.equalsIgnoreCase(FieldType.LIST.name())) {
+					switch (FieldType.valueOf(type.toUpperCase())) {
+					case TEXT:
+						form.addField(new TextField(title));
+						break;
+
+					case PICTURE:
+						form.addField(new PictureField(title));
+						break;
+						
+					case HEIGHT:
+						form.addField(new HeightField(title));
+						break;
+						
+					case BOOLEAN:
+						form.addField(new BooleanField(title));
+						break;
+
+					case LIST:
 						String[] list = values.split("/");
-						addField(new ListField(title, new ArrayList<String>(
+						form.addField(new ListField(title, new ArrayList<String>(
 								Arrays.asList(list))));
-					} else if (type.equalsIgnoreCase(FieldType.NUMERIC.name())) {
-						addField(new NumericField(title, min, max));
-					}else if(type.equals("text")){
-						addField(new TextField(title));
+						break;
+						
+					case NUMERIC:
+						form.addField(new NumericField(title, min, max));
+						break;
+
+					default:
+						throw new IllegalStateException(
+								"Unkown field type");
 					}
 				}
 			}
 
 			eventype = xpp.next();
 		}
+		
+		return form;
 	}
 
+	/**
+	 * Save the Form in the a XML file.
+	 * The file is saved in the given folder path. The name of the file is <the name of the form>.xml
+	 * 
+	 * @param path the folder where to save the xml file
+	 * @throws FormExportException
+	 */
 	public void write(String path) throws FormExportException {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -289,7 +321,7 @@ public class Form implements Serializable {
 					minAttribute.setValue(String.valueOf(nf.getMin()));
 					fieldElement.setAttributeNode(minAttribute);
 					
-					Attr maxAttribute = xml.createAttribute(MINTAG);
+					Attr maxAttribute = xml.createAttribute(MAXTAG);
 					maxAttribute.setValue(String.valueOf(nf.getMax()));
 					fieldElement.setAttributeNode(maxAttribute);
 					break;

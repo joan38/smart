@@ -5,6 +5,7 @@ import java.io.File;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.form.CreateFormActivity;
+import fr.umlv.lastproject.smart.form.Form;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,16 +42,15 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		setTitle(alertDialogView.getResources().getString(R.string.CreateForm));
 
 		final EditText et = (EditText) alertDialogView
-				.findViewById(fr.umlv.lastproject.smart.R.id.nameForm);
+				.findViewById(R.id.nameForm);
 
-		final AlertDialog dialog = this
-				.setPositiveButton(R.string.validate, new OnClickListener() {
+		final AlertDialog dialog = setPositiveButton(R.string.validate, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						Intent intent = new Intent(menu,
 								CreateFormActivity.class);
-						intent.putExtra("nameForm", et.getText().toString());
+						intent.putExtra("form", new Form(et.getText().toString()));
 
 						menu.startActivity(intent);
 					}
@@ -70,14 +70,12 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override

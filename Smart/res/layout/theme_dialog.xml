@@ -8,13 +8,12 @@
         android:id="@+id/buttonTheme1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dark" />
+        android:text="Light" />
 
     <RadioButton
         android:id="@+id/buttonTheme2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Light" />
-    
+        android:text="Dark" />
 
 </RadioGroup>

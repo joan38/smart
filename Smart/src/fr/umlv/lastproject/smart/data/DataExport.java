@@ -46,7 +46,7 @@ public final class DataExport {
 			csv.write("Geometries,Points");
 			
 			GeometryRecord geometry = geometryIterator.next();
-			FormRecord formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName());
+			FormRecord formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getTitle());
 			for (FieldRecord field : formRecord.getFields()) {
 				csv.write("," + field.getField().getLabel());
 			}
@@ -105,7 +105,7 @@ public final class DataExport {
 					break;
 				}
 				geometry = geometryIterator.next();
-				formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getName());
+				formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getTitle());
 			}
 
 			csv.close();

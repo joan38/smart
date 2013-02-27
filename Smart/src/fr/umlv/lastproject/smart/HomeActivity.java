@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,12 +29,13 @@ public class HomeActivity extends Activity {
 	private String[] items;
 	private int[] icons;
 	private List<Integer> shortcut = new ArrayList<Integer>();
+	private Preferences pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		int theme = Theme.getInstance().getIntTheme();
-		setTheme(theme);
+		pref = new Preferences(this);
+		setTheme(pref.theme);
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
 
@@ -153,5 +153,11 @@ public class HomeActivity extends Activity {
 			}
 		}
 		return super.onContextItemSelected(item);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
 	}
 }

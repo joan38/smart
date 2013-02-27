@@ -79,19 +79,16 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				
-
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				
 				if (!textViewMissionName.getText().toString().equals("")) {
 					DbManager dbManager = new DbManager();
 					try {
@@ -101,18 +98,13 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 						Log.e("", e.getMessage());
 					}
 					
-					
 					if(dbManager.existsMission(textViewMissionName.getText().toString())){
 						textViewMissionName.setError(menu.getResources().getString(R.string.invalid));
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 					} else {
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-
 					}
 					dbManager.close();
-					
-					
-
 				}
 			}
 		});
@@ -131,7 +123,6 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 					openBrowser.setVisibility(View.GONE);
 					formPath.setVisibility(View.GONE);
 				}
-
 			}
 		});
 
@@ -145,9 +136,6 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
 		});
-
-		
-
 	}
 
 	/**
@@ -156,7 +144,5 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 	 */
 	public void setPathForm(String path) {
 		formPath.setText(path);
-
 	}
-
 }

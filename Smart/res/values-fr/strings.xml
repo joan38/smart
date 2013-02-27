@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Smart</string>
     <string name="menu_settings">Paramètres</string>
     <string name="latitude">Latitude :</string>
@@ -33,6 +32,7 @@
     <string name="visibilityLayer">Vous ne pouvez pas modifier la visibilité de cette couche, celle-ci appartient à une mission encore en cours.</string>
     <string name="addShortcut">Ajouter un raccouci</string>
     <string name="removeShortcut">Retirer le raccourci</string>
+    <string name="shouldRestartApp">Vous devez redemarrer l\'application pour appliquer les changements.</string>
     <string name="error">Erreur</string>
     <string name="kmlParseError">Erreur. Le fichier Kml est invalide</string>
     <string name="kmlReadError">Erreur. Le fichier Kml ne peut être lu</string>
@@ -73,6 +73,7 @@
     <string name="empty_directory">Répertoire vide</string>
     <string name="storage_removed">Espace disque non disponible.</string>
     <string name="choose_file">Sélectionner un fichier</string>
+    <string name="title_activity_create_form">Créer un formulaire</string>
     <string name="error_selecting_file">Erreur lors de sélection du fichier</string>
     <string name="zoomIn">Do you really want to zoom in even if tiles are missing?</string>
     <string name="zoomOut">Do you really want to zoom out even if tiles are missing?</string>

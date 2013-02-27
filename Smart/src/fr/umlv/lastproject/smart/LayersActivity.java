@@ -20,6 +20,8 @@ import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
  * 
  */
 public class LayersActivity extends ListActivity {
+	
+	private Preferences pref;
 
 	private ListOverlay listOverlay = new ListOverlay();
 	SmartItemLayerAdapter adapter;
@@ -77,8 +79,8 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
-		int theme = Theme.getInstance().getIntTheme();
-		setTheme(theme);
+		pref = new Preferences(this);
+		setTheme(pref.theme);
 		setContentView(R.layout.activity_layers);
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
@@ -131,4 +133,9 @@ public class LayersActivity extends ListActivity {
 		finish();
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		pref.save();
+	}
 }

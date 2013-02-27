@@ -198,7 +198,7 @@ public class DbManager {
 	public int createTableForm(Form f) throws SmartException {
 		SQLiteDatabase db = null;
 		StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
-		sql.append(f.getName());
+		sql.append(f.getTitle());
 		sql.append("( id INTEGER PRIMARY KEY, date TEXT NOT NULL, ");
 
 		List<Field> listFields = f.getFieldsList();
@@ -396,7 +396,7 @@ public class DbManager {
 			values.put(MISSIONS_COL_STATUS, 0);
 		}
 		values.put(MISSIONS_COL_DATE, mission.getDate());
-		values.put(MISSIONS_COL_FORM, mission.getForm().getName());
+		values.put(MISSIONS_COL_FORM, mission.getForm().getTitle());
 
 		try {
 			long id = mDb.insertOrThrow(TABLE_MISSIONS, null, values);

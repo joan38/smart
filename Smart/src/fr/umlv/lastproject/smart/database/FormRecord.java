@@ -77,7 +77,7 @@ public class FormRecord {
 			}
 		}
 		
-		this.name = f.getName();
+		this.name = f.getTitle();
 	}
 
 	/**

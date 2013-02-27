@@ -186,7 +186,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				DbManager dbManager = new DbManager();
 				try {
 					dbManager.open(context);
-					dbManager.deleteRecord(idGeometry, idRowForm, form.getName());
+					dbManager.deleteRecord(idGeometry, idRowForm, form.getTitle());
 					l.removeGeometry(g);
 					Mission.getInstance().getMapView().invalidate();
 				} catch (SmartException e) {
@@ -219,7 +219,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		DbManager dbManager = new DbManager();
 		dbManager.open(c);
 		int idForm = dbManager.getIdForm(idGeometry);
-		FormRecord formRecord = dbManager.getFormRecordTyped(idForm, Mission.getInstance().getForm().getName());
+		FormRecord formRecord = dbManager.getFormRecordTyped(idForm, Mission.getInstance().getForm().getTitle());
 		List<FieldRecord> fieldRecords = formRecord.getFields();
 
 
