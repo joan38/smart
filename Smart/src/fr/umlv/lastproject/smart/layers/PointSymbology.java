@@ -8,10 +8,29 @@ import android.graphics.Color;
  * @author Fad's
  * 
  */
+
+
 public class PointSymbology extends Symbology {
+	
+	public enum PointSymbologieType{
+		CIRCLE(0), SQUARE(1) ;
+		private int id ;
+		
+		private PointSymbologieType(int id) {
+			// TODO Auto-generated constructor stub
+			this.id = id ;
+		}
+		
+		public int getId(){
+			return id ;
+		}
+		
+	}
+
 
 	private static final long serialVersionUID = 1L;
 	private int radius;
+	private PointSymbologieType type ;
 
 	private static final int VALUE_RADIUS = 5;
 
@@ -21,7 +40,7 @@ public class PointSymbology extends Symbology {
 	 * Color : Black / Radius : 5
 	 */
 	public PointSymbology() {
-		this(VALUE_RADIUS, Color.BLACK);
+		this(VALUE_RADIUS, Color.BLACK, PointSymbologieType.SQUARE);
 	}
 
 	/**
@@ -30,9 +49,10 @@ public class PointSymbology extends Symbology {
 	 * @param radius
 	 * @param color
 	 */
-	public PointSymbology(int radius, int color) {
+	public PointSymbology(int radius, int color, PointSymbologieType type ) {
 		super(color, radius);
 		this.radius = radius;
+		this.type = type ;
 	}
 
 	/**
@@ -51,5 +71,12 @@ public class PointSymbology extends Symbology {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
+	
+	public void setType(PointSymbologieType type){
+		this.type = type ;
+	}
 
+	public PointSymbologieType getType(){
+		return type ;
+	}
 }

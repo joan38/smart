@@ -29,6 +29,8 @@ import android.widget.Toast;
  *
  */
 public class AlertDeleteMissionDialog extends AlertDialog.Builder {
+	
+	private List<MissionRecord> missionRecords;
 
 	/**
 	 * Constructor 
@@ -48,8 +50,11 @@ public class AlertDeleteMissionDialog extends AlertDialog.Builder {
 		setTitle(R.string.delete_mission);
 
 
-		final Map<String, Long> mapMissions = getAllMissions(c);
-		List<String> titleMissions = new ArrayList<String>(mapMissions.keySet());
+		getAllMissions(c);
+		List<String> titleMissions = new ArrayList<String>();
+		for(MissionRecord m : missionRecords){
+			titleMissions.add(m.getTitle());
+		}
 		final List<Long> missionsToDelete = new ArrayList<Long>();
 		
 		for(final String s : titleMissions){
@@ -60,7 +65,12 @@ public class AlertDeleteMissionDialog extends AlertDialog.Builder {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					if(isChecked){
-						long idMission = mapMissions.get(s);
+						long idMission = -1 ;
+						for(MissionRecord m : missionRecords){
+							if(m.getTitle().equals(s)){
+								idMission = m.getId() ;
+							}
+						}
 						missionsToDelete.add(idMission);
 					}
 					
@@ -99,7 +109,7 @@ public class AlertDeleteMissionDialog extends AlertDialog.Builder {
 	 * @param c
 	 * @return a map of missions with their id
 	 */
-	private Map<String, Long> getAllMissions(Context c){
+	private void  getAllMissions(Context c){
 		DbManager dbm = new DbManager() ;
 		try {
 			dbm.open(c);
@@ -107,14 +117,9 @@ public class AlertDeleteMissionDialog extends AlertDialog.Builder {
 			Toast.makeText(c, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
 		}
-		List<MissionRecord> missionRecords = dbm.getAllMissionsNoActives();
+		missionRecords = dbm.getAllMissionsNoActives();
 		dbm.close();
 
-		Map<String, Long> mapMissions = new HashMap<String, Long>();
-		for(MissionRecord m : missionRecords){
-			mapMissions.put(m.getTitle(), m.getId());
-		}
-		return mapMissions;
 	}
 
 }
