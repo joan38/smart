@@ -14,8 +14,12 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Path.FillType;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.util.Log;
 import android.view.MotionEvent;
 import fr.umlv.lastproject.smart.R;
@@ -45,7 +49,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	private final List<SelectedGeometryListener> selectedListener;
 	private final Context context;
 	private boolean isSelectable = false;
-
+	private static final int BUFFER = 100 ;
 	private static final String DEFAULT_NAME = "default";
 
 	private static final float radius = 12;
@@ -194,136 +198,8 @@ public class GeometryLayer extends Overlay implements Layer {
 	 */
 	@Override
 	protected void draw(Canvas canvas, MapView mapView, boolean b) {
-		Projection projection = mapView.getProjection();
-		paint = new Paint();
-		paint.setColor(getSymbology().getColor());
-
 		for (Geometry geometry : geometries) {
-
-			switch (type) {
-			case POINT:
-				// Retrieving geometry and symbology
-				final PointGeometry pointGeometry = (PointGeometry) geometry;
-				// final PointSymbology pointSymbology = (PointSymbology)
-				// symbology;
-				final int radius = symbology.getSize();
-
-				// final PointSymbology pointSymbology = (PointSymbology)
-				// symbology;
-				// int radius = pointSymbology.getRadius();
-				// if(geometry.isSelected()) radius *=2;
-				// If point is contained in the screen bounding box
-				// Transform coordinates (lat/long) in pixels
-
-				Point point = projection.toPixels(
-						pointGeometry.getCoordinates(), null);
-				// Draws the point
-				// If point is contained in the screen bounding box
-				if (canvas.getClipBounds().contains(point.x, point.y)) {
-					canvas.drawCircle(point.x, point.y, radius, paint);
-
-				}
-				break;
-
-			case LINE:
-				// Retrieving geometry and symbology
-				final LineGeometry lineGeometry = (LineGeometry) geometry;
-				// final LineSymbology lineSymbology = (LineSymbology)
-				// symbology;
-				// paint.setStrokeWidth(symbology.getSize());
-
-				if (geometry.isSelected()) {
-					paint.setStrokeWidth(symbology.getSize() * 2);
-				} else {
-					paint.setStrokeWidth(symbology.getSize());
-				}
-				// Retrieving list of points contained
-				final List<PointGeometry> linePoints = lineGeometry.getPoints();
-
-				for (int j = 0; j < linePoints.size() - 1; j++) {
-
-					PointGeometry pointA = linePoints.get(j);
-					PointGeometry pointB = linePoints.get(j + 1);
-
-					Point pointT = projection.toPixels(pointA.getCoordinates(),
-							null);
-					// Projection des coordonn�es en pixel
-
-					Point pixelA = projection.toPixels(pointA.getCoordinates(),
-							null);
-					Point pixelB = projection.toPixels(pointB.getCoordinates(),
-							null);
-
-					Point pointD = projection.toPixels(pointB.getCoordinates(),
-							null);
-					// Dessine la geometrie si elle est contenue dans la
-					// boundingBox
-					if (isInBoundingBox(
-							canvas.getClipBounds(),
-							new Rect(Math.max(pixelA.x, pixelB.x), Math.max(
-									pixelA.y, pixelB.y), Math.min(pixelA.x,
-
-							pixelB.x), Math.min(pixelA.y, pixelB.y)))) {
-
-						canvas.drawLine(pointT.x, pointT.y, pointD.x, pointD.y,
-								paint);
-
-						canvas.drawLine(pixelA.x, pixelA.y, pixelB.x, pixelB.y,
-								paint);
-					}
-				}
-
-				break;
-
-			case POLYGON:
-
-				// Retrieving geometry and symbology
-				PolygonGeometry polygonGeometry = (PolygonGeometry) geometry;
-
-				// PolygonSymbology polygonSymbology = (PolygonSymbology)
-				// symbology;
-
-				// PolygonSymbology polygonSymbology = (PolygonSymbology)
-				// symbology;
-				if (geometry.isSelected()) {
-					paint.setStrokeWidth(symbology.getSize() * 2);
-				} else {
-					paint.setStrokeWidth(symbology.getSize());
-				}
-
-				// Retrieving list of points contained
-				List<PointGeometry> polygonPoints = polygonGeometry.getPoints();
-
-				for (int j = 0; j < polygonPoints.size(); j++) {
-
-					PointGeometry pointA = polygonPoints.get(j
-							% polygonPoints.size());
-					PointGeometry pointB = polygonPoints.get((j + 1)
-							% polygonPoints.size());
-
-					// Converting coordinates in pixel
-					Point pixelA = projection.toPixels(pointA.getCoordinates(),
-							null);
-					Point pixelB = projection.toPixels(pointB.getCoordinates(),
-							null);
-
-					// Draws the geometry if it is contained in the bounding box
-					if (isInBoundingBox(
-							canvas.getClipBounds(),
-							new Rect(Math.max(pixelA.x, pixelB.x), Math.max(
-									pixelA.y, pixelB.y), Math.min(pixelA.x,
-									pixelB.x), Math.min(pixelA.y, pixelB.y)))) {
-
-						canvas.drawLine(pixelA.x, pixelA.y, pixelB.x, pixelB.y,
-								paint);
-
-					}
-				}
-				break;
-
-			default:
-				break;
-			}
+			geometry.draw(mapView, canvas, b, getSymbology()) ;
 		}
 	}
 
@@ -373,9 +249,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
 						singleTapListeners.get(i)
-								.actionPerformed(
-										new PointGeometry(firstLatitude,
-												firstLongitude));
+						.actionPerformed(
+								new PointGeometry(firstLatitude,
+										firstLongitude));
 					}
 					final IGeoPoint secondPoint = mapView.getProjection()
 							.fromPixels(x1, y1);
@@ -413,10 +289,10 @@ public class GeometryLayer extends Overlay implements Layer {
 	@Override
 	public boolean onSingleTapUp(MotionEvent e, MapView m) {
 
-		// mapView.invalidate();
 
 		final float x = e.getX();
 		final float y = e.getY();
+
 		final IGeoPoint point = m.getProjection().fromPixels(x, y);
 		float latitude = (float) (point.getLatitudeE6() / VALUE_1E6);
 		float longitude = (float) (point.getLongitudeE6() / VALUE_1E6);
@@ -426,75 +302,19 @@ public class GeometryLayer extends Overlay implements Layer {
 				singleTapListeners.get(i).actionPerformed(
 						new PointGeometry(latitude, longitude));
 			}
-		} else {
-			if (isSelectable) {
-
-				// m.getController().zoomToSpan(new )
-				Point ref = m.getProjection().toPixels(point, null);
-				Rect r = new Rect(ref.x - 50, ref.y - 50, ref.x + 50,
-						ref.y + 50);
-				Log.d("", "Selected " + r.toString());
-
-				for (Geometry g : geometries) {
-					switch (type) {
-					case LINE: {
-						LineGeometry l = (LineGeometry) g;
-						for (PointGeometry p : l.getPoints()) {
-							Point ps = m.getProjection().toPixels(
-									p.getCoordinates(), null);
-
-							if (r.contains(ps.x, ps.y)) {
-								Log.d("", "Selected" + g.getId());
-								g.setSelected(true);
-								for (SelectedGeometryListener lis : selectedListener) {
-									lis.actionPerformed(g,this);
-								}
-								return super.onSingleTapUp(e, m);
-							}
-						}
-						break;
-					}
-					case POINT: {
-						PointGeometry p = (PointGeometry) g;
-						Point ps = m.getProjection().toPixels(
-								p.getCoordinates(), null);
-
-						Log.d("", "Select bb " + ps.toString());
-
-						if (r.contains(ps.x, ps.y)) {
-							Log.d("", "Selected" + g.getId());
-							p.setSelected(true);
-							for (SelectedGeometryListener lis : selectedListener) {
-								lis.actionPerformed(g,this);
-							}
-
+		}else{
+			if(isSelectable){
+				Point ref =m.getProjection().toPixels(point, null);
+				Rect r = new Rect(ref.x- BUFFER /2 , ref.y- BUFFER / 2 ,ref.x+ BUFFER /2, ref.y+ BUFFER / 2);
+				for(Geometry g : geometries){
+					if(g.isSelected(m, r)){
+						for(SelectedGeometryListener lis : selectedListener){
+							lis.actionPerformed(g,this);
 							return super.onSingleTapUp(e, m);
 						}
-						break;
-					}
-					case POLYGON: {
-						PolygonGeometry l = (PolygonGeometry) g;
-						for (PointGeometry p : l.getPoints()) {
-							Point ps = m.getProjection().toPixels(
-									p.getCoordinates(), null);
-
-							if (r.contains(ps.x, ps.y)) {
-								Log.d("", "Selected" + g.getId());
-								g.setSelected(true);
-								for (SelectedGeometryListener lis : selectedListener) {
-									lis.actionPerformed(g,this);
-								}
-								return super.onSingleTapUp(e, m);
-							}
-						}
-						break;
-					}
 					}
 				}
-				m.invalidate();
 			}
-
-			// geometries
 		}
 		return super.onSingleTapUp(e, m);
 	}
@@ -633,10 +453,12 @@ public class GeometryLayer extends Overlay implements Layer {
 	public void removeGeometryListener(SelectedGeometryListener l) {
 		selectedListener.remove(l);
 	}
-	
+
+
+
 	public void removeGeometry(Geometry g){
 		geometries.remove(g);
-		
+
 	}
 
 }

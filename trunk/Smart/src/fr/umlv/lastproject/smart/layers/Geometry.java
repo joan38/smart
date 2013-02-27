@@ -1,5 +1,11 @@
 package fr.umlv.lastproject.smart.layers;
 
+import org.osmdroid.views.MapView;
+
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import fr.umlv.lastproject.smart.SmartMapView;
+
 
 /**
  * Class that defines the Geometry whith its symbology
@@ -81,6 +87,15 @@ public abstract class Geometry {
 		this.id = id;
 	}
 	
+	/**
+	 * 
+	 * @param map the map 
+	 * @param c the canvas
+	 * @param b ?
+	 */
+	public abstract void draw(MapView map, Canvas c, Boolean b , Symbology s);	
+	
+	public abstract boolean isSelected(MapView map, Rect click) ;
 	
 	
 

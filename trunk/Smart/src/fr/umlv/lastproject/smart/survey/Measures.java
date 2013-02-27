@@ -136,8 +136,5 @@ public final class Measures {
 		mapview.getOverlayManager().remove(gll);
 		
 	}
-
-
-	
 	
 }

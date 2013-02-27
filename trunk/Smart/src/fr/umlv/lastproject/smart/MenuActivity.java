@@ -13,7 +13,6 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -178,7 +177,8 @@ public class MenuActivity extends Activity {
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
-		mapController.setZoom(0);
+		mapController.setZoom(11);
+		mapController.setCenter(new GeoPoint(48.84, 2.58));
 		overlayManager.add(new ScaleBarOverlay(this));
 		// final WMSMapTileProviderBasic tileProvider = new
 		// WMSMapTileProviderBasic(
