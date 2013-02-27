@@ -54,13 +54,12 @@ public final class SmartConstants {
 			Color.rgb(139, 69, 19) };
 
 	// Icons array for functionalities list
-	public static int[] icons = { R.drawable.smart, R.drawable.basket,
-			R.drawable.smart, R.drawable.basket, R.drawable.smart,
-			R.drawable.basket, R.drawable.smart, R.drawable.basket,
-			R.drawable.smart, R.drawable.basket, R.drawable.smart,
-			R.drawable.basket, R.drawable.smart, R.drawable.basket,
-			R.drawable.smart, R.drawable.basket, R.drawable.smart,
-			R.drawable.basket, R.drawable.smart, R.drawable.basket };
+	public static int[] icons = { R.drawable.startmission,
+			R.drawable.createform, R.drawable.pointsurvey,
+			R.drawable.linesurvey, R.drawable.polygonsurvey,
+			R.drawable.startgpstrack, R.drawable.smart, R.drawable.basket,
+			R.drawable.smart, R.drawable.basket, R.drawable.exportmission,
+			R.drawable.measure, R.drawable.exportform, R.drawable.deletemission };
 
 	private SmartConstants() {
 	}

@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -12,6 +13,7 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -77,6 +79,7 @@ public class MenuActivity extends Activity {
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
 	private String formPath;
 	private boolean missionCreated = false;
+	private boolean trackStarted = false;
 	private String missionName;
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
@@ -100,6 +103,7 @@ public class MenuActivity extends Activity {
 				Intent homeActivity = new Intent(MenuActivity.this,
 						HomeActivity.class);
 				homeActivity.putExtra("missionCreated", missionCreated);
+				homeActivity.putExtra("trackStarted", trackStarted);
 				startActivityForResult(homeActivity, SmartConstants.HOME_VIEW);
 			}
 		});
@@ -429,19 +433,22 @@ public class MenuActivity extends Activity {
 						final AlertTrackDialog trackDialog = new AlertTrackDialog(
 								this);
 						trackDialog.show();
+						trackStarted = true;
 						break;
 
 					} else {
 						try {
 							gpsTrack.stopTrack();
 							gpsTrack = null;
+							trackStarted = false;
 						} catch (IOException e) {
 							gpsTrack = null;
+							trackStarted = false;
 							Toast.makeText(this, R.string.track_error,
 									Toast.LENGTH_LONG).show();
 						}
-
 					}
+
 					break;
 
 				case SmartConstants.IMPORT_KML:

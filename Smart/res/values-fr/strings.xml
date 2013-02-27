@@ -53,13 +53,14 @@
         <item>Import de GeoTIFF</item>
         <item>Import de ShapeFile</item>
         <item>Import de WMS</item>
-        <item>Exporter</item>
+        <item>Exporter mission</item>
         <item>Mesure</item>
         <item>Export de formulaire</item>
         <item>Supprimer une mission</item>
     </string-array>
 
     <string name="stopMission">Arrêter la mission</string>
+    <string name="stopGPSTrack">Arrêter la trace</string>
 
     <string-array name="typeFields">
         <item>Texte</item>
