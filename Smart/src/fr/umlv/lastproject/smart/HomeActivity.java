@@ -140,7 +140,7 @@ public class HomeActivity extends Activity {
 		if (v.getId() == R.id.listView) {
 			menu.setHeaderTitle("Option");
 			menu.add(0, 1, 0, R.string.addShortcut);
-			menu.add(0, 2, 0, R.string.removeShortcut);
+			menu.add(0, 2, 0, R.string.cancel);
 		}
 	}
 
@@ -154,16 +154,6 @@ public class HomeActivity extends Activity {
 		if (item.getItemId() == 1) {
 			if (index == -1) {
 				shortcut.add(info.position);
-				// Toast.makeText(this,
-				// item.getTitle() + " : " + items[info.position],
-				// Toast.LENGTH_SHORT).show();
-			}
-		} else {
-			if (index != -1) {
-				shortcut.remove(index);
-				// Toast.makeText(this,
-				// item.getTitle() + " : " + items[info.position],
-				// Toast.LENGTH_SHORT).show();
 			}
 		}
 		return super.onContextItemSelected(item);
