@@ -83,7 +83,7 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 				File folder = new File(Environment
 						.getExternalStorageDirectory()
 						+ "/SMART/form/"
-						+ et.getText().toString() + ".xml");
+						+ et.getText().toString() + ".form");
 				if (folder.exists()) {
 					et.setError(menu.getResources().getString(R.string.invalid));
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(

@@ -45,6 +45,7 @@ import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.form.FormIOException;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -349,7 +350,7 @@ public class MenuActivity extends Activity {
 			break;
 
 		case 4:
-			if(!missionCreated){
+			if (!missionCreated) {
 				new AlertThemeDialog(this, getApplication());
 			} else {
 				Toast.makeText(this, "Stop the mission before",
@@ -507,7 +508,7 @@ public class MenuActivity extends Activity {
 			case SmartConstants.LAYERS_VIEW:
 
 				ListOverlay listOverlay = (ListOverlay) data
-				.getSerializableExtra("overlays");
+						.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -522,7 +523,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-											.getName());
+									.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -569,7 +570,7 @@ public class MenuActivity extends Activity {
 				String shpPath = data.getData().getPath();
 				mapView.addGeometryLayer(DataImport.importShapeFile(this,
 						shpPath));
-				
+
 				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
 						.show();
 				break;
@@ -602,14 +603,8 @@ public class MenuActivity extends Activity {
 		if (formPath != null) {
 			try {
 				Form.read(formPath);
-			} catch (XmlPullParserException e) {
-				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
-				.show();
-				e.printStackTrace();
-			} catch (IOException e) {
-				Toast.makeText(this, "Can not read the file", Toast.LENGTH_LONG)
-				.show();
-				e.printStackTrace();
+			} catch (FormIOException e) {
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
