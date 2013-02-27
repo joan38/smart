@@ -548,7 +548,7 @@ public class DbManager {
 	 */
 	public List<MissionRecord> getAllMissionsNoActives() {
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + TABLE_MISSIONS + WHERE
-				+ " status=0", null);
+				+ " status=0" + " ORDER BY " + MISSIONS_COL_TITLE+" ;", null);
 
 		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
 		while (c.moveToNext()) {
@@ -565,9 +565,9 @@ public class DbManager {
 	 * @return a list of Mission
 	 */
 	public List<MissionRecord> getAllMissions() {
-		Cursor c = mDb.query(TABLE_MISSIONS, new String[] { MISSIONS_COL_ID,
-				MISSIONS_COL_TITLE, MISSIONS_COL_STATUS, MISSIONS_COL_DATE,
-				MISSIONS_COL_FORM }, null, null, null, null, null);
+		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + TABLE_MISSIONS  
+				 + " ORDER BY " + MISSIONS_COL_TITLE+" ;", null);
+		
 
 		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
 		while (c.moveToNext()) {

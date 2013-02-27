@@ -80,7 +80,7 @@ public final class Mission {
 		pointLayer = new GeometryLayer(context);
 		pointLayer.setType(GeometryType.POINT);
 		pointLayer.setName(title + "_POINT");
-		pointLayer.setSymbology(new PointSymbology(POINT_RADIUS, Color.BLACK));
+		pointLayer.setSymbology(new PointSymbology());
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
 

@@ -602,7 +602,7 @@ public class MenuActivity extends Activity {
 		Form form = new Form();
 		if (formPath != null) {
 			try {
-				Form.read(formPath);
+				form = Form.read(formPath);
 			} catch (FormIOException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}

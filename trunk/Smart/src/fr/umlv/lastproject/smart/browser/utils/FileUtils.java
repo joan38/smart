@@ -61,7 +61,6 @@ public final class FileUtils {
 	public static final String[] TIF_TYPE = { ".tif", ".tiff" };
 	/* We do not want any file displayed */
 	public static final String[] DIRECTORY_TYPE = { "?" };
-	public static final String[] XML_TYPE = { ".xml" };
 	public static final String[] FORM_TYPE={".form"};
 
 	private FileUtils() {

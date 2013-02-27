@@ -33,6 +33,8 @@ import android.widget.AdapterView.OnItemClickListener;
  *
  */
 public class AlertExportDialog extends AlertDialog.Builder {
+	
+	List<MissionRecord> missionRecords ;
 
 	/**
 	 * Constructor
@@ -54,8 +56,11 @@ public class AlertExportDialog extends AlertDialog.Builder {
 		final ListView listView = (ListView) exportMissionDialog
 				.findViewById(R.id.listViewMission);
 
-		final Map<String, Long> mapMissions = getAllMissions(c);
-		List<String> titleMissions = new ArrayList<String>(mapMissions.keySet());
+		getAllMissions(c);
+		List<String> titleMissions = new ArrayList<String>() ;
+		for(MissionRecord m : missionRecords){
+			titleMissions.add(m.getTitle()) ;
+		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
 				android.R.layout.simple_list_item_1, titleMissions);
@@ -65,8 +70,12 @@ public class AlertExportDialog extends AlertDialog.Builder {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
+				long idMission = -1 ;
 				String value = (String) adapter.getItemAtPosition(position);
-				long idMission = mapMissions.get(value);
+				for(MissionRecord m : missionRecords){
+					if(m.getTitle().equals(value)) 
+						idMission = m.getId(); 
+				}
 				
 				Log.d("RadioButtonIdExport", String.valueOf(formatSelector.getCheckedRadioButtonId()));
 
@@ -107,7 +116,7 @@ public class AlertExportDialog extends AlertDialog.Builder {
 		});
 	}
 
-	private static Map<String, Long> getAllMissions(Context c) {
+	private void getAllMissions(Context c) {
 		DbManager dbm = new DbManager();
 		try {
 			dbm.open(c);
@@ -115,14 +124,13 @@ public class AlertExportDialog extends AlertDialog.Builder {
 			Toast.makeText(c, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
 		}
-		List<MissionRecord> missionRecords = dbm.getAllMissions();
+		missionRecords = dbm.getAllMissionsNoActives();
 		dbm.close();
 
-		Map<String, Long> mapMissions = new HashMap<String, Long>();
-		for (MissionRecord m : missionRecords) {
-			mapMissions.put(m.getTitle(), m.getId());
-		}
-		return mapMissions;
+//		Map<String, Long> mapMissions = new HashMap<String, Long>();
+//		for (MissionRecord m : missionRecords) {
+//			mapMissions.put(m.getTitle(), m.getId());
+//		}
 	}
 
 }

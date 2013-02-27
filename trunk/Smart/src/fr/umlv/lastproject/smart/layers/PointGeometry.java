@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart.layers;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import android.graphics.Canvas;
+import android.graphics.Canvas.VertexMode;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Paint.Style;
@@ -72,7 +73,10 @@ public class PointGeometry extends Geometry {
 		// Draws the point
 		// If point is contained in the screen bounding box
 		if (c.getClipBounds().contains(point.x, point.y)) {
-			c.drawCircle(point.x, point.y, radius, paint);
+			switch(		((PointSymbology)s).getType()){
+			case CIRCLE : c.drawCircle(point.x, point.y, radius, paint); break ;
+			case SQUARE : c.drawRect(new Rect(point.x - radius, point.y - radius, point.x+radius, point.y + radius), paint);
+			}
 		}		
 	}
 
