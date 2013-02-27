@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -481,9 +482,14 @@ public class MenuActivity extends Activity {
 
 	private void createShortcut(Object[] shortcuts) {
 		if (shortcuts != null) {
-			LinearLayout shortcutsView = (LinearLayout) findViewById(R.id.shortcuts);
+			final LinearLayout shortcutsView = (LinearLayout) findViewById(R.id.shortcuts);
 			for (final Object o : shortcuts) {
-				ImageView shortcut = new ImageView(this);
+				final ImageView shortcut = new ImageView(this) {
+					@Override
+					public boolean showContextMenu() {
+						return true;
+					}
+				};
 				shortcut.setImageResource(SmartConstants.icons[((Integer) o)
 						.intValue()]);
 				shortcut.setOnClickListener(new OnClickListener() {
@@ -492,6 +498,15 @@ public class MenuActivity extends Activity {
 						doAction(((Integer) o).intValue());
 					}
 				});
+				shortcut.setOnLongClickListener(new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						shortcutsView.removeView(shortcut);
+						shortcutsView.invalidate();
+						return false;
+					}
+				});
+
 				shortcutsView.addView(shortcut);
 				Log.d("debug", o.toString());
 			}
