@@ -6,23 +6,23 @@ package fr.umlv.lastproject.smart.form;
  * @author joan
  *
  */
-public class FormExportException extends Exception {
+public class FormIOException extends Exception {
 
 	private static final long serialVersionUID = 7712793461879198944L;
 
-	public FormExportException() {
+	public FormIOException() {
 		super();
 	}
 
-	public FormExportException(String detailMessage, Throwable throwable) {
+	public FormIOException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);
 	}
 
-	public FormExportException(String detailMessage) {
+	public FormIOException(String detailMessage) {
 		super(detailMessage);
 	}
 
-	public FormExportException(Throwable throwable) {
+	public FormIOException(Throwable throwable) {
 		super(throwable);
 	}
 }

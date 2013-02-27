@@ -1,12 +1,8 @@
 package fr.umlv.lastproject.smart.form;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -59,12 +55,8 @@ public class CreateFormActivity extends Activity {
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			try {
 				form = Form.read(getIntent().getData().getPath());
-			} catch (XmlPullParserException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (FormIOException e) {
+				// TODO: Make a toast
 			}
 		} else {
 			form = (Form) getIntent().getSerializableExtra("form");			
@@ -275,7 +267,7 @@ public class CreateFormActivity extends Activity {
 				try {
 					form.write(Environment.getExternalStorageDirectory()
 							.getPath() + "/SMART");
-				} catch (FormExportException e) {
+				} catch (FormIOException e) {
 					// TODO: Toast
 				}
 
