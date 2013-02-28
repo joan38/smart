@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.umlv.lastproject.smart"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -23,27 +23,35 @@
         android:allowBackup="true"
         android:icon="@drawable/smart"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme" >
+        android:theme="@style/AppBaseTheme">
+        
         <activity
             android:name="fr.umlv.lastproject.smart.MenuActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.LayersActivity"
-            android:label="@string/title_activity_layers" >
+            android:label="@string/title_activity_layers"
+            android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.form.CreateFormActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -56,13 +64,17 @@
                     android:scheme="file" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.form.AddFieldtoFormActivity"
-            android:label="@string/title_activity_add_fieldto_form" >
+            android:label="@string/title_activity_add_fieldto_form"
+            android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.browser.FileChooserActivity"
-            android:label="@string/title_activity_browser" >
+            android:label="@string/title_activity_browser"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="fr.umlv.lastproject.smart.browser" />
 
@@ -72,6 +84,7 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="fr.umlv.lastproject.smart.form.PictureActivity"
             android:screenOrientation="portrait" >

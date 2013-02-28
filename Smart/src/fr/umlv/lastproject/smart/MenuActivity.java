@@ -566,7 +566,7 @@ public class MenuActivity extends Activity {
 			if (gpsTrack == null) {
 				final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
 				trackDialog.show();
-				trackStarted = true;
+				trackStarted = trackDialog.isTrackStarted();
 				break;
 
 			} else {

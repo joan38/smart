@@ -78,10 +78,9 @@
     <string name="choose_file">Sélectionner un fichier</string>
     <string name="title_activity_create_form">Créer un formulaire</string>
     <string name="error_selecting_file">Erreur lors de sélection du fichier</string>
-    <string name="zoomIn">Do you really want to zoom in even if tiles are missing?</string>
-    <string name="zoomOut">Do you really want to zoom out even if tiles are missing?</string>
+    <string name="zoomIn">Tuiles manquantes : Êtes-vous sûr(e) de vouloir zoomer ?</string>
+    <string name="zoomOut">Tuiles manquantes : Êtes-vous sûr(e) de vouloir dézoomer ?</string>
     <string name="zoomTitle">Tuiles manquantes pour ce niveau de zoom</string>
-    <string name="trackTitle">Créer un nouveau tracé GPS</string>
     <string name="track_text_name">Nom de la nouvelle trace GPS</string>
     <string name="track_text_param">Entrez une valeur pour le mode sélectionné</string>
     <string name="track_radio_time">Temps (s)</string>
@@ -120,7 +119,7 @@
     <string name="field_numeric">Champ numérique : </string>
     <string name="field_height">Champ hauteur : </string>
     <string name="invalid">Invalide</string>
-    <string name="sure">Etes-vous sur(e) de vouloir supprimer la/les mission(s) ? </string>    
+    <string name="sure">Êtes-vous sûr(e) de vouloir supprimer la/les mission(s) ? </string>    
     <string name="result">Résultat</string>
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
     <string name="menuLayersTitle">Gestion des couches</string>

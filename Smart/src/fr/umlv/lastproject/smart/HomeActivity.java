@@ -5,13 +5,11 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,8 +42,6 @@ public class HomeActivity extends Activity {
 		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
 		boolean trackStarted = getIntent().getExtras().getBoolean(
 				"trackStarted");
-
-		Log.d("", "" + trackStarted);
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
@@ -97,15 +93,6 @@ public class HomeActivity extends Activity {
 		SmartItemHomeAdapter adapter = new SmartItemHomeAdapter(this,
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
-		// listView.setClickable(false);
-		listView.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-
-				return false;
-			}
-		});
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -118,9 +105,7 @@ public class HomeActivity extends Activity {
 				intentReturn.putExtra("position", position);
 				intentReturn.putExtra("shortcut", shortcut.toArray());
 				setResult(RESULT_OK, intentReturn);
-				// view.setEnabled(false);
 				finish();
-
 			}
 		});
 

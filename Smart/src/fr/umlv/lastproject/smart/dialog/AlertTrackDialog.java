@@ -2,12 +2,11 @@ package fr.umlv.lastproject.smart.dialog;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.MenuActivity;
@@ -17,9 +16,11 @@ import fr.umlv.lastproject.smart.R;
  * This dialog is used to set up the track
  * 
  * @author Maelle Cabot
- *
+ * 
  */
 public class AlertTrackDialog extends AlertDialog.Builder {
+
+	private boolean trackStarted = false;
 
 	/**
 	 * Constructor
@@ -34,13 +35,12 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 		final View alertTrackView = factory.inflate(R.layout.alert_track, null);
 
 		setView(alertTrackView);
-		setTitle(R.string.zoomTitle);
+		setTitle(R.string.track_title);
 
-		setIcon(android.R.drawable.ic_dialog_alert);
-
-		final TextView trackName = (TextView) alertTrackView
+		final EditText trackName = (EditText) alertTrackView
 				.findViewById(R.id.trackname);
-		final TextView trackParameter = (TextView) alertTrackView
+
+		final EditText trackParameter = (EditText) alertTrackView
 				.findViewById(R.id.trackparameter);
 		final RadioGroup radioGroup = (RadioGroup) alertTrackView
 				.findViewById(R.id.trackradiogroup);
@@ -48,7 +48,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 		setPositiveButton(R.string.create_button,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Log.d("TEST2", "CREATE DIALOG");
+
 						final RadioButton radioButton = (RadioButton) alertTrackView
 								.findViewById(radioGroup
 										.getCheckedRadioButtonId());
@@ -81,6 +81,8 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 							return;
 						}
 
+						trackStarted = true;
+
 					}
 				});
 
@@ -91,6 +93,10 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 
 					}
 				});
+	}
+
+	public boolean isTrackStarted() {
+		return this.trackStarted;
 	}
 
 }

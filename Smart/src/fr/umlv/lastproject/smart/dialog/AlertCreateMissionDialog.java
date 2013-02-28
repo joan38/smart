@@ -108,7 +108,6 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 								.getString(R.string.invalid));
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(false);
-
 					} else {
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(true);
@@ -141,7 +140,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			public void onClick(View v) {
 				Intent intent = FileUtils.createGetContentIntent(
 						FileUtils.FORM_TYPE,
-						Environment.getExternalStorageDirectory() + "");
+						Environment.getExternalStorageDirectory() + "/SMART/");
 				menu.startActivityForResult(intent,
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
