@@ -15,7 +15,7 @@ import fr.umlv.lastproject.smart.R;
 /**
  * This dialog is used to set up the track
  * 
- * @author Maelle Cabot
+ * @author Marc Barat
  * 
  */
 public class AlertTrackDialog extends AlertDialog.Builder {
@@ -26,6 +26,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 	 * Constructor
 	 * 
 	 * @param menu
+	 *            the context
 	 */
 	public AlertTrackDialog(final MenuActivity menu) {
 		super(menu);
@@ -82,7 +83,8 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						}
 
 						trackStarted = true;
-
+						Toast.makeText(menu, R.string.track_started,
+								Toast.LENGTH_LONG).show();
 					}
 				});
 

@@ -50,6 +50,7 @@ import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.layers.Geometry;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
@@ -89,9 +90,8 @@ public class FormDialog extends AlertDialog.Builder {
 		layoutDynamic = (TableLayout) alertDialogView
 				.findViewById(R.id.layoutDynamicFormulaire);
 		layoutDynamic.setVerticalScrollBarEnabled(true);
-		
+
 		valuesList = new Object[form.getFieldsList().size()];
-		
 
 		buildForm(layoutDynamic, context, form.getFieldsList());
 
@@ -118,7 +118,8 @@ public class FormDialog extends AlertDialog.Builder {
 										.getFields().get(i);
 								if(!((EditText) valuesList[i]).getText().toString().equals("")){
 								num.setValue(Double
-										.parseDouble(((EditText) valuesList[i]).getText().toString()));
+										.parseDouble(((EditText) valuesList[i])
+												.getText().toString()));
 								} else {
 									num.setValue(-1);
 								}
@@ -139,28 +140,28 @@ public class FormDialog extends AlertDialog.Builder {
 							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST",
-										"edit "
-												+ ((EditText) valuesList[i]).getText());
-								l.setValue(((EditText) valuesList[i])
-										.getText().toString());
+								Log.d("TEST", "edit "
+										+ ((EditText) valuesList[i]).getText());
+								l.setValue(((EditText) valuesList[i]).getText()
+										.toString());
 								break;
 
 							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
 								Log.d("TEST", "picture "
-										+ ((EditText) valuesList[i])
-												.getText().toString());
-								p.setValue(((EditText) valuesList[i])
-										.getText().toString());
+										+ ((EditText) valuesList[i]).getText()
+												.toString());
+								p.setValue(((EditText) valuesList[i]).getText()
+										.toString());
 								break;
 
 							case HEIGHT:
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
 										.getFields().get(i);
 								h.setValue(Double
-										.parseDouble(((EditText) valuesList[i]).getText().toString()));
+										.parseDouble(((EditText) valuesList[i])
+												.getText().toString()));
 								break;
 
 							default:
@@ -173,8 +174,10 @@ public class FormDialog extends AlertDialog.Builder {
 							dbManager.open(context);
 							long idForm = dbManager
 									.insertFormRecord(formRecord);
-							long idGeom = dbManager.insertGeometry(new GeometryRecord(g,
-									Mission.getInstance().getId(), idForm));
+							long idGeom = dbManager
+									.insertGeometry(new GeometryRecord(g,
+											Mission.getInstance().getId(),
+											idForm));
 							g.setId(idGeom);
 						} catch (SmartException e) {
 							Toast.makeText(context, e.getMessage(),
@@ -202,9 +205,8 @@ public class FormDialog extends AlertDialog.Builder {
 	 */
 	public final void buildForm(TableLayout l, final MenuActivity c,
 			List<Field> fieldsList) {
-		
 
-		for (int i=0;i<fieldsList.size();i++) {
+		for (int i = 0; i < fieldsList.size(); i++) {
 			Field field = fieldsList.get(i);
 			TextView textView = new TextView(c);
 			final EditText editText = new EditText(c);
@@ -217,7 +219,7 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(textView);
 				l.addView(editText);
-				valuesList[i]=editText;
+				valuesList[i] = editText;
 				break;
 
 			case NUMERIC:
@@ -257,7 +259,7 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(textView);
 				l.addView(editText);
-				valuesList[i]=editText;
+				valuesList[i] = editText;
 				break;
 
 			case BOOLEAN:
@@ -273,24 +275,23 @@ public class FormDialog extends AlertDialog.Builder {
 				RadioButton buttonNo = new RadioButton(c);
 				buttonNo.setId(1);
 				buttonNo.setText(R.string.no);
-				valuesList[i]=0;
+				valuesList[i] = 0;
 
 				group.addView(buttonYes);
 				group.addView(buttonNo);
 				final int j = i;
 				group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					
+
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						
-						valuesList[j]=checkedId;
+
+						valuesList[j] = checkedId;
 					}
 				});
 
 				l.addView(textView);
 				l.addView(group);
 
-				
 				break;
 
 			case LIST:
@@ -302,7 +303,7 @@ public class FormDialog extends AlertDialog.Builder {
 				List<String> strings = lf.getValues();
 				spin.setAdapter(new ArrayAdapter<String>(c,
 						android.R.layout.simple_list_item_1, strings));
-				
+
 				final int h = i;
 
 				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -312,8 +313,9 @@ public class FormDialog extends AlertDialog.Builder {
 							int position, long arg3) {
 						EditText et = new EditText(c);
 						et.setText(lf.getValues().get(position));
-						Log.d("TEST", "selected "+lf.getValues().get(position));
-						valuesList[h]=et;
+						Log.d("TEST", "selected "
+								+ lf.getValues().get(position));
+						valuesList[h] = et;
 					}
 
 					@Override
@@ -374,18 +376,40 @@ public class FormDialog extends AlertDialog.Builder {
 
 				l.addView(ll);
 
-				valuesList[i]=et;
+				valuesList[i] = et;
 				break;
 
 			case HEIGHT:
 				HeightField hf = (HeightField) field;
+
 				textView.setText(hf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
+				final ImageView heightPicture = new ImageView(c);
+				heightPicture.setClickable(true);
+				heightPicture.setImageDrawable(c.getResources().getDrawable(
+						R.drawable.toise));
+				heightPicture.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						Intent intent = new Intent(c, PictureActivity.class);
+
+						c.startActivityForResult(intent,
+								SmartConstants.HEIGHT_ACTIVITY);
+
+					}
+				});
+				LinearLayout heightLayout = new LinearLayout(c);
 				l.addView(textView);
-				l.addView(editText);
-				valuesList[i]=editText;
+				heightLayout.addView(heightPicture);
+				heightLayout.addView(heightPicture);
+				// l.addView(editText);
+				// valuesList[i]=editText;
+				valuesList[i] = 0;
+
 				break;
 
 			default:

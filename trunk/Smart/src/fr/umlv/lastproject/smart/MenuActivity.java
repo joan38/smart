@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -10,8 +11,8 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
-import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import fr.umlv.lastproject.smart.dialog.AlertDeleteMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExportDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
+import fr.umlv.lastproject.smart.dialog.AlertGPSTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
@@ -59,6 +61,8 @@ import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class MenuActivity extends Activity {
+
+	// static final int sensor = Sensor;
 
 	/**
 	 * 
@@ -158,12 +162,14 @@ public class MenuActivity extends Activity {
 		mapView = (SmartMapView) findViewById(R.id.mapview);
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
+
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(11);
 		mapController.setCenter(new GeoPoint(48.84, 2.58));
 		// overlayManager.add(new ScaleBarOverlay(this));
+
 		// final WMSMapTileProviderBasic tileProvider = new
 		// WMSMapTileProviderBasic(
 		// getApplicationContext());
@@ -293,6 +299,14 @@ public class MenuActivity extends Activity {
 
 	}
 
+	private void checkGPSEnabled() {
+		if (!gps.isEnabled(locationManager)) {
+			final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
+					this);
+			gpsSettingDialog.show();
+		}
+	}
+
 	/**
 	 * This method is use to connect the GPS to the positionOverlay
 	 */
@@ -342,16 +356,16 @@ public class MenuActivity extends Activity {
 			new AlertSettingInfoDialog(this, findViewById(R.id.table),
 					infoOverlay);
 			break;
-			
+
 		case 1:
 			infoOverlay.hideInfoZone(findViewById(R.id.table), item);
 			break;
-			
+
 		case 2:
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivity(intent);
 			break;
-			
+
 		case 3:
 			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
 					R.string.helpMap);
@@ -469,6 +483,7 @@ public class MenuActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}
 				break;
+
 			}
 		}
 		if (resultCode == RESULT_CANCELED) {
@@ -477,6 +492,32 @@ public class MenuActivity extends Activity {
 						.getSerializableExtra("shortcut");
 
 				createShortcut(shortcuts);
+			} else if (requestCode == SmartConstants.GPS_ACTIVITY) {
+				if (!gps.isEnabled(locationManager)) {
+					Toast.makeText(this, R.string.track_notstarted,
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				if (gpsTrack == null) {
+					final AlertTrackDialog trackDialog = new AlertTrackDialog(
+							this);
+					trackDialog.show();
+
+				} else {
+					try {
+						gpsTrack.stopTrack();
+						gpsTrack = null;
+						trackStarted = false;
+
+					} catch (IOException e) {
+						gpsTrack = null;
+						Toast.makeText(this, R.string.track_error,
+								Toast.LENGTH_LONG).show();
+						trackStarted = false;
+
+					}
+				}
+
 			}
 		}
 	}
@@ -564,10 +605,15 @@ public class MenuActivity extends Activity {
 			break;
 
 		case SmartConstants.GPS_TRACK:
+			if (!gps.isEnabled(locationManager)) {
+				final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
+						this);
+				gpsTrackDialog.show();
+				return;
+			}
 			if (gpsTrack == null) {
 				final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
 				trackDialog.show();
-				trackStarted = trackDialog.isTrackStarted();
 				break;
 
 			} else {
@@ -577,9 +623,10 @@ public class MenuActivity extends Activity {
 					trackStarted = false;
 				} catch (IOException e) {
 					gpsTrack = null;
-					trackStarted = false;
 					Toast.makeText(this, R.string.track_error,
 							Toast.LENGTH_LONG).show();
+					trackStarted = false;
+
 				}
 			}
 
@@ -649,6 +696,7 @@ public class MenuActivity extends Activity {
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
 		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
 		gpsTrack.startTrack();
+		trackStarted = true;
 	}
 
 	public void startMission(final String missionName) {
@@ -659,6 +707,7 @@ public class MenuActivity extends Activity {
 				form = Form.read(formPath);
 			} catch (FormIOException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+
 			}
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
@@ -709,4 +758,5 @@ public class MenuActivity extends Activity {
 		super.onPause();
 		pref.save();
 	}
+
 }
