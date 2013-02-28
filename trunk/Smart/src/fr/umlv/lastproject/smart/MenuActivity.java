@@ -340,7 +340,7 @@ public class MenuActivity extends Activity {
 					mapController.setCenter(lastPosition);
 				}
 				/* Init Informations zone */
-				infoOverlay.updateInfo(event);
+				infoOverlay.updateInfos(event);
 
 				/* change position marker */
 				directedLocationOverlay.setLocation(new GeoPoint(event

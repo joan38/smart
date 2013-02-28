@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -275,14 +274,9 @@ public class CreateFormActivity extends Activity {
 					form.write(Environment.getExternalStorageDirectory()
 							.getPath() + "/SMART");
 				} catch (FormIOException e) {
-					// TODO: Toast
-				}
-
-				Toast.makeText(getApplicationContext(),
-						form.getTitle() + " " + form.getFieldsList().size(),
-						Toast.LENGTH_LONG).show();
-				for (Field f : form.getFieldsList()) {
-					Log.d("TEST", f.getLabel());
+					Toast.makeText(getApplicationContext(),
+							e.getMessage(),
+							Toast.LENGTH_LONG).show();
 				}
 
 				// Switch to our application
