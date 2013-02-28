@@ -97,13 +97,12 @@ public class FormDialog extends AlertDialog.Builder {
 
 		setView(alertDialogView);
 		setTitle(R.string.form_title);
-
 		setPositiveButton(R.string.validate,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						DbManager dbManager = new DbManager();
 						FormRecord formRecord = new FormRecord(form);
-
+						
 						for (int i = 0; i < formRecord.getFields().size(); i++) {
 							switch (formRecord.getFields().get(i).getField()
 									.getType()) {
@@ -117,8 +116,12 @@ public class FormDialog extends AlertDialog.Builder {
 							case NUMERIC:
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
 										.getFields().get(i);
+								if(!((EditText) valuesList[i]).getText().toString().equals("")){
 								num.setValue(Double
 										.parseDouble(((EditText) valuesList[i]).getText().toString()));
+								} else {
+									num.setValue(-1);
+								}
 								break;
 
 							case BOOLEAN:
@@ -221,27 +224,28 @@ public class FormDialog extends AlertDialog.Builder {
 				final NumericField nf = (NumericField) field;
 				textView.setText(nf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+				editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 				editText.addTextChangedListener(new TextWatcher() {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						if (!editText.getText().toString().equals("")) {
-							if (Double.parseDouble(editText.getText()
-									.toString()) > nf.getMax()
-									|| Double.parseDouble(editText.getText()
-											.toString()) < nf.getMin()) {
-								editText.setError("Invalid");
-							}
-						}
+						// TODO
+//						if (editText.getText().toString().equals("")){
+//							editText.setError("Invalid");
+//
+//						} else if(
+//						 Double.parseDouble(editText.getText().toString()) >= nf.getMax()
+//									|| Double.parseDouble(editText.getText()
+//											.toString()) <= nf.getMin()) {
+//								editText.setError("Invalid");
+//							}
+						
 
 					}
 
 					@Override
 					public void beforeTextChanged(CharSequence arg0, int arg1,
 							int arg2, int arg3) {
-						// TODO Auto-generated method stub
-
 					}
 
 					@Override
