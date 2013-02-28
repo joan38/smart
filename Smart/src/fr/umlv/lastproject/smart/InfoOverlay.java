@@ -13,6 +13,7 @@ import android.widget.TextView;
  * 
  */
 public class InfoOverlay {
+	
 	private static final DecimalFormat LOCATION_FORMAT = new DecimalFormat(
 			"####0.00000");
 	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
@@ -24,6 +25,13 @@ public class InfoOverlay {
 	private float accuracy;
 	private float bearing;
 	private float speed;
+	
+	private boolean isLatitudeVisible;
+	private boolean isLongitudeVisible;
+	private boolean isAltitudeVisible;
+	private boolean isAccuracyVisible;
+	private boolean isBearingVisible;
+	private boolean isSpeedVisible;
 
 	private final View infoView;
 	private int nbInfoVisible = 4;
@@ -39,70 +47,15 @@ public class InfoOverlay {
 	}
 
 	/**
-	 * Set the latitude
-	 * 
-	 * @param latitude
-	 */
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	/**
-	 * Set the longitude
-	 * 
-	 * @param longitude
-	 */
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
-	/**
-	 * Set the altitude
-	 * 
-	 * @param altitude
-	 */
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
-	}
-
-	/**
-	 * Set the accuracy
-	 * 
-	 * @param accuracy
-	 */
-	public void setAccuracy(float accuracy) {
-		this.accuracy = accuracy;
-	}
-
-	/**
-	 * Set the bearing
-	 * 
-	 * @param bearing
-	 */
-	private void setBearing(float bearing) {
-		this.bearing = bearing;
-	}
-
-	/**
-	 * Set the speed
-	 * 
-	 * @param speed
-	 */
-	private void setSpeed(float speed) {
-		this.speed = speed;
-	}
-
-	/**
 	 * Function which update the locations infos
 	 */
-	public void updateInfo(GPSEvent event) {
-
-		setLatitude(event.getLatitude());
-		setLongitude(event.getLongitude());
-		setAltitude(event.getAltitude());
-		setAccuracy(event.getAccuracy());
-		setBearing(event.getBearing());
-		setSpeed(event.getSpeed());
+	public void updateInfos(GPSEvent event) {
+		latitude = event.getLatitude();
+		longitude = event.getLongitude();
+		altitude = event.getAltitude();
+		accuracy = event.getAccuracy();
+		bearing = event.getBearing();
+		speed = event.getSpeed();
 
 		((TextView) infoView.findViewById(R.id.findGPS))
 				.setVisibility(View.GONE);
@@ -130,12 +83,11 @@ public class InfoOverlay {
 		((TextView) infoView.findViewById(R.id.bearing))
 				.setText(R.string.bearing);
 		((TextView) infoView.findViewById(R.id.bearingValue))
-				.setText(ACCURACY_FORMAT.format(bearing) + "°");
+				.setText(ACCURACY_FORMAT.format(bearing) + "Â°");
 
 		((TextView) infoView.findViewById(R.id.speed)).setText(R.string.speed);
 		((TextView) infoView.findViewById(R.id.speedValue))
 				.setText(ACCURACY_FORMAT.format(speed) + "m/s");
-
 	}
 
 	/**
@@ -182,7 +134,6 @@ public class InfoOverlay {
 		} else {
 			item.setTitle(R.string.showInfoZone);
 			view.setVisibility(View.INVISIBLE);
-
 		}
 	}
 }
