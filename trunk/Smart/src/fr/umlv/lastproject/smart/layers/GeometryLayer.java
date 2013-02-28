@@ -43,7 +43,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	private final List<SelectedGeometryListener> selectedListener;
 	private final Context context;
 	private boolean isSelectable = false;
-	private static final int BUFFER = 100 ;
+	private static final int BUFFER = 100;
 	private static final String DEFAULT_NAME = "default";
 
 	private static final float radius = 12;
@@ -193,7 +193,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	@Override
 	protected void draw(Canvas canvas, MapView mapView, boolean b) {
 		for (Geometry geometry : geometries) {
-			geometry.draw(mapView, canvas, b, getSymbology()) ;
+			geometry.draw(mapView, canvas, b, getSymbology());
 		}
 	}
 
@@ -243,9 +243,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
 						singleTapListeners.get(i)
-						.actionPerformed(
-								new PointGeometry(firstLatitude,
-										firstLongitude));
+								.actionPerformed(
+										new PointGeometry(firstLatitude,
+												firstLongitude));
 					}
 					final IGeoPoint secondPoint = mapView.getProjection()
 							.fromPixels(x1, y1);
@@ -283,7 +283,6 @@ public class GeometryLayer extends Overlay implements Layer {
 	@Override
 	public boolean onSingleTapUp(MotionEvent e, MapView m) {
 
-
 		final float x = e.getX();
 		final float y = e.getY();
 
@@ -296,14 +295,15 @@ public class GeometryLayer extends Overlay implements Layer {
 				singleTapListeners.get(i).actionPerformed(
 						new PointGeometry(latitude, longitude));
 			}
-		}else{
-			if(isSelectable){
-				Point ref =m.getProjection().toPixels(point, null);
-				Rect r = new Rect(ref.x- BUFFER /2 , ref.y- BUFFER / 2 ,ref.x+ BUFFER /2, ref.y+ BUFFER / 2);
-				for(Geometry g : geometries){
-					if(g.isSelected(m, r)){
-						for(SelectedGeometryListener lis : selectedListener){
-							lis.actionPerformed(g,this);
+		} else {
+			if (isSelectable) {
+				Point ref = m.getProjection().toPixels(point, null);
+				Rect r = new Rect(ref.x - BUFFER / 2, ref.y - BUFFER / 2, ref.x
+						+ BUFFER / 2, ref.y + BUFFER / 2);
+				for (Geometry g : geometries) {
+					if (g.isSelected(m, r)) {
+						for (SelectedGeometryListener lis : selectedListener) {
+							lis.actionPerformed(g, this);
 							return super.onSingleTapUp(e, m);
 						}
 					}
@@ -369,7 +369,7 @@ public class GeometryLayer extends Overlay implements Layer {
 				R.drawable.geometry_blank);
 
 		Bitmap bitmap = bit.copy(Config.ARGB_8888, true);
-
+		bit.recycle();
 		int height = (bitmap.getHeight());
 		int width = (bitmap.getWidth());
 		int middlex = (bitmap.getHeight() / 2);
@@ -448,9 +448,7 @@ public class GeometryLayer extends Overlay implements Layer {
 		selectedListener.remove(l);
 	}
 
-
-
-	public void removeGeometry(Geometry g){
+	public void removeGeometry(Geometry g) {
 		geometries.remove(g);
 
 	}
