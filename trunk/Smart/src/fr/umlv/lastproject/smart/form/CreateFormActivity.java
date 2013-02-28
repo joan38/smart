@@ -3,9 +3,9 @@ package fr.umlv.lastproject.smart.form;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,18 +53,17 @@ public class CreateFormActivity extends Activity {
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_create_form);
 		setTitle(getString(R.string.title_activity_create_form));
-		
+
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			try {
 				form = Form.read(getIntent().getData().getPath());
 			} catch (FormIOException e) {
-				Toast.makeText(this, e.getMessage(),
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 				finish();
 				return;
 			}
 		} else {
-			form = (Form) getIntent().getSerializableExtra("form");			
+			form = (Form) getIntent().getSerializableExtra("form");
 		}
 
 		tableLayout = (TableLayout) findViewById(R.id.layoutDynamicCreateFormulaire);
@@ -93,7 +92,7 @@ public class CreateFormActivity extends Activity {
 						android.R.layout.simple_list_item_1, listStrings));
 
 				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
-					
+
 					private final TableRow rowMax = (TableRow) alertDialogView
 							.findViewById(R.id.tableRowMax);
 					private final TableRow rowMin = (TableRow) alertDialogView
@@ -117,8 +116,8 @@ public class CreateFormActivity extends Activity {
 
 						case NUMERIC:
 							// TODO
-							//rowMax.setVisibility(View.VISIBLE);
-							//rowMin.setVisibility(View.VISIBLE);
+							// rowMax.setVisibility(View.VISIBLE);
+							// rowMin.setVisibility(View.VISIBLE);
 							rowList.setVisibility(View.GONE);
 							break;
 
@@ -190,24 +189,26 @@ public class CreateFormActivity extends Activity {
 									break;
 
 								case NUMERIC:
-// TODO
-//									EditText maxValue = (EditText) alertDialogView
-//											.findViewById(R.id.valueMax);
-//									int max = Integer.parseInt(maxValue
-//											.getText().toString());
-//
-//									EditText minValue = (EditText) alertDialogView
-//											.findViewById(R.id.valueMin);
-//									int min = Integer.parseInt(minValue
-//											.getText().toString());
-//
-//									if (min > max) {
-//										Toast.makeText(
-//												CreateFormActivity.this,
-//												getString(R.string.field_error_min_max),
-//												Toast.LENGTH_LONG).show();
-//										return;
-//									}
+									// TODO
+									// EditText maxValue = (EditText)
+									// alertDialogView
+									// .findViewById(R.id.valueMax);
+									// int max = Integer.parseInt(maxValue
+									// .getText().toString());
+									//
+									// EditText minValue = (EditText)
+									// alertDialogView
+									// .findViewById(R.id.valueMin);
+									// int min = Integer.parseInt(minValue
+									// .getText().toString());
+									//
+									// if (min > max) {
+									// Toast.makeText(
+									// CreateFormActivity.this,
+									// getString(R.string.field_error_min_max),
+									// Toast.LENGTH_LONG).show();
+									// return;
+									// }
 
 									NumericField nf = new NumericField(label);
 									form.addField(nf);
@@ -226,8 +227,8 @@ public class CreateFormActivity extends Activity {
 									String[] tab = listValue.getText()
 											.toString().split("/");
 
-									ListField lf = new ListField(label,
-											Arrays.asList(tab));
+									ListField lf = new ListField(label, Arrays
+											.asList(tab));
 									form.addField(lf);
 									addFieldRow(lf);
 									break;
@@ -283,9 +284,13 @@ public class CreateFormActivity extends Activity {
 				for (Field f : form.getFieldsList()) {
 					Log.d("TEST", f.getLabel());
 				}
-				
-				//Intent intentMenuActivity = new Intent(CreateFormActivity.this, MenuActivity.class);
-				//startActivity(intentMenuActivity);
+
+				// Switch to our application
+				Intent intentMenuActivity = new Intent(CreateFormActivity.this,
+						MenuActivity.class);
+				intentMenuActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				startActivity(intentMenuActivity);
 				finish();
 			}
 		});
@@ -331,7 +336,7 @@ public class CreateFormActivity extends Activity {
 		case NUMERIC:
 			text.setText(getString(R.string.field_numeric) + field.getLabel());
 			break;
-			
+
 		case PICTURE:
 			text.setText(getString(R.string.field_picture) + field.getLabel());
 			break;
@@ -341,15 +346,14 @@ public class CreateFormActivity extends Activity {
 			break;
 
 		default:
-			throw new IllegalStateException(
-					"Unkown field type");
+			throw new IllegalStateException("Unkown field type");
 		}
 		text.setPadding(PADDING_LEFT, PADDING_TOP, 0, 0);
 		row.addView(text);
 
 		tableLayout.addView(row);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
