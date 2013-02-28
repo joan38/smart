@@ -14,6 +14,7 @@ import org.osmdroid.views.overlay.Overlay;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.data.WMSOverlay;
@@ -76,6 +77,10 @@ public class SmartMapView extends MapView {
 	 *            raster overlay to add
 	 */
 	public void addGeoTIFFOverlay(final TMSOverlay overlay) {
+		if (overlay == null) {
+			Log.e("TESTX", "ERROR TMS OVERLAY");
+			return;
+		}
 		addOverlay(overlay);
 		geoTIFFOverlays.add(overlay);
 	}
