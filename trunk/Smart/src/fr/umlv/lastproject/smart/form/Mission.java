@@ -173,6 +173,7 @@ public final class Mission {
 		pointLayer.setSelectable(false);
 		lineLayer.setSelectable(false);
 		polygonLayer.setSelectable(false);
+		mission=  null ;
 		return status;
 	}
 
