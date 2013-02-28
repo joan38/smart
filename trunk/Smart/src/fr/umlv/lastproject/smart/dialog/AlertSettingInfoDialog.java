@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.dialog;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import fr.umlv.lastproject.smart.InfoOverlay;
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
 /**
@@ -23,7 +23,7 @@ import fr.umlv.lastproject.smart.R;
  */
 public class AlertSettingInfoDialog extends AlertDialog.Builder {
 
-	public AlertSettingInfoDialog(MenuActivity menu, final View view,
+	public AlertSettingInfoDialog(Context menu, final View view,
 			final InfoOverlay infoOverlay) {
 		super(menu);
 
@@ -69,7 +69,6 @@ public class AlertSettingInfoDialog extends AlertDialog.Builder {
 					boolean isChecked) {
 				infoOverlay.setVisibility(view.findViewById(R.id.longitude),
 						view.findViewById(R.id.longitudeValue), isChecked);
-
 			}
 		});
 
@@ -138,7 +137,6 @@ public class AlertSettingInfoDialog extends AlertDialog.Builder {
 	 *            : the view of informations zone
 	 */
 	public void setCheckboxStates(View checkboxView, View infoView) {
-
 		((CheckBox) checkboxView.findViewById(R.id.latitudeChkbx))
 				.setChecked(infoView.findViewById(R.id.latitude)
 						.getVisibility() == View.VISIBLE);
@@ -160,6 +158,5 @@ public class AlertSettingInfoDialog extends AlertDialog.Builder {
 
 		((CheckBox) checkboxView.findViewById(R.id.speedChkbx))
 				.setChecked(infoView.findViewById(R.id.speed).getVisibility() == View.VISIBLE);
-
 	}
 }
