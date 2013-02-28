@@ -57,7 +57,7 @@ public final class DataExport {
 
 				for (PointRecord point : geometry.getPointsRecord()) {
 					csv.write("[" + point.getX() + "," + point.getY() + ","
-							+ point.getZ() + "]");
+							+ (point.getZ() == -1.0 ? 0 : point.getZ()) + "]");
 				}
 				
 				for (FieldRecord field : formRecord.getFields()) {
