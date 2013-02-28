@@ -109,6 +109,9 @@ public class PolygonGeometry extends Geometry {
 		Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox())) ;
 		Path p = new Path() ;
 		for (int j = 0; j < getPoints().size() +1; j++) {
+			if(getPoints().get(j%getPoints().size()).isSelected(m, click)){
+				return true ;
+			}
 			Point ps = m.getProjection().toPixels(getPoints().get(j%getPoints().size()).getCoordinates(),null);
 			if(j==0) p.moveTo(ps.x, ps.y);
 			p.lineTo(ps.x, ps.y);
@@ -118,6 +121,10 @@ public class PolygonGeometry extends Geometry {
 		if(!clip.quickReject(click)   ){
 			return true ;
 		}
+		
+		
+		
+		
 		return false;
 	}
 }

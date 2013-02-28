@@ -22,17 +22,19 @@ public final class SmartConstants {
 	public static final int CREATE_MISSION = 0;
 	public static final int CREATE_FORM = 1;
 	public static final int POINT_SURVEY = 2;
-	public static final int LINE_SURVEY = 3;
-	public static final int POLYGON_SURVEY = 4;
-	public static final int GPS_TRACK = 5;
-	public static final int IMPORT_KML = 6;
-	public static final int IMPORT_GEOTIFF = 7;
-	public static final int IMPORT_SHAPE = 8;
-	public static final int IMPORT_WMS = 9;
-	public static final int EXPORT = 10;
-	public static final int MEASURE = 11;
-	public static final int EXPORT_FORM = 12;
-	public static final int DELETE_MISSION = 13;
+	public static final int POINT_SURVEY_POSITION = 3;
+
+	public static final int LINE_SURVEY = 4;
+	public static final int POLYGON_SURVEY = 5;
+	public static final int GPS_TRACK = 6;
+	public static final int IMPORT_KML = 7;
+	public static final int IMPORT_GEOTIFF = 8;
+	public static final int IMPORT_SHAPE = 9;
+	public static final int IMPORT_WMS = 10;
+	public static final int EXPORT = 11;
+	public static final int MEASURE = 12;
+	public static final int EXPORT_FORM = 13;
+	public static final int DELETE_MISSION = 14;
 
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
@@ -55,6 +57,7 @@ public final class SmartConstants {
 
 	// Icons array for functionalities list
 	public static int[] icons = { R.drawable.startmission,
+			R.drawable.createform, R.drawable.pointsurvey,
 			R.drawable.createform, R.drawable.pointsurvey,
 			R.drawable.linesurvey, R.drawable.polygonsurvey,
 			R.drawable.startgpstrack, R.drawable.smart, R.drawable.basket,

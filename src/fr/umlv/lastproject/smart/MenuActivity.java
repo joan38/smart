@@ -542,6 +542,16 @@ public class MenuActivity extends Activity {
 				Mission.getInstance().startSurvey(GeometryType.POINT);
 			}
 			break;
+			
+		case SmartConstants.POINT_SURVEY_POSITION :
+			if (Mission.getInstance() == null ) {
+				Toast.makeText(this,
+						getResources().getText(R.string.noMission),
+						Toast.LENGTH_LONG).show();
+			} else {
+				Mission.getInstance().startSurvey(new PointGeometry(lastPosition.getLatitudeE6()/1E6, lastPosition.getLongitudeE6()/1E6));
+			}
+			break ;
 
 		case SmartConstants.LINE_SURVEY:
 			if (Mission.getInstance() == null) {
@@ -627,7 +637,7 @@ public class MenuActivity extends Activity {
 		case SmartConstants.EXPORT_FORM:
 			Intent intentForm = FileUtils.createGetContentIntent(
 					FileUtils.FORM_TYPE,
-					Environment.getExternalStorageDirectory() + "");
+					Environment.getExternalStorageDirectory() + "/SMART");
 			startActivityForResult(intentForm,
 					SmartConstants.FORM_BROWSER_ACTIVITY);
 			break;
