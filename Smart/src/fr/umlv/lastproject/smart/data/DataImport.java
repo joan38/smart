@@ -33,7 +33,7 @@ public final class DataImport {
 	 * @throws IOException
 	 */
 	public static TMSOverlay importGeoTIFFFileFolder(final String pathName,
-			final Context context, final String name) throws IOException {
+			final Context context) throws IOException {
 
 		if (pathName == null || context == null) {
 			throw new IllegalArgumentException();
@@ -52,7 +52,7 @@ public final class DataImport {
 		final int minZoom = Integer.parseInt(metadata[2].toString());
 		final int maxZoom = Integer.parseInt(metadata[3].toString());
 		return importGeoTIFFFileZIP(folderName, context, minZoom, maxZoom,
-				tileExtension, name);
+				tileExtension);
 
 	}
 
@@ -66,7 +66,7 @@ public final class DataImport {
 	 */
 	public static TMSOverlay importGeoTIFFFileZIP(final String folderName,
 			final Context context, final int minZoom, final int maxZoom,
-			final String tileExtension, final String name) {
+			final String tileExtension) {
 		if (folderName == null
 				|| minZoom < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL
 				|| maxZoom > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
@@ -82,7 +82,7 @@ public final class DataImport {
 		mProvider.setUseDataConnection(false);
 
 		final TMSOverlay mTilesOverlay = new TMSOverlay(mProvider, context,
-				minZoom, maxZoom, name);
+				minZoom, maxZoom, folderName);
 
 		return mTilesOverlay;
 	}

@@ -74,8 +74,10 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		}
 
 		smartHolder.txtTitle.setText(item.getName());
+		if (item.getOverview() != null) {
+			smartHolder.imageView.setImageBitmap(item.getOverview());
 
-		smartHolder.imageView.setImageBitmap(item.getOverview());
+		}
 
 		smartHolder.chkBox.setChecked(item.isVisible());
 		if (mission != null && item.getName().contains(mission)) {
