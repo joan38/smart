@@ -211,11 +211,14 @@ public class DbManager {
 
 			case NUMERIC:
 				NumericField nf = (NumericField) field;
-				sql.append(nf.getLabel()).append(" REAL CHECK (")
-				.append(nf.getLabel()).append(" > ")
-				.append(nf.getMin()).append(" AND ")
-				.append(nf.getLabel()).append(" < ")
-				.append(nf.getMax()).append(" ), ");
+				sql.append(nf.getLabel()).append(" REAL ")
+				.append(", ");
+// TODO
+//				sql.append(nf.getLabel()).append(" REAL CHECK (")
+//				.append(nf.getLabel()).append(" > ")
+//				.append(nf.getMin()).append(" AND ")
+//				.append(nf.getLabel()).append(" < ")
+//				.append(nf.getMax()).append(" ), ");
 				break;
 
 			case BOOLEAN:
@@ -318,6 +321,7 @@ public class DbManager {
 		try {
 			return mDb.insertOrThrow(formRecord.getName(), null, values);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new SmartException("Insert database error");
 		}
 	}
@@ -893,7 +897,9 @@ public class DbManager {
 				formRecord.addField(new TextFieldRecord(t, c.getString(i)));
 				break;
 			case NUMERIC:
-				NumericField n = new NumericField(c.getColumnName(i), ((NumericField)fields.get(j)).getMin(), ((NumericField)fields.get(j)).getMax());
+				// TODO
+				//NumericField n = new NumericField(c.getColumnName(i), ((NumericField)fields.get(j)).getMin(), ((NumericField)fields.get(j)).getMax());
+				NumericField n = new NumericField(c.getColumnName(i));
 				formRecord.addField(new NumericFieldRecord(n, c.getDouble(i)));
 				break;
 			case BOOLEAN:

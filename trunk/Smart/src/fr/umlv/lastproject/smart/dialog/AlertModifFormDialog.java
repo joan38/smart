@@ -42,7 +42,6 @@ import fr.umlv.lastproject.smart.form.Field;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.ListField;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.form.NumericField;
 import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -243,20 +242,21 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				final NumericFieldRecord nf = (NumericFieldRecord) fieldRecords.get(i);
 				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+				editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 				editText.setText(String.valueOf(nf.getValue()));
 				editText.addTextChangedListener(new TextWatcher() {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						if (!editText.getText().toString().equals("")) {
-							if (Double.parseDouble(editText.getText()
-									.toString()) > ((NumericField)nf.getField()).getMax()
-									|| Double.parseDouble(editText.getText()
-											.toString()) < ((NumericField)nf.getField()).getMin()) {
-								editText.setError("Invalid");
-							}
-						}
+// TODO
+//						if (!editText.getText().toString().equals("")) {
+//							if (Double.parseDouble(editText.getText()
+//									.toString()) > ((NumericField)nf.getField()).getMax()
+//									|| Double.parseDouble(editText.getText()
+//											.toString()) < ((NumericField)nf.getField()).getMin()) {
+//								editText.setError("Invalid");
+//							}
+//						}
 
 					}
 

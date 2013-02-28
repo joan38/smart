@@ -111,8 +111,9 @@ public class CreateFormActivity extends Activity {
 							break;
 
 						case NUMERIC:
-							rowMax.setVisibility(View.VISIBLE);
-							rowMin.setVisibility(View.VISIBLE);
+							// TODO
+							//rowMax.setVisibility(View.VISIBLE);
+							//rowMin.setVisibility(View.VISIBLE);
 							rowList.setVisibility(View.GONE);
 							break;
 
@@ -184,26 +185,26 @@ public class CreateFormActivity extends Activity {
 									break;
 
 								case NUMERIC:
-									EditText maxValue = (EditText) alertDialogView
-											.findViewById(R.id.valueMax);
-									int max = Integer.parseInt(maxValue
-											.getText().toString());
+// TODO
+//									EditText maxValue = (EditText) alertDialogView
+//											.findViewById(R.id.valueMax);
+//									int max = Integer.parseInt(maxValue
+//											.getText().toString());
+//
+//									EditText minValue = (EditText) alertDialogView
+//											.findViewById(R.id.valueMin);
+//									int min = Integer.parseInt(minValue
+//											.getText().toString());
+//
+//									if (min > max) {
+//										Toast.makeText(
+//												CreateFormActivity.this,
+//												getString(R.string.field_error_min_max),
+//												Toast.LENGTH_LONG).show();
+//										return;
+//									}
 
-									EditText minValue = (EditText) alertDialogView
-											.findViewById(R.id.valueMin);
-									int min = Integer.parseInt(minValue
-											.getText().toString());
-
-									if (min > max) {
-										Toast.makeText(
-												CreateFormActivity.this,
-												getString(R.string.field_error_min_max),
-												Toast.LENGTH_LONG).show();
-										return;
-									}
-
-									NumericField nf = new NumericField(label,
-											min, max);
+									NumericField nf = new NumericField(label);
 									form.addField(nf);
 									addFieldRow(nf);
 									break;

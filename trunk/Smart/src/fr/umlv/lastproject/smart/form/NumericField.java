@@ -12,8 +12,8 @@ public class NumericField extends Field {
 	 * 
 	 */
 	private static final long serialVersionUID = -5108601667354465487L;
-	private int min;
-	private int max;
+//	private int min;
+//	private int max;
 
 	/**
 	 * 
@@ -21,42 +21,42 @@ public class NumericField extends Field {
 	 * @param min of the value
 	 * @param max of the value
 	 */
-	public NumericField(String label, int min, int max) {
+	public NumericField(String label) {
 		super(label, FieldType.NUMERIC);
-		this.min = min;
-		this.max = max;
+//		this.min = min;
+//		this.max = max;
 	}
 
 	/**
 	 * 
 	 * @return min
 	 */
-	public int getMin() {
-		return min;
-	}
+//	public int getMin() {
+//		return min;
+//	}
 
 	/**
 	 * 
 	 * @param min
 	 */
-	public void setMin(int min) {
-		this.min = min;
-	}
+//	public void setMin(int min) {
+//		this.min = min;
+//	}
 
 	/**
 	 * 
 	 * @return max
 	 */
-	public int getMax() {
-		return max;
-	}
+//	public int getMax() {
+//		return max;
+//	}
 
 	/**
 	 * 
 	 * @param max
 	 */
-	public void setMax(int max) {
-		this.max = max;
-	}
+//	public void setMax(int max) {
+//		this.max = max;
+//	}
 
 }
