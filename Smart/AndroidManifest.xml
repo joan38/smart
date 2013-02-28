@@ -89,6 +89,13 @@
             android:name="fr.umlv.lastproject.smart.form.PictureActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="fr.umlv.lastproject.smart.HeightActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_height"
+            android:screenOrientation="landscape" >
+        </activity>
+       
     </application>
 
 </manifest>
