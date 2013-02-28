@@ -65,7 +65,7 @@ public final class SmartConstants {
 	// Icons array for functionalities list
 	public static int[] icons = { R.drawable.startmission,
 			R.drawable.createform, R.drawable.pointsurvey,
-			R.drawable.pointsurvey_distance, R.drawable.linesurvey,
+			R.drawable.pointsurvey_position, R.drawable.linesurvey,
 			R.drawable.polygonsurvey, R.drawable.startgpstrack,
 			R.drawable.importvector, R.drawable.importraster,
 			R.drawable.importvector, R.drawable.importwms,
