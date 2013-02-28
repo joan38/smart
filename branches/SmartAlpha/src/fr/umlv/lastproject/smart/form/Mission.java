@@ -13,6 +13,7 @@ import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
+import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.Survey;
@@ -217,6 +218,13 @@ public final class Mission {
 	 * @param type
 	 *            of the survey to do
 	 */
+	
+	public void startSurvey(PointGeometry p) {
+		pointLayer.addGeometry(p); 
+		form.openForm(context, p, Mission.this);
+	}
+
+	
 	public void startSurvey(GeometryType type) {
 		if (!status) {
 			return;
