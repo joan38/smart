@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.umlv.lastproject.smart"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -23,8 +23,7 @@
         android:allowBackup="true"
         android:icon="@drawable/smart"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme">
-        
+        android:theme="@style/AppBaseTheme" >
         <activity
             android:name="fr.umlv.lastproject.smart.MenuActivity"
             android:label="@string/app_name"
@@ -35,19 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.HomeActivity"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.LayersActivity"
             android:label="@string/title_activity_layers"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.form.CreateFormActivity"
             android:label="@string/app_name"
@@ -58,25 +54,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- For opening from file explorator -->
-                <data
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.form"
-                    android:scheme="file" />
-                <!-- For opening from emails -->
-                <data
-                    android:mimeType="*/*"
-                    android:pathPattern=".*\\.form"
-                    android:scheme="content" />
+                <!-- For opening from file -->
+                <data android:mimeType="*/*" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:port="*" />
+                <data android:pathPattern=".*..*..*..*..*.form" />
+                <data android:pathPattern=".*..*..*..*.form" />
+                <data android:pathPattern=".*..*..*.form" />
+                <data android:pathPattern=".*..*.form" />
+                <data android:pathPattern=".*.form" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.form.AddFieldtoFormActivity"
             android:label="@string/title_activity_add_fieldto_form"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.browser.FileChooserActivity"
             android:label="@string/title_activity_browser"
@@ -90,7 +84,6 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="fr.umlv.lastproject.smart.form.PictureActivity"
             android:screenOrientation="portrait" >
@@ -101,7 +94,6 @@
             android:label="@string/title_activity_height"
             android:screenOrientation="landscape" >
         </activity>
-       
     </application>
 
 </manifest>
