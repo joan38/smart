@@ -168,6 +168,7 @@ public class MenuActivity extends Activity {
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(11);
 		mapController.setCenter(new GeoPoint(48.84, 2.58));
+
 		// overlayManager.add(new ScaleBarOverlay(this));
 
 		// final WMSMapTileProviderBasic tileProvider = new
