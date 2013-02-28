@@ -1,7 +1,9 @@
 package fr.umlv.lastproject.smart;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
@@ -758,6 +760,35 @@ public class MenuActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		pref.save();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		cleanTIFFFolder();
+		cleanTmpFolder();
+		Log.d("TESTX", "DESTROY");
+	}
+
+	private void cleanTmpFolder() {
+		final List<File> files = FileUtils.getFileList(SmartConstants.TMP_PATH);
+		for (File file : files) {
+
+			file.delete();
+
+		}
+
+	}
+
+	private void cleanTIFFFolder() {
+		final List<File> files = FileUtils
+				.getFileList(SmartConstants.TIFF_PATH);
+		for (File file : files) {
+			if (".zip".equals(FileUtils.getExtension(file.getPath()))) {
+				file.delete();
+			}
+		}
+
 	}
 
 }
