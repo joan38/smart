@@ -158,4 +158,10 @@
     <string name="height_field_missing"> Height value must be set</string>
     <string name="height_bottom_instructions">Align your eyes,  smartphone and object\'s bottom side in a straight line.\nThen click on the screen.</string>
     <string name="height_top_instructions">Align your eyes,  smartphone and object\'s top side in a straight line.\nThen click on the screen again.</string>
+    <string name="gpsCompulsory">GPS must be enabled</string>
+    <string name="gpsTrackMessage">Please check your configuration and ensure your GPS is activated. This functionality is not available with GPS disabled.</string>
+        <string name="track_notstarted">Track cannot be started</string>
+                <string name="track_started">Track is started!</string>
+        
+    
 </resources>
