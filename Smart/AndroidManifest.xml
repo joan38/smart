@@ -58,10 +58,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <!-- For opening from file explorator -->
                 <data
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.form"
                     android:scheme="file" />
+                <!-- For opening from emails -->
+                <data
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.form"
+                    android:scheme="content" />
             </intent-filter>
         </activity>
         
