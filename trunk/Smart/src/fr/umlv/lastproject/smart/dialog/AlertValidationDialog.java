@@ -42,6 +42,7 @@ public class AlertValidationDialog extends AlertDialog.Builder {
 
 		setView(exportMissionDialog);
 		setTitle(R.string.delete_mission);
+		setIcon(android.R.drawable.ic_dialog_alert);
 
 		setPositiveButton(R.string.validate, new OnClickListener() {
 

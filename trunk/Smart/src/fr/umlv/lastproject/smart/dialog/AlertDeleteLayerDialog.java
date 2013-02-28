@@ -12,6 +12,8 @@ public class AlertDeleteLayerDialog extends AlertDialog.Builder {
 			final boolean isRemovable) {
 		super(activity);
 		setTitle(R.string.delete);
+		setIcon(android.R.drawable.ic_dialog_alert);
+
 		if (isRemovable) {
 			setMessage(R.string.deleteLayer);
 			setNegativeButton(R.string.no,
