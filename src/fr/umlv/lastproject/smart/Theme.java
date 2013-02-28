@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart;
 
+// ma bite
+
 public enum Theme {
 	DARK(R.id.buttonDarkTheme, R.style.AppBaseTheme), LIGHT(R.id.buttonLightTheme, R.style.AppLightTheme);
 
