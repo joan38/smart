@@ -38,6 +38,7 @@ public final class SmartConstants {
 
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
+	public static final String GPS_TRACK_NAME = "gps_track";
 
 	public static final int DEFAULT_ZOOM = 15;
 

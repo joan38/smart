@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.graphics.Color;
 import android.location.LocationManager;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -10,6 +11,7 @@ import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Main class for tracking Starts and stops a track
@@ -90,11 +92,13 @@ public class GPSTrack {
 		gps.addGPSListener(gpsListener);
 		this.geometryLayer = new GeometryLayer(mapView.getContext());
 		this.geometryLayer.setType(GeometryType.LINE);
+		this.geometryLayer.setName(SmartConstants.GPS_TRACK_NAME);
 		lineGeometry = new LineGeometry();
 		this.geometryLayer.addGeometry(lineGeometry);
 		this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS,
 				Color.RED));
-		mapView.getOverlays().add(geometryLayer);
+		mapView.addGeometryLayer(geometryLayer);
+		// mapView.getOverlays().add(geometryLayer);
 
 	}
 
