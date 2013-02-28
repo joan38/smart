@@ -146,14 +146,20 @@
     <string name="height_field_missing"> La hauteur ne peut être nulle</string>
     <string name="height_field_invalid"> La hauteur est incorrecte</string>
 
-    <string name="displayLatitude">Afficher la latitude</string>
-    <string name="displayLongitude">Afficher la longitude</string>
-    <string name="displayAltitude">Afficher l\'altitude</string>
-    <string name="displayAccuracy">Afficher la précision</string>
-    <string name="displayBearing">Afficher l\'orientation</string>
-    <string name="displaySpeed">Afficher la vitesse</string>
-    <string name="height_bottom_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le pied de l\'objet visé.\nAppuyez ensuite sur l\'écran.</string>
-    <string name="height_top_instructions">Alignez votre regard avec la tranche supérieure du smartphone ainsi que le sommet de l\'objet visé.Appuyez à nouveau sur l\'écran.</string>
-
+    <string name="displayLatitude">Afficher la latitude :</string>
+    <string name="displayLongitude">Afficher la longitude :</string>
+    <string name="displayAltitude">Afficher l\'altitude :</string>
+    <string name="displayAccuracy">Afficher la précision :</string>
+    <string name="displayBearing">Afficher l\'orientation :</string>
+    <string name="displaySpeed">Afficher la vitesse :</string>
+    <string name="height_bottom_instructions">Alignez votre regard avec la tranche droite du smartphone ainsi que le pied de l\'objet visé.\nAppuyez ensuite sur l\'écran.</string>
+    <string name="height_top_instructions">Alignez votre regard avec la tranche droite du smartphone ainsi que le sommet de l\'objet visé. \nAppuyez à nouveau sur l\'écran.</string>
+<string name="height_error">Erreur. \nViser à nouveau.</string>
+        <string name="height_result_error">Erreur : résultat erroné.</string>
+        <string name="gpsCompulsory">Le GPS doit être activé</string>
+            <string name="gpsTrackMessage">Vérifier que le GPS est activé. La fonctionnalité ne peut pas fonctionner sans GPS.</string>
+        <string name="track_notstarted">La trace ne peut pas être démarrée</string>
+                        <string name="track_started">La trace GPS a démarré!</string>
+        
 
 </resources>

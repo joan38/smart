@@ -1,8 +1,24 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:contentDescription="@string/height_bottom_instructions"
-    android:src="@drawable/height_top"
-    android:text="@string/height_top_instructions"
-    tools:context=".HeightActivity" />
+    tools:context=".HeightActivity" >
+
+    <ImageView
+        android:id="@+id/height_top_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/height_top"
+        android:contentDescription="@string/height_bottom_instructions" />
+
+    <TextView
+        android:id="@+id/height_top_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/height_top_image"
+        android:text="@string/height_top_instructions" />
+
+</RelativeLayout>
+
+
+    
