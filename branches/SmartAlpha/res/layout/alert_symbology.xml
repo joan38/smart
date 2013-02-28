@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableRow 
+        android:id="@+id/symbologyRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip">
+        
+	    <TextView
+	        android:id="@+id/colorLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/color"
+	        android:paddingRight="10dp"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	    <Spinner
+	        android:id="@+id/colorSpinner"
+	        android:paddingLeft="10dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	    </Spinner>
+	    
+	</TableRow>
+	
+     <TableRow 
+        android:id="@+id/symbologyRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip">
+        
+	    <TextView
+	        android:id="@+id/tailleLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/taille"
+	        android:paddingRight="10dp"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	   <Spinner
+	        android:id="@+id/tailleSpinner"
+	        android:paddingLeft="10dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	    </Spinner>
+	    
+	</TableRow>
+    
+</TableLayout>
