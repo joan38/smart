@@ -154,7 +154,6 @@ public class LayerItem implements Serializable {
 		}
 		stream.flush();
 		stream.close();
-		overview.recycle();
 		out.writeObject(fileName);
 		out.writeBoolean(isEditable);
 
