@@ -59,6 +59,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						if (oName == null) {
 							Toast.makeText(menu, R.string.track_name_missing,
 									Toast.LENGTH_LONG).show();
+							trackStarted = false;
 							return;
 						}
 						final String name = oName.toString();
@@ -66,7 +67,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						if (oParam == null) {
 							Toast.makeText(menu, R.string.track_param_missing,
 									Toast.LENGTH_LONG).show();
-
+							trackStarted = false;
 							return;
 						}
 						try {
@@ -79,6 +80,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						} catch (NumberFormatException e) {
 							Toast.makeText(menu, R.string.track_param_false,
 									Toast.LENGTH_LONG).show();
+							trackStarted = false;
 							return;
 						}
 
