@@ -43,25 +43,25 @@ public final class DataExport {
 			}
 			
 			FileWriter csv = new FileWriter(path + "/" + mission.getTitle() + ".csv");
-			csv.write("Geometries,Points");
+			csv.write("Geometries;Points");
 			
 			GeometryRecord geometry = geometryIterator.next();
 			FormRecord formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getTitle());
 			for (FieldRecord field : formRecord.getFields()) {
-				csv.write("," + field.getField().getLabel());
+				csv.write(";" + field.getField().getLabel());
 			}
 			csv.write("\n");
 
 			while (true) {
-				csv.write(geometry.getType().name() + ",");
+				csv.write(geometry.getType().name() + ";");
 
 				for (PointRecord point : geometry.getPointsRecord()) {
-					csv.write("[" + point.getX() + ";" + point.getY() + ";"
+					csv.write("[" + point.getX() + "," + point.getY() + ","
 							+ point.getZ() + "]");
 				}
 				
 				for (FieldRecord field : formRecord.getFields()) {
-					csv.write(",");
+					csv.write(";");
 					
 					switch (field.getField().getType()) {
 					case TEXT:
