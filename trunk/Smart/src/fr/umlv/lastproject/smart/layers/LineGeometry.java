@@ -71,52 +71,43 @@ public class LineGeometry extends Geometry {
 		return this.points;
 	}
 
-	@Override
-	public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
 
-		Paint paint = new Paint();
-		paint.setColor(s.getColor());
-		paint.setStyle(Style.FILL_AND_STROKE);
-		paint.setAlpha(150) ;
+    @Override
+    public void draw(MapView map, Canvas c, Boolean bool, Symbology s) {
 
-		Path p = new Path() ;
-		
-		if (isSelected()) {
-			paint.setStrokeWidth(s.getSize() * 2);
-		} else {
-			paint.setStrokeWidth(s.getSize());
-		}
+            Paint paint = new Paint();
+            paint.setColor(s.getColor());
+            paint.setAlpha(150) ;           
+            if (isSelected()) {
+                    paint.setStrokeWidth(s.getSize() * 2);
+            } else {
+                    paint.setStrokeWidth(s.getSize());
+            }
 
-		// Retrieving list of points contained
+            // Retrieving list of points contained
 
 
-		for (int j = 0; j < getPoints().size() ; j++) {
-			// on récupere les 2 points
+            for (int j = 0; j < getPoints().size() -1 ; j++) {
+                    Point a = map.getProjection().toPixels(getPoints().get(j% getPoints().size()).getCoordinates(),null);
+                    Point b = map.getProjection().toPixels(getPoints().get(j+1% getPoints().size()).getCoordinates(),null);
 
-			// Converting coordinates in pixel
-			Point pixelA = map.getProjection().toPixels(getPoints().get(j% getPoints().size()).getCoordinates(),null);
-			if(j==0) p.moveTo(pixelA.x, pixelA.y);
+                    
+                    c.drawLine(a.x, a.y, b.x, b.y, paint) ;
+                    // on récupere les 2 points
 
-			p.lineTo(pixelA.x, pixelA.y);
-		}
-		p.close();
-		c.drawPath(p, paint);
-	}
+            }
+    }
 
-	@Override
-	public boolean isSelected(MapView m, Rect click) {
+    @Override
+    public boolean isSelected(MapView m, Rect click) {
 
-		Path path = new Path() ;
-		Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox())) ;
-		for(int i =0; i < getPoints().size() ; i++){
-			Point ps = m.getProjection().toPixels(getPoints().get(i).getCoordinates(),null);
-			if(i==0) path.moveTo(ps.x, ps.y);
-			else path.lineTo(ps.x, ps.y);							
-		}
-		clip.setPath(path, clip);
-		if(!clip.quickReject(click)){
-			return true ;
-		}
-		return false;
-	}
+
+            for(PointGeometry p : getPoints()){
+                    if(p.isSelected(m, click)){
+                            return true ;
+                    }
+            }
+            return false;
+    }
 }
+

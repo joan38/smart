@@ -69,55 +69,62 @@ public class PolygonGeometry extends Geometry {
 		return this.points;
 	}
 
-	@Override
-	public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
-		Paint paint = new Paint();
-		paint.setColor(s.getColor());
-		paint.setStyle(Style.FILL_AND_STROKE);
-		paint.setAlpha(150) ;
+    @Override
+    public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
+            Paint paint = new Paint();
+            paint.setColor(s.getColor());
+            paint.setStyle(Style.FILL_AND_STROKE);
+            paint.setAlpha(150) ;
 
 
-		Path p = new Path() ;
-		if (isSelected()) {
-			paint.setStrokeWidth(s.getSize() * 2);
-		} else {
-			paint.setStrokeWidth(s.getSize());
-		}
+            Path p = new Path() ;
+            if (isSelected()) {
+                    paint.setStrokeWidth(s.getSize() * 2);
+            } else {
+                    paint.setStrokeWidth(s.getSize());
+            }
 
 
 
-		for (int j = 0; j < getPoints().size() +1; j++) {
-			// on récupere les 2 points
-			PointGeometry pointA = getPoints().get(j
-					% getPoints().size());
+            for (int j = 0; j < getPoints().size() +1; j++) {
+                    // on récupere les 2 points
+                    PointGeometry pointA = getPoints().get(j
+                                    % getPoints().size());
 
-			// Converting coordinates in pixel
-			Point pixelA = map.getProjection().toPixels(pointA.getCoordinates(),
-					null);
-			if(j==0) p.moveTo(pixelA.x, pixelA.y);
+                    // Converting coordinates in pixel
+                    Point pixelA = map.getProjection().toPixels(pointA.getCoordinates(),
+                                    null);
+                    if(j==0) p.moveTo(pixelA.x, pixelA.y);
 
-			p.lineTo(pixelA.x, pixelA.y);
-		}
-		p.close();
-		c.drawPath(p, paint);
-		
-	}
+                    p.lineTo(pixelA.x, pixelA.y);
+            }
+            p.close();
+            c.drawPath(p, paint);
+            
+    }
 
-	@Override
-	public boolean isSelected(MapView m, Rect click) {
-		
-		Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox())) ;
-		Path p = new Path() ;
-		for (int j = 0; j < getPoints().size() +1; j++) {
-			Point ps = m.getProjection().toPixels(getPoints().get(j%getPoints().size()).getCoordinates(),null);
-			if(j==0) p.moveTo(ps.x, ps.y);
-			p.lineTo(ps.x, ps.y);
-		}
-		p.close();
-		clip.setPath(p, clip);
-		if(!clip.quickReject(click)   ){
-			return true ;
-		}
-		return false;
-	}
+    @Override
+    public boolean isSelected(MapView m, Rect click) {
+            
+            Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox())) ;
+            Path p = new Path() ;
+            for (int j = 0; j < getPoints().size() +1; j++) {
+                    if(getPoints().get(j%getPoints().size()).isSelected(m, click)){
+                            return true ;
+                    }
+                    Point ps = m.getProjection().toPixels(getPoints().get(j%getPoints().size()).getCoordinates(),null);
+                    if(j==0) p.moveTo(ps.x, ps.y);
+                    p.lineTo(ps.x, ps.y);
+            }
+            p.close();
+            clip.setPath(p, clip);
+            if(!clip.quickReject(click)   ){
+                    return true ;
+            }
+            
+            
+            
+            
+            return false;
+    }
 }
