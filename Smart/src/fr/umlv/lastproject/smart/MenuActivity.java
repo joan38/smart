@@ -16,6 +16,7 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -476,20 +477,46 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();
+				final ProgressDialog progressDialog = ProgressDialog.show(this,
+						getString(R.string.tiff_progress_title),
+						getString(R.string.tiff_progress));
+				final Thread tiffThread = new Thread(new Runnable() {
 
-				try {
+					@Override
+					public void run() {
+						TMSOverlay tms = null;
+						try {
 
-					mapView.addGeoTIFFOverlay((DataImport
-							.importGeoTIFFFileFolder(tiffPath,
-									MenuActivity.this)));
-					Toast.makeText(MenuActivity.this, R.string.geotiffImport,
-							Toast.LENGTH_SHORT).show();
-					Log.d("TEST2", "GEOTIFF");
-				} catch (IOException e) {
-					Toast.makeText(MenuActivity.this,
-							R.string.geotiffReadError, Toast.LENGTH_SHORT)
-							.show();
-				}
+							tms = DataImport.importGeoTIFFFileFolder(tiffPath,
+									MenuActivity.this);
+
+						} catch (IOException e) {
+							//
+						}
+						final TMSOverlay overlay = tms;
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								if (overlay == null) {
+									Toast.makeText(MenuActivity.this,
+											R.string.geotiffReadError,
+											Toast.LENGTH_SHORT).show();
+								} else {
+									mapView.addGeoTIFFOverlay(overlay);
+									Toast.makeText(MenuActivity.this,
+											R.string.geotiffImport,
+											Toast.LENGTH_SHORT).show();
+								}
+
+								progressDialog.dismiss();
+
+							}
+						});
+
+					}
+				});
+				tiffThread.start();
 
 				break;
 
