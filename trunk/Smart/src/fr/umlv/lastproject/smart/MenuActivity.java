@@ -475,16 +475,22 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
-				String tiffPath = data.getData().getPath();
+				final String tiffPath = data.getData().getPath();
+
 				try {
+
 					mapView.addGeoTIFFOverlay((DataImport
-							.importGeoTIFFFileFolder(tiffPath, this, "geoTIFF")));
-					Toast.makeText(this, R.string.geotiffImport,
+							.importGeoTIFFFileFolder(tiffPath,
+									MenuActivity.this)));
+					Toast.makeText(MenuActivity.this, R.string.geotiffImport,
 							Toast.LENGTH_SHORT).show();
+					Log.d("TEST2", "GEOTIFF");
 				} catch (IOException e) {
-					Toast.makeText(this, R.string.geotiffReadError,
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(MenuActivity.this,
+							R.string.geotiffReadError, Toast.LENGTH_SHORT)
+							.show();
 				}
+
 				break;
 
 			}

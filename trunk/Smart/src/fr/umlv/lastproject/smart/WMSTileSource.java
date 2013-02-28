@@ -43,7 +43,7 @@ public class WMSTileSource extends OnlineTileSourceBase {
 		tileURLString.append(getBaseUrl());
 		// tileURLString.append("-125.192865,11.2289864971264,-66.105824,62.5056715028736");
 		tileURLString.append(wmsTileCoordinates(aTile));
-		Log.d("TEST2", tileURLString.toString());
+		Log.d("TESTX", tileURLString.toString());
 
 		return tileURLString.toString();
 	}

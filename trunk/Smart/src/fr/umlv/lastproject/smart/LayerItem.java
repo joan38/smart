@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class LayerItem implements Serializable {
@@ -149,9 +150,13 @@ public class LayerItem implements Serializable {
 
 		final String fileName = SmartConstants.TMP_PATH + name + ".png";
 		final FileOutputStream stream = new FileOutputStream(new File(fileName));
-		if (!overview.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
-			throw new IllegalArgumentException();
+		try {
+			overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		} catch (OutOfMemoryError error) {
+			Log.e("TESTX", error.getMessage());
+			// overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		}
+
 		stream.flush();
 		stream.close();
 		out.writeObject(fileName);
@@ -179,7 +184,13 @@ public class LayerItem implements Serializable {
 
 		// this.overview = BitmapFactory.decodeByteArray(imageByteArray, 0,
 		// imageByteArrayLength);
-		this.overview = BitmapFactory.decodeFile((String) in.readObject());
+		try {
+			this.overview = BitmapFactory.decodeFile((String) in.readObject());
+
+		} catch (OutOfMemoryError error) {
+
+			this.overview = null;
+		}
 		this.isEditable = in.readBoolean();
 
 	}

@@ -45,7 +45,7 @@ public class WMSDialog extends AlertDialog.Builder {
 				try {
 					u = new URL(wms);
 				} catch (MalformedURLException e) {
-					Log.d("TEST2",
+					Log.d("TESTX",
 							"CONNECTION MALFORMED URL : " + e.getMessage()
 									+ " / " + u + "/ " + wmsUrl);
 
@@ -70,7 +70,7 @@ public class WMSDialog extends AlertDialog.Builder {
 
 							urlc.connect();
 							if (urlc.getResponseCode() == 200) {
-								Log.d("TEST2", "CONNECTION PING");
+								Log.d("TESTX", "CONNECTION PING");
 
 								mapView.addWMSLayer(url.toString(), wmsName
 										.getText().toString());
