@@ -26,6 +26,7 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public String getName() {
 		return name;
+
 	}
 
 	@Override

@@ -18,6 +18,8 @@ public final class SmartConstants {
 	public static final int IMPORT_KML_BROWSER_ACTIVITY = 5;
 	public static final int IMPORT_SHP_BROWSER_ACTIVITY = 6;
 	public static final int IMPORT_TIFF_BROWSER_ACTIVITY = 7;
+	public static final int HEIGHT_ACTIVITY = 8;
+	public static final int GPS_ACTIVITY = 9;
 
 	public static final int CREATE_MISSION = 0;
 	public static final int CREATE_FORM = 1;
