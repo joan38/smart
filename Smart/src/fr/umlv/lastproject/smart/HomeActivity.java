@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -151,7 +152,7 @@ public class HomeActivity extends Activity {
 		setResult(RESULT_CANCELED, intentReturn);
 		finish();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();

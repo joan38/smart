@@ -653,6 +653,7 @@ public class MenuActivity extends Activity {
 			break;
 
 		case SmartConstants.GPS_TRACK:
+			final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
 			if (!gps.isEnabled(locationManager)) {
 				final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
 						this);
@@ -660,7 +661,7 @@ public class MenuActivity extends Activity {
 				return;
 			}
 			if (gpsTrack == null) {
-				final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
+
 				trackDialog.show();
 				break;
 
@@ -668,9 +669,10 @@ public class MenuActivity extends Activity {
 				try {
 					gpsTrack.stopTrack();
 					gpsTrack = null;
-					trackStarted = false;
+					trackStarted = trackDialog.isTrackStarted();
 				} catch (IOException e) {
 					gpsTrack = null;
+
 					Toast.makeText(this, R.string.track_error,
 							Toast.LENGTH_LONG).show();
 					trackStarted = false;
