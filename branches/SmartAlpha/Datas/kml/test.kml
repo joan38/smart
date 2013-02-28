@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Test.kml</name>
+	<Style id="sn_ylw-pushpin">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin0">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin1</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin0">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin1">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin1">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Folder>
+		<name>Test</name>
+		<open>1</open>
+		<Placemark>
+			<name>Paris</name>
+			<LookAt>
+				<gx:TimeStamp><when>2013-02-16T11:01:53Z</when>
+</gx:TimeStamp>
+				<longitude>3.103147667117878</longitude>
+				<latitude>46.75275493902095</latitude>
+				<altitude>0</altitude>
+				<range>1652971.907449092</range>
+				<tilt>0</tilt>
+				<heading>-2.331669723024738</heading>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Point>
+				<coordinates>2.356189425679389,48.82617014501892,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Bretagne</name>
+			<styleUrl>#msn_ylw-pushpin1</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+-4.606088583328432,48.23165561017171,0 -4.491378838952834,48.18744800263826,0 -4.33935392948309,48.15984025090515,0 -4.243301511840064,48.10064138984215,0 -4.429495619619313,48.09840882857992,0 -4.713571232497924,48.07360827783783,0 -4.575737697971865,48.01815777325373,0 -4.45511109801096,47.9347571025793,0 -4.333020652231404,47.8510648191262,0 -4.202680841468843,47.82179808583837,0 -4.147464726686053,47.94731516197313,0 -4.044385408501677,47.86147109594883,0 -3.865549658798957,47.78280758647757,0 -3.688237232912115,47.7169040575388,0 -3.321893066151844,47.62544023348587,0 -3.246802340171084,47.75186286465903,0 -3.141958044167292,47.84006613515913,0 -3.117395602415952,47.92213591013105,0 -3.022544777036006,48.06290587544842,0 -2.942266362305961,48.17573916615709,0 -2.818692464684069,48.38512526078374,0 -2.808229404268792,48.54622330385817,0 -3.06680815746549,48.70234166420815,0 -3.069566237018575,48.8226042077618,0 -3.425927733036419,48.83708065386526,0 -3.607924695805146,48.81010895285165,0 -3.54960386929172,48.73367897391734,0 -3.729084725265302,48.69338019082972,0 -3.880828063393214,48.72186258171517,0 -4.16307929180036,48.67276714657594,0 -4.427965699382625,48.63786459684595,0 -4.687141025838827,48.57587567728704,0 -4.81912936262184,48.51062585381718,0 -4.78742106621654,48.37816657438735,0 -4.624704289432361,48.31104534396966,0 -4.370082305622779,48.3863346894346,0 -4.606088583328432,48.23165561017171,0 </coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Belgique</name>
+			<styleUrl>#msn_ylw-pushpin0</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+2.548929082838829,51.078619188671,0 2.654459841814367,50.79715132015318,0 2.99752579444881,50.67200016750474,0 3.159968983954726,50.74431323477775,0 3.165759939360231,50.64986272600896,0 3.299992532767144,50.49158711359867,0 3.510164703850491,50.44310209338125,0 3.617085860781779,50.37856311671177,0 3.703666280323732,50.30012484460968,0 3.929037023464614,50.34503965116281,0 4.074757943801712,50.32108206107866,0 4.080978793979197,50.16059177692385,0 4.168647859244059,50.01514806013854,0 4.27303680001581,49.96370316709103,0 4.560187152596617,49.96907946339508,0 4.722544030910541,50.05199113146882,0 4.844910225775012,50.10738994368026,0 4.868613713617942,49.94734258919999,0 4.952320416346763,49.855063790566,0 5.055709285519341,49.78972409431677,0 5.179676290285869,49.68455219985805,0 5.36420667137758,49.56662686844817,0 5.445968219089464,49.50082528411105,0 5.608573821160096,49.51557876555056,0 5.812528501752587,49.53084301991867,0 </coordinates>
+			</LineString>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>
