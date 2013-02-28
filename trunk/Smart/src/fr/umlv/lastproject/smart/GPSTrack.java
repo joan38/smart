@@ -11,7 +11,6 @@ import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
-import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Main class for tracking Starts and stops a track
@@ -92,7 +91,7 @@ public class GPSTrack {
 		gps.addGPSListener(gpsListener);
 		this.geometryLayer = new GeometryLayer(mapView.getContext());
 		this.geometryLayer.setType(GeometryType.LINE);
-		this.geometryLayer.setName(SmartConstants.GPS_TRACK_NAME);
+		this.geometryLayer.setName(trackName);
 		lineGeometry = new LineGeometry();
 		this.geometryLayer.addGeometry(lineGeometry);
 		this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS,
