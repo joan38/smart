@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart;
 
 import java.io.IOException;
 import java.util.Collections;
-
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -13,7 +12,6 @@ import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -165,7 +163,7 @@ public class MenuActivity extends Activity {
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(11);
 		mapController.setCenter(new GeoPoint(48.84, 2.58));
-		overlayManager.add(new ScaleBarOverlay(this));
+		// overlayManager.add(new ScaleBarOverlay(this));
 		// final WMSMapTileProviderBasic tileProvider = new
 		// WMSMapTileProviderBasic(
 		// getApplicationContext());
@@ -344,13 +342,16 @@ public class MenuActivity extends Activity {
 			new AlertSettingInfoDialog(this, findViewById(R.id.table),
 					infoOverlay);
 			break;
+			
 		case 1:
 			infoOverlay.hideInfoZone(findViewById(R.id.table), item);
 			break;
+			
 		case 2:
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivity(intent);
 			break;
+			
 		case 3:
 			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
 					R.string.helpMap);
