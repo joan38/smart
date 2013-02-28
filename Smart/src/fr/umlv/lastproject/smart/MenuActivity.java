@@ -547,6 +547,9 @@ public class MenuActivity extends Activity {
 					@Override
 					public boolean onLongClick(View v) {
 						shortcutsView.removeView(shortcut);
+						Toast.makeText(MenuActivity.this,
+								R.string.shortcut_remove, Toast.LENGTH_SHORT)
+								.show();
 						shortcutsView.invalidate();
 						return false;
 					}
@@ -584,6 +587,9 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			} else {
 				Mission.getInstance().startSurvey(GeometryType.POINT);
+				Toast.makeText(this,
+						getResources().getText(R.string.point_survey),
+						Toast.LENGTH_LONG).show();
 			}
 			break;
 
@@ -594,6 +600,9 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			} else {
 				Mission.getInstance().startSurvey(GeometryType.LINE);
+				Toast.makeText(this,
+						getResources().getText(R.string.line_survey),
+						Toast.LENGTH_LONG).show();
 			}
 			break;
 
@@ -604,6 +613,9 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			} else {
 				Mission.getInstance().startSurvey(GeometryType.POLYGON);
+				Toast.makeText(this,
+						getResources().getText(R.string.polygon_survey),
+						Toast.LENGTH_LONG).show();
 			}
 			break;
 

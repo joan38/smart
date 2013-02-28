@@ -1,16 +1,8 @@
 package fr.umlv.lastproject.smart.dialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.data.CsvExportException;
-import fr.umlv.lastproject.smart.data.DataExport;
-import fr.umlv.lastproject.smart.data.KmlExportException;
-import fr.umlv.lastproject.smart.database.DbManager;
-import fr.umlv.lastproject.smart.database.MissionRecord;
-import fr.umlv.lastproject.smart.utils.SmartException;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,25 +12,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.data.CsvExportException;
+import fr.umlv.lastproject.smart.data.DataExport;
+import fr.umlv.lastproject.smart.data.KmlExportException;
+import fr.umlv.lastproject.smart.database.DbManager;
+import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
  * This dialog is used to export a mission
  * 
  * @author Maelle Cabot
- *
+ * 
  */
 public class AlertExportDialog extends AlertDialog.Builder {
-	
-	List<MissionRecord> missionRecords ;
+
+	List<MissionRecord> missionRecords;
 
 	/**
 	 * Constructor
-	 * @param c : the context
+	 * 
+	 * @param c
+	 *            : the context
 	 */
 	public AlertExportDialog(final Context c) {
 		super(c);
@@ -51,15 +52,16 @@ public class AlertExportDialog extends AlertDialog.Builder {
 		setView(exportMissionDialog);
 		setTitle(R.string.export_mission);
 
-		final RadioGroup formatSelector = (RadioGroup) exportMissionDialog.findViewById(R.id.formatChoice);
-		
+		final RadioGroup formatSelector = (RadioGroup) exportMissionDialog
+				.findViewById(R.id.formatChoice);
+
 		final ListView listView = (ListView) exportMissionDialog
 				.findViewById(R.id.listViewMission);
 
 		getAllMissions(c);
-		List<String> titleMissions = new ArrayList<String>() ;
-		for(MissionRecord m : missionRecords){
-			titleMissions.add(m.getTitle()) ;
+		List<String> titleMissions = new ArrayList<String>();
+		for (MissionRecord m : missionRecords) {
+			titleMissions.add(m.getTitle());
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
@@ -70,38 +72,46 @@ public class AlertExportDialog extends AlertDialog.Builder {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
-				long idMission = -1 ;
+				long idMission = -1;
 				String value = (String) adapter.getItemAtPosition(position);
-				for(MissionRecord m : missionRecords){
-					if(m.getTitle().equals(value)) 
-						idMission = m.getId(); 
+				for (MissionRecord m : missionRecords) {
+					if (m.getTitle().equals(value))
+						idMission = m.getId();
 				}
-				
-				Log.d("RadioButtonIdExport", String.valueOf(formatSelector.getCheckedRadioButtonId()));
+
+				Log.d("RadioButtonIdExport", String.valueOf(formatSelector
+						.getCheckedRadioButtonId()));
 
 				try {
 					switch (formatSelector.getCheckedRadioButtonId()) {
 					case R.id.CsvExport:
 						// Export CSV
 						DataExport.exportCsv(Environment
-								.getExternalStorageDirectory().getPath() + "/SMART",
-								idMission, c);
+								.getExternalStorageDirectory().getPath()
+								+ "/SMART", idMission, c);
+						Toast.makeText(c, R.string.csvExport, Toast.LENGTH_LONG)
+								.show();
 						break;
 
 					case R.id.KmlExport:
 						// Export KML
 						DataExport.exportKml(Environment
-								.getExternalStorageDirectory().getPath() + "/SMART",
-								idMission, c);
+								.getExternalStorageDirectory().getPath()
+								+ "/SMART", idMission, c);
+						Toast.makeText(c, R.string.kmlExport, Toast.LENGTH_LONG)
+								.show();
 						break;
 
 					default:
-						throw new IllegalStateException("Id of the radiobutton unkown");
+						throw new IllegalStateException(
+								"Id of the radiobutton unkown");
 					}
 				} catch (KmlExportException e) {
-					// TODO: Toast
+					Toast.makeText(c, R.string.kmlExportError,
+							Toast.LENGTH_LONG).show();
 				} catch (CsvExportException e) {
-					// TODO: Toast
+					Toast.makeText(c, R.string.csvExportError,
+							Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -127,10 +137,10 @@ public class AlertExportDialog extends AlertDialog.Builder {
 		missionRecords = dbm.getAllMissionsNoActives();
 		dbm.close();
 
-//		Map<String, Long> mapMissions = new HashMap<String, Long>();
-//		for (MissionRecord m : missionRecords) {
-//			mapMissions.put(m.getTitle(), m.getId());
-//		}
+		// Map<String, Long> mapMissions = new HashMap<String, Long>();
+		// for (MissionRecord m : missionRecords) {
+		// mapMissions.put(m.getTitle(), m.getId());
+		// }
 	}
 
 }

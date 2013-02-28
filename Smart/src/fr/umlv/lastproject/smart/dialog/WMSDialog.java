@@ -74,7 +74,9 @@ public class WMSDialog extends AlertDialog.Builder {
 
 								mapView.addWMSLayer(url.toString(), wmsName
 										.getText().toString());
-
+								Toast.makeText(mapView.getContext(),
+										R.string.wms_success, Toast.LENGTH_LONG)
+										.show();
 								return;
 							}
 							toast.show();
