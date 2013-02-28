@@ -274,17 +274,17 @@ public class CreateFormActivity extends Activity {
 					form.write(Environment.getExternalStorageDirectory()
 							.getPath() + "/SMART");
 				} catch (FormIOException e) {
-					Toast.makeText(getApplicationContext(),
-							e.getMessage(),
+					Toast.makeText(getApplicationContext(), e.getMessage(),
 							Toast.LENGTH_LONG).show();
 				}
 
-				// Switch to our application
-				Intent intentMenuActivity = new Intent(CreateFormActivity.this,
-						MenuActivity.class);
-				intentMenuActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-						| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-				startActivity(intentMenuActivity);
+				//if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+					// Switch to our application
+					//Intent intentMenuActivity = new Intent(
+					//		CreateFormActivity.this, MenuActivity.class);
+					//intentMenuActivity.setFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+					// navigateUpTo(intentMenuActivity); // API 16 min...
+				//}
 				finish();
 			}
 		});
