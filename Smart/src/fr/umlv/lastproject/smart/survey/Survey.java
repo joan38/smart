@@ -45,6 +45,7 @@ public class Survey {
 
 	}
 
+
 	/**
 	 * this method is use to start a survey
 	 * the type of survey is defined by the type of the layer

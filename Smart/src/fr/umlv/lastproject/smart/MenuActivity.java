@@ -625,6 +625,16 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 			break;
+			
+		case SmartConstants.POINT_SURVEY_POSITION :
+			if (Mission.getInstance() == null ) {
+                Toast.makeText(this,
+                                getResources().getText(R.string.noMission),
+                                Toast.LENGTH_LONG).show();
+        } else {
+                Mission.getInstance().startSurvey(new PointGeometry(lastPosition.getLatitudeE6()/1E6, lastPosition.getLongitudeE6()/1E6));
+        }
+        break ;
 
 		case SmartConstants.LINE_SURVEY:
 			if (Mission.getInstance() == null) {
