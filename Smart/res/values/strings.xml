@@ -15,8 +15,8 @@
     <string name="gpsMessage">	This application required GPS.\nYou should activate it.\nYou can also activated it by setting menu.</string>
     <string name="cancel">Cancel</string>
     <string name="validate">Validate</string>
-    <string name="hideInfoZone">Hide informations</string>
-    <string name="showInfoZone">Show informations</string>
+    <string name="hideInfoZone">Hide information</string>
+    <string name="showInfoZone">Show information</string>
     <string name="exit">Exit ?</string>
     <string name="exitMsg">Are you sure you want to quit SMART ?</string>
     <string name="help">Help</string>
@@ -49,17 +49,17 @@
     <string-array name="items">
         <item>Start mission</item>
         <item>Create form</item>
-        <item>Point Survey</item>
-        <item>Line Survey</item>
-        <item>Polygon Survey</item>
+        <item>Point survey</item>
+        <item>Line survey</item>
+        <item>Polygon survey</item>
         <item>Track GPS</item>
-        <item>Import KML</item>
-        <item>GeoTIFF Import</item>
-        <item>ShapeFile Import</item>
-        <item>WMS Import</item>
+        <item>KML import</item>
+        <item>GeoTIFF import</item>
+        <item>ShapeFile import</item>
+        <item>WMS import</item>
         <item>Export mission</item>
-        <item>Measure</item>
-        <item>Export Form</item>
+        <item>Distance measure</item>
+        <item>Export form</item>
         <item>Delete mission</item>
     </string-array>
 
@@ -112,7 +112,7 @@
     <string name="Name">Name</string>
     <string name="List">List</string>
     <string name="form_title">Form</string>
-    <string name="MeasureTitle">MeasureAbsoluteText>Measure</string>
+    <string name="MeasureTitle">Measure</string>
     <string name="MeasureRelative">Relative to your position</string>
     <string name="MeasureAbsolute">Beetween two points on the 	 map</string>
     <string name="MeasureRelativeText">Select a point on the map</string>
