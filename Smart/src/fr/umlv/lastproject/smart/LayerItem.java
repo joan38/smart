@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class LayerItem implements Serializable {
 
@@ -23,9 +23,6 @@ public class LayerItem implements Serializable {
 	private Bitmap overview;
 
 	private boolean isEditable;
-
-	private static final String TMP_BITMAP = Environment
-			.getExternalStorageDirectory() + "/SMART/" + "tmp/";
 
 	/**
 	 * 
@@ -147,10 +144,10 @@ public class LayerItem implements Serializable {
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(name);
 		out.writeBoolean(visible);
-		final File appFolder = new File(TMP_BITMAP);
+		final File appFolder = new File(SmartConstants.TMP_PATH);
 		appFolder.mkdirs();
 
-		final String fileName = TMP_BITMAP + "/" + name + ".png";
+		final String fileName = SmartConstants.TMP_PATH + name + ".png";
 		final FileOutputStream stream = new FileOutputStream(new File(fileName));
 		if (!overview.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
 			throw new IllegalArgumentException();

@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.utils;
 
 import android.graphics.Color;
+import android.os.Environment;
 import fr.umlv.lastproject.smart.R;
 
 /**
@@ -48,6 +49,11 @@ public final class SmartConstants {
 	public static final int LIST_FIELD = 3;
 	public static final int PICTURE_FIELD = 4;
 	public static final int HEIGHT_FIELD = 5;
+
+	public static final String TIFF_PATH = Environment
+			.getExternalStorageDirectory() + "/osmdroid/";
+	public static final String TMP_PATH = Environment
+			.getExternalStorageDirectory() + "/SMART/.tmp/";
 
 	public static int[] colors = new int[] { Color.rgb(100, 149, 237),
 			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),
