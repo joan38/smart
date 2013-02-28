@@ -12,13 +12,13 @@
     <string name="centerMap">Recentrage de la carte</string>
     <string name="findGPS">Recherche du signal GPS..</string>
     <string name="gpsSettings">Paramétrages du GPS</string>
-    <string name="gpsMessage">Cette application require le GPS.\nValider pour accéder aux paramétrages.\nVous pouvez également y accéder par le menu de paramétrages.</string>
+    <string name="gpsMessage">Cette application requiert le GPS.\nValider pour accéder aux paramétrages.\nVous pouvez également y accéder par le menu de paramétrages.</string>
     <string name="cancel">Annuler</string>
     <string name="validate">Valider</string>
     <string name="hideInfoZone">Cacher la zone d\'informations</string>
     <string name="showInfoZone">Afficher la zone d\'informations</string>
     <string name="exit">Quitter ?</string>
-    <string name="exitMsg">Êtes-vous sûr de vouloir quitter SMART ?</string>
+    <string name="exitMsg">Êtes-vous sûr(e) de vouloir quitter SMART ?</string>
     <string name="help">Aide</string>
     <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.\nPour changer la symbologie, il vous suffit de séléctionner une image.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
@@ -27,7 +27,7 @@
     <string name="ok">Ok</string>
     <string name="option">Option</string>
     <string name="delete">Supprimer</string>
-    <string name="deleteLayer">Êtes-vous vraiment sûr de vouloir supprimer cette couche ?</string>
+    <string name="deleteLayer">Êtes-vous sûr(e) de vouloir supprimer cette couche ?</string>
     <string name="warning">Attention</string>
     <string name="deleteLayerFalse">Impossible de supprimer la couche, celle-ci appartient à une mission encore en cours.</string>
     <string name="visibilityLayer">Vous ne pouvez pas modifier la visibilité de cette couche, celle-ci appartient à une mission encore en cours.</string>
@@ -44,19 +44,19 @@
     <string name="layerAlreadyExists">La couche existe déjà</string>
 
     <string-array name="items">
-        <item>Créer mission</item>
+        <item>Démarrer une mission</item>
         <item>Créer un formulaire</item>
-        <item>Relevé de point</item>
-        <item>Relevé de ligne</item>
-        <item>Relevé de polygon</item>
-        <item>Trace GPS</item>
-        <item>Import de KML</item>
-        <item>Import de GeoTIFF</item>
-        <item>Import de ShapeFile</item>
-        <item>Import de WMS</item>
-        <item>Exporter mission</item>
-        <item>Mesure</item>
-        <item>Export de formulaire</item>
+        <item>Relever un point</item>
+        <item>Relever une ligne</item>
+        <item>Relever un polygon</item>
+        <item>Démarrer une trace GPS</item>
+        <item>Importer KML</item>
+        <item>Importer GeoTIFF</item>
+        <item>Importer ShapeFile</item>
+        <item>Importer WMS</item>
+        <item>Exporter une mission</item>
+        <item>Mesurer une distance</item>
+        <item>Exporter un formulaire</item>
         <item>Supprimer une mission</item>
     </string-array>
 
@@ -89,11 +89,13 @@
     <string name="cancel_button">Annuler</string>
     <string name="missionName">Nom :</string>
     <string name="selectForm">Formulaire :</string>
-    <string name="formBrowser">Selectionner le formulaire</string>
+    <string name="formBrowser">Sélectionner le formulaire</string>
     <string name="mission">Mission</string>
     <string name="export_mission">Exporter une mission</string>
     <string name="delete_mission">Supprimer une mission</string>
     <string name="export_form">Exporter un formulaire</string>
+     <string name="defaultForm">Défaut</string>
+    <string name="othertForm">Autre</string>
     <string name="track_name_missing">Saisir un nom pour la trace</string>
     <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string>
     <string name="track_param_false">Le paramètre doit être un nombre entier</string>
@@ -108,8 +110,8 @@
     <string name="MeasureTitle">Mesure</string>
     <string name="MeasureRelative">Par rapport à votre position</string>
     <string name="MeasureAbsolute">Entre deux points sur la carte</string>
-    <string name="MeasureRelativeText">Selectionnez un point sur la carte</string>
-    <string name="MeasureAbsoluteText">Selectionnez deux points sur la carte</string>
+    <string name="MeasureRelativeText">Sélectionnez un point sur la carte</string>
+    <string name="MeasureAbsoluteText">Sélectionnez deux points sur la carte</string>
     <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
     <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     <string name="field_text">Champ texte : </string>
