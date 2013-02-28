@@ -33,13 +33,13 @@ public final class ShpImport {
 
 			switch (type) {
 			case Point: {
-				return getLayerFromPointShp(shp, context);
+				return getLayerFromPointShp(shp, context, fn);
 			}
 			case PolyLine: {
-				return getLayerFromPolylineShp(shp, context);
+				return getLayerFromPolylineShp(shp, context, fn);
 			}
 			case Polygon: {
-				return getLayerFromPolygonShp(shp, context);
+				return getLayerFromPolygonShp(shp, context, fn);
 			}
 			default:
 				return null;
@@ -53,11 +53,12 @@ public final class ShpImport {
 	}
 
 	private static GeometryLayer getLayerFromPolygonShp(ShapeFile shp,
-			Context context) {
+			Context context, String fileName) {
 
 		GeometryLayer gl = new GeometryLayer(context);
 
 		gl.setType(GeometryType.POLYGON);
+		gl.setName(fileName);
 
 		for (int i = 0; i < shp.getSHP_shapeCount(); i++) {
 			PolygonGeometry p = new PolygonGeometry();
@@ -76,11 +77,12 @@ public final class ShpImport {
 	}
 
 	private static GeometryLayer getLayerFromPointShp(ShapeFile shp,
-			Context context) {
+			Context context, String fileName) {
 
 		GeometryLayer gl = new GeometryLayer(context);
 
 		gl.setType(GeometryType.POINT);
+		gl.setName(fileName);
 
 		for (int i = 0; i < shp.getSHP_shapeCount(); i++) {
 			ShpPoint point = shp.getSHP_shape(i);
@@ -94,10 +96,11 @@ public final class ShpImport {
 	}
 
 	private static GeometryLayer getLayerFromPolylineShp(ShapeFile shp,
-			Context context) {
+			Context context, String fileName) {
 
 		GeometryLayer gl = new GeometryLayer(context);
 		gl.setType(GeometryType.LINE);
+		gl.setName(fileName);
 
 		for (int i = 0; i < shp.getSHP_shapeCount(); i++) {
 			LineGeometry line = new LineGeometry();
