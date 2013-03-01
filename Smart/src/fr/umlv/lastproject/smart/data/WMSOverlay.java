@@ -44,7 +44,6 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 
 	@Override
 	public boolean hasSymbologyEditable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

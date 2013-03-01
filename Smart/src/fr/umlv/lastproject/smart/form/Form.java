@@ -45,8 +45,8 @@ public class Form implements Serializable {
 	private List<Field> fieldsList;
 
 	private static final String VALUESTAG = "values";
-//	private static final String MINTAG = "min";
-//	private static final String MAXTAG = "max";
+	// private static final String MINTAG = "min";
+	// private static final String MAXTAG = "max";
 	private static final String COMMENTS = "Commentaires";
 	private static final String DEFAULT_NAME = "FormDefault";
 	private static final String CHARSET = "UTF-8";
@@ -164,8 +164,10 @@ public class Form implements Serializable {
 	 */
 	public void openForm(final MenuActivity context, final Geometry g,
 			final Mission mission) {
+
 		final FormDialog dialog = new FormDialog(context, this, g, mission);
-		dialog.show();
+		context.createFormDialog(this, g, mission);
+
 	}
 
 	/**
@@ -218,13 +220,14 @@ public class Form implements Serializable {
 									.equalsIgnoreCase(TITLETAG)) {
 								title = xpp.getAttributeValue(i).replace(" ",
 										"");
-							} /*else if (xpp.getAttributeName(i)
-									.equalsIgnoreCase(MAXTAG)) {
-								max = Integer.valueOf(xpp.getAttributeValue(i));
-							} else if (xpp.getAttributeName(i)
-									.equalsIgnoreCase(MINTAG)) {
-								min = Integer.valueOf(xpp.getAttributeValue(i));
-							}*/ else if (xpp.getAttributeName(i)
+							} /*
+							 * else if (xpp.getAttributeName(i)
+							 * .equalsIgnoreCase(MAXTAG)) { max =
+							 * Integer.valueOf(xpp.getAttributeValue(i)); } else
+							 * if (xpp.getAttributeName(i)
+							 * .equalsIgnoreCase(MINTAG)) { min =
+							 * Integer.valueOf(xpp.getAttributeValue(i)); }
+							 */else if (xpp.getAttributeName(i)
 									.equalsIgnoreCase(VALUESTAG)) {
 								values = xpp.getAttributeValue(i);
 							}
@@ -328,16 +331,16 @@ public class Form implements Serializable {
 					break;
 
 				case NUMERIC:
-// TODO					
-//					NumericField nf = (NumericField) field;
-//
-//					Attr minAttribute = xml.createAttribute(MINTAG);
-//					minAttribute.setValue(String.valueOf(nf.getMin()));
-//					fieldElement.setAttributeNode(minAttribute);
-//
-//					Attr maxAttribute = xml.createAttribute(MAXTAG);
-//					maxAttribute.setValue(String.valueOf(nf.getMax()));
-//					fieldElement.setAttributeNode(maxAttribute);
+					// TODO
+					// NumericField nf = (NumericField) field;
+					//
+					// Attr minAttribute = xml.createAttribute(MINTAG);
+					// minAttribute.setValue(String.valueOf(nf.getMin()));
+					// fieldElement.setAttributeNode(minAttribute);
+					//
+					// Attr maxAttribute = xml.createAttribute(MAXTAG);
+					// maxAttribute.setValue(String.valueOf(nf.getMax()));
+					// fieldElement.setAttributeNode(maxAttribute);
 					break;
 
 				case LIST:

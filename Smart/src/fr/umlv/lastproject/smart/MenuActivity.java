@@ -16,6 +16,7 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -52,10 +53,12 @@ import fr.umlv.lastproject.smart.dialog.AlertSettingInfoDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
+import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormIOException;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
@@ -93,6 +96,13 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private Preferences pref;
+
+	private Mission mission;
+	private Form form;
+	private Geometry geom;
+	private Object[] valuesList;
+	private static final int FORM_DIALOG_ID = 1;
+	private int heightIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -520,6 +530,27 @@ public class MenuActivity extends Activity {
 
 				break;
 
+			case SmartConstants.HEIGHT_ACTIVITY:
+				Log.d("TESTX", "ACTIVITY RESULT");
+				final Bundle bundle = data.getExtras();
+				final Object oResult = bundle.get(HeightActivity.HEIGHT_RESULT);
+				if (oResult == null) {
+					final String error = (bundle
+							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					showDialog(FORM_DIALOG_ID, new Bundle());
+					return;
+				}
+				final double heightValue = Double.parseDouble(oResult
+						.toString());
+				final Bundle b = new Bundle();
+				b.putDouble("height", heightValue);
+				showDialog(FORM_DIALOG_ID, b);
+
+				break;
+
 			}
 		}
 		if (resultCode == RESULT_CANCELED) {
@@ -854,4 +885,51 @@ public class MenuActivity extends Activity {
 
 	}
 
+	public void startHeightActivityForResult(Form form, Mission miss,
+			Geometry geom, Object[] valuesList, int heightIndex) {
+		this.form = form;
+		this.mission = miss;
+		this.geom = geom;
+		this.valuesList = valuesList;
+		this.heightIndex = heightIndex;
+
+		removeDialog(FORM_DIALOG_ID);
+		Log.d("TESTX", "START HEIGHT ACTIVITY");
+		startActivityForResult(new Intent(this, HeightActivity.class),
+				SmartConstants.HEIGHT_ACTIVITY);
+	}
+
+	public void createFormDialog(Form form, Geometry g, Mission mission) {
+		this.form = form;
+		this.mission = mission;
+		this.geom = g;
+		showDialog(FORM_DIALOG_ID, null);
+
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id, Bundle bundle) {
+		super.onCreateDialog(id);
+		// Simple Form Dialog
+		if (bundle == null) {
+			final FormDialog dialog = new FormDialog(this, form, geom, mission);
+			Log.d("TESTX", "CREATE DIALOG");
+			return dialog.create();
+		}
+		// Retrieve what user already filled
+
+		else {
+			Log.d("TESTX", "CREATE DIALOG 2");
+			if (bundle.get("height") != null) {
+				double height = bundle.getDouble("height");
+				valuesList[heightIndex] = height;
+			}
+
+			final FormDialog dialog = new FormDialog(this, form, geom, mission,
+					valuesList);
+			Log.d("TESTX", "CREATE DIALOG");
+			return dialog.create();
+		}
+
+	}
 }
