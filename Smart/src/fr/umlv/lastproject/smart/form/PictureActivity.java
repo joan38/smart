@@ -30,8 +30,7 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 public class PictureActivity extends Activity {
 
 	private File picture;
-	private static final  int PICTURE_RESULT = 1;
-	
+	private static final int PICTURE_RESULT = 1;
 
 	private GPS gps;
 	private LocationManager locationManager;
@@ -45,6 +44,19 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		final Intent startIntent = getIntent();
+		if (startIntent == null) {
+			finish();
+			return;
+		} else {
+			boolean takePicture = startIntent.getBooleanExtra("takePicture",
+					false);
+			if (!takePicture) {
+				finish();
+				return;
+			}
+		}
+
 		setContentView(R.layout.activity_picture);
 
 		createPictureFolder();
@@ -104,7 +116,8 @@ public class PictureActivity extends Activity {
 		ExifInterface exif = null;
 		try {
 			// Récupration de la photo à geoTag
-			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename + ".jpg");
+			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename
+					+ ".jpg");
 			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

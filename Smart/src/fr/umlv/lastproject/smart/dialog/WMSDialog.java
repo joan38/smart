@@ -1,6 +1,8 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,16 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.SmartMapView;
 
 public class WMSDialog extends AlertDialog.Builder {
 
-	public WMSDialog(final SmartMapView mapView) {
-		super(mapView.getContext());
+	public WMSDialog(final MenuActivity menu) {
+		super(menu);
 		setCancelable(false);
 
-		LayoutInflater factory = LayoutInflater.from(mapView.getContext());
+		LayoutInflater factory = LayoutInflater.from(menu);
 		final View alertDialogView = factory.inflate(
 				fr.umlv.lastproject.smart.R.layout.import_wms, null);
 
@@ -39,8 +41,8 @@ public class WMSDialog extends AlertDialog.Builder {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
 				final String wms = wmsUrl.getText().toString();
-				final Toast toast = Toast.makeText(mapView.getContext(),
-						R.string.wms_error, Toast.LENGTH_LONG);
+				final Toast toast = Toast.makeText(menu, R.string.wms_error,
+						Toast.LENGTH_LONG);
 				URL u = null;
 				try {
 					u = new URL(wms);
@@ -72,17 +74,30 @@ public class WMSDialog extends AlertDialog.Builder {
 							if (urlc.getResponseCode() == 200) {
 								Log.d("TESTX", "CONNECTION PING");
 
-								mapView.addWMSLayer(url.toString(), wmsName
-										.getText().toString());
-								Toast.makeText(mapView.getContext(),
-										R.string.wms_success, Toast.LENGTH_LONG)
-										.show();
-								return;
+								// mapView.addWMSLayer(url.toString(), wmsName
+								// .getText().toString());
+								// Toast.makeText(mapView.getContext(),
+								// R.string.wms_success, Toast.LENGTH_LONG)
+								// .show();
+
 							}
-							toast.show();
+							urlc.disconnect();
+							URL yahoo = new URL("http://www.yahoo.com/");
+							BufferedReader in = new BufferedReader(
+									new InputStreamReader(yahoo.openStream()));
+
+							String inputLine;
+
+							while ((inputLine = in.readLine()) != null)
+								Log.d("TESTX", inputLine);
+
+							in.close();
+							return;
+							// toast.show();
 
 						} catch (IOException e) {
 							toast.show();
+
 						}
 
 					}
