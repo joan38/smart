@@ -87,7 +87,6 @@ public class LineGeometry extends Geometry {
                     paint.setStrokeWidth(s.getSize());
             }
 
-            // Retrieving list of points contained
 
 
             for (int j = 0; j < getPoints().size() -1 ; j++) {

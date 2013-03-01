@@ -52,7 +52,19 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 		ArrayAdapter<Integer> tailleAdapter = new ArrayAdapter<Integer>(menu,
 				android.R.layout.simple_list_item_1, tailles);
 		tailleSpinner.setAdapter(tailleAdapter);
+		
+		tailleSpinner.setSelection(layer.getSymbology().getSize()-1) ;
+		for(int i=0 ; i < SmartConstants.colors.length ; i++){
+			int a = SmartConstants.colors[i] ;
+				if(a == layer.getSymbology().getColor()){
+				spinner.setSelection(i) ;
+				break ;
+			}
+		}
 
+
+		
+		
 		final AlertDialog dialog = this
 				.setPositiveButton(R.string.validate, new OnClickListener() {
 

@@ -65,7 +65,7 @@ public final class SmartConstants {
 	public static final String PICTURES_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/SMART/Pictures/";
 
-	public static int[] colors = new int[] { Color.rgb(100, 149, 237),
+	public static int[] colors = new int[] { Color.BLACK,Color.rgb(100, 149, 237),
 			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),
 			Color.rgb(34, 139, 34), Color.rgb(255, 140, 0),
 			Color.rgb(152, 251, 152), Color.rgb(178, 34, 34),
