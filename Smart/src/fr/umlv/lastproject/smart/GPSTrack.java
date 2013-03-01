@@ -28,6 +28,7 @@ public class GPSTrack {
 	private final IGPSListener gpsListener;
 	private final GeometryLayer geometryLayer;
 	private boolean isFinished, isStarted;
+
 	private final LineGeometry lineGeometry;
 	private final String trackName;
 
@@ -151,4 +152,13 @@ public class GPSTrack {
 		}
 
 	}
+
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public boolean isStarted() {
+		return isStarted;
+	}
+
 }

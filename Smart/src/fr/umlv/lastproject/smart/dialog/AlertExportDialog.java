@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,16 +86,20 @@ public class AlertExportDialog extends AlertDialog.Builder {
 					switch (formatSelector.getCheckedRadioButtonId()) {
 					case R.id.CsvExport:
 						// Export CSV
-						DataExport.exportCsv(SmartConstants.APP_PATH, idMission, c);
-						Toast.makeText(c, R.string.csvExport, Toast.LENGTH_LONG)
-								.show();
+						String csvstring = c.getString(R.string.csvExport);
+						DataExport.exportCsv(SmartConstants.APP_PATH,
+								idMission, c);
+						Toast.makeText(c, csvstring + SmartConstants.APP_PATH,
+								Toast.LENGTH_LONG).show();
 						break;
 
 					case R.id.KmlExport:
 						// Export KML
-						DataExport.exportKml(SmartConstants.APP_PATH, idMission, c);
-						Toast.makeText(c, R.string.kmlExport, Toast.LENGTH_LONG)
-								.show();
+						String kmlstring = c.getString(R.string.csvExport);
+						DataExport.exportKml(SmartConstants.APP_PATH,
+								idMission, c);
+						Toast.makeText(c, kmlstring + SmartConstants.APP_PATH,
+								Toast.LENGTH_LONG).show();
 						break;
 
 					default:

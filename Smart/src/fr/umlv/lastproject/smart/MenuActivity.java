@@ -2,8 +2,10 @@ package fr.umlv.lastproject.smart;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
@@ -58,6 +60,7 @@ import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormIOException;
 import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.form.MissionListener;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -96,6 +99,10 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private Preferences pref;
+	private Map<Integer, Boolean> shorcutsMap;
+
+	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
+	private List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
 
 	private Mission mission;
 	private Form form;
@@ -576,7 +583,14 @@ public class MenuActivity extends Activity {
 					try {
 						gpsTrack.stopTrack();
 						gpsTrack = null;
+
+						for (GPSTrackListener l : this.gpsTrackListeners) {
+							l.actionPerformed(false);
+						}
+
 						trackStarted = false;
+						Toast.makeText(this, R.string.track_notstarted,
+								Toast.LENGTH_LONG).show();
 
 					} catch (IOException e) {
 						gpsTrack = null;
@@ -586,7 +600,6 @@ public class MenuActivity extends Activity {
 
 					}
 				}
-
 			}
 		}
 	}
@@ -594,20 +607,20 @@ public class MenuActivity extends Activity {
 	private void createShortcut(Object[] shortcuts) {
 		if (shortcuts != null) {
 			final LinearLayout shortcutsView = (LinearLayout) findViewById(R.id.shortcuts);
-			
+
 			for (final Object o : shortcuts) {
+				final int i = ((Integer) o).intValue();
 				final ImageView shortcut = new ImageView(this) {
 					@Override
 					public boolean showContextMenu() {
 						return true;
 					}
 				};
-				shortcut.setImageResource(SmartConstants.icons[((Integer) o)
-						.intValue()]);
+				shortcut.setImageResource(SmartConstants.icons[i]);
 				shortcut.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						doAction(((Integer) o).intValue());
+						doAction(i);
 					}
 				});
 				shortcut.setOnLongClickListener(new OnLongClickListener() {
@@ -621,9 +634,48 @@ public class MenuActivity extends Activity {
 						return false;
 					}
 				});
+				if (i == SmartConstants.CREATE_MISSION) {
+					if (Mission.getInstance() != null
+							&& Mission.getInstance().isStatus()) {
+						Log.d("debug", (Mission.getInstance() + " " + Mission
+								.getInstance().isStatus()));
+						shortcut.setImageResource(SmartConstants.icons[SmartConstants.STOP_MISSION]);
+					}
+					this.addMissionListener(new MissionListener() {
 
+						@Override
+						public void actionPerformed(boolean status) {
+							if (status) {
+								shortcut.setImageResource(SmartConstants.icons[SmartConstants.STOP_MISSION]);
+								shortcutsView.invalidate();
+							} else {
+								shortcut.setImageResource(SmartConstants.icons[SmartConstants.CREATE_MISSION]);
+								shortcutsView.invalidate();
+							}
+
+						}
+					});
+				} else if (i == SmartConstants.GPS_TRACK) {
+					if (gpsTrack != null && gpsTrack.isStarted()) {
+						Log.d("debug", gpsTrack + " " + gpsTrack.isStarted());
+						shortcut.setImageResource(SmartConstants.icons[SmartConstants.STOP_GPS_TRACK]);
+					}
+					this.addGPSTrackListener(new GPSTrackListener() {
+
+						@Override
+						public void actionPerformed(boolean status) {
+							if (status) {
+								shortcut.setImageResource(SmartConstants.icons[SmartConstants.STOP_GPS_TRACK]);
+								shortcutsView.invalidate();
+							} else {
+								shortcut.setImageResource(SmartConstants.icons[SmartConstants.GPS_TRACK]);
+								shortcutsView.invalidate();
+							}
+
+						}
+					});
+				}
 				shortcutsView.addView(shortcut);
-				Log.d("debug", o.toString());
 			}
 			shortcutsView.invalidate();
 		}
@@ -635,6 +687,11 @@ public class MenuActivity extends Activity {
 		case SmartConstants.CREATE_MISSION:
 			if (missionCreated) {
 				missionCreated = Mission.getInstance().stopMission();
+
+				for (MissionListener l : this.missionListeners) {
+					l.actionPerformed(false);
+				}
+
 				Toast.makeText(this,
 						getResources().getText(R.string.missionStop),
 						Toast.LENGTH_LONG).show();
@@ -716,7 +773,14 @@ public class MenuActivity extends Activity {
 				try {
 					gpsTrack.stopTrack();
 					gpsTrack = null;
+
+					for (GPSTrackListener l : this.gpsTrackListeners) {
+						l.actionPerformed(false);
+					}
+
 					trackStarted = false;
+					Toast.makeText(this, R.string.track_notstarted,
+							Toast.LENGTH_LONG).show();
 				} catch (IOException e) {
 					gpsTrack = null;
 
@@ -770,8 +834,7 @@ public class MenuActivity extends Activity {
 
 		case SmartConstants.EXPORT_FORM:
 			Intent intentForm = FileUtils.createGetContentIntent(
-					FileUtils.FORM_TYPE,
-					SmartConstants.APP_PATH);
+					FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
 			startActivityForResult(intentForm,
 					SmartConstants.FORM_BROWSER_ACTIVITY);
 			break;
@@ -793,6 +856,11 @@ public class MenuActivity extends Activity {
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
 		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
 		gpsTrack.startTrack();
+		Toast.makeText(this, R.string.track_started, Toast.LENGTH_LONG).show();
+		for (GPSTrackListener l : this.gpsTrackListeners) {
+			l.actionPerformed(true);
+		}
+
 		trackStarted = true;
 	}
 
@@ -809,6 +877,10 @@ public class MenuActivity extends Activity {
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
 		missionCreated = Mission.getInstance().startMission();
+
+		for (MissionListener l : this.missionListeners) {
+			l.actionPerformed(true);
+		}
 
 		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
@@ -931,5 +1003,37 @@ public class MenuActivity extends Activity {
 			return dialog.create();
 		}
 
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addMissionListener(MissionListener listener) {
+		missionListeners.add(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void removeMissionListener(MissionListener listener) {
+		missionListeners.remove(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addGPSTrackListener(GPSTrackListener listener) {
+		gpsTrackListeners.add(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void removeGPSTrackListener(GPSTrackListener listener) {
+		gpsTrackListeners.remove(listener);
 	}
 }
