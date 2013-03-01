@@ -535,9 +535,11 @@ public class MenuActivity extends Activity {
 					return;
 				}
 				if (gpsTrack == null) {
-					final AlertTrackDialog trackDialog = new AlertTrackDialog(
-							this);
-					trackDialog.show();
+					// final AlertTrackDialog trackDialog = new
+					// AlertTrackDialog(
+					// this);
+					// trackDialog.show();
+					new AlertTrackDialog(this);
 
 				} else {
 					try {
@@ -626,16 +628,18 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 			break;
-			
-		case SmartConstants.POINT_SURVEY_POSITION :
-			if (Mission.getInstance() == null ) {
-                Toast.makeText(this,
-                                getResources().getText(R.string.noMission),
-                                Toast.LENGTH_LONG).show();
-        } else {
-                Mission.getInstance().startSurvey(new PointGeometry(lastPosition.getLatitudeE6()/1E6, lastPosition.getLongitudeE6()/1E6));
-        }
-        break ;
+
+		case SmartConstants.POINT_SURVEY_POSITION:
+			if (Mission.getInstance() == null) {
+				Toast.makeText(this,
+						getResources().getText(R.string.noMission),
+						Toast.LENGTH_LONG).show();
+			} else {
+				Mission.getInstance().startSurvey(
+						new PointGeometry(lastPosition.getLatitudeE6() / 1E6,
+								lastPosition.getLongitudeE6() / 1E6));
+			}
+			break;
 
 		case SmartConstants.LINE_SURVEY:
 			if (Mission.getInstance() == null) {
@@ -664,7 +668,7 @@ public class MenuActivity extends Activity {
 			break;
 
 		case SmartConstants.GPS_TRACK:
-			final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
+			// final AlertTrackDialog trackDialog = new AlertTrackDialog(this);
 			if (!gps.isEnabled(locationManager)) {
 				final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
 						this);
@@ -673,14 +677,15 @@ public class MenuActivity extends Activity {
 			}
 			if (gpsTrack == null) {
 
-				trackDialog.show();
+				// trackDialog.show();
+				new AlertTrackDialog(this);
 				break;
 
 			} else {
 				try {
 					gpsTrack.stopTrack();
 					gpsTrack = null;
-					trackStarted = trackDialog.isTrackStarted();
+					trackStarted = false;
 				} catch (IOException e) {
 					gpsTrack = null;
 
