@@ -20,6 +20,7 @@
     <string name="showInfoZone">Afficher la zone d\'informations</string>
     <string name="exit">Quitter ?</string>
     <string name="exitMsg">Êtes-vous sûr(e) de vouloir quitter SMART ?</string>
+    <string name="exitMsgWithMission">Êtes-vous sûr(e) de vouloir quitter SMART ? La mission en cours sera arrêtée</string>
     <string name="help">Aide</string>
     <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.\nPour changer la symbologie, il vous suffit de séléctionner une image.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>

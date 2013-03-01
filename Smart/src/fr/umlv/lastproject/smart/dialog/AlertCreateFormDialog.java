@@ -6,6 +6,7 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.form.CreateFormActivity;
 import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -80,9 +81,7 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				File folder = new File(Environment
-						.getExternalStorageDirectory()
-						+ "/SMART/form/"
+				File folder = new File(SmartConstants.FORM_PATH
 						+ et.getText().toString() + ".form");
 				if (folder.exists()) {
 					et.setError(menu.getResources().getString(R.string.invalid));

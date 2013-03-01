@@ -140,7 +140,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			public void onClick(View v) {
 				Intent intent = FileUtils.createGetContentIntent(
 						FileUtils.FORM_TYPE,
-						Environment.getExternalStorageDirectory() + "/SMART/");
+						SmartConstants.APP_PATH);
 				menu.startActivityForResult(intent,
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}

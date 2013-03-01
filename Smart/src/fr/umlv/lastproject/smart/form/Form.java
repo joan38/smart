@@ -204,8 +204,8 @@ public class Form implements Serializable {
 					} else if (FIELDTAG.equalsIgnoreCase(tag)) {
 						String type = null;
 						String title = null;
-						int max = 0;
-						int min = 0;
+//						int max = 0;
+//						int min = 0;
 						String values = null;
 
 						for (int i = 0; i < xpp.getAttributeCount(); i++) {
@@ -363,7 +363,9 @@ public class Form implements Serializable {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(xml);
-			StreamResult result = new StreamResult(path + "/" + title + ".form");
+			File folder = new File(path);
+			folder.mkdir();
+			StreamResult result = new StreamResult(path + title + ".form");
 
 			transformer.transform(source, result);
 		} catch (ParserConfigurationException e) {

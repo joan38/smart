@@ -133,7 +133,7 @@ public final class KmlExport {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(kml);
-			StreamResult result = new StreamResult(path + "/"
+			StreamResult result = new StreamResult(path
 					+ mission.getTitle() + ".kml");
 
 			transformer.transform(source, result);

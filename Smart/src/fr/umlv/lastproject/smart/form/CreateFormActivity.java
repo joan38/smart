@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -28,6 +27,7 @@ import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Creation's activity to make a new form
@@ -271,8 +271,7 @@ public class CreateFormActivity extends Activity {
 			public void onClick(View v) {
 				// Save the form
 				try {
-					form.write(Environment.getExternalStorageDirectory()
-							.getPath() + "/SMART");
+					form.write(SmartConstants.FORM_PATH);
 				} catch (FormIOException e) {
 					Toast.makeText(getApplicationContext(), e.getMessage(),
 							Toast.LENGTH_LONG).show();
