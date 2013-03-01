@@ -277,13 +277,14 @@ public class CreateFormActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				}
 
-				//if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-					// Switch to our application
-					//Intent intentMenuActivity = new Intent(
-					//		CreateFormActivity.this, MenuActivity.class);
-					//intentMenuActivity.setFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-					// navigateUpTo(intentMenuActivity); // API 16 min...
-				//}
+				// Switch to our application
+				Intent intentMenuActivity = new Intent(CreateFormActivity.this,
+						MenuActivity.class);
+				intentMenuActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intentMenuActivity);
+				// }
 				finish();
 			}
 		});
