@@ -2,21 +2,21 @@ package fr.umlv.lastproject.smart.dialog;
 
 import java.io.File;
 
-import fr.umlv.lastproject.smart.MenuActivity;
-import fr.umlv.lastproject.smart.R;
-import fr.umlv.lastproject.smart.form.CreateFormActivity;
-import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import fr.umlv.lastproject.smart.MenuActivity;
+import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.form.CreateFormActivity;
+import fr.umlv.lastproject.smart.form.Form;
 
 /**
  * This class is used to define the name of form to create
@@ -45,23 +45,25 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		final EditText et = (EditText) alertDialogView
 				.findViewById(R.id.nameForm);
 
-		final AlertDialog dialog = setPositiveButton(R.string.validate, new OnClickListener() {
+		final AlertDialog dialog = setPositiveButton(R.string.validate,
+				new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						Intent intent = new Intent(menu,
 								CreateFormActivity.class);
-						intent.putExtra("form", new Form(et.getText().toString()));
+						intent.putExtra("form", new Form(et.getText()
+								.toString()));
 
 						menu.startActivity(intent);
 					}
 				}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
 
-					}
-				}).create();
+			}
+		}).create();
 
 		dialog.show();
 

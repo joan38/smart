@@ -51,6 +51,12 @@
 			<classifier>api</classifier>
 			<version>2.2</version>
 		</dependency>
+		<dependency>
+			<groupId>fr.umlv.lastproject.smart.drag</groupId>
+			<artifactId>dragndrop</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 
 	</dependencies>
 

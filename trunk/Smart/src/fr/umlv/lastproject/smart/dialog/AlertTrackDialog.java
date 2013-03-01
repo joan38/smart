@@ -1,7 +1,12 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.io.File;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -19,8 +24,6 @@ import fr.umlv.lastproject.smart.R;
  * 
  */
 public class AlertTrackDialog extends AlertDialog.Builder {
-
-	private boolean trackStarted = false;
 
 	/**
 	 * Constructor
@@ -46,7 +49,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 		final RadioGroup radioGroup = (RadioGroup) alertTrackView
 				.findViewById(R.id.trackradiogroup);
 
-		setPositiveButton(R.string.create_button,
+		final AlertDialog dialog = setPositiveButton(R.string.create_button,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 
@@ -59,7 +62,6 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						if (oName == null) {
 							Toast.makeText(menu, R.string.track_name_missing,
 									Toast.LENGTH_LONG).show();
-							trackStarted = false;
 							return;
 						}
 						final String name = oName.toString();
@@ -67,7 +69,6 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						if (oParam == null) {
 							Toast.makeText(menu, R.string.track_param_missing,
 									Toast.LENGTH_LONG).show();
-							trackStarted = false;
 							return;
 						}
 						try {
@@ -80,27 +81,99 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						} catch (NumberFormatException e) {
 							Toast.makeText(menu, R.string.track_param_false,
 									Toast.LENGTH_LONG).show();
-							trackStarted = false;
 							return;
 						}
 
-						trackStarted = true;
 						Toast.makeText(menu, R.string.track_started,
 								Toast.LENGTH_LONG).show();
 					}
-				});
-
-		setNegativeButton(R.string.cancel_button,
+				}).setNegativeButton(R.string.cancel_button,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 
 					}
-				});
-	}
+				}).create();
 
-	public boolean isTrackStarted() {
-		return this.trackStarted;
-	}
+		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
+		trackName.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				File folder = new File(Environment
+						.getExternalStorageDirectory()
+						+ "/SMART/tracks/"
+						+ trackName.getText().toString() + ".gpx");
+
+				boolean isValidate;
+
+				if (folder.exists()) {
+					trackName.setError(menu.getResources().getString(
+							R.string.invalid));
+					isValidate = false;
+				} else {
+					if (trackParameter.getText().toString().equals("")
+							|| s.toString().equals("")) {
+						isValidate = false;
+					} else {
+						isValidate = true;
+					}
+				}
+
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+						isValidate);
+			}
+		});
+
+		trackParameter.addTextChangedListener(new TextWatcher() {
+
+			boolean isValidate;
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.toString().equals("")) {
+					isValidate = false;
+				} else {
+					if (trackName.getText().toString().equals("")) {
+						isValidate = false;
+					} else {
+						isValidate = true;
+					}
+				}
+
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+						isValidate);
+			}
+		});
+
+	}
 }
