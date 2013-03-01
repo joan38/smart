@@ -85,8 +85,6 @@ public class PolygonGeometry extends Geometry {
 
             }
 
-
-
             for (int j = 0; j < getPoints().size() +1; j++) {
                     // on récupere les 2 points
                     PointGeometry pointA = getPoints().get(j
