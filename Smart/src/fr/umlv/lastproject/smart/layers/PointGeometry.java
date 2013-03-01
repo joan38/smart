@@ -67,7 +67,8 @@ public class PointGeometry extends Geometry {
 		paint.setAlpha(150) ;
 
 		// Retrieving geometry and symbology
-		final int radius = s.getSize();
+		int radius = s.getSize();
+		if(isSelected()) radius*=2 ;
 
 		Point point = map.getProjection().toPixels(getCoordinates(), null);
 		// Draws the point

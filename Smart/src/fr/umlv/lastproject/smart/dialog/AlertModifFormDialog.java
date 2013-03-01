@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.dialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +41,7 @@ import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
 import fr.umlv.lastproject.smart.form.Field;
 import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.form.FormEditedListener;
 import fr.umlv.lastproject.smart.form.ListField;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.PictureActivity;
@@ -62,6 +64,8 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
 
+	private ArrayList<FormEditedListener> listeners = new ArrayList<FormEditedListener>();
+	
 	/**
 	 * Constructor
 	 * @param context
@@ -174,6 +178,9 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 					Log.e("", e.getMessage());
 				}
 				dbManager.close();
+				for(FormEditedListener l : listeners){
+					l.actionPerformed(g);
+				}
 			}
 		});
 
@@ -193,12 +200,20 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 					Log.e("", e.getMessage());
 				}
 				dbManager.close();
+				for(FormEditedListener l : listeners){
+					l.actionPerformed(g);
+				}
+
 			}
 		});
 
 		setNegativeButton(R.string.cancel,
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				for(FormEditedListener l : listeners){
+					l.actionPerformed(g);
+				}
+
 			}
 		});
 	}
@@ -425,4 +440,22 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		}
 		return idForm;
 	}
+	
+	/**
+	 * 
+	 * @param fel add the listener
+	 */
+	public void addFormEditedListener(FormEditedListener fel){
+		listeners.add(fel);
+	}
+	
+	/**
+	 * 
+	 * @param fel the listener to remove
+	 */
+	public void removeFormEditedListener(FormEditedListener fel){
+		listeners.remove(fel);
+	}
+
+	
 }
