@@ -780,6 +780,7 @@ public class FormDialog extends AlertDialog.Builder {
 				});
 				LinearLayout heightLayout = new LinearLayout(c);
 				heightLayout.addView(textView);
+
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
 				// zheightLayout.addView(heightPicture);

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -75,6 +74,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 				}).create();
 
 		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
 		textViewMissionName.addTextChangedListener(new TextWatcher() {
 
@@ -92,7 +92,10 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			@Override
 			public void afterTextChanged(Editable s) {
 
-				if (!textViewMissionName.getText().toString().equals("")) {
+				if (s.toString().equals("")) {
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+							false);
+				} else {
 					DbManager dbManager = new DbManager();
 					try {
 						dbManager.open(menu);
@@ -104,17 +107,19 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 					if (dbManager.existsMission(textViewMissionName.getText()
 							.toString())) {
-						textViewMissionName.setError(menu.getResources()
-								.getString(R.string.invalid));
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(false);
+						textViewMissionName.setError(menu.getResources()
+								.getString(R.string.invalid));
 					} else {
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(true);
 					}
+
 					dbManager.close();
 
 				}
+
 			}
 		});
 
@@ -139,8 +144,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			@Override
 			public void onClick(View v) {
 				Intent intent = FileUtils.createGetContentIntent(
-						FileUtils.FORM_TYPE,
-						SmartConstants.APP_PATH);
+						FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
 				menu.startActivityForResult(intent,
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
