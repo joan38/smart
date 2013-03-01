@@ -70,20 +70,16 @@ public final class Mission {
 
 			@Override
 			public void actionPerformed(Geometry g, GeometryLayer l ) {
-				pointLayer.setSelectable(false) ;
-				lineLayer.setSelectable(false);
-				polygonLayer.setSelectable(false);
+				setSelectable(false);
 				mapview.invalidate();
 				AlertModifFormDialog d = new AlertModifFormDialog(context,
 						getForm(), g,l);
 				d.addFormEditedListener(new FormEditedListener() {
-					
+
 					@Override
 					public void actionPerformed(Geometry g) {
 						g.setSelected(false);
-						pointLayer.setSelectable(true) ;
-						lineLayer.setSelectable(true);
-						polygonLayer.setSelectable(true);
+						setSelectable(true);
 						mapview.invalidate();
 
 
@@ -186,9 +182,7 @@ public final class Mission {
 		dbManager.stopMission(id);
 		dbManager.close();
 		status = false;
-		pointLayer.setSelectable(false);
-		lineLayer.setSelectable(false);
-		polygonLayer.setSelectable(false);
+		setSelectable(false);
 		mission=  null ;
 		return status;
 	}
@@ -244,6 +238,8 @@ public final class Mission {
 		if (!status) {
 			return;
 		}
+		setSelectable(false);
+
 
 		switch (type) {
 		case LINE:
@@ -254,6 +250,8 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
+					setSelectable(true);
+
 				}
 			});
 
@@ -265,6 +263,8 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
+					setSelectable(true);
+
 
 				}
 			});
@@ -277,6 +277,8 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
+					setSelectable(true);
+
 
 				}
 			});
@@ -364,4 +366,9 @@ public final class Mission {
 		mapView.invalidate();
 	}
 
+	private void setSelectable(boolean b){
+		pointLayer.setSelectable(b);
+		lineLayer.setSelectable(b);
+		polygonLayer.setSelectable(b);
+	}
 }
