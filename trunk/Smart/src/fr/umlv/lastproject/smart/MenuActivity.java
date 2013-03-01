@@ -109,7 +109,9 @@ public class MenuActivity extends Activity {
 	private Geometry geom;
 	private Object[] valuesList;
 	private static final int FORM_DIALOG_ID = 1;
+	private static final int FORM_FILLED_DIALOG_ID = 2;
 	private int heightIndex;
+	private Dialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,7 @@ public class MenuActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
+
 		initMap();
 		initGps();
 
@@ -547,14 +550,14 @@ public class MenuActivity extends Activity {
 							.get(HeightActivity.ERROR_RESULT).toString()
 							: getString(R.string.height_error);
 					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					showDialog(FORM_DIALOG_ID, new Bundle());
+					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
 					return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
 				final Bundle b = new Bundle();
 				b.putDouble("height", heightValue);
-				showDialog(FORM_DIALOG_ID, b);
+				createDialog(FORM_FILLED_DIALOG_ID, b);
 
 				break;
 
@@ -600,6 +603,11 @@ public class MenuActivity extends Activity {
 
 					}
 				}
+			} else if (requestCode == SmartConstants.HEIGHT_ACTIVITY) {
+				Log.d("TESTX", "ACTIVITY RESULT CANCELED");
+				createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+				return;
+
 			}
 		}
 	}
@@ -818,7 +826,7 @@ public class MenuActivity extends Activity {
 			break;
 
 		case SmartConstants.IMPORT_WMS:
-			final WMSDialog dialog = new WMSDialog(mapView);
+			final WMSDialog dialog = new WMSDialog(this);
 			dialog.show();
 			break;
 
@@ -933,7 +941,6 @@ public class MenuActivity extends Activity {
 		super.onDestroy();
 		cleanTIFFFolder();
 		cleanTmpFolder();
-		Log.d("TESTX", "DESTROY");
 	}
 
 	private void cleanTmpFolder() {
@@ -965,8 +972,6 @@ public class MenuActivity extends Activity {
 		this.valuesList = valuesList;
 		this.heightIndex = heightIndex;
 
-		removeDialog(FORM_DIALOG_ID);
-		Log.d("TESTX", "START HEIGHT ACTIVITY");
 		startActivityForResult(new Intent(this, HeightActivity.class),
 				SmartConstants.HEIGHT_ACTIVITY);
 	}
@@ -975,32 +980,37 @@ public class MenuActivity extends Activity {
 		this.form = form;
 		this.mission = mission;
 		this.geom = g;
-		showDialog(FORM_DIALOG_ID, null);
+		createDialog(FORM_DIALOG_ID, null);
 
 	}
 
-	@Override
-	protected Dialog onCreateDialog(int id, Bundle bundle) {
-		super.onCreateDialog(id);
-		// Simple Form Dialog
-		if (bundle == null) {
-			final FormDialog dialog = new FormDialog(this, form, geom, mission);
-			Log.d("TESTX", "CREATE DIALOG");
-			return dialog.create();
+	private void createDialog(int id, Bundle bundle) {
+		if (dialog != null) {
+			dialog.dismiss();
 		}
-		// Retrieve what user already filled
+		if (id == FORM_DIALOG_ID) {
 
-		else {
-			Log.d("TESTX", "CREATE DIALOG 2");
+			// Simple Form Dialog
+			if (bundle == null) {
+				final FormDialog formDialog = new FormDialog(this, form, geom,
+						mission);
+				dialog = formDialog.create();
+				Log.d("TESTX", "CREATE DIALOG");
+				dialog.show();
+			}
+			// Retrieve what user already filled
+		} else if (id == FORM_FILLED_DIALOG_ID) {
+
 			if (bundle.get("height") != null) {
 				double height = bundle.getDouble("height");
 				valuesList[heightIndex] = height;
 			}
 
-			final FormDialog dialog = new FormDialog(this, form, geom, mission,
-					valuesList);
-			Log.d("TESTX", "CREATE DIALOG");
-			return dialog.create();
+			final FormDialog dialogFilled = new FormDialog(this, form, geom,
+					mission, valuesList);
+			this.dialog = dialogFilled.create();
+			dialog.show();
+
 		}
 
 	}
@@ -1036,4 +1046,5 @@ public class MenuActivity extends Activity {
 	public void removeGPSTrackListener(GPSTrackListener listener) {
 		gpsTrackListeners.remove(listener);
 	}
+
 }

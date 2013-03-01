@@ -61,7 +61,7 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  */
 public class FormDialog extends AlertDialog.Builder {
 
-	private Object[] valuesList;
+	private final Object[] valuesList;
 	private TableLayout layoutDynamic;
 
 	private static final int PADDING_LEFT = 20;
@@ -192,6 +192,7 @@ public class FormDialog extends AlertDialog.Builder {
 							Log.e("", e.getMessage());
 						}
 						dbManager.close();
+						dialog.dismiss();
 					}
 				});
 
@@ -199,6 +200,7 @@ public class FormDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						mission.removeGeometry(g);
+						dialog.dismiss();
 					}
 				});
 	}
@@ -314,6 +316,7 @@ public class FormDialog extends AlertDialog.Builder {
 							Log.e("", e.getMessage());
 						}
 						dbManager.close();
+						dialog.dismiss();
 					}
 				});
 
@@ -321,6 +324,7 @@ public class FormDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						mission.removeGeometry(geom);
+						dialog.dismiss();
 					}
 				});
 	}
@@ -772,7 +776,6 @@ public class FormDialog extends AlertDialog.Builder {
 					public void onClick(View v) {
 
 						// Intent intent = new Intent(c, PictureActivity.class);
-						Log.d("TESTX", "HEIGHT PICTURE CLICKED");
 						c.startHeightActivityForResult(form, mission, geom,
 								valuesList, heightIndex);
 

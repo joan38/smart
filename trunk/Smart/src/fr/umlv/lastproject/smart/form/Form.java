@@ -26,7 +26,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.util.Log;
 import fr.umlv.lastproject.smart.MenuActivity;
-import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
 
 /**
@@ -165,7 +164,7 @@ public class Form implements Serializable {
 	public void openForm(final MenuActivity context, final Geometry g,
 			final Mission mission) {
 
-		final FormDialog dialog = new FormDialog(context, this, g, mission);
+		// final FormDialog dialog = new FormDialog(context, this, g, mission);
 		context.createFormDialog(this, g, mission);
 
 	}
@@ -206,8 +205,8 @@ public class Form implements Serializable {
 					} else if (FIELDTAG.equalsIgnoreCase(tag)) {
 						String type = null;
 						String title = null;
-//						int max = 0;
-//						int min = 0;
+						// int max = 0;
+						// int min = 0;
 						String values = null;
 
 						for (int i = 0; i < xpp.getAttributeCount(); i++) {
