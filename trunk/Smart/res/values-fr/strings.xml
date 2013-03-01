@@ -101,9 +101,9 @@
     <string name="export_form">Exporter un formulaire</string>
     <string name="defaultForm">Défaut</string>
     <string name="othertForm">Autre</string>
-    <string name="kmlExport">Export en couche kml : réussi dans le répertoire /SMART</string>
+    <string name="kmlExport">Export en couche kml : réussi dans le répertoire </string>
     <string name="kmlExportError">Erreur. La mission n\'a pas pu être exportée au format kml</string>
-    <string name="csvExport">Export en couche csv : réussi dans le répertoire /SMART</string>
+    <string name="csvExport">Export en couche csv : réussi dans le répertoire </string>
     <string name="csvExportError">Erreur. La mission n\'a pas pu être exportée au format csv</string>
     <string name="track_name_missing">Saisir un nom pour la trace</string>
     <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string>

@@ -62,6 +62,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 					public void onClick(DialogInterface arg0, int arg1) {
 						menu.startMission(textViewMissionName.getText()
 								.toString());
+
 						Toast.makeText(menu, R.string.missionStart,
 								Toast.LENGTH_SHORT).show();
 					}
@@ -160,4 +161,5 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 	public void setPathForm(String path) {
 		formPath.setText(path);
 	}
+
 }

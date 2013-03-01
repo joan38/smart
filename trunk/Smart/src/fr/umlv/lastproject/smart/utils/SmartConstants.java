@@ -38,6 +38,9 @@ public final class SmartConstants {
 	public static final int EXPORT_FORM = 13;
 	public static final int DELETE_MISSION = 14;
 
+	public static final int STOP_MISSION = 15;
+	public static final int STOP_GPS_TRACK = 16;
+
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
 
@@ -65,12 +68,12 @@ public final class SmartConstants {
 	public static final String PICTURES_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/SMART/Pictures/";
 
-	public static int[] colors = new int[] { Color.BLACK,Color.rgb(100, 149, 237),
-			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),
-			Color.rgb(34, 139, 34), Color.rgb(255, 140, 0),
-			Color.rgb(152, 251, 152), Color.rgb(178, 34, 34),
-			Color.rgb(255, 215, 0), Color.rgb(49, 79, 79),
-			Color.rgb(139, 69, 19) };
+	public static int[] colors = new int[] { Color.BLACK,
+			Color.rgb(100, 149, 237), Color.rgb(0, 0, 128),
+			Color.rgb(238, 203, 173), Color.rgb(34, 139, 34),
+			Color.rgb(255, 140, 0), Color.rgb(152, 251, 152),
+			Color.rgb(178, 34, 34), Color.rgb(255, 215, 0),
+			Color.rgb(49, 79, 79), Color.rgb(139, 69, 19) };
 
 	// Icons array for functionalities list
 	public static int[] icons = { R.drawable.startmission,
@@ -80,7 +83,8 @@ public final class SmartConstants {
 			R.drawable.importvector, R.drawable.importraster,
 			R.drawable.importvector, R.drawable.importwms,
 			R.drawable.exportmission, R.drawable.measure,
-			R.drawable.exportform, R.drawable.deletemission };
+			R.drawable.exportform, R.drawable.deletemission,
+			R.drawable.stopmission, R.drawable.stopgpstrack };
 
 	private SmartConstants() {
 	}

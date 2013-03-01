@@ -69,11 +69,11 @@ public final class Mission {
 		SelectedGeometryListener list = new SelectedGeometryListener() {
 
 			@Override
-			public void actionPerformed(Geometry g, GeometryLayer l ) {
+			public void actionPerformed(Geometry g, GeometryLayer l) {
 				setSelectable(false);
 				mapview.invalidate();
 				AlertModifFormDialog d = new AlertModifFormDialog(context,
-						getForm(), g,l);
+						getForm(), g, l);
 				d.addFormEditedListener(new FormEditedListener() {
 
 					@Override
@@ -81,7 +81,6 @@ public final class Mission {
 						g.setSelected(false);
 						setSelectable(true);
 						mapview.invalidate();
-
 
 					}
 				});
@@ -116,6 +115,10 @@ public final class Mission {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public SmartMapView getMapView() {
 		return mapView;
 	}
@@ -183,7 +186,7 @@ public final class Mission {
 		dbManager.close();
 		status = false;
 		setSelectable(false);
-		mission=  null ;
+		mission = null;
 		return status;
 	}
 
@@ -224,7 +227,7 @@ public final class Mission {
 	}
 
 	public void startSurvey(PointGeometry p) {
-		pointLayer.addGeometry(p); 
+		pointLayer.addGeometry(p);
 		form.openForm(context, p, Mission.this);
 	}
 
@@ -239,7 +242,6 @@ public final class Mission {
 			return;
 		}
 		setSelectable(false);
-
 
 		switch (type) {
 		case LINE:
@@ -265,7 +267,6 @@ public final class Mission {
 					survey.validateSurvey();
 					setSelectable(true);
 
-
 				}
 			});
 
@@ -278,7 +279,6 @@ public final class Mission {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 					setSelectable(true);
-
 
 				}
 			});
@@ -366,7 +366,7 @@ public final class Mission {
 		mapView.invalidate();
 	}
 
-	private void setSelectable(boolean b){
+	private void setSelectable(boolean b) {
 		pointLayer.setSelectable(b);
 		lineLayer.setSelectable(b);
 		polygonLayer.setSelectable(b);

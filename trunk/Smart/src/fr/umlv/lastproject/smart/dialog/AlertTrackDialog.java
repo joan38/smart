@@ -83,9 +83,6 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 									Toast.LENGTH_LONG).show();
 							return;
 						}
-
-						Toast.makeText(menu, R.string.track_started,
-								Toast.LENGTH_LONG).show();
 					}
 				}).setNegativeButton(R.string.cancel_button,
 				new DialogInterface.OnClickListener() {
