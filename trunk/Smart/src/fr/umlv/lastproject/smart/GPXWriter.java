@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import android.os.Environment;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Writes a GPX file.
@@ -30,8 +30,6 @@ public final class GPXWriter {
 			+ " xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd \">";
 	
 	
-	private static final String TRACKS_FOLDER=Environment.getExternalStorageDirectory()+ "/SMART/"+"tracks/";
-
 	private GPXWriter() {
 
 	}
@@ -57,11 +55,11 @@ public final class GPXWriter {
 		if(trackPoints.isEmpty()){
 			return;
 		}
-		final File appFolder = new File(TRACKS_FOLDER);
-		appFolder.mkdirs();
+		final File appFolder = new File(SmartConstants.TRACK_PATH);
+		appFolder.mkdir();
 		
 		
-		final File trackFile = new File(TRACKS_FOLDER+trackName+".gpx");
+		final File trackFile = new File(SmartConstants.TRACK_PATH+trackName+".gpx");
 		
 		final FileWriter fileWriter = new FileWriter(trackFile);
 

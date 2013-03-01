@@ -561,6 +561,7 @@ public class MenuActivity extends Activity {
 	private void createShortcut(Object[] shortcuts) {
 		if (shortcuts != null) {
 			final LinearLayout shortcutsView = (LinearLayout) findViewById(R.id.shortcuts);
+			
 			for (final Object o : shortcuts) {
 				final ImageView shortcut = new ImageView(this) {
 					@Override
@@ -734,7 +735,7 @@ public class MenuActivity extends Activity {
 		case SmartConstants.EXPORT_FORM:
 			Intent intentForm = FileUtils.createGetContentIntent(
 					FileUtils.FORM_TYPE,
-					Environment.getExternalStorageDirectory() + "");
+					SmartConstants.APP_PATH);
 			startActivityForResult(intentForm,
 					SmartConstants.FORM_BROWSER_ACTIVITY);
 			break;

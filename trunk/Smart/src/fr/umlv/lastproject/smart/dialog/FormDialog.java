@@ -121,7 +121,7 @@ public class FormDialog extends AlertDialog.Builder {
 										.parseDouble(((EditText) valuesList[i])
 												.getText().toString()));
 								} else {
-									num.setValue(-1);
+									num.setValue(0);
 								}
 								break;
 

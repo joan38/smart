@@ -25,6 +25,7 @@ import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.NumericField;
 import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.layers.GeometryType;;
 
@@ -38,8 +39,7 @@ import fr.umlv.lastproject.smart.layers.GeometryType;;
 public class DbManager {
 
 	public static final String DB_NAME = "smart.db";
-	public static final String DB_PATH = Environment
-			.getExternalStorageDirectory() + "/SMART/DB/";
+	
 
 	public static final String TABLE_MISSIONS = "missions";
 	private static final String MISSIONS_COL_ID = "id";
@@ -123,17 +123,12 @@ public class DbManager {
 
 		public DbHelper(Context context) {
 			super(context, DB_NAME, null, 1);
-			File folder = new File(Environment.getExternalStorageDirectory()
-					+ "/SMART/");
-			if (!folder.exists()) {
-				folder.mkdir();
+			File folder = new File(SmartConstants.APP_PATH);
+			folder.mkdir();
 
-			}
-			File ssfolder = new File(Environment.getExternalStorageDirectory()
-					+ "/SMART/DB/");
-			if (!ssfolder.exists()) {
-				ssfolder.mkdir();
-			}
+			File ssfolder = new File(SmartConstants.BDD_PATH);
+			ssfolder.mkdir();
+			
 		}
 
 		@Override
@@ -154,7 +149,7 @@ public class DbManager {
 			SQLiteDatabase dbRetour = null;
 
 			try {
-				dbRetour = SQLiteDatabase.openOrCreateDatabase(DB_PATH
+				dbRetour = SQLiteDatabase.openOrCreateDatabase(SmartConstants.BDD_PATH
 						+ DB_NAME, null);
 				dbRetour.execSQL(CREATE_TABLE_MISSIONS);
 				dbRetour.execSQL(CREATE_TABLE_GEOMETRIES);
@@ -252,7 +247,7 @@ public class DbManager {
 		Log.d("Cmd SQL", sql.toString());
 
 		try {
-			db = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null,
+			db = SQLiteDatabase.openDatabase(SmartConstants.BDD_PATH + DB_NAME, null,
 					SQLiteDatabase.OPEN_READWRITE);
 			db.execSQL(sql.toString());
 			db.close();

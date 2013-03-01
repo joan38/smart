@@ -19,6 +19,7 @@ import fr.umlv.lastproject.smart.GPS;
 import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Activity which launch the camera device and geoTag it
@@ -30,8 +31,7 @@ public class PictureActivity extends Activity {
 
 	private File picture;
 	private static final  int PICTURE_RESULT = 1;
-	private static final  String PICTURE_PATH = Environment
-			.getExternalStorageDirectory() + "/SMART/pictures/";
+	
 
 	private GPS gps;
 	private LocationManager locationManager;
@@ -104,7 +104,7 @@ public class PictureActivity extends Activity {
 		ExifInterface exif = null;
 		try {
 			// Récupration de la photo à geoTag
-			exif = new ExifInterface(PICTURE_PATH + filename + ".jpg");
+			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename + ".jpg");
 			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -175,7 +175,7 @@ public class PictureActivity extends Activity {
 	private void takePhoto() {
 		takePicture = true;
 		namePicture = getIntent().getExtras().getString("namePicture");
-		picture = new File(PICTURE_PATH, namePicture + ".jpg");
+		picture = new File(SmartConstants.PICTURES_PATH, namePicture + ".jpg");
 
 		// On récupère l'URI associée au fichier
 		Uri fileUri = Uri.fromFile(picture);
@@ -193,14 +193,12 @@ public class PictureActivity extends Activity {
 	 * exists
 	 */
 	private void createPictureFolder() {
-		File appFolder = new File(Environment.getExternalStorageDirectory()
-				+ "/SMART/");
+		File appFolder = new File(SmartConstants.APP_PATH);
 		if (!appFolder.exists()) {
 			appFolder.mkdir();
 
 		}
-		File picuresFolder = new File(Environment.getExternalStorageDirectory()
-				+ "/SMART/pictures/");
+		File picuresFolder = new File(SmartConstants.PICTURES_PATH);
 		if (!picuresFolder.exists()) {
 			picuresFolder.mkdir();
 		}

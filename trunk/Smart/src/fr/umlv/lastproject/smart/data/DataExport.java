@@ -42,7 +42,7 @@ public final class DataExport {
 				throw new CsvExportException("No geometry in the given mission");
 			}
 			
-			FileWriter csv = new FileWriter(path + "/" + mission.getTitle() + ".csv");
+			FileWriter csv = new FileWriter(path + mission.getTitle() + ".csv");
 			csv.write("Geometries;Points");
 			
 			GeometryRecord geometry = geometryIterator.next();

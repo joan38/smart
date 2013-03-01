@@ -51,9 +51,19 @@ public final class SmartConstants {
 	public static final int HEIGHT_FIELD = 5;
 
 	public static final String TIFF_PATH = Environment
-			.getExternalStorageDirectory() + "/osmdroid/";
+			.getExternalStorageDirectory().getPath() + "/osmdroid/";
+	public static final String APP_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/";
 	public static final String TMP_PATH = Environment
-			.getExternalStorageDirectory() + "/SMART/.tmp/";
+			.getExternalStorageDirectory().getPath() + "/SMART/.tmp/";
+	public static final String FORM_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/Forms/";
+	public static final String BDD_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/.DB/";
+	public static final String TRACK_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/Tracks/";
+	public static final String PICTURES_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/Pictures/";
 
 	public static int[] colors = new int[] { Color.rgb(100, 149, 237),
 			Color.rgb(0, 0, 128), Color.rgb(238, 203, 173),

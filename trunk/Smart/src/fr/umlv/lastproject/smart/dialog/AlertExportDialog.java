@@ -23,6 +23,7 @@ import fr.umlv.lastproject.smart.data.DataExport;
 import fr.umlv.lastproject.smart.data.KmlExportException;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 /**
@@ -86,18 +87,14 @@ public class AlertExportDialog extends AlertDialog.Builder {
 					switch (formatSelector.getCheckedRadioButtonId()) {
 					case R.id.CsvExport:
 						// Export CSV
-						DataExport.exportCsv(Environment
-								.getExternalStorageDirectory().getPath()
-								+ "/SMART", idMission, c);
+						DataExport.exportCsv(SmartConstants.APP_PATH, idMission, c);
 						Toast.makeText(c, R.string.csvExport, Toast.LENGTH_LONG)
 								.show();
 						break;
 
 					case R.id.KmlExport:
 						// Export KML
-						DataExport.exportKml(Environment
-								.getExternalStorageDirectory().getPath()
-								+ "/SMART", idMission, c);
+						DataExport.exportKml(SmartConstants.APP_PATH, idMission, c);
 						Toast.makeText(c, R.string.kmlExport, Toast.LENGTH_LONG)
 								.show();
 						break;
