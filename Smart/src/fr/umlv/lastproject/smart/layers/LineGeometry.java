@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.osmdroid.views.MapView;
 
+import fr.umlv.lastproject.smart.layers.PointSymbology.PointSymbologieType;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -21,6 +23,7 @@ import android.graphics.Rect;
  */
 public class LineGeometry extends Geometry {
 	private List<PointGeometry> points;
+	private boolean drawPoints = false;
 
 	public LineGeometry() {
 		this(new ArrayList<PointGeometry>());
@@ -90,10 +93,12 @@ public class LineGeometry extends Geometry {
             for (int j = 0; j < getPoints().size() -1 ; j++) {
                     Point a = map.getProjection().toPixels(getPoints().get(j% getPoints().size()).getCoordinates(),null);
                     Point b = map.getProjection().toPixels(getPoints().get(j+1% getPoints().size()).getCoordinates(),null);
-
-                    
                     c.drawLine(a.x, a.y, b.x, b.y, paint) ;
-                    // on récupere les 2 points
+                 //   if(drawPoints ){
+                	getPoints().get(j% getPoints().size()).setSelected(false);
+                    getPoints().get(j% getPoints().size()).draw(map, c, bool, new PointSymbology(s.getSize() , s.getColor(), PointSymbologieType.CIRCLE ) );
+
+                    	//   }
 
             }
     }
