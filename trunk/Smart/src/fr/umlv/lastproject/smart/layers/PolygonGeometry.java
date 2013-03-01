@@ -72,16 +72,17 @@ public class PolygonGeometry extends Geometry {
     @Override
     public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
             Paint paint = new Paint();
-            paint.setColor(s.getColor());
             paint.setStyle(Style.FILL_AND_STROKE);
-            paint.setAlpha(150) ;
+            paint.setStrokeWidth(s.getSize());
+            paint.setColor(s.getColor());
 
 
             Path p = new Path() ;
             if (isSelected()) {
-                    paint.setStrokeWidth(s.getSize() * 2);
+                paint.setAlpha(220) ;
             } else {
-                    paint.setStrokeWidth(s.getSize());
+                paint.setAlpha(150) ;
+
             }
 
 

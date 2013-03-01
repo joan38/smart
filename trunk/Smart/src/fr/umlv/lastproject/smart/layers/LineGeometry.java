@@ -100,8 +100,6 @@ public class LineGeometry extends Geometry {
 
     @Override
     public boolean isSelected(MapView m, Rect click) {
-
-
             for(PointGeometry p : getPoints()){
                     if(p.isSelected(m, click)){
                             return true ;

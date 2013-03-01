@@ -70,9 +70,25 @@ public final class Mission {
 
 			@Override
 			public void actionPerformed(Geometry g, GeometryLayer l ) {
-				Log.d("", "mission select");
+				pointLayer.setSelectable(false) ;
+				lineLayer.setSelectable(false);
+				polygonLayer.setSelectable(false);
+				mapview.invalidate();
 				AlertModifFormDialog d = new AlertModifFormDialog(context,
 						getForm(), g,l);
+				d.addFormEditedListener(new FormEditedListener() {
+					
+					@Override
+					public void actionPerformed(Geometry g) {
+						g.setSelected(false);
+						pointLayer.setSelectable(true) ;
+						lineLayer.setSelectable(true);
+						polygonLayer.setSelectable(true);
+						mapview.invalidate();
+
+
+					}
+				});
 				d.show();
 				g.setSelected(false);
 			}
