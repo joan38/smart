@@ -168,12 +168,11 @@
     <string name="gpsTrackMessage">Vérifier que le GPS est activé. La fonctionnalité ne peut pas fonctionner sans GPS.</string>
     <string name="track_notstarted">La trace ne peut pas être démarrée</string>
     <string name="track_started">La trace GPS a démarré!</string>
+    <string name="track_stop">La trace GPS est arrétée!</string>
     <string name="point_survey">Tapez pour faire un point</string>
     <string name="line_survey">Tape : faire plusieurs points\nDouble-tape : finir la ligne</string>
     <string name="polygon_survey">Tape : faire plusieurs points\nDouble-tape : fermer le polygone</string>
-        <string name="tiff_progress">Création de l\'archive.</string>
-            <string name="tiff_progress_title">Veuillez patienter.</string>
-        
-    
+    <string name="tiff_progress">Création de l\'archive.</string>
+    <string name="tiff_progress_title">Veuillez patienter.</string>
 
 </resources>

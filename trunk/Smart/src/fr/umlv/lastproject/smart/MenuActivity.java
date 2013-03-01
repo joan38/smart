@@ -589,7 +589,7 @@ public class MenuActivity extends Activity {
 						}
 
 						trackStarted = false;
-						Toast.makeText(this, R.string.track_notstarted,
+						Toast.makeText(this, R.string.track_stop,
 								Toast.LENGTH_LONG).show();
 
 					} catch (IOException e) {
@@ -779,8 +779,8 @@ public class MenuActivity extends Activity {
 					}
 
 					trackStarted = false;
-					Toast.makeText(this, R.string.track_notstarted,
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.track_stop, Toast.LENGTH_LONG)
+							.show();
 				} catch (IOException e) {
 					gpsTrack = null;
 

@@ -171,11 +171,11 @@
     <string name="gpsTrackMessage">Please check your configuration and ensure your GPS is activated. This functionality is not available with GPS disabled.</string>
     <string name="track_notstarted">Track cannot be started</string>
     <string name="track_started">Track is started!</string>
+    <string name="track_stop">Track is stoped!</string>
     <string name="point_survey">Tap to make a point</string>
     <string name="line_survey">Tap to make some points and double-tap to finish the line</string>
     <string name="polygon_survey">Tap to make some points and double-tap to close the polygon</string>
     <string name="tiff_progress">Zipping archive.</string>
     <string name="tiff_progress_title">Please wait.</string>
-    
 
 </resources>
