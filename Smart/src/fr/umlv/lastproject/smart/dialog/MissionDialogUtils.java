@@ -35,9 +35,9 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Maelle Cabot
  * 
  */
-public final class AlertExportDialog {
+public final class MissionDialogUtils {
 
-	private AlertExportDialog() {
+	private MissionDialogUtils() {
 	}
 
 	/**

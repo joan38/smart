@@ -55,7 +55,7 @@ import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
-import fr.umlv.lastproject.smart.dialog.AlertExportDialog;
+import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormEditedListener;
@@ -867,7 +867,7 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.EXPORT_MISSION:
-				AlertExportDialog.showExportDialog(this);
+				MissionDialogUtils.showExportDialog(this);
 				break;
 
 			case SmartConstants.MEASURE:
@@ -884,7 +884,7 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.DELETE_MISSION:
-				AlertExportDialog.showDeleteDialog(this);
+				MissionDialogUtils.showDeleteDialog(this);
 				break;
 
 			default:
