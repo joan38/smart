@@ -38,7 +38,7 @@ public class AlertExportDialog extends AlertDialog.Builder {
 	/**
 	 * Constructor
 	 * 
-	 * @param c
+	 * @param context
 	 *            : the context
 	 */
 	public AlertExportDialog(final Context c) {
