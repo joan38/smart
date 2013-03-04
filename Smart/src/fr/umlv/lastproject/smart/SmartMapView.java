@@ -177,6 +177,8 @@ public class SmartMapView extends MapView {
 			return;
 		}
 		List<TMSOverlay> newGeotiffoverlays = new ArrayList<TMSOverlay>();
+		List<GeometryLayer> newGeometryLayers = new ArrayList<GeometryLayer>();
+		List<WMSOverlay> newWMSLayers = new ArrayList<WMSOverlay>();
 
 		for (LayerItem overlay : this.listOverlay.toList()) {
 			Overlay o = this.stringToOverlay.get(overlay.getName());
@@ -189,13 +191,25 @@ public class SmartMapView extends MapView {
 					this.stringToOverlay.get(overlays.get(i).getName()));
 			getOverlays().get(i).setEnabled(overlays.get(i).isVisible());
 			boolean isTMSOverlay = geoTIFFOverlays.remove(o);
+			boolean isGeometryOverlay = geometryOverlays.remove(o);
+			boolean isWMSOverlay = wmsOverlays.remove(o);
 			if (isTMSOverlay) {
 				newGeotiffoverlays.add((TMSOverlay) o);
+			} else if (isGeometryOverlay) {
+				newGeometryLayers.add((GeometryLayer) o);
+			} else {
+				newWMSLayers.add((WMSOverlay) o);
 			}
 		}
 
 		geoTIFFOverlays.clear();
 		geoTIFFOverlays.addAll(newGeotiffoverlays);
+
+		geometryOverlays.clear();
+		geometryOverlays.addAll(newGeometryLayers);
+
+		wmsOverlays.clear();
+		wmsOverlays.addAll(newWMSLayers);
 
 		this.listOverlay = overlays;
 		this.invalidate();
