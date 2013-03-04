@@ -6,6 +6,7 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPS;
@@ -44,6 +46,7 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("TESTX", "photooooooo");
 		final Intent startIntent = getIntent();
 		if (startIntent == null) {
 			finish();
@@ -220,6 +223,12 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean("takePicture", takePicture);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// ignore orientation/keyboard change
+		super.onConfigurationChanged(newConfig);
 	}
 
 }

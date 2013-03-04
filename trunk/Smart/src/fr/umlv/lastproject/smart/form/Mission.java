@@ -8,7 +8,6 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.SmartMapView;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
-import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -72,19 +71,20 @@ public final class Mission {
 			public void actionPerformed(Geometry g, GeometryLayer l) {
 				setSelectable(false);
 				mapview.invalidate();
-				AlertModifFormDialog d = new AlertModifFormDialog(context,
-						getForm(), g, l);
-				d.addFormEditedListener(new FormEditedListener() {
-
-					@Override
-					public void actionPerformed(Geometry g) {
-						g.setSelected(false);
-						setSelectable(true);
-						mapview.invalidate();
-
-					}
-				});
-				d.show();
+				context.createModifFormDialog(getForm(), g, l, Mission.this);
+				// AlertModifFormDialog d = new AlertModifFormDialog(context,
+				// getForm(), g, l);
+				// d.addFormEditedListener(new FormEditedListener() {
+				//
+				// @Override
+				// public void actionPerformed(Geometry g) {
+				// g.setSelected(false);
+				// setSelectable(true);
+				// mapview.invalidate();
+				//
+				// }
+				// });
+				// d.show();
 				g.setSelected(false);
 			}
 		};
@@ -366,7 +366,7 @@ public final class Mission {
 		mapView.invalidate();
 	}
 
-	private void setSelectable(boolean b) {
+	public void setSelectable(boolean b) {
 		pointLayer.setSelectable(b);
 		lineLayer.setSelectable(b);
 		polygonLayer.setSelectable(b);

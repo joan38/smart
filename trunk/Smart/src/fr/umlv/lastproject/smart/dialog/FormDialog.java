@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,8 @@ public class FormDialog extends AlertDialog.Builder {
 	private final Form form;
 	private final Mission mission;
 	private final Geometry geom;
+	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
+			"#####0.00");
 
 	/**
 	 * Constructor
@@ -537,8 +540,9 @@ public class FormDialog extends AlertDialog.Builder {
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				final TextView heightName = new TextView(menuActivity);
-				heightName.setText(String.valueOf(values[i]));
-
+				Log.d("TESTX", String.valueOf(values[i]));
+				double t = Double.parseDouble(String.valueOf(values[i]));
+				heightName.setText(ACCURACY_FORMAT.format(t) + " m");
 				final ImageView heightPicture = new ImageView(menuActivity);
 				heightPicture.setClickable(true);
 				heightPicture.setImageDrawable(menuActivity.getResources()
