@@ -161,6 +161,7 @@ public class LayerItem implements Serializable {
 		stream.close();
 		out.writeObject(fileName);
 		out.writeBoolean(isEditable);
+		out.close();
 
 	}
 
@@ -192,6 +193,7 @@ public class LayerItem implements Serializable {
 			this.overview = null;
 		}
 		this.isEditable = in.readBoolean();
+		in.close();
 
 	}
 

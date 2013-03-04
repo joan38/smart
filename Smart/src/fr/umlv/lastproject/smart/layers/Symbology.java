@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.layers;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import android.graphics.Color;
@@ -56,6 +59,35 @@ public abstract class Symbology implements Serializable {
 	 */
 	public int getSize() {
 		return this.size;
+	}
+
+	/**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeInt(color);
+		out.writeInt(size);
+		out.close();
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		this.color = in.readInt();
+		this.size = in.readInt();
+		in.close();
 	}
 
 }
