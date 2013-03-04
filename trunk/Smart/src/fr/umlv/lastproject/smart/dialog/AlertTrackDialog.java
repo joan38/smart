@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,8 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.ListOverlay;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * This dialog is used to set up the track
@@ -31,7 +32,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 	 * @param menu
 	 *            the context
 	 */
-	public AlertTrackDialog(final MenuActivity menu) {
+	public AlertTrackDialog(final MenuActivity menu, final ListOverlay overlays) {
 		super(menu);
 		setCancelable(false);
 
@@ -112,14 +113,13 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				File folder = new File(Environment
-						.getExternalStorageDirectory()
-						+ "/SMART/tracks/"
+				File folder = new File(SmartConstants.TRACK_PATH
 						+ trackName.getText().toString() + ".gpx");
 
 				boolean isValidate;
 
-				if (folder.exists()) {
+				if (folder.exists()
+						|| (overlays.search(trackName.getText().toString()) != null)) {
 					trackName.setError(menu.getResources().getString(
 							R.string.invalid));
 					isValidate = false;
@@ -127,8 +127,10 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 					if (trackParameter.getText().toString().equals("")
 							|| s.toString().equals("")) {
 						isValidate = false;
+						trackName.setError(null);
 					} else {
 						isValidate = true;
+						trackName.setError(null);
 					}
 				}
 
@@ -157,13 +159,20 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				File folder = new File(SmartConstants.TRACK_PATH
+						+ trackName.getText().toString() + ".gpx");
 				if (s.toString().equals("")) {
 					isValidate = false;
 				} else {
-					if (trackName.getText().toString().equals("")) {
+					if (trackName.getText().toString().equals("")
+							|| (overlays.search(trackName.getText().toString()) != null)
+							|| folder.exists()) {
+						trackName.setError(menu.getResources().getString(
+								R.string.invalid));
 						isValidate = false;
 					} else {
 						isValidate = true;
+						trackName.setError(null);
 					}
 				}
 

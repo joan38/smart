@@ -30,7 +30,7 @@
     <string name="delete">Supprimer</string>
     <string name="deleteLayer">Êtes-vous sûr(e) de vouloir supprimer cette couche ?</string>
     <string name="warning">Attention</string>
-    <string name="deleteLayerFalse">Impossible de supprimer la couche, celle-ci appartient à une mission encore en cours.</string>
+    <string name="deleteLayerFalse">Impossible de supprimer la couche, celle-ci appartient à une mission ou à une trace encore en cours.</string>
     <string name="visibilityLayer">Vous ne pouvez pas modifier la visibilité de cette couche, celle-ci appartient à une mission encore en cours.</string>
     <string name="addShortcut">Ajouter un raccouci</string>
     <string name="removeShortcut">Retirer le raccourci</string>

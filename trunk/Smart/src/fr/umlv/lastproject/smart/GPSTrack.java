@@ -161,4 +161,8 @@ public class GPSTrack {
 		return isStarted;
 	}
 
+	public String getName() {
+		return trackName;
+	}
+
 }
