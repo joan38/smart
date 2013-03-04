@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.layers;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import android.graphics.Point;
 import android.graphics.Region;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.os.Parcel;
 
 /**
  * This class represent the line geometry to draw
@@ -23,7 +27,6 @@ import android.graphics.Rect;
  */
 public class LineGeometry extends Geometry {
 	private List<PointGeometry> points;
-	private boolean drawPoints = false;
 
 	public LineGeometry() {
 		this(new ArrayList<PointGeometry>());
@@ -111,5 +114,34 @@ public class LineGeometry extends Geometry {
             }
             return false;
     }
+    
+    
+    /**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeObject(points);
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		this.points = (List<PointGeometry>)  in.readObject();
+	}
+
+    
+    
 }
 

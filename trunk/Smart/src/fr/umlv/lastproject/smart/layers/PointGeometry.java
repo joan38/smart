@@ -1,13 +1,24 @@
 package fr.umlv.lastproject.smart.layers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import android.graphics.Canvas;
 import android.graphics.Canvas.VertexMode;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * This class represent the Point geometry to draw
@@ -16,7 +27,12 @@ import android.graphics.Rect;
  * 
  */
 public class PointGeometry extends Geometry {
-	private GeoPoint coordinates;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7731488440345191629L;
+	private double latitude ;
+	private double longitude ;
 
 	/**
 	 * Point constructor
@@ -25,7 +41,8 @@ public class PointGeometry extends Geometry {
 	 * @param longitude
 	 */
 	public PointGeometry(double latitude, double longitude) {
-		this.coordinates = new GeoPoint(latitude, longitude);
+		this.latitude = latitude; 
+		this.longitude = longitude;
 		setType(GeometryType.POINT);
 
 	}
@@ -36,8 +53,7 @@ public class PointGeometry extends Geometry {
 	 * @return coordinates
 	 */
 	public GeoPoint getCoordinates() {
-		return this.coordinates;
-
+		return new GeoPoint(latitude, longitude);
 	}
 
 	/**
@@ -46,7 +62,8 @@ public class PointGeometry extends Geometry {
 	 * @return latitude
 	 */
 	public float getLatitude() {
-		return coordinates.getLatitudeE6();
+		GeoPoint a = new GeoPoint(latitude, longitude);
+		return a.getLatitudeE6();
 	}
 
 	/**
@@ -55,7 +72,8 @@ public class PointGeometry extends Geometry {
 	 * @return longitude
 	 */
 	public float getLongitude() {
-		return coordinates.getLongitudeE6();
+		GeoPoint a = new GeoPoint(latitude, longitude);
+		return a.getLongitudeE6();
 	}
 
 	@Override
@@ -90,6 +108,34 @@ public class PointGeometry extends Geometry {
 			return true ;
 		}
 		return false;
+	}
+	
+	
+	/**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeDouble(latitude);
+		out.writeDouble(longitude);
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		this.latitude =  in.readDouble() ;
+		this.longitude = in.readDouble() ;
 	}
 
 }

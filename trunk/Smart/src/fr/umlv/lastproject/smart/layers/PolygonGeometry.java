@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.layers;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.osmdroid.views.MapView;
@@ -18,7 +21,7 @@ import android.graphics.Paint.Style;
  * 
  */
 public class PolygonGeometry extends Geometry {
-	private final List<PointGeometry> points;
+	private List<PointGeometry> points;
 
 	public PolygonGeometry() {
 		this(new ArrayList<PointGeometry>());
@@ -126,4 +129,30 @@ public class PolygonGeometry extends Geometry {
             
             return false;
     }
+    
+    /**
+   	 * 
+   	 * @param out
+   	 *            the object to get
+   	 * @throws IOException
+   	 *             if canot read
+   	 */
+   	private void writeObject(ObjectOutputStream out) throws IOException {
+   		out.writeObject(points);
+   	}
+
+   	/**
+   	 * 
+   	 * @param in
+   	 *            object to read
+   	 * @throws IOException
+   	 *             if object not readable
+   	 * @throws ClassNotFoundException
+   	 *             if class does not exist
+   	 */
+   	private void readObject(ObjectInputStream in) throws IOException,
+   			ClassNotFoundException {
+   		this.points = (List<PointGeometry>)  in.readObject();
+   	}
+   	
 }
