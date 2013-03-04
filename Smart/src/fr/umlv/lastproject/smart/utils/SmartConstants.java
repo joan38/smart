@@ -21,6 +21,7 @@ public final class SmartConstants {
 	public static final int IMPORT_TIFF_BROWSER_ACTIVITY = 7;
 	public static final int HEIGHT_ACTIVITY = 8;
 	public static final int GPS_ACTIVITY = 9;
+	public static final int HEIGHT_MODIFY_ACTIVITY = 10;
 
 	public static final int CREATE_MISSION = 0;
 	public static final int CREATE_FORM = 1;

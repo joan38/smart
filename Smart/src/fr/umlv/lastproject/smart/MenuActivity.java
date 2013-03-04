@@ -51,6 +51,7 @@ import fr.umlv.lastproject.smart.dialog.AlertGPSTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSettingInfoDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
@@ -58,6 +59,7 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.form.FormEditedListener;
 import fr.umlv.lastproject.smart.form.FormIOException;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.MissionListener;
@@ -110,8 +112,10 @@ public class MenuActivity extends Activity {
 	private Object[] valuesList;
 	private static final int FORM_DIALOG_ID = 1;
 	private static final int FORM_FILLED_DIALOG_ID = 2;
+	private static final int FORM_MODIFY_DIALOG = 3;
 	private int heightIndex;
 	private Dialog dialog;
+	private GeometryLayer geometryLayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -560,6 +564,27 @@ public class MenuActivity extends Activity {
 				createDialog(FORM_FILLED_DIALOG_ID, b);
 
 				break;
+			case SmartConstants.HEIGHT_MODIFY_ACTIVITY:
+				Log.d("TESTX", "ACTIVITY RESULT");
+				final Bundle bundle2 = data.getExtras();
+				final Object oResult2 = bundle2
+						.get(HeightActivity.HEIGHT_RESULT);
+				if (oResult2 == null) {
+					final String error = (bundle2
+							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					createDialog(FORM_MODIFY_DIALOG, new Bundle());
+					return;
+				}
+				final double heightValue2 = Double.parseDouble(oResult2
+						.toString());
+				final Bundle b2 = new Bundle();
+				b2.putDouble("height", heightValue2);
+				createDialog(FORM_MODIFY_DIALOG, b2);
+
+				break;
 
 			}
 		}
@@ -606,6 +631,11 @@ public class MenuActivity extends Activity {
 			} else if (requestCode == SmartConstants.HEIGHT_ACTIVITY) {
 				Log.d("TESTX", "ACTIVITY RESULT CANCELED");
 				createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+				return;
+
+			} else if (requestCode == SmartConstants.HEIGHT_MODIFY_ACTIVITY) {
+				Log.d("TESTX", "ACTIVITY RESULT CANCELED");
+				createDialog(FORM_MODIFY_DIALOG, new Bundle());
 				return;
 
 			}
@@ -1011,6 +1041,47 @@ public class MenuActivity extends Activity {
 			this.dialog = dialogFilled.create();
 			dialog.show();
 
+		} else if (id == FORM_MODIFY_DIALOG) {
+
+			if (bundle == null) {
+				AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
+						this, this.form, this.geom, this.geometryLayer);
+				modifyDialog.addFormEditedListener(new FormEditedListener() {
+
+					@Override
+					public void actionPerformed(Geometry g) {
+						g.setSelected(false);
+						mission.setSelectable(true);
+						mapView.invalidate();
+
+					}
+				});
+				this.dialog = modifyDialog.create();
+				dialog.show();
+			} else {
+				double height = 0;
+				if (bundle.get("height") != null) {
+					height = bundle.getDouble("height");
+					valuesList[heightIndex] = height;
+				}
+
+				final AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
+						this, form, geom, geometryLayer, valuesList);
+
+				modifyDialog.addFormEditedListener(new FormEditedListener() {
+
+					@Override
+					public void actionPerformed(Geometry g) {
+						g.setSelected(false);
+						mission.setSelectable(true);
+						mapView.invalidate();
+
+					}
+				});
+				this.dialog = modifyDialog.create();
+				dialog.show();
+			}
+
 		}
 
 	}
@@ -1045,6 +1116,30 @@ public class MenuActivity extends Activity {
 	 */
 	public void removeGPSTrackListener(GPSTrackListener listener) {
 		gpsTrackListeners.remove(listener);
+	}
+
+	public void startModifHeightActivityForResult(GeometryLayer layer,
+			Form form2, Geometry geom2, Object[] valuesList2, int heightIndex2) {
+
+		this.geom = geom2;
+		this.form = form2;
+		this.valuesList = valuesList2;
+		this.heightIndex = heightIndex2;
+		this.geometryLayer = layer;
+
+		startActivityForResult(new Intent(this, HeightActivity.class),
+				SmartConstants.HEIGHT_MODIFY_ACTIVITY);
+
+	}
+
+	public void createModifFormDialog(Form form2, Geometry g, GeometryLayer l,
+			Mission m) {
+		this.form = form2;
+		this.geometryLayer = l;
+		this.geom = g;
+		this.mission = m;
+		createDialog(FORM_MODIFY_DIALOG, null);
+
 	}
 
 }
