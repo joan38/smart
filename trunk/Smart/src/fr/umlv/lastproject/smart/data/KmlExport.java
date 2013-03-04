@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import android.content.Context;
+import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.FieldRecord;
@@ -43,10 +44,11 @@ public final class KmlExport {
 	 * 
 	 * @param kmlFile
 	 * @param mission
+	 * @return the path to the saved file
 	 * @throws KmlExportException
 	 * @throws SmartException
 	 */
-	public static void exportMission(String path, long idMission,
+	public static String exportMission(String path, long idMission,
 			Context context) throws KmlExportException {
 		try {
 			DbManager dbm = new DbManager();
@@ -133,12 +135,13 @@ public final class KmlExport {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(kml);
-			StreamResult result = new StreamResult(path
-					+ mission.getTitle() + ".kml");
+			StreamResult result = new StreamResult(path + mission.getTitle()
+					+ FileUtils.KML_TYPE[0]);
 
 			transformer.transform(source, result);
 
 			dbm.close();
+			return path + mission.getTitle() + FileUtils.KML_TYPE[0];
 		} catch (ParserConfigurationException e) {
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (TransformerException e) {

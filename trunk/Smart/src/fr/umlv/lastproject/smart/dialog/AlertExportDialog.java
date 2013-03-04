@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +8,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.data.CsvExportException;
 import fr.umlv.lastproject.smart.data.DataExport;
 import fr.umlv.lastproject.smart.data.KmlExportException;
@@ -31,116 +35,233 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Maelle Cabot
  * 
  */
-public class AlertExportDialog extends AlertDialog.Builder {
+public final class AlertExportDialog {
 
-	List<MissionRecord> missionRecords;
+	private AlertExportDialog() {
+	}
 
 	/**
-	 * Constructor
+	 * Build and show the alert export dialog.
 	 * 
 	 * @param context
-	 *            : the context
+	 * @throws SmartException
 	 */
-	public AlertExportDialog(final Context c) {
-		super(c);
-		setCancelable(false);
+	public static void showExportDialog(final Context context)
+			throws SmartException {
+		AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(context);
+		dialogbuilder.setCancelable(false);
+		dialogbuilder.setTitle(R.string.export_mission);
 
-		final LayoutInflater inflater = LayoutInflater.from(c);
+		final LayoutInflater inflater = LayoutInflater.from(context);
 		final View exportMissionDialog = inflater.inflate(
 				R.layout.export_mission_dialog, null);
 
-		setView(exportMissionDialog);
-		setTitle(R.string.export_mission);
+		dialogbuilder.setView(exportMissionDialog);
 
 		final RadioGroup formatSelector = (RadioGroup) exportMissionDialog
 				.findViewById(R.id.formatChoice);
+		final CheckBox checkBoxEmail = (CheckBox) exportMissionDialog
+				.findViewById(R.id.emailExportCheckBox);
+		LinearLayout checkBoxGroup = (LinearLayout) exportMissionDialog
+				.findViewById(R.id.linearMissionExport);
+		final List<Long> missionsToExport = new ArrayList<Long>();
 
-		final ListView listView = (ListView) exportMissionDialog
-				.findViewById(R.id.listViewMission);
+		dialogbuilder.setPositiveButton(R.string.validate,
+				new OnClickListener() {
 
-		getAllMissions(c);
-		List<String> titleMissions = new ArrayList<String>();
-		for (MissionRecord m : missionRecords) {
-			titleMissions.add(m.getTitle());
-		}
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (missionsToExport.size() == 0) {
+							Toast.makeText(
+									context,
+									context.getString(R.string.pleaseSelectMission),
+									Toast.LENGTH_LONG).show();
+							return;
+						}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,
-				android.R.layout.simple_list_item_1, titleMissions);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
+						ArrayList<Uri> files = new ArrayList<Uri>();
+						for (Long idMission : missionsToExport) {
+							try {
+								switch (formatSelector
+										.getCheckedRadioButtonId()) {
+								case R.id.csvExport:
+									// Export CSV
+									files.add(Uri.fromFile(new File(DataExport
+											.exportCsv(SmartConstants.APP_PATH,
+													idMission, context))));
+									break;
 
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-				long idMission = -1;
-				String value = (String) adapter.getItemAtPosition(position);
-				for (MissionRecord m : missionRecords) {
-					if (m.getTitle().equals(value))
-						idMission = m.getId();
-				}
+								case R.id.kmlExport:
+									// Export KML
+									files.add(Uri.fromFile(new File(DataExport
+											.exportKml(SmartConstants.APP_PATH,
+													idMission, context))));
+									break;
 
-				Log.d("RadioButtonIdExport", String.valueOf(formatSelector
-						.getCheckedRadioButtonId()));
+								default:
+									throw new IllegalStateException(
+											"Id of the radiobutton unkown");
+								}
+							} catch (KmlExportException e) {
+								Toast.makeText(context, e.getMessage(),
+										Toast.LENGTH_LONG).show();
+								return;
+							} catch (CsvExportException e) {
+								Toast.makeText(context, e.getMessage(),
+										Toast.LENGTH_LONG).show();
+								return;
+							}
+						}
 
-				try {
-					switch (formatSelector.getCheckedRadioButtonId()) {
-					case R.id.CsvExport:
-						// Export CSV
-						String csvstring = c.getString(R.string.csvExport);
-						DataExport.exportCsv(SmartConstants.APP_PATH,
-								idMission, c);
-						Toast.makeText(c, csvstring + SmartConstants.APP_PATH,
+						Toast.makeText(context, R.string.missionExported,
 								Toast.LENGTH_LONG).show();
-						break;
 
-					case R.id.KmlExport:
-						// Export KML
-						String kmlstring = c.getString(R.string.csvExport);
-						DataExport.exportKml(SmartConstants.APP_PATH,
-								idMission, c);
-						Toast.makeText(c, kmlstring + SmartConstants.APP_PATH,
-								Toast.LENGTH_LONG).show();
-						break;
-
-					default:
-						throw new IllegalStateException(
-								"Id of the radiobutton unkown");
+						if (checkBoxEmail.isChecked()) {
+							Intent intent = FileUtils.createEmailIntent(files);
+							context.startActivity(intent);
+						}
 					}
-				} catch (KmlExportException e) {
-					Toast.makeText(c, R.string.kmlExportError,
-							Toast.LENGTH_LONG).show();
-				} catch (CsvExportException e) {
-					Toast.makeText(c, R.string.csvExportError,
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		});
+				});
 
-		setNegativeButton(R.string.cancel, new OnClickListener() {
+		dialogbuilder.setNegativeButton(R.string.cancel, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-
 			}
 		});
-	}
 
-	private void getAllMissions(Context c) {
-		DbManager dbm = new DbManager();
-		try {
-			dbm.open(c);
-		} catch (SmartException e) {
-			Toast.makeText(c, e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("", e.getMessage());
+		final AlertDialog alertDialog = dialogbuilder.create();
+		alertDialog.show();
+		alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+		List<MissionRecord> missionRecords = getAllMissions(context);
+
+		if (missionRecords.size() == 0) {
+			TextView noMissionText = new TextView(context);
+			noMissionText.setText(R.string.noMissionAvailable);
+			checkBoxGroup.addView(noMissionText);
 		}
-		missionRecords = dbm.getAllMissionsNoActives();
-		dbm.close();
 
-		// Map<String, Long> mapMissions = new HashMap<String, Long>();
-		// for (MissionRecord m : missionRecords) {
-		// mapMissions.put(m.getTitle(), m.getId());
-		// }
+		for (MissionRecord m : missionRecords) {
+			CheckBox checkBox = new CheckBox(context);
+			checkBox.setText(m.getTitle());
+			checkBox.setHint(String.valueOf(m.getId()));
+			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+				@Override
+				public void onCheckedChanged(CompoundButton checkBox,
+						boolean isChecked) {
+					if (isChecked) {
+						missionsToExport.add(Long.valueOf(String
+								.valueOf(checkBox.getHint())));
+
+						if (missionsToExport.size() > 0) {
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+									.setEnabled(true);
+						}
+					} else {
+						missionsToExport.remove(Long.valueOf(String
+								.valueOf(checkBox.getHint())));
+
+						if (missionsToExport.size() == 0) {
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+									.setEnabled(false);
+						}
+					}
+				}
+			});
+
+			checkBoxGroup.addView(checkBox);
+		}
 	}
 
+	public static void showDeleteDialog(final Context context)
+			throws SmartException {
+		AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(context);
+		dialogbuilder.setCancelable(false);
+		dialogbuilder.setTitle(R.string.delete_mission);
+
+		final LayoutInflater inflater = LayoutInflater.from(context);
+		final View deleteMissionDialog = inflater.inflate(
+				R.layout.delete_mission_dialog, null);
+
+		dialogbuilder.setView(deleteMissionDialog);
+
+		LinearLayout checkBoxGroup = (LinearLayout) deleteMissionDialog
+				.findViewById(R.id.linearMissionDelete);
+		final List<Long> missionsToDelete = new ArrayList<Long>();
+
+		dialogbuilder.setPositiveButton(R.string.validate,
+				new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						AlertValidationDialog alertValidationDialog = new AlertValidationDialog(
+								context, missionsToDelete);
+						alertValidationDialog.show();
+					}
+				});
+
+		dialogbuilder.setNegativeButton(R.string.cancel, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+
+		final AlertDialog alertDialog = dialogbuilder.create();
+		alertDialog.show();
+		alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+		List<MissionRecord> missionRecords = getAllMissions(context);
+
+		if (missionRecords.size() == 0) {
+			TextView noMissionText = new TextView(context);
+			noMissionText.setText(R.string.noMissionAvailable);
+			checkBoxGroup.addView(noMissionText);
+		}
+
+		for (MissionRecord m : missionRecords) {
+			CheckBox checkBox = new CheckBox(context);
+			checkBox.setText(m.getTitle());
+			checkBox.setHint(String.valueOf(m.getId()));
+			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+				@Override
+				public void onCheckedChanged(CompoundButton checkBox,
+						boolean isChecked) {
+					if (isChecked) {
+						missionsToDelete.add(Long.valueOf(String
+								.valueOf(checkBox.getHint())));
+
+						if (missionsToDelete.size() > 0) {
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+									.setEnabled(true);
+						}
+					} else {
+						missionsToDelete.remove(Long.valueOf(String
+								.valueOf(checkBox.getHint())));
+
+						if (missionsToDelete.size() == 0) {
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+									.setEnabled(false);
+						}
+					}
+				}
+			});
+			checkBoxGroup.addView(checkBox);
+		}
+	}
+
+	private static List<MissionRecord> getAllMissions(Context c)
+			throws SmartException {
+		DbManager dbm = new DbManager();
+		dbm.open(c);
+
+		try {
+			return dbm.getAllMissionsNoActives();
+		} finally {
+			dbm.close();
+		}
+	}
 }

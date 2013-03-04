@@ -44,9 +44,9 @@ import fr.umlv.lastproject.smart.browser.FileChooserActivity;
 public final class FileUtils {
 	/** TAG for log messages. */
 	private static final String TAG = "FileUtils";
-	
+
 	// Set to true to enable logging
-	private static final boolean DEBUG = false; 
+	private static final boolean DEBUG = false;
 
 	public static final String MIME_TYPE_AUDIO = "audio/*";
 	public static final String MIME_TYPE_TEXT = "text/*";
@@ -58,10 +58,11 @@ public final class FileUtils {
 
 	public static final String[] SHP_TYPE = { ".shp" };
 	public static final String[] KML_TYPE = { ".kml" };
+	public static final String[] CSV_TYPE = { ".csv" };
 	public static final String[] TIF_TYPE = { ".tif", ".tiff" };
 	/* We do not want any file displayed */
 	public static final String[] DIRECTORY_TYPE = { "?" };
-	public static final String[] FORM_TYPE={".form"};
+	public static final String[] FORM_TYPE = { ".form" };
 
 	private FileUtils() {
 
@@ -271,7 +272,7 @@ public final class FileUtils {
 	private static final String HIDDEN_PREFIX = ".";
 
 	/**
-	 * File and folder comparator. 
+	 * File and folder comparator.
 	 * 
 	 * @author paulburke
 	 */
@@ -342,10 +343,10 @@ public final class FileUtils {
 			// Sort the folders alphabetically
 			Arrays.sort(dirs, mComparator);
 			// Add each folder to the File list for the list adapter
-			for (File dir : dirs){
+			for (File dir : dirs) {
 				list.add(dir);
 			}
-				
+
 		}
 
 		// List file in this directory with the file filter
@@ -354,10 +355,10 @@ public final class FileUtils {
 			// Sort the files alphabetically
 			Arrays.sort(files, mComparator);
 			// Add each file to the File list for the list adapter
-			for (File file : files){
+			for (File file : files) {
 				list.add(file);
 			}
-				
+
 		}
 
 		return list;
@@ -383,5 +384,14 @@ public final class FileUtils {
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.putExtra(FileChooserActivity.PATH, path);
 		return intent;
+	}
+
+	public static Intent createEmailIntent(ArrayList<Uri> files) {
+		Intent emailIntent = new Intent(
+				android.content.Intent.ACTION_SEND_MULTIPLE);
+		emailIntent.setType("plain/text");
+		emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+
+		return emailIntent;
 	}
 }
