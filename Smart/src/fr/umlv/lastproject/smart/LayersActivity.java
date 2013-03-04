@@ -20,12 +20,13 @@ import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
  * 
  */
 public class LayersActivity extends ListActivity {
-	
+
 	private Preferences pref;
 
 	private ListOverlay listOverlay = new ListOverlay();
 	SmartItemLayerAdapter adapter;
 	private String mission;
+	private String track;
 
 	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
 		@Override
@@ -45,8 +46,10 @@ public class LayersActivity extends ListActivity {
 		@Override
 		public void remove(int which) {
 			AlertDeleteLayerDialog removeDialog;
-			if (mission != null
-					&& adapter.getItem(which).getName().contains(mission)) {
+			if ((mission != null && adapter.getItem(which).getName()
+					.contains(mission))
+					|| (track != null && adapter.getItem(which).getName()
+							.contains(track))) {
 				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
 						which, false);
 			} else {
@@ -85,6 +88,7 @@ public class LayersActivity extends ListActivity {
 
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 		mission = getIntent().getExtras().getString("mission");
+		track = getIntent().getExtras().getString("track");
 
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
@@ -132,7 +136,7 @@ public class LayersActivity extends ListActivity {
 		setResult(RESULT_OK, intentReturn);
 		finish();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();

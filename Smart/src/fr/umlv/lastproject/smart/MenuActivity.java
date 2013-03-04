@@ -155,6 +155,13 @@ public class MenuActivity extends Activity {
 					String mission = null;
 					layersActivity.putExtra("mission", mission);
 				}
+
+				if (gpsTrack != null && gpsTrack.isStarted()) {
+					layersActivity.putExtra("mission", gpsTrack.getName());
+				} else {
+					String track = null;
+					layersActivity.putExtra("track", track);
+				}
 				startActivityForResult(layersActivity,
 						SmartConstants.LAYERS_VIEW);
 			}
@@ -605,7 +612,7 @@ public class MenuActivity extends Activity {
 					// AlertTrackDialog(
 					// this);
 					// trackDialog.show();
-					new AlertTrackDialog(this);
+					new AlertTrackDialog(this, mapView.getListOverlay());
 
 				} else {
 					try {
@@ -734,7 +741,8 @@ public class MenuActivity extends Activity {
 							getResources().getText(R.string.missionStop),
 							Toast.LENGTH_LONG).show();
 				} else {
-					missionDialog = new AlertCreateMissionDialog(this);
+					missionDialog = new AlertCreateMissionDialog(this,
+							mapView.getListOverlay());
 				}
 				break;
 
@@ -805,6 +813,8 @@ public class MenuActivity extends Activity {
 			case SmartConstants.GPS_TRACK:
 				// final AlertTrackDialog trackDialog = new
 				// AlertTrackDialog(this);
+				File trackfolder = new File(SmartConstants.TRACK_PATH);
+				trackfolder.mkdir();
 				if (!gps.isEnabled(locationManager)) {
 					final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
 							this);
@@ -813,7 +823,7 @@ public class MenuActivity extends Activity {
 				}
 				if (gpsTrack == null) {
 					// trackDialog.show();
-					new AlertTrackDialog(this);
+					new AlertTrackDialog(this, mapView.getListOverlay());
 					break;
 				} else {
 					try {

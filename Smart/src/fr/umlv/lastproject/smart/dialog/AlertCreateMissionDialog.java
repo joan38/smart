@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.umlv.lastproject.smart.ListOverlay;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
@@ -37,7 +38,8 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 	 * 
 	 * @param menu
 	 */
-	public AlertCreateMissionDialog(final MenuActivity menu) {
+	public AlertCreateMissionDialog(final MenuActivity menu,
+			final ListOverlay overlays) {
 		super(menu);
 		setCancelable(false);
 
@@ -107,7 +109,13 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 					}
 
 					if (dbManager.existsMission(textViewMissionName.getText()
-							.toString())) {
+							.toString())
+							|| ((overlays.search(textViewMissionName.getText()
+									.toString() + "_POLYGON") != null)
+									&& (overlays.search(textViewMissionName
+											.getText().toString() + "_LINE") != null) && (overlays
+									.search(textViewMissionName.getText()
+											.toString() + "_POINT") != null))) {
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(false);
 						textViewMissionName.setError(menu.getResources()
@@ -115,6 +123,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 					} else {
 						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 								.setEnabled(true);
+						textViewMissionName.setError(null);
 					}
 
 					dbManager.close();

@@ -36,7 +36,7 @@
     <string name="deleteLayer">Do you really want to remove this layer ?</string>
     <string name="warning">Warning</string>
     <string name="visibilityLayer">You can\'t modify the visibility of this layer, it is link to a mission started.</string>
-    <string name="deleteLayerFalse">You can\'t remove this layer, it is link to a mission started.</string>
+    <string name="deleteLayerFalse">You can\'t remove this layer, it is link to a mission or a track started.</string>
     <string name="shouldRestartApp">You have to restart the application to apply the change.</string>
     <string name="error">Error</string>
     <string name="kmlParseError">Error. The Kml file is invalid</string>
