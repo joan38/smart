@@ -182,6 +182,12 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+	}
+
 	/**
 	 * This method is use to init the map
 	 */

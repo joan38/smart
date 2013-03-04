@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.form;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -19,8 +22,10 @@ public abstract class Field implements Serializable {
 
 	/**
 	 * 
-	 * @param label of the field
-	 * @param type of the field
+	 * @param label
+	 *            of the field
+	 * @param type
+	 *            of the field
 	 */
 	public Field(String label, FieldType type) {
 		this.label = label;
@@ -57,6 +62,35 @@ public abstract class Field implements Serializable {
 	 */
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	/**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeObject(label);
+		out.writeObject(type.getId());
+		out.close();
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		this.label = (String) in.readObject();
+		this.type = FieldType.getFromId(in.readInt());
+		in.close();
 	}
 
 }

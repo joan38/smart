@@ -3,6 +3,8 @@ package fr.umlv.lastproject.smart.form;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -375,5 +377,34 @@ public class Form implements Serializable {
 		} catch (TransformerException e) {
 			throw new FormIOException("Unable to export the form", e);
 		}
+	}
+
+	/**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeObject(title);
+		out.writeObject(fieldsList);
+		out.close();
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		this.title = (String) in.readObject();
+		this.fieldsList = (List<Field>) in.readObject();
+		in.close();
 	}
 }

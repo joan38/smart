@@ -119,9 +119,24 @@ public class HeightActivity extends Activity implements SensorEventListener {
 		}
 		synchronized (lock) {
 			final float yOrientationDegrees = event.values[2];
+			final float x = event.values[0];
+			final float z = event.values[1];
 			angle = yOrientationDegrees;
-			Log.d("TEST2", "Orientation Y: " + yOrientationDegrees + " / "
-					+ Math.tan(yOrientationDegrees * DEG_TO_RAD));
+			// Log.d("TEST2",
+			// "Orientation Y: " + yOrientationDegrees + " / "
+			// + Math.tan(yOrientationDegrees * DEG_TO_RAD)
+			// + " //// Orientation Z : " + z + " / "
+			// + Math.tan(z * DEG_TO_RAD)
+			// + " ////Orientation X : " + x + " / "
+			// + Math.tan(x * DEG_TO_RAD));
+			Log.d("TEST2", "Orientation Y: " + yOrientationDegrees
+					+ " //// Orientation Z : " + z + " / "
+
+					+ " ////Orientation X : " + x);
+			// Log.d("TEST2",
+			// "Orientation X: " + x + " / " + Math.tan(x * DEG_TO_RAD));
+			// Log.d("TEST2",
+			// "Orientation Z: " + z + " / " + Math.tan(z * DEG_TO_RAD));
 
 		}
 
