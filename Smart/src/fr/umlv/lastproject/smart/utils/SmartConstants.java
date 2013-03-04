@@ -22,7 +22,6 @@ public final class SmartConstants {
 	public static final int HEIGHT_ACTIVITY = 8;
 	public static final int GPS_ACTIVITY = 9;
 	public static final int HEIGHT_MODIFY_ACTIVITY = 10;
-
 	public static final int CREATE_MISSION = 0;
 	public static final int CREATE_FORM = 1;
 	public static final int POINT_SURVEY = 2;
@@ -34,19 +33,15 @@ public final class SmartConstants {
 	public static final int IMPORT_GEOTIFF = 8;
 	public static final int IMPORT_SHAPE = 9;
 	public static final int IMPORT_WMS = 10;
-	public static final int EXPORT = 11;
+	public static final int EXPORT_MISSION = 11;
 	public static final int MEASURE = 12;
 	public static final int EXPORT_FORM = 13;
 	public static final int DELETE_MISSION = 14;
-
 	public static final int STOP_MISSION = 15;
 	public static final int STOP_GPS_TRACK = 16;
-
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
-
 	public static final int DEFAULT_ZOOM = 15;
-
 	public static final int TEXT_FIELD = 0;
 	public static final int NUMERIC_FIELD = 1;
 	public static final int BOOLEAN_FIELD = 2;

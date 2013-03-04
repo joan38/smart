@@ -41,7 +41,7 @@ public class CreateFormActivity extends Activity {
 	private TableLayout tableLayout;
 	private final List<EditText> allEds = new ArrayList<EditText>();
 	private FieldType fieldType;
-	Preferences pref;
+	private Preferences pref;
 	private static final int PADDING_LEFT = 40;
 	private static final int PADDING_TOP = 30;
 
@@ -284,8 +284,6 @@ public class CreateFormActivity extends Activity {
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				startActivity(intentMenuActivity);
-				// }
-				finish();
 			}
 		});
 	}

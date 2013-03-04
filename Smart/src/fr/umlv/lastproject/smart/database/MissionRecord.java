@@ -17,7 +17,9 @@ public class MissionRecord {
 	private long id;
 	private String title;
 
-	// True if the mission is in progress
+	/**
+	 * True if the mission is in progress
+	 */
 	private boolean status;
 	private String date;
 	private Form form;

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import android.content.Context;
+import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.database.BooleanFieldRecord;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.FieldRecord;
@@ -30,23 +32,27 @@ public final class DataExport {
 	 * 
 	 * @throws IOException
 	 */
-	public static void exportCsv(String path, long idMission, Context context)
+	public static String exportCsv(String path, long idMission, Context context)
 			throws CsvExportException {
 		try {
 			DbManager dbm = new DbManager();
 			dbm.open(context);
 			MissionRecord mission = dbm.getMission(idMission);
-			Iterator<GeometryRecord> geometryIterator = dbm.getGeometriesFromMission(mission.getId()).iterator();
+			Iterator<GeometryRecord> geometryIterator = dbm
+					.getGeometriesFromMission(mission.getId()).iterator();
 
 			if (!geometryIterator.hasNext()) {
-				throw new CsvExportException("No geometry in the given mission");
+				throw new CsvExportException(
+						context.getString(R.string.noGeometryInMission));
 			}
-			
-			FileWriter csv = new FileWriter(path + mission.getTitle() + ".csv");
+
+			FileWriter csv = new FileWriter(path + mission.getTitle()
+					+ FileUtils.CSV_TYPE[0]);
 			csv.write("Geometries;Points");
-			
+
 			GeometryRecord geometry = geometryIterator.next();
-			FormRecord formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getTitle());
+			FormRecord formRecord = dbm.getFormRecord(
+					geometry.getIdFormRecord(), mission.getForm().getTitle());
 			for (FieldRecord field : formRecord.getFields()) {
 				csv.write(";" + field.getField().getLabel());
 			}
@@ -59,10 +65,10 @@ public final class DataExport {
 					csv.write("[" + point.getX() + "," + point.getY() + ","
 							+ (point.getZ() == -1.0 ? 0 : point.getZ()) + "]");
 				}
-				
+
 				for (FieldRecord field : formRecord.getFields()) {
 					csv.write(";");
-					
+
 					switch (field.getField().getType()) {
 					case TEXT:
 						TextFieldRecord tf = (TextFieldRecord) field;
@@ -100,16 +106,18 @@ public final class DataExport {
 				}
 
 				csv.write("\n");
-				
+
 				if (!geometryIterator.hasNext()) {
 					break;
 				}
 				geometry = geometryIterator.next();
-				formRecord = dbm.getFormRecord(geometry.getIdFormRecord(), mission.getForm().getTitle());
+				formRecord = dbm.getFormRecord(geometry.getIdFormRecord(),
+						mission.getForm().getTitle());
 			}
 
 			csv.close();
 			dbm.close();
+			return path + mission.getTitle() + FileUtils.CSV_TYPE[0];
 		} catch (IOException e) {
 			throw new CsvExportException("Unable to export the mission", e);
 		} catch (SmartException e) {
@@ -121,11 +129,12 @@ public final class DataExport {
 	 * Export the geometries of the mission in a KML file. The name of the file
 	 * is <the name of the mission>.kml
 	 * 
+	 * @return the path to the saved file
 	 * @throws KmlExportException
 	 * @throws SmartException
 	 */
-	public static void exportKml(String path, long idMission, Context context)
+	public static String exportKml(String path, long idMission, Context context)
 			throws KmlExportException {
-		KmlExport.exportMission(path, idMission, context);
+		return KmlExport.exportMission(path, idMission, context);
 	}
 }
