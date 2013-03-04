@@ -42,12 +42,15 @@ public class SmartMapView extends MapView {
 		super(context, set);
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
 		this.listOverlay = new ListOverlay();
-
+		this.geometryOverlays = new ArrayList<GeometryLayer>();
+		this.wmsOverlays = new ArrayList<WMSOverlay>();
 		this.stringToOverlay = new HashMap<String, Overlay>();
 
 	}
 
 	private final List<TMSOverlay> geoTIFFOverlays;
+	private final List<GeometryLayer> geometryOverlays;
+	private final List<WMSOverlay> wmsOverlays;
 
 	private ListOverlay listOverlay;
 
@@ -92,6 +95,7 @@ public class SmartMapView extends MapView {
 	 *            to add to the view
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
+		this.geometryOverlays.add(layer);
 		addOverlay(layer);
 	}
 
@@ -103,9 +107,20 @@ public class SmartMapView extends MapView {
 	 */
 	public void addGeometryLayers(final List<GeometryLayer> layers) {
 		for (GeometryLayer geom : layers) {
-			addOverlay(geom);
+			addGeometryLayer(geom);
 
 		}
+	}
+
+	/**
+	 * Adds a {@link WMSOverlay}
+	 * 
+	 * @param layer
+	 *            to add to the view
+	 */
+	public void addWMSLayer(final WMSOverlay layer) {
+		this.wmsOverlays.add(layer);
+		addOverlay(layer);
 	}
 
 	/**
@@ -137,6 +152,18 @@ public class SmartMapView extends MapView {
 	 *            to remove
 	 */
 	public void removeGeometryLayer(final GeometryLayer layer) {
+		this.geometryOverlays.remove(layer);
+		removeOverlay(layer.getName());
+	}
+
+	/**
+	 * Removes a {@link WMSOverlay}
+	 * 
+	 * @param layer
+	 *            to remove
+	 */
+	public void removeWMSLayer(final WMSOverlay layer) {
+		this.geometryOverlays.remove(layer);
 		removeOverlay(layer.getName());
 	}
 
