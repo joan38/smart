@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Smart</string>
     <string name="menu_settings">Paramètres</string>
     <string name="infoSettings">Paramètres d\'informations</string>
@@ -46,6 +45,9 @@
     <string name="wms_success">Chargement de la couche WMS : réussi</string>
     <string name="layerAlreadyExists">La couche existe déjà</string>
     <string name="shortcut_remove">Le raccourci a été supprimé</string>
+    <string name="pleaseSelectMission">Merci de selectionner une mission</string>
+    <string name="noGeometryInMission">Pas de geometrie dans la mission</string>
+    <string name="noMissionAvailable">Pas de mission disponible</string>
 
     <string-array name="items">
         <item>Démarrer une mission</item>
@@ -59,7 +61,7 @@
         <item>Importer GeoTIFF</item>
         <item>Importer ShapeFile</item>
         <item>Importer WMS</item>
-        <item>Exporter une mission</item>
+        <item>Export de mission</item>
         <item>Mesurer une distance</item>
         <item>Exporter un formulaire</item>
         <item>Supprimer une mission</item>
@@ -101,10 +103,7 @@
     <string name="export_form">Exporter un formulaire</string>
     <string name="defaultForm">Défaut</string>
     <string name="othertForm">Autre</string>
-    <string name="kmlExport">Export en couche kml : réussi dans le répertoire </string>
-    <string name="kmlExportError">Erreur. La mission n\'a pas pu être exportée au format kml</string>
-    <string name="csvExport">Export en couche csv : réussi dans le répertoire </string>
-    <string name="csvExportError">Erreur. La mission n\'a pas pu être exportée au format csv</string>
+    <string name="missionExported">Mission exporté</string>
     <string name="track_name_missing">Saisir un nom pour la trace</string>
     <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string>
     <string name="track_param_false">Le paramètre doit être un nombre entier</string>
@@ -143,7 +142,7 @@
     <string name="wmstitle">Importer une couche WMS </string>
     <string name="wms_error">L\'url WMS semble ne pas être accessible</string>
     <string name="wms_name">Nom de la couche WMS</string>
-    <string name="noMission">Impossible : aucune mission en cours</string>
+    <string name="noMissionInProgress">Impossible : aucune mission en cours</string>
     <string name="missionStop">Mission arrêtée</string>
     <string name="missionStart">Mission démarrée</string>
     <string name="missionDelete">Mission supprimée</string>

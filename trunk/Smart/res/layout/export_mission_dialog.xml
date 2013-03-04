@@ -4,29 +4,70 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Format"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <RadioGroup
         android:id="@+id/formatChoice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/CsvExport"
+            android:id="@+id/csvExport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:checked="true"
             android:text="@string/CsvFormat" />
 
         <RadioButton
-            android:id="@+id/KmlExport"
+            android:id="@+id/kmlExport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/KmlFormat" />
     </RadioGroup>
 
-    <ListView
-        android:id="@+id/listViewMission"
+    <TextView
+        android:id="@+id/exportEmailText"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="eMail"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <CheckBox
+        android:id="@+id/emailExportCheckBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Envoyer par eMail" />
+
+    <TextView
+        android:id="@+id/exportMissionText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Missions"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="2dp" >
+
+        <LinearLayout
+            android:id="@+id/linearMissionExport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
