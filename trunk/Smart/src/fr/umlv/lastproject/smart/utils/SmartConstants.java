@@ -39,6 +39,7 @@ public final class SmartConstants {
 	public static final int DELETE_MISSION = 14;
 	public static final int STOP_MISSION = 15;
 	public static final int STOP_GPS_TRACK = 16;
+	
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
 	public static final int DEFAULT_ZOOM = 15;
@@ -63,6 +64,8 @@ public final class SmartConstants {
 			.getExternalStorageDirectory().getPath() + "/SMART/Tracks/";
 	public static final String PICTURES_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/SMART/Pictures/";
+	public static final String LOG_PATH = Environment
+			.getExternalStorageDirectory().getPath() + "/SMART/Log/";
 
 	public static int[] colors = new int[] { Color.BLACK,
 			Color.rgb(100, 149, 237), Color.rgb(0, 0, 128),
