@@ -121,8 +121,6 @@ public class MenuActivity extends Activity {
 		BundleCreator.savePosition(outState, mapView) ;
 		BundleCreator.saveMission(outState, missionCreated);
 		BundleCreator.saveGeomtryLayers(outState, mapView.getGeometryOberlays()) ;
-	
-		
 	}
 
 
@@ -559,6 +557,8 @@ public class MenuActivity extends Activity {
 									Toast.makeText(MenuActivity.this,
 											R.string.geotiffImport,
 											Toast.LENGTH_SHORT).show();
+									mapView.getController().setCenter(overlay.getExtent().getCenter()) ;
+									mapView.getController().setZoom(12) ;
 								}
 
 								progressDialog.dismiss();
