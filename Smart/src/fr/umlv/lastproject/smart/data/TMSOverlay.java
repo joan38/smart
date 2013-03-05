@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart.data;
 import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 
@@ -10,6 +11,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
+import android.view.MotionEvent;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.Layer;
 
@@ -71,6 +74,12 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public BoundingBoxE6 getExtent() {
 		return this.boundingBox;
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event, MapView mapView) {
+		Log.d("map position", mapView.getBoundingBox().getCenter().getLatitudeE6() / 1E6+ " " +mapView.getBoundingBox().getCenter().getLongitudeE6());
+		return super.onTouchEvent(event, mapView);
 	}
 
 }
