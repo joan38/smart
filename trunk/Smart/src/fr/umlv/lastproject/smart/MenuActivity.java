@@ -139,6 +139,8 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		File f = new File(SmartConstants.APP_PATH) ;
+		f.mkdir();
 		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
