@@ -11,6 +11,7 @@ import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
@@ -204,8 +205,11 @@ public class MenuActivity extends Activity {
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
-		mapController.setZoom(11);
-		mapController.setCenter(new GeoPoint(48.84, 2.58));
+		// mapView.setUseDataConnection(false);
+
+		mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
+		mapController.setZoom(15);
+		mapController.setCenter(new GeoPoint(48.85, 2.35));
 
 		// overlayManager.add(new ScaleBarOverlay(this));
 
@@ -237,8 +241,10 @@ public class MenuActivity extends Activity {
 		// mapView.invalidate();
 		// if (true)
 		// return;
+
 		mapView.addGeoTIFFOverlay(new TMSOverlay(
-				new MapTileProviderBasic(this), this, 10, 16, "geo1"));
+				new MapTileProviderBasic(this), this, 10, 16, "geo1",
+				new BoundingBoxE6(90, -180, -90, 180)));
 		//
 		// mapView.addGeoTIFFOverlay(new TMSOverlay(
 		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
