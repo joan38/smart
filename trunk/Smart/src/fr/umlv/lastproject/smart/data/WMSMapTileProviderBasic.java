@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart;
+package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.IMapTileProviderCallback;
 import org.osmdroid.tileprovider.IRegisterReceiver;

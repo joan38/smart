@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 
@@ -17,15 +18,18 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	private final int zoomLevelMax, zoomLevelMin;
 	private final String name;
 	private final Context context;
+	private final BoundingBoxE6 boundingBox;
 
 	public TMSOverlay(final MapTileProviderBase aTileProvider,
 			final Context aContext, final int minZoomLevel,
-			final int maxZoomLevel, final String name) {
+			final int maxZoomLevel, final String name,
+			final BoundingBoxE6 extent) {
 		super(aTileProvider, aContext);
 		this.context = aContext;
 		zoomLevelMax = maxZoomLevel;
 		zoomLevelMin = minZoomLevel;
 		this.name = name;
+		this.boundingBox = extent;
 		if (zoomLevelMax < zoomLevelMin
 				|| zoomLevelMax > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
 				|| zoomLevelMin < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL)
@@ -62,6 +66,11 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public boolean hasSymbologyEditable() {
 		return false;
+	}
+
+	@Override
+	public Extent getExtent() {
+		return new Extent(this.boundingBox, this.getMinimumZoomLevel());
 	}
 
 }

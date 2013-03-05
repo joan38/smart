@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart;
+package fr.umlv.lastproject.smart.data;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;

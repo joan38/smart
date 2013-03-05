@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
+import org.osmdroid.util.BoundingBoxE6;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
@@ -51,8 +52,9 @@ public final class DataImport {
 		final String tileExtension = (String) metadata[1];
 		final int minZoom = Integer.parseInt(metadata[2].toString());
 		final int maxZoom = Integer.parseInt(metadata[3].toString());
+		final BoundingBoxE6 extent = (BoundingBoxE6) metadata[4];
 		return importGeoTIFFFileZIP(folderName, context, minZoom, maxZoom,
-				tileExtension);
+				tileExtension, extent);
 
 	}
 
@@ -66,7 +68,7 @@ public final class DataImport {
 	 */
 	public static TMSOverlay importGeoTIFFFileZIP(final String folderName,
 			final Context context, final int minZoom, final int maxZoom,
-			final String tileExtension) {
+			final String tileExtension, final BoundingBoxE6 extent) {
 		if (folderName == null
 				|| minZoom < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL
 				|| maxZoom > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
@@ -82,7 +84,7 @@ public final class DataImport {
 		mProvider.setUseDataConnection(false);
 
 		final TMSOverlay mTilesOverlay = new TMSOverlay(mProvider, context,
-				minZoom, maxZoom, folderName);
+				minZoom, maxZoom, folderName, extent);
 
 		return mTilesOverlay;
 	}
