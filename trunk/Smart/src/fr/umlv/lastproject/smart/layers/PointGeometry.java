@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
@@ -111,31 +113,44 @@ public class PointGeometry extends Geometry {
 	}
 	
 	
-	/**
-	 * 
-	 * @param out
-	 *            the object to get
-	 * @throws IOException
-	 *             if canot read
-	 */
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeDouble(latitude);
-		out.writeDouble(longitude);
+    /**
+   	 * 
+   	 * @param out
+   	 *            the object to get
+   	 * @throws IOException
+   	 *             if canot read
+   	 */
+   	private void writeObject(ObjectOutputStream out) throws IOException {
+   		out.writeDouble(latitude);
+   		out.writeDouble(longitude);
+   		out.writeBoolean(isSelected());
+   		out.writeLong(getId()) ;
+   		out.writeObject(getSymbology());
+   	}
+
+   	/**
+   	 * 
+   	 * @param in
+   	 *            object to read
+   	 * @throws IOException
+   	 *             if object not readable
+   	 * @throws ClassNotFoundException
+   	 *             if class does not exist
+   	 */
+   	private void readObject(ObjectInputStream in) throws IOException,
+   			ClassNotFoundException {
+   		this.latitude = in.readDouble();
+   		this.longitude = in.readDouble();
+   		this.setSelected(in.readBoolean()) ;
+   		this.setId(in.readLong()) ;
+   		this.setType(GeometryType.POINT) ;
+   		this.setSymbology((Symbology)in.readObject()) ;
+   	}
+
+	@Override
+	public BoundingBoxE6 getBoundingBox() {
+		return  new BoundingBoxE6(latitude, longitude, latitude, longitude);	
 	}
 
-	/**
-	 * 
-	 * @param in
-	 *            object to read
-	 * @throws IOException
-	 *             if object not readable
-	 * @throws ClassNotFoundException
-	 *             if class does not exist
-	 */
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-		this.latitude =  in.readDouble() ;
-		this.longitude = in.readDouble() ;
-	}
 
 }

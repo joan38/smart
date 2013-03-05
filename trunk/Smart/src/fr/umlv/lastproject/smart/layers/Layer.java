@@ -114,6 +114,6 @@ public interface Layer {
 
 	boolean hasSymbologyEditable();
 
-	Extent getExtent();
+	BoundingBoxE6 getExtent();
 
 }

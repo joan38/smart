@@ -14,12 +14,16 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
+import org.osmdroid.views.MapController.AnimationType;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
 import org.osmdroid.views.overlay.OverlayManager;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +33,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +71,11 @@ import fr.umlv.lastproject.smart.form.MissionListener;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.PointSymbology;
+import fr.umlv.lastproject.smart.layers.PolygonSymbology;
+import fr.umlv.lastproject.smart.layers.Symbology;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
@@ -117,17 +126,30 @@ public class MenuActivity extends Activity {
 	private GeometryLayer geometryLayer;
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		BundleCreator.savePosition(outState, mapView) ;
+		BundleCreator.saveMission(outState, missionCreated);
+		BundleCreator.saveGeomtryLayers(outState, mapView.getGeometryOberlays()) ;
+	
+		
+	}
+
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
-
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
-
 		initMap();
+		if(savedInstanceState != null){
+			BundleCreator.loadPosition(savedInstanceState, mapView) ;
+			missionCreated = BundleCreator.loadMission(savedInstanceState, mapView, this) ;
+			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
+		}
 		initGps();
-
 		ImageView home = (ImageView) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -187,22 +209,20 @@ public class MenuActivity extends Activity {
 
 		return true;
 	}
+	
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-	}
 
 	/**
 	 * This method is use to init the map
 	 */
 	public void initMap() {
 		mapView = (SmartMapView) findViewById(R.id.mapview);
+		
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
 
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
+
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
 		// mapView.setUseDataConnection(false);
@@ -249,7 +269,7 @@ public class MenuActivity extends Activity {
 		// mapView.addGeoTIFFOverlay(new TMSOverlay(
 		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
 
-		directedLocationOverlay = new DirectedLocationOverlay(this);
+		directedLocationOverlay = new DirectedLocationOverlay(getApplicationContext());
 		directedLocationOverlay.setShowAccuracy(true);
 		overlayManager.add(directedLocationOverlay);
 
@@ -445,7 +465,7 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.LAYERS_VIEW:
 				ListOverlay listOverlay = (ListOverlay) data
-						.getSerializableExtra("overlays");
+				.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -460,7 +480,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-									.getName());
+											.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -492,7 +512,7 @@ public class MenuActivity extends Activity {
 					mapView.addGeometryLayers(DataImport.importKml(this,
 							kmlPath));
 					Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
-							.show();
+					.show();
 				} catch (XmlPullParserException e) {
 					Toast.makeText(this, R.string.kmlParseError,
 							Toast.LENGTH_SHORT).show();
@@ -505,11 +525,14 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
 				String shpPath = data.getData().getPath();
-				mapView.addGeometryLayer(DataImport.importShapeFile(this,
-						shpPath));
+				GeometryLayer gl = DataImport.importShapeFile(this,
+						shpPath) ;
+				mapView.addGeometryLayer(gl);
+				mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+				mapView.invalidate();
 
 				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-						.show();
+				.show();
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
@@ -564,11 +587,11 @@ public class MenuActivity extends Activity {
 				if (oResult == null) {
 					final String error = (bundle
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+									return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
@@ -585,11 +608,11 @@ public class MenuActivity extends Activity {
 				if (oResult2 == null) {
 					final String error = (bundle2
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_MODIFY_DIALOG, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_MODIFY_DIALOG, new Bundle());
+									return;
 				}
 				final double heightValue2 = Double.parseDouble(oResult2
 						.toString());
@@ -850,7 +873,12 @@ public class MenuActivity extends Activity {
 								Toast.LENGTH_LONG).show();
 						trackStarted = false;
 					}
-				}
+
+					trackStarted = false;
+					Toast.makeText(this, R.string.track_stop, Toast.LENGTH_LONG)
+					.show();
+				} 
+			
 				break;
 
 			case SmartConstants.IMPORT_KML:
@@ -984,6 +1012,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		mapView.getTileProvider().clearTileCache() ;
 		pref.save();
 	}
 
@@ -992,6 +1021,8 @@ public class MenuActivity extends Activity {
 		super.onDestroy();
 		cleanTIFFFolder();
 		cleanTmpFolder();
+		mapView.getTileProvider().clearTileCache() ;
+		System.gc() ;
 	}
 
 	private void cleanTmpFolder() {
@@ -1160,4 +1191,14 @@ public class MenuActivity extends Activity {
 		this.mission = m;
 		createDialog(FORM_MODIFY_DIALOG, null);
 	}
+	
+	@Override
+	protected void onStop() {
+		mapView.getTileProvider().clearTileCache() ;
+		System.gc();
+		super.onStop();
+	}
+	
+	
+	
 }

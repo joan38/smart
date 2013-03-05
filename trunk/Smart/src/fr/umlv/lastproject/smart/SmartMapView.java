@@ -32,6 +32,12 @@ import fr.umlv.lastproject.smart.layers.Layer;
 public class SmartMapView extends MapView {
 
 	private final Map<String, Overlay> stringToOverlay;
+	private final List<TMSOverlay> geoTIFFOverlays;
+	private final List<GeometryLayer> geometryOverlays;
+	private final List<WMSOverlay> wmsOverlays;
+
+	private ListOverlay listOverlay;
+
 
 	/**
 	 * 
@@ -50,12 +56,12 @@ public class SmartMapView extends MapView {
 		this.stringToOverlay = new HashMap<String, Overlay>();
 
 	}
+	
+	public List<GeometryLayer> getGeometryOberlays(){
+		return geometryOverlays ;
+	}
+	
 
-	private final List<TMSOverlay> geoTIFFOverlays;
-	private final List<GeometryLayer> geometryOverlays;
-	private final List<WMSOverlay> wmsOverlays;
-
-	private ListOverlay listOverlay;
 
 	/**
 	 * 

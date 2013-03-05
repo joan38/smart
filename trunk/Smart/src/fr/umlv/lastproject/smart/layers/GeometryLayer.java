@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
@@ -244,9 +245,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
 						singleTapListeners.get(i)
-								.actionPerformed(
-										new PointGeometry(firstLatitude,
-												firstLongitude));
+						.actionPerformed(
+								new PointGeometry(firstLatitude,
+										firstLongitude));
 					}
 					final IGeoPoint secondPoint = mapView.getProjection()
 							.fromPixels(x1, y1);
@@ -462,9 +463,29 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	@Override
-	public Extent getExtent() {
-		// TODO Auto-generated method stub
-		return null;
+	public BoundingBoxE6 getExtent() {
+		double north=90;
+		double south = -90 ;
+		double east = 180 ;
+		double west = -180 ;
+
+		if(geometries.size() >0){
+			north = geometries.get(0).getBoundingBox().getLatNorthE6() /1E6; 
+			south = geometries.get(0).getBoundingBox().getLatSouthE6()/1E6; 
+			east  = geometries.get(0).getBoundingBox().getLonEastE6()/1E6;
+			west  = geometries.get(0).getBoundingBox().getLonWestE6()/1E6;
+		}
+
+
+		for(Geometry g : geometries){
+			BoundingBoxE6 tmp = g.getBoundingBox() ;
+			north = (north <  tmp.getLatNorthE6()/1E6 ?  tmp.getLatNorthE6() /1E6: north) ;
+			south = (south > tmp.getLatSouthE6()/1E6 ? tmp.getLatSouthE6()/1E6 : south) ;
+			east = (east < tmp.getLonEastE6()/1E6 ? tmp.getLonEastE6()/1E6 : east) ;
+			west = (west < tmp.getLonWestE6()/1E6 ? tmp.getLonWestE6() /1E6: west) ;
+		}
+
+		return  new BoundingBoxE6(north, east, south, west);	
 	}
 
 }

@@ -49,8 +49,8 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	}
 
 	@Override
-	public Extent getExtent() {
-		return new Extent(new BoundingBoxE6(90, 180, -90, 180));
+	public BoundingBoxE6 getExtent() {
+		return  new BoundingBoxE6(90, 180, -90, 180);
 	}
 
 }
