@@ -3,6 +3,9 @@ package fr.umlv.lastproject.smart.form;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,6 +32,7 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * Creation's activity to make a new form
@@ -48,6 +52,7 @@ public class CreateFormActivity extends Activity {
 	private static final int PADDING_LEFT = 40;
 	private static final int PADDING_TOP = 30;
 	private Button validate;
+	final Logger logger = SmartLogger.getLocator().getLogger();
 
 
 	@Override
@@ -380,7 +385,9 @@ public class CreateFormActivity extends Activity {
 					File f = new File(SmartConstants.FORM_PATH) ;
 					if(!f.exists())f.mkdir();
 					form.write(SmartConstants.FORM_PATH);
+					logger.log(Level.INFO, "Form "+form.getTitle()+" saved");
 				} catch (FormIOException e) {
+					logger.log(Level.SEVERE, "Form unsaved : "+e.getMessage());
 					Toast.makeText(getApplicationContext(), e.getMessage(),
 							Toast.LENGTH_LONG).show();
 				}

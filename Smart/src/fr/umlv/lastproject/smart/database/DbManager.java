@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,6 +29,7 @@ import fr.umlv.lastproject.smart.form.PictureField;
 import fr.umlv.lastproject.smart.form.TextField;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 import fr.umlv.lastproject.smart.layers.GeometryType;;
 
 /**
@@ -38,6 +42,8 @@ import fr.umlv.lastproject.smart.layers.GeometryType;;
 public class DbManager {
 
 	public static final String DB_NAME = "smart.db";
+	final static Logger logger = SmartLogger.getLocator().getLogger();
+
 	
 
 	public static final String TABLE_MISSIONS = "missions";
@@ -154,6 +160,7 @@ public class DbManager {
 				dbRetour.execSQL(CREATE_TABLE_GEOMETRIES);
 				dbRetour.execSQL(CREATE_TABLE_POINTS);
 			} catch (SQLiteException e) {
+				logger.log(Level.SEVERE, "Open database error : "+e.getMessage());
 				throw new SmartException("Open database error");
 			}
 
@@ -207,12 +214,6 @@ public class DbManager {
 				NumericField nf = (NumericField) field;
 				sql.append(nf.getLabel()).append(" REAL ")
 				.append(", ");
-// TODO
-//				sql.append(nf.getLabel()).append(" REAL CHECK (")
-//				.append(nf.getLabel()).append(" > ")
-//				.append(nf.getMin()).append(" AND ")
-//				.append(nf.getLabel()).append(" < ")
-//				.append(nf.getMax()).append(" ), ");
 				break;
 
 			case BOOLEAN:
@@ -249,8 +250,10 @@ public class DbManager {
 			db = SQLiteDatabase.openDatabase(SmartConstants.BDD_PATH + DB_NAME, null,
 					SQLiteDatabase.OPEN_READWRITE);
 			db.execSQL(sql.toString());
+			logger.log(Level.INFO,"Table form "+f.getTitle()+" created successfull");
 			db.close();
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE,"Table form "+f.getTitle()+" not created "+e.getMessage());
 			throw new SmartException("Database Error");
 		}
 
@@ -271,7 +274,6 @@ public class DbManager {
 		List<FieldRecord> fields = new ArrayList<FieldRecord>();
 
 		fields = formRecord.getFields();
-		Log.d("TEST", "f " + fields.toString() + " " + formRecord.getName());
 		for (FieldRecord field : fields) {
 			switch (field.getField().getType()) {
 			case TEXT:
@@ -313,9 +315,12 @@ public class DbManager {
 		values.put("date", dateFormat.format(new Date()));
 
 		try {
-			return mDb.insertOrThrow(formRecord.getName(), null, values);
+			long id = mDb.insertOrThrow(formRecord.getName(), null, values);
+			logger.log(Level.INFO,"Form record inserted in database");
+			return id;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.log(Level.SEVERE, "Form record insert database error "+e.getMessage());
 			throw new SmartException("Insert database error");
 		}
 	}
@@ -371,7 +376,7 @@ public class DbManager {
 		}
 
 		mDb.update(nameTableForm, values, "id=" + idForm, null);
-
+		logger.log(Level.INFO, "Database update successfull");
 	}
 
 	/**
@@ -440,7 +445,7 @@ public class DbManager {
 			mDb.delete(nomForm, "id=" + l, null);
 		}
 		mDb.delete(TABLE_MISSIONS, "id=" + idMission, null);
-
+		logger.log(Level.INFO,"Mission "+idMission+" deleted");
 	}
 
 	/**
@@ -498,7 +503,6 @@ public class DbManager {
 	 * @param idMission
 	 */
 	public void stopMission(long idMission) {
-		Log.d("TEST", "stop" + idMission);
 		ContentValues args = new ContentValues();
 		args.put(MISSIONS_COL_STATUS, 0);
 		mDb.update(TABLE_MISSIONS, args, "id=" + idMission, null);
@@ -626,8 +630,10 @@ public class DbManager {
 				pr.setIdGeometry(id);
 				insertPoint(pr);
 			}
+			logger.log(Level.INFO,"Geometry inserted in database");
 			return id;
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Geometry not inserted in database "+e.getMessage());
 			throw new SmartException("Insert database error");
 		}
 	}
@@ -731,8 +737,11 @@ public class DbManager {
 		values.put(POINTS_COL_ID_GEOMETRY, point.getIdGeometry());
 
 		try {
-			return mDb.insertOrThrow(TABLE_POINTS, null, values);
+			long id= mDb.insertOrThrow(TABLE_POINTS, null, values);
+			logger.log(Level.INFO, "Point inserted in database");
+			return id;
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Point not inserted in database "+e.getMessage());
 			throw new SmartException("Insert database error");
 		}
 	}

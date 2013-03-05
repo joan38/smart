@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,6 +31,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.util.Log;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.layers.Geometry;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * Object form associated at a mission
@@ -44,10 +47,10 @@ public class Form implements Serializable {
 	private static final long serialVersionUID = -30424477427478579L;
 	private String title;
 	private List<Field> fieldsList;
+	
+	final static Logger logger = SmartLogger.getLocator().getLogger();
 
 	private static final String VALUESTAG = "values";
-	// private static final String MINTAG = "min";
-	// private static final String MAXTAG = "max";
 	private static final String COMMENTS = "Commentaires";
 	private static final String DEFAULT_NAME = "FormDefault";
 	private static final String CHARSET = "UTF-8";
@@ -207,8 +210,6 @@ public class Form implements Serializable {
 					} else if (FIELDTAG.equalsIgnoreCase(tag)) {
 						String type = null;
 						String title = null;
-						// int max = 0;
-						// int min = 0;
 						String values = null;
 
 						for (int i = 0; i < xpp.getAttributeCount(); i++) {
@@ -221,14 +222,7 @@ public class Form implements Serializable {
 									.equalsIgnoreCase(TITLETAG)) {
 								title = xpp.getAttributeValue(i).replace(" ",
 										"");
-							} /*
-							 * else if (xpp.getAttributeName(i)
-							 * .equalsIgnoreCase(MAXTAG)) { max =
-							 * Integer.valueOf(xpp.getAttributeValue(i)); } else
-							 * if (xpp.getAttributeName(i)
-							 * .equalsIgnoreCase(MINTAG)) { min =
-							 * Integer.valueOf(xpp.getAttributeValue(i)); }
-							 */else if (xpp.getAttributeName(i)
+							}else if (xpp.getAttributeName(i)
 									.equalsIgnoreCase(VALUESTAG)) {
 								values = xpp.getAttributeValue(i);
 							}
@@ -269,9 +263,10 @@ public class Form implements Serializable {
 
 				eventype = xpp.next();
 			}
-
+			logger.log(Level.INFO,"Form reading successfull");
 			return form;
 		} catch (IOException e) {
+			logger.log(Level.SEVERE,"Unable to import the form "+path);
 			throw new FormIOException("Unable to import the form " + path, e);
 		} catch (XmlPullParserException e) {
 			throw new FormIOException("Unable to import the form " + path, e);
@@ -307,6 +302,7 @@ public class Form implements Serializable {
 			formElement.appendChild(fieldsElement);
 
 			if (fieldsList.size() < 1) {
+				logger.log(Level.SEVERE, "No field in the given form");
 				throw new FormIOException("No field in the given Form");
 			}
 			for (Field field : fieldsList) {
@@ -332,16 +328,6 @@ public class Form implements Serializable {
 					break;
 
 				case NUMERIC:
-					// TODO
-					// NumericField nf = (NumericField) field;
-					//
-					// Attr minAttribute = xml.createAttribute(MINTAG);
-					// minAttribute.setValue(String.valueOf(nf.getMin()));
-					// fieldElement.setAttributeNode(minAttribute);
-					//
-					// Attr maxAttribute = xml.createAttribute(MAXTAG);
-					// maxAttribute.setValue(String.valueOf(nf.getMax()));
-					// fieldElement.setAttributeNode(maxAttribute);
 					break;
 
 				case LIST:
@@ -372,9 +358,12 @@ public class Form implements Serializable {
 			StreamResult result = new StreamResult(path + title + ".form");
 
 			transformer.transform(source, result);
+			logger.log(Level.INFO, "Form writting successfull");
 		} catch (ParserConfigurationException e) {
+			logger.log(Level.SEVERE, "Unable to export the form "+e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		} catch (TransformerException e) {
+			logger.log(Level.SEVERE, "Unable to export the form "+e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		}
 	}

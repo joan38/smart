@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.form;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -18,6 +21,7 @@ import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.Survey;
 import fr.umlv.lastproject.smart.survey.SurveyStopListener;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is used to create a mission
@@ -28,6 +32,8 @@ import fr.umlv.lastproject.smart.utils.SmartException;
 public final class Mission {
 
 	private static Mission mission = null;
+	final static Logger logger = SmartLogger.getLocator().getLogger();
+
 
 	private static final int POINT_RADIUS = 10;
 	private static final int LINE_THICKNESS = 10;
@@ -175,9 +181,10 @@ public final class Mission {
 		try {
 			dbm.open(context);
 			dbm.insertMission(new MissionRecord());
+			logger.log(Level.INFO, "Mission saved in database");
 		} catch (SmartException e) {
+			logger.log(Level.SEVERE, "Mission unsaved in database "+e.getMessage());
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("", e.getMessage());
 		}
 		dbm.close();
 
@@ -222,6 +229,7 @@ public final class Mission {
 			Log.e("", e.getMessage());
 		}
 		dbManager.stopMission(id);
+		logger.log(Level.INFO, "Mission stopped");
 		dbManager.close();
 		status = false;
 		setSelectable(false);
@@ -282,6 +290,7 @@ public final class Mission {
 		}
 		setSelectable(false);
 
+		logger.log(Level.INFO, "Survey in progress");
 		switch (type) {
 		case LINE:
 			Log.d("", "mission survey line");
@@ -401,7 +410,7 @@ public final class Mission {
 		default:
 			break;
 		}
-
+		logger.log(Level.INFO,"Geometry "+g.getId()+" removed");
 		mapView.invalidate();
 	}
 

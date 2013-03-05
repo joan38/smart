@@ -1,8 +1,11 @@
 package fr.umlv.lastproject.smart.dialog;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -24,6 +27,9 @@ import fr.umlv.lastproject.smart.form.Form;
  * 
  */
 public class AlertCreateFormDialog extends AlertDialog.Builder {
+	
+	final Logger logger = SmartLogger.getLocator().getLogger();
+
 
 	/**
 	 * Constructor
@@ -49,6 +55,7 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
+				logger.log(Level.INFO, "Creation of form in progress");
 				Intent intent = new Intent(menu,
 						CreateFormActivity.class);
 				intent.putExtra("form", new Form(et.getText()
