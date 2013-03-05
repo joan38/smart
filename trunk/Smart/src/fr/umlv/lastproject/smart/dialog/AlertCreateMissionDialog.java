@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.dialog;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -42,7 +45,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			final ListOverlay overlays) {
 		super(menu);
 		setCancelable(false);
-
+		
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View createMissionDialog = inflater.inflate(
 				R.layout.create_mission_dialog, null);
@@ -60,6 +63,8 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = this
 				.setPositiveButton(R.string.validate, new OnClickListener() {
 
+
+					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						menu.startMission(textViewMissionName.getText()

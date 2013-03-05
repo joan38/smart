@@ -120,7 +120,7 @@
     <string name="MeasureAbsolute">Entre deux points sur la carte</string>
     <string name="MeasureRelativeText">Sélectionnez un point sur la carte</string>
     <string name="MeasureAbsoluteText">Sélectionnez deux points sur la carte</string>
-    <string name="field_name_already_used">Erreur de saisie : Nom de champ déjà utilisé</string>
+    <string name="field_name_already_used">Nom déjà utilisé</string>
     <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     <string name="field_text">Champ texte : </string>
     <string name="field_picture">Champ photo : </string>

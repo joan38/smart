@@ -125,7 +125,7 @@
     <string name="MeasureAbsolute">Beetween two points on the 	 map</string>
     <string name="MeasureRelativeText">Select a point on the map</string>
     <string name="MeasureAbsoluteText">Select two points on the map</string>
-    <string name="field_name_already_used">Error : Field name already used</string>
+    <string name="field_name_already_used">Name already used</string>
     <string name="field_text">Text field : </string>
     <string name="field_picture">Picture field : </string>
     <string name="field_list">List field : </string>
