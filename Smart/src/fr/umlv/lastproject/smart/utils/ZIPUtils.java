@@ -3,6 +3,7 @@ package fr.umlv.lastproject.smart.utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,8 +13,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
+import org.osmdroid.util.BoundingBoxE6;
 
 import android.util.Log;
+import android.util.Pair;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 
 /**
@@ -27,7 +30,7 @@ public final class ZIPUtils {
 
 	private static final int BUFFER = 2048;
 
-	private static final int METADATA_SIZE = 4;
+	private static final int METADATA_SIZE = 5;
 
 	private static final String ZIP_FOLDER = "/mnt/sdcard/osmdroid/";
 
@@ -141,9 +144,38 @@ public final class ZIPUtils {
 
 		metaData[0] = directory.substring(directory.lastIndexOf('/') + 1);
 		final File[] tileDirectories = file.listFiles();
+
+		String extension = null;
+		for (File f : tileDirectories) {
+			extension = getExtension(f);
+		}
+
 		final String lastZoomTileDirectory = tileDirectories[tileDirectories.length - 1]
 				.toString();
-		final String firstZoomTileDirectory = tileDirectories[0].toString();
+		int i = 0;
+		int y = -1;
+		int x = -1;
+		for (i = 0; i < tileDirectories.length; i++) {
+			if (tileDirectories[i].isDirectory()) {
+				try {
+					Pair<Integer, Integer> pair = searchBoundingBox(
+							tileDirectories[i], extension);
+					x = pair.first;
+					y = pair.second;
+				} catch (Exception e) {
+					Log.d("TESTX", "EXCEPTION METADATA");
+					y = -1;
+					break;
+				}
+				if (y >= 0) {
+					break;
+				}
+			}
+		}
+		BoundingBoxE6 boundingBox = new BoundingBoxE6(90, 180, -90, -180);
+
+		final String firstZoomTileDirectory = tileDirectories[i].toString();
+
 		int minZoom, maxZoom;
 		try {
 			minZoom = Integer.parseInt(firstZoomTileDirectory
@@ -154,18 +186,79 @@ public final class ZIPUtils {
 			minZoom = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
 			maxZoom = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
 		}
+		if (y >= 0) {
 
-		String extension = null;
-		for (File f : tileDirectories) {
-			extension = getExtension(f);
+			BoundingBox box = tile2boundingBox(x, y, minZoom);
+			boundingBox = new BoundingBoxE6(box.north, box.east, box.south,
+					box.west);
+			Log.d("TESTX", "X : " + x + " / Y : " + y + " / zoom : " + minZoom);
+			Log.d("TESTX", "North : " + box.north + " / EAST : " + box.east
+					+ " / SOUTH : " + box.south + " / WEST : " + box.west);
 		}
 
 		metaData[1] = extension;
 		metaData[2] = minZoom;
 		metaData[3] = maxZoom;
+		metaData[4] = boundingBox;
 
 		return metaData;
 
+	}
+
+	private static Pair<Integer, Integer> searchBoundingBox(
+			File tileDirectories, final String extension) throws Exception {
+		Log.d("TESTX", "SEARCH BOUNDING BOX");
+		File[] dirs = tileDirectories.listFiles(new FileFilter() {
+
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()) {
+					return true;
+				}
+				return false;
+			}
+		});
+
+		for (File dir : dirs) {
+			Log.d("TESTX", dir.getPath());
+			if (dir.isDirectory()) {
+				File[] tiles = dir.listFiles(new FileFilter() {
+
+					@Override
+					public boolean accept(File pathname) {
+						return FileUtils.getExtension(pathname.getPath())
+								.equals(extension);
+
+					}
+				});
+				if (tiles.length > 0) {
+
+					String tileY = tiles[0].getPath();
+					String tileNameWithExtensionY = tileY.substring(tileY
+							.lastIndexOf('/') + 1);
+					String tileNameWithoutExtensionY = tileNameWithExtensionY
+							.split(extension)[0];
+					Log.d("TESTX", "plop : " + tileNameWithExtensionY);
+					Log.d("TESTX", "plop : " + tileNameWithoutExtensionY);
+					Log.d("TESTX", "plop : " + extension);
+					String tileX = dir.getPath();
+					String tileNameWithoutExtensionX = tileX.substring(tileX
+							.lastIndexOf("/") + 1);
+					Log.d("TESTX",
+							"X : "
+									+ Integer
+											.parseInt(tileNameWithoutExtensionX)
+									+ " / Y : "
+									+ Integer
+											.parseInt(tileNameWithoutExtensionY));
+
+					return new Pair<Integer, Integer>(
+							Integer.parseInt(tileNameWithoutExtensionX),
+							Integer.parseInt(tileNameWithoutExtensionY));
+				}
+			}
+		}
+		return new Pair<Integer, Integer>(-1, -1);
 	}
 
 	/**
@@ -189,6 +282,44 @@ public final class ZIPUtils {
 			}
 			return extension;
 		}
+	}
+
+	private static class BoundingBox {
+		double north;
+		double south;
+		double east;
+		double west;
+	}
+
+	/**
+	 * This method converts tile xyz values to a WMS bounding box.
+	 * 
+	 * @param x
+	 *            The x tile coordinate.
+	 * @param y
+	 *            The y tile coordinate.
+	 * @param zoom
+	 *            The zoom level.
+	 * 
+	 * @return The completed bounding box.
+	 */
+	private static BoundingBox tile2boundingBox(final int x, final int y,
+			final int zoom) {
+		BoundingBox bb = new BoundingBox();
+		bb.north = tile2lat(y, zoom);
+		bb.south = tile2lat(y + 1, zoom);
+		bb.west = tile2lon(x, zoom);
+		bb.east = tile2lon(x + 1, zoom);
+		return bb;
+	}
+
+	private static double tile2lon(int x, int z) {
+		return x / Math.pow(2.0, z) * 360.0 - 180;
+	}
+
+	private static double tile2lat(int y, int z) {
+		double n = Math.PI - (2.0 * Math.PI * y) / Math.pow(2.0, z);
+		return Math.toDegrees(Math.atan(Math.sinh(n)));
 	}
 
 }

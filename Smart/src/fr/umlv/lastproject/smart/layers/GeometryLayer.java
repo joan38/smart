@@ -41,7 +41,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	private final List<GeometryLayerSingleTapListener> singleTapListeners;
 	private final List<GeometryLayerDoubleTapListener> doubleTapListeners;
 	private final List<SelectedGeometryListener> selectedListener;
-	
+
 	private final Context context;
 	private boolean isSelectable = false;
 	private static final int BUFFER = 100;
@@ -306,7 +306,7 @@ public class GeometryLayer extends Overlay implements Layer {
 						for (SelectedGeometryListener lis : selectedListener) {
 							lis.actionPerformed(g, this);
 							g.setSelected(true);
-							
+
 							return super.onSingleTapUp(e, m);
 						}
 					}
@@ -454,11 +454,17 @@ public class GeometryLayer extends Overlay implements Layer {
 	/**
 	 * 
 	 * @param g
-	 * 			the geometry to remove
+	 *            the geometry to remove
 	 */
 	public void removeGeometry(Geometry g) {
 		geometries.remove(g);
 
+	}
+
+	@Override
+	public Extent getExtent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

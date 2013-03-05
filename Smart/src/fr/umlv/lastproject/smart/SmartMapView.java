@@ -17,7 +17,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
+import fr.umlv.lastproject.smart.data.WMSMapTileProviderBasic;
 import fr.umlv.lastproject.smart.data.WMSOverlay;
+import fr.umlv.lastproject.smart.data.WMSTileSource;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.Layer;
 
@@ -44,6 +46,7 @@ public class SmartMapView extends MapView {
 		this.listOverlay = new ListOverlay();
 		this.geometryOverlays = new ArrayList<GeometryLayer>();
 		this.wmsOverlays = new ArrayList<WMSOverlay>();
+
 		this.stringToOverlay = new HashMap<String, Overlay>();
 
 	}

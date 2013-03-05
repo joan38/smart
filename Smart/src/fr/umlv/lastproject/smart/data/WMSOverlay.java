@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 
@@ -45,6 +46,11 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public boolean hasSymbologyEditable() {
 		return false;
+	}
+
+	@Override
+	public Extent getExtent() {
+		return new Extent(new BoundingBoxE6(90, 180, -90, 180));
 	}
 
 }
