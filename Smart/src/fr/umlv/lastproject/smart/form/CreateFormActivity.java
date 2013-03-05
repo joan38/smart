@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart.form;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
@@ -376,6 +377,8 @@ public class CreateFormActivity extends Activity {
 			public void onClick(View v) {
 				// Save the form
 				try {
+					File f = new File(SmartConstants.FORM_PATH) ;
+					if(!f.exists())f.mkdir();
 					form.write(SmartConstants.FORM_PATH);
 				} catch (FormIOException e) {
 					Toast.makeText(getApplicationContext(), e.getMessage(),
