@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart.layers;
 
+import java.io.Serializable;
+
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 
 import android.graphics.Canvas;
@@ -11,13 +14,19 @@ import android.graphics.Rect;
  * 
  * @author Fad's
  */
-public abstract class Geometry {
+public abstract class Geometry implements Serializable {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1606580653611097120L;
+
 	private long id ;
 
-	private GeometryType type;
+	private transient GeometryType type;
 	private Symbology symbology;
+
 	
 	private boolean isSelected = false ;
 
@@ -95,6 +104,10 @@ public abstract class Geometry {
 	public abstract void draw(MapView map, Canvas c, Boolean b , Symbology s);	
 	
 	public abstract boolean isSelected(MapView map, Rect click) ;
+	
+	public abstract BoundingBoxE6 getBoundingBox() ;
+	
+	
 	
 	
 

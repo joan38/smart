@@ -69,8 +69,8 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	}
 
 	@Override
-	public Extent getExtent() {
-		return new Extent(this.boundingBox, this.getMinimumZoomLevel());
+	public BoundingBoxE6 getExtent() {
+		return this.boundingBox;
 	}
 
 }

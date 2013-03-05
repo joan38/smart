@@ -72,19 +72,6 @@ public final class Mission {
 				setSelectable(false);
 				mapview.invalidate();
 				context.createModifFormDialog(getForm(), g, l, Mission.this);
-				// AlertModifFormDialog d = new AlertModifFormDialog(context,
-				// getForm(), g, l);
-				// d.addFormEditedListener(new FormEditedListener() {
-				//
-				// @Override
-				// public void actionPerformed(Geometry g) {
-				// g.setSelected(false);
-				// setSelectable(true);
-				// mapview.invalidate();
-				//
-				// }
-				// });
-				// d.show();
 				g.setSelected(false);
 			}
 		};
@@ -113,6 +100,45 @@ public final class Mission {
 
 		survey = new Survey(mapview);
 
+	}
+
+	public Mission(String mname, MenuActivity menuActivity,
+			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
+			GeometryLayer missionLine, GeometryLayer missionPolygon) {
+		
+		this.title = mname;
+		this.context = menuActivity;
+		this.mapView = mapView2;
+		this.form = f;
+
+		SelectedGeometryListener list = new SelectedGeometryListener() {
+
+			@Override
+			public void actionPerformed(Geometry g, GeometryLayer l) {
+				setSelectable(false);
+				mapView.invalidate();
+				context.createModifFormDialog(getForm(), g, l, Mission.this);
+				g.setSelected(false);
+			}
+		};
+
+		pointLayer = missionPoint ;
+		pointLayer.setSelectable(true);
+		pointLayer.addSelectedGeometryListener(list);
+
+		lineLayer = missionLine;
+		lineLayer.setSelectable(true);
+		lineLayer.addSelectedGeometryListener(list);
+
+		polygonLayer = missionPolygon;
+		polygonLayer.setSelectable(true);
+		polygonLayer.addSelectedGeometryListener(list);
+
+		survey = new Survey(mapView);
+		
+
+
+		
 	}
 
 	/**
@@ -157,6 +183,19 @@ public final class Mission {
 
 		return mission;
 	}
+	
+	public static Mission createMission(String mname, MenuActivity menuActivity,
+			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
+			GeometryLayer missionLine, GeometryLayer missionPolygon) {
+
+		mission = new Mission(mname, menuActivity, mapView2, f, missionPoint, missionLine, missionPolygon);
+		// ecriture en base
+
+		return mission;
+
+	}
+
+	
 
 	/**
 	 * Start the mission.
@@ -371,4 +410,5 @@ public final class Mission {
 		lineLayer.setSelectable(b);
 		polygonLayer.setSelectable(b);
 	}
+
 }

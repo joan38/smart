@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 
 import fr.umlv.lastproject.smart.layers.PointSymbology.PointSymbologieType;
@@ -117,28 +118,63 @@ public class LineGeometry extends Geometry {
     
     
     /**
-	 * 
-	 * @param out
-	 *            the object to get
-	 * @throws IOException
-	 *             if canot read
-	 */
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeObject(points);
-	}
+   	 * 
+   	 * @param out
+   	 *            the object to get
+   	 * @throws IOException
+   	 *             if canot read
+   	 */
+   	private void writeObject(ObjectOutputStream out) throws IOException {
+   		out.writeObject(points);
+   		out.writeBoolean(isSelected());
+   		out.writeLong(getId()) ;
+   		out.writeObject(getSymbology());
+   	}
 
-	/**
-	 * 
-	 * @param in
-	 *            object to read
-	 * @throws IOException
-	 *             if object not readable
-	 * @throws ClassNotFoundException
-	 *             if class does not exist
-	 */
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-		this.points = (List<PointGeometry>)  in.readObject();
+   	/**
+   	 * 
+   	 * @param in
+   	 *            object to read
+   	 * @throws IOException
+   	 *             if object not readable
+   	 * @throws ClassNotFoundException
+   	 *             if class does not exist
+   	 */
+   	private void readObject(ObjectInputStream in) throws IOException,
+   			ClassNotFoundException {
+   		
+   		this.points = (List<PointGeometry>)  in.readObject();
+   		this.setSelected(in.readBoolean()) ;
+   		this.setId(in.readLong()) ;
+   		this.setType(GeometryType.LINE) ;
+   		this.setSymbology((Symbology)in.readObject()) ;
+   	}
+
+	@Override
+	public BoundingBoxE6 getBoundingBox() {
+
+		double north= 90 ;
+		double south = -90 ;
+		double east = 180;
+		double west = -180 ;
+
+		if(points.size() >0){
+			north = points.get(0).getBoundingBox().getLatNorthE6() /1E6; 
+			south = points.get(0).getBoundingBox().getLatSouthE6()/1E6; 
+			east  = points.get(0).getBoundingBox().getLonEastE6()/1E6;
+			west  = points.get(0).getBoundingBox().getLonWestE6()/1E6;
+		}
+
+
+		for(PointGeometry g : points){
+			BoundingBoxE6 tmp = g.getBoundingBox() ;
+			north = (north <  tmp.getLatNorthE6()/1E6 ?  tmp.getLatNorthE6() /1E6: north) ;
+			south = (south > tmp.getLatSouthE6()/ 1E6 ? tmp.getLatSouthE6()/1E6 : south) ;
+			east = (east < tmp.getLonEastE6()/1E6 ? tmp.getLonEastE6()/1E6 : east) ;
+			west = (west < tmp.getLonWestE6() /1E6? tmp.getLonWestE6()/1E6 : west) ;
+		}
+
+		return  new BoundingBoxE6(north, east, south, west);	
 	}
 
     
