@@ -73,7 +73,7 @@ public abstract class Field implements Serializable {
 	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(label);
-		out.writeObject(type.getId());
+		out.writeObject(type);
 		out.close();
 	}
 
@@ -89,7 +89,7 @@ public abstract class Field implements Serializable {
 	private void readObject(ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		this.label = (String) in.readObject();
-		this.type = FieldType.getFromId(in.readInt());
+		this.type = (FieldType) in.readObject();
 		in.close();
 	}
 
