@@ -2,6 +2,8 @@ package fr.umlv.lastproject.smart.form;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +24,7 @@ import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * Activity which launch the camera device and geoTag it
@@ -33,6 +36,8 @@ public class PictureActivity extends Activity {
 
 	private File picture;
 	private static final int PICTURE_RESULT = 1;
+	final Logger logger = SmartLogger.getLocator().getLogger();
+
 
 	private GPS gps;
 	private LocationManager locationManager;
@@ -46,7 +51,6 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("TESTX", "photooooooo");
 		final Intent startIntent = getIntent();
 		if (startIntent == null) {
 			finish();
@@ -83,6 +87,7 @@ public class PictureActivity extends Activity {
 		if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
 			// GeoTag picture
 			geoTag(namePicture, latitude, longitude, bearing);
+			logger.log(Level.INFO, "Picture taked");
 			finish();
 		}
 	}
@@ -123,6 +128,7 @@ public class PictureActivity extends Activity {
 					+ ".jpg");
 			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
+			logger.log(Level.SEVERE,"Error picture not found");
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}

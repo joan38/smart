@@ -1,6 +1,9 @@
 package fr.umlv.lastproject.smart.dialog;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -22,6 +25,7 @@ import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is used to create a new mission and define its name and the form
@@ -33,6 +37,8 @@ import fr.umlv.lastproject.smart.utils.SmartException;
 public class AlertCreateMissionDialog extends AlertDialog.Builder {
 
 	private TextView formPath;
+	final Logger logger = SmartLogger.getLocator().getLogger();
+
 
 	/**
 	 * Constructor
@@ -43,10 +49,7 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 			final ListOverlay overlays) {
 		super(menu);
 		setCancelable(false);
-		
-//		final Logger log = SmartLogger.getLocator().getLogger();
-//		log.info("Message logger");
-		
+				
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View createMissionDialog = inflater.inflate(
 				R.layout.create_mission_dialog, null);
@@ -64,14 +67,13 @@ public class AlertCreateMissionDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = this
 				.setPositiveButton(R.string.validate, new OnClickListener() {
 
-					
-					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {			
 
 						menu.startMission(textViewMissionName.getText()
 								.toString());
-
+						logger.log(Level.INFO, "Mission "+textViewMissionName.getText()
+								.toString()+" started");
 						Toast.makeText(menu, R.string.missionStart,
 								Toast.LENGTH_SHORT).show();
 					}
