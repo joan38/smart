@@ -1,8 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddFieldtoFormActivity" >
+    android:orientation="vertical" >
+
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     >
 
     
 
@@ -40,52 +44,7 @@
 	
 		</TableRow>
 		
-	    <TableRow
-        android:id="@+id/tableRowMax"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" 
-        android:visibility="gone">
-        
-        	<TextView android:layout_width = "fill_parent"
-			android:layout_height = "wrap_content"
-			android:padding="10dip"
-			android:id = "@+id/LabelMax" 
-			android:text="Max"/>
-		
-			<EditText 
-			android:inputType="number"
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:layout_weight="1" 
-			android:padding="10dip"
-			android:id = "@+id/valueMax" />
-	
-		</TableRow>
-		
-	    <TableRow
-        android:id="@+id/tableRowMin"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" 
-        android:visibility="gone">
-        
-        	<TextView android:layout_width = "fill_parent"
-			android:layout_height = "wrap_content"
-			android:padding="10dip"
-			android:id = "@+id/LabelMin" 
-			android:text="Min"/>
-		
-			<EditText 
-			android:inputType="number"
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:layout_weight="1" 
-			android:padding="10dip"
-			android:id = "@+id/valueMin" />
-	
-		</TableRow>
-		
+
 	    <TableRow
         android:id="@+id/tableRowList"
         android:layout_width="fill_parent"
@@ -98,14 +57,15 @@
 			android:padding="10dip"
 			android:id = "@+id/LabelListe" 
 			android:text="@string/List"/>
+        	
+        	<ImageView
+       	 	android:id="@+id/plusImage"
+       		android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+       		android:layout_weight="1" 
+       		/>
 		
-			<EditText 
-			android:inputType="textMultiLine"
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:layout_weight="1" 
-			android:padding="10dip"
-			android:id = "@+id/valueList" />
+			
 	
 		</TableRow>
 	    
@@ -114,3 +74,5 @@
 	    
 
 </RelativeLayout>
+
+</ScrollView>

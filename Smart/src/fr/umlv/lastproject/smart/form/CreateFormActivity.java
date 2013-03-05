@@ -1,14 +1,14 @@
 package fr.umlv.lastproject.smart.form;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -41,9 +41,13 @@ public class CreateFormActivity extends Activity {
 	private TableLayout tableLayout;
 	private final List<EditText> allEds = new ArrayList<EditText>();
 	private FieldType fieldType;
+	private ArrayList<EditText> listFieldValues = new ArrayList<EditText>();
+	private ArrayList<TableRow> rowDynamic = new ArrayList<TableRow>();
 	private Preferences pref;
 	private static final int PADDING_LEFT = 40;
 	private static final int PADDING_TOP = 30;
+	private Button validate;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class CreateFormActivity extends Activity {
 		for (Field field : form.getFieldsList()) {
 			addFieldRow(field);
 		}
+		
+		validate = (Button) findViewById(R.id.buttonValidate);
 
 		Button addFieldButton = (Button) findViewById(R.id.buttonAdd);
 		addFieldButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +87,99 @@ public class CreateFormActivity extends Activity {
 						.from(CreateFormActivity.this);
 				final View alertDialogView = factory.inflate(
 						R.layout.activity_add_field_to_form, null);
+				final TableLayout tableLayoutAddField = (TableLayout) alertDialogView.findViewById(R.id.layoutDynamicAddField);
+
+
+				final AlertDialog.Builder adb = new AlertDialog.Builder(
+						CreateFormActivity.this);
+
+
+
+				adb.setView(alertDialogView);
+				adb.setTitle(getResources().getString(R.string.AddField));
+
+				final EditText labelValue = (EditText) alertDialogView
+						.findViewById(R.id.valueName);
+
+
+
+				adb.setPositiveButton(R.string.validate,
+						new DialogInterface.OnClickListener() {
+
+					// Add the new field
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+
+						String label = labelValue.getText().toString();
+
+						switch (fieldType) {
+						case TEXT:
+							TextField tf = new TextField(label);
+							form.addField(tf);
+							addFieldRow(tf);
+							break;
+
+						case NUMERIC:
+							NumericField nf = new NumericField(label);
+							form.addField(nf);
+							addFieldRow(nf);
+							break;
+
+						case BOOLEAN:
+							BooleanField bf = new BooleanField(label);
+							form.addField(bf);
+							addFieldRow(bf);
+							break;
+
+						case LIST:
+							ArrayList<String> list = new ArrayList<String>();
+							for(EditText e : listFieldValues){
+								list.add(e.getText().toString());
+							}
+							listFieldValues.clear();
+							ListField lf = new ListField(label,list);
+							form.addField(lf);
+							addFieldRow(lf);
+							break;
+
+						case PICTURE:
+							PictureField pf = new PictureField(label);
+							form.addField(pf);
+							addFieldRow(pf);
+							break;
+
+						case HEIGHT:
+							HeightField hf = new HeightField(label);
+							form.addField(hf);
+							addFieldRow(hf);
+							break;
+
+						default:
+							throw new IllegalStateException(
+									"Unkown field type");
+						}
+						if(form.getFieldsList().isEmpty()){
+							validate.setEnabled(false);
+						} else {
+							validate.setEnabled(true);
+						}
+					}
+				});
+
+				adb.setNegativeButton(getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+
+					}
+				});
+
+				final AlertDialog alert = adb.create();
+				alert.show();
+				alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
 				Spinner spin = (Spinner) alertDialogView
 						.findViewById(R.id.spinner);
@@ -92,10 +191,7 @@ public class CreateFormActivity extends Activity {
 
 				spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-					private final TableRow rowMax = (TableRow) alertDialogView
-							.findViewById(R.id.tableRowMax);
-					private final TableRow rowMin = (TableRow) alertDialogView
-							.findViewById(R.id.tableRowMin);
+
 					private final TableRow rowList = (TableRow) alertDialogView
 							.findViewById(R.id.tableRowList);
 
@@ -106,41 +202,153 @@ public class CreateFormActivity extends Activity {
 						allEds.clear();
 						fieldType = FieldType.getFromId(position);
 
+						for(TableRow r : rowDynamic){
+							tableLayoutAddField.removeView(r);
+						}
+
+						if(fieldType == FieldType.LIST){
+							labelValue.addTextChangedListener(new TextWatcher() {
+
+								@Override
+								public void onTextChanged(CharSequence s, int start, int before, int count) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void beforeTextChanged(CharSequence s, int start, int count,
+										int after) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void afterTextChanged(Editable s) {
+									if(s.toString().equals("")){
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									} else if (form.isLabelExist(labelValue.getText().toString())) {
+										labelValue.setError(getResources().getString(R.string.field_name_already_used));
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									} else if(listFieldValues.isEmpty()){
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									} else {
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+									}
+								}
+							});
+						} else {
+							labelValue.addTextChangedListener(new TextWatcher() {
+
+								@Override
+								public void onTextChanged(CharSequence s, int start, int before, int count) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void beforeTextChanged(CharSequence s, int start, int count,
+										int after) {
+									// TODO Auto-generated method stub
+
+								}
+
+								@Override
+								public void afterTextChanged(Editable s) {
+									if(s.toString().equals("")){
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									} else if (form.isLabelExist(labelValue.getText().toString())) {
+										labelValue.setError(getResources().getString(R.string.field_name_already_used));
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									} else {
+										alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+									}
+								}
+							});
+						}
+
 						switch (fieldType) {
 						case TEXT:
-							rowMax.setVisibility(View.GONE);
-							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 							break;
 
 						case NUMERIC:
-							// TODO
-							// rowMax.setVisibility(View.VISIBLE);
-							// rowMin.setVisibility(View.VISIBLE);
 							rowList.setVisibility(View.GONE);
 							break;
 
 						case BOOLEAN:
-							rowMax.setVisibility(View.GONE);
-							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 							break;
 
 						case LIST:
-							rowMax.setVisibility(View.GONE);
-							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.VISIBLE);
+							ImageView imageAdd = (ImageView) alertDialogView.findViewById(R.id.plusImage);
+							imageAdd.setImageResource(R.drawable.add);
+							imageAdd.setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+									final TableRow row = new TableRow(CreateFormActivity.this);
+									rowDynamic.add(row);
+									final EditText listValues = new EditText(CreateFormActivity.this);
+									listValues.addTextChangedListener(new TextWatcher() {
+
+										@Override
+										public void onTextChanged(CharSequence s, int start, int before, int count) {
+											// TODO Auto-generated method stub
+
+										}
+
+										@Override
+										public void beforeTextChanged(CharSequence s, int start, int count,
+												int after) {
+											// TODO Auto-generated method stub
+
+										}
+
+										@Override
+										public void afterTextChanged(Editable s) {
+											if(listFieldValues.isEmpty()){
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+											} else if(labelValue.getText().toString().equals("")) {
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+											} else {
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+											}
+										}
+									});
+									final ImageView imageDelete = new ImageView(CreateFormActivity.this);
+									imageDelete.setImageResource(R.drawable.delete);
+									imageDelete.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											listFieldValues.remove(listValues);
+											if(listFieldValues.isEmpty()){
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+											} else if(labelValue.getText().toString().equals("")) {
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+											} else {
+												alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+											}
+											row.removeView(imageDelete);
+											row.removeView(listValues);
+										}
+									});
+
+									listFieldValues.add(listValues);
+									row.addView(imageDelete);
+									row.addView(listValues);
+									tableLayoutAddField.addView(row);
+								}
+							});
 							break;
 
 						case PICTURE:
-							rowMax.setVisibility(View.GONE);
-							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 							break;
 
 						case HEIGHT:
-							rowMax.setVisibility(View.GONE);
-							rowMin.setVisibility(View.GONE);
 							rowList.setVisibility(View.GONE);
 							break;
 
@@ -155,116 +363,13 @@ public class CreateFormActivity extends Activity {
 					}
 				});
 
-				final AlertDialog.Builder adb = new AlertDialog.Builder(
-						CreateFormActivity.this);
 
-				adb.setView(alertDialogView);
-				adb.setTitle(getResources().getString(R.string.AddField));
 
-				adb.setPositiveButton(R.string.validate,
-						new DialogInterface.OnClickListener() {
 
-							// Add the new field
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								EditText labelValue = (EditText) alertDialogView
-										.findViewById(R.id.valueName);
-								String label = labelValue.getText().toString();
 
-								if (form.isLabelExist(label)) {
-									Toast.makeText(
-											CreateFormActivity.this,
-											getString(R.string.field_name_already_used),
-											Toast.LENGTH_LONG).show();
-									return;
-								}
-
-								switch (fieldType) {
-								case TEXT:
-									TextField tf = new TextField(label);
-									form.addField(tf);
-									addFieldRow(tf);
-									break;
-
-								case NUMERIC:
-									// TODO
-									// EditText maxValue = (EditText)
-									// alertDialogView
-									// .findViewById(R.id.valueMax);
-									// int max = Integer.parseInt(maxValue
-									// .getText().toString());
-									//
-									// EditText minValue = (EditText)
-									// alertDialogView
-									// .findViewById(R.id.valueMin);
-									// int min = Integer.parseInt(minValue
-									// .getText().toString());
-									//
-									// if (min > max) {
-									// Toast.makeText(
-									// CreateFormActivity.this,
-									// getString(R.string.field_error_min_max),
-									// Toast.LENGTH_LONG).show();
-									// return;
-									// }
-
-									NumericField nf = new NumericField(label);
-									form.addField(nf);
-									addFieldRow(nf);
-									break;
-
-								case BOOLEAN:
-									BooleanField bf = new BooleanField(label);
-									form.addField(bf);
-									addFieldRow(bf);
-									break;
-
-								case LIST:
-									EditText listValue = (EditText) alertDialogView
-											.findViewById(R.id.valueList);
-									String[] tab = listValue.getText()
-											.toString().split("/");
-
-									ListField lf = new ListField(label, Arrays
-											.asList(tab));
-									form.addField(lf);
-									addFieldRow(lf);
-									break;
-
-								case PICTURE:
-									PictureField pf = new PictureField(label);
-									form.addField(pf);
-									addFieldRow(pf);
-									break;
-
-								case HEIGHT:
-									HeightField hf = new HeightField(label);
-									form.addField(hf);
-									addFieldRow(hf);
-									break;
-
-								default:
-									throw new IllegalStateException(
-											"Unkown field type");
-								}
-							}
-						});
-
-				adb.setNegativeButton(getString(R.string.cancel),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-
-							}
-						});
-				adb.show();
 			}
 		});
 
-		Button validate = (Button) findViewById(R.id.buttonValidate);
 		validate.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -300,13 +405,18 @@ public class CreateFormActivity extends Activity {
 
 		ImageView image = new ImageView(CreateFormActivity.this);
 		image.setClickable(true);
-		image.setImageDrawable(getResources().getDrawable(R.drawable.basket));
+		image.setImageDrawable(getResources().getDrawable(R.drawable.delete));
 		image.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				row.removeAllViews();
 				form.deleteField(field.getLabel());
+				if(form.getFieldsList().isEmpty()){
+					validate.setEnabled(false);
+				} else {
+					validate.setEnabled(true);
+				}
 			}
 		});
 		row.addView(image);
@@ -322,7 +432,13 @@ public class CreateFormActivity extends Activity {
 			break;
 
 		case LIST:
-			text.setText(getString(R.string.field_list) + field.getLabel());
+			ListField l = (ListField) field;
+			StringBuilder values= new StringBuilder();
+			for(String s : l.getValues()){
+				values.append(s).append(", ");
+			}
+			values.replace(values.length() -2, values.length(), "");
+			text.setText(getString(R.string.field_list) + field.getLabel()+" "+values);
 			break;
 
 		case NUMERIC:

@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -48,16 +47,16 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = setPositiveButton(R.string.validate,
 				new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						Intent intent = new Intent(menu,
-								CreateFormActivity.class);
-						intent.putExtra("form", new Form(et.getText()
-								.toString()));
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				Intent intent = new Intent(menu,
+						CreateFormActivity.class);
+				intent.putExtra("form", new Form(et.getText()
+						.toString()));
 
-						menu.startActivity(intent);
-					}
-				}).setNegativeButton(R.string.cancel, new OnClickListener() {
+				menu.startActivity(intent);
+			}
+		}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
@@ -66,6 +65,8 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		}).create();
 
 		dialog.show();
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
 
 		et.addTextChangedListener(new TextWatcher() {
 
@@ -83,15 +84,20 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				File folder = new File(SmartConstants.FORM_PATH
-						+ et.getText().toString() + ".form");
-				if (folder.exists()) {
-					et.setError(menu.getResources().getString(R.string.invalid));
+				if (s.toString().equals("")) {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
 							false);
 				} else {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-							true);
+					File folder = new File(SmartConstants.FORM_PATH
+							+ et.getText().toString() + ".form");
+					if (folder.exists()) {
+						et.setError(menu.getResources().getString(R.string.invalid));
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+								false);
+					} else {
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+								true);
+					}
 				}
 			}
 		});
