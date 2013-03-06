@@ -110,7 +110,18 @@ public class ListOverlay implements Serializable {
 	 * @return if the overlay has been removed
 	 */
 	public boolean remove(String layer) {
-		return this.overlays.remove(layer);
+		if (layer == null) {
+			throw new IllegalArgumentException();
+		}
+		boolean remove = false;
+		for (int i = 0; i < overlays.size(); i++) {
+			if (layer.equals(overlays.get(i).getName())) {
+				overlays.remove(i);
+				remove = true;
+				break;
+			}
+		}
+		return remove;
 	}
 
 	/**

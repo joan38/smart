@@ -69,8 +69,12 @@ import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.PolygonGeometry;
+import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
+import fr.umlv.lastproject.smart.survey.Survey;
+import fr.umlv.lastproject.smart.survey.SurveyStopListener;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -127,6 +131,7 @@ public class MenuActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		BundleCreator.savePosition(outState, mapView);
 		BundleCreator.saveMission(outState, missionCreated);
+
 		BundleCreator
 				.saveGeomtryLayers(outState, mapView.getGeometryOberlays());
 		logger.log(Level.INFO, "Saving the application bundle");
@@ -141,6 +146,7 @@ public class MenuActivity extends Activity {
 		setTheme(pref.theme);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
+
 		initMap();
 		if (savedInstanceState != null) {
 			BundleCreator.loadPosition(savedInstanceState, mapView);
@@ -226,9 +232,9 @@ public class MenuActivity extends Activity {
 
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
-		// mapView.setUseDataConnection(false);
+		mapView.setUseDataConnection(true);
 
-		mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
+		// mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
 		mapController.setZoom(15);
 		mapController.setCenter(new GeoPoint(48.85, 2.35));
 
@@ -1033,6 +1039,31 @@ public class MenuActivity extends Activity {
 			case SmartConstants.DELETE_MISSION:
 				MissionDialogUtils.showDeleteDialog(this);
 				break;
+			case SmartConstants.AREA_MEASURE:
+				Log.d("AIRE", "SMART CONSTANT");
+				final Survey areaSurvey = new Survey(mapView);
+				final GeometryLayer areaLayer = new GeometryLayer(this);
+				areaLayer.setName("AREA_MEASURE");
+				areaLayer.setType(GeometryType.POLYGON);
+				areaLayer.setSymbology(new PolygonSymbology());
+				areaSurvey.addStopListeners(new SurveyStopListener() {
+
+					@Override
+					public void actionPerformed(Geometry g) {
+						Log.d("AIRE", "STOP LISTENER");
+						final double result = PolygonArea
+								.getPolygonArea((PolygonGeometry) g) / 1E6;
+						areaSurvey.stop();
+						mapView.removeGeometryLayer(areaLayer);
+						final AlertMeasureResultDialog areaDialog = new AlertMeasureResultDialog(
+								MenuActivity.this, result, " km²");
+						areaDialog.show();
+
+					}
+				});
+				areaSurvey.startSurvey(areaLayer);
+				mapView.addGeometryLayer(areaLayer);
+				break;
 
 			default:
 				break;
@@ -1109,7 +1140,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void actionPerformed(double distance) {
 				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(
-						ma, distance);
+						ma, distance, " m");
 				amrd.show();
 				m.stop();
 			}
