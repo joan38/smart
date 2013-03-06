@@ -22,7 +22,7 @@ public abstract class Geometry implements Serializable {
 	 */
 	private static final long serialVersionUID = -1606580653611097120L;
 
-	private long id ;
+	private long id =-1 ;
 
 	private transient GeometryType type;
 	private Symbology symbology;

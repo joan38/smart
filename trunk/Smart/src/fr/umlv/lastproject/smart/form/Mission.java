@@ -130,14 +130,31 @@ public final class Mission {
 		pointLayer = missionPoint;
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
+		for(Geometry g : pointLayer.getGeometries()){
+			if(g.getId() == -1){
+				pointLayer.removeGeometry(g);
+			}
+		}
 
 		lineLayer = missionLine;
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
+		for(Geometry g : lineLayer.getGeometries()){
+			if(g.getId() == -1){
+				lineLayer.removeGeometry(g);
+			}
+		}
+
 
 		polygonLayer = missionPolygon;
 		polygonLayer.setSelectable(true);
 		polygonLayer.addSelectedGeometryListener(list);
+		for(Geometry g : polygonLayer.getGeometries()){
+			if(g.getId() == -1){
+				polygonLayer.removeGeometry(g);
+			}
+		}
+
 
 		survey = new Survey(mapView);
 

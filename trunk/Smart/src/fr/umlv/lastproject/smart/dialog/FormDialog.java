@@ -190,6 +190,7 @@ public class FormDialog extends AlertDialog.Builder {
 											idForm));
 							g.setId(idGeom);
 						} catch (SmartException e) {
+							mission.removeGeometry(g);
 							Toast.makeText(context, e.getMessage(),
 									Toast.LENGTH_LONG).show();
 							Log.e("", e.getMessage());
@@ -508,14 +509,12 @@ public class FormDialog extends AlertDialog.Builder {
 						namePicture = namePicture.replace(" ", "_");
 						namePicture = namePicture.replace(":", "");
 						namePicture = namePicture.replace("/", "_");
-						Log.d("pictureActivity", "jvai l'appel");
 						Intent intent = new Intent(menuActivity,
 								PictureActivity.class);
 						intent.putExtra("takePicture", true);
 						intent.putExtra("namePicture", namePicture);
 
 						menuActivity.startActivity(intent);
-						Log.d("pictureActivity", "je l'ai appeler !!!!");
 
 						namePictureView.setText(namePicture);
 
