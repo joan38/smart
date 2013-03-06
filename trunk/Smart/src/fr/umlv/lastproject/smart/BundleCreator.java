@@ -1,21 +1,39 @@
 package fr.umlv.lastproject.smart;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.osmdroid.util.GeoPoint;
 
+import fr.umlv.lastproject.smart.data.DataImport;
+import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.Symbology;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.widget.Toast;
+
+/**
+ * 
+ * @author thibault brun
+ *
+ */
 
 public class BundleCreator {
 
 
+	/**
+	 * 
+	 * @param outState bundle
+	 * @param missionCreated mission is created ?
+	 */
 	public static void saveMission(Bundle outState, boolean missionCreated){
 
 		// Mission started
@@ -58,6 +76,11 @@ public class BundleCreator {
 
 	}
 
+	/**
+	 * 
+	 * @param outState the bundle 
+	 * @param mapView the map
+	 */
 	public static void savePosition(Bundle outState, SmartMapView mapView) {
 		outState.putInt("mapLat", mapView.getBoundingBox().getCenter().getLatitudeE6()) ;
 		outState.putInt("mapLon", mapView.getBoundingBox().getCenter().getLongitudeE6()) ;
@@ -65,6 +88,11 @@ public class BundleCreator {
 		
 	}
 
+	/**
+	 * 
+	 * @param savedInstanceState the bundle 
+	 * @param mapView the map
+	 */
 	public static void loadPosition(Bundle savedInstanceState,
 			SmartMapView mapView) {
 
@@ -74,6 +102,13 @@ public class BundleCreator {
 		
 	}
 	
+	/**
+	 * 
+	 * @param savedInstanceState the bundle 
+	 * @param mapView the map
+	 * @param menu the contet
+	 * @return if the mission is created
+	 */
 	public static boolean loadMission(Bundle savedInstanceState,
 			SmartMapView mapView, MenuActivity menu) {
 
@@ -127,6 +162,11 @@ public class BundleCreator {
 		
 	}
 
+	/**
+	 * 
+	 * @param outState the bundle 
+	 * @param geometryOberlays the layers geometry
+	 */
 	public static void saveGeomtryLayers(Bundle outState,
 			List<GeometryLayer> geometryOberlays) {
 		int count = 0 ;
@@ -145,6 +185,12 @@ public class BundleCreator {
 		outState.putInt("GEOMETRYLAYERCOUNT", count) ;		
 	}
 	
+	/**
+	 * 
+	 * @param savedInstanceState the bundle 
+	 * @param menu the context
+	 * @param map the map
+	 */
 	public static void loadGeometryLayers(Bundle savedInstanceState, MenuActivity menu, SmartMapView map){
 		List<GeometryLayer> list = new ArrayList<GeometryLayer>() ;
 		
@@ -166,7 +212,11 @@ public class BundleCreator {
 		
 	}
 
-	
+	/**
+	 * 
+	 * @param g a geometrylayer
+	 * @return true if is in the mission
+	 */
 	public static boolean isInMission(GeometryLayer g){
 		
 		if(Mission.getInstance() != null){
@@ -176,6 +226,42 @@ public class BundleCreator {
 		}
 		return false ;
 	}
+
+	/**
+	 * 
+	 * @param outState the bundle
+	 * @param geoTIFFOverlays the tiff layers
+	 */
+	public static void saveGeotiffs(Bundle outState,
+			List<TMSOverlay> geoTIFFOverlays) {
+		int count = geoTIFFOverlays.size() ;
+		outState.putInt("GEOTIFFCOUNT", count) ;
+		
+		for(int i =0; i < count ; i++){
+			outState.putString("GEOTIFF"+i, geoTIFFOverlays.get(i).getPath()) ;
+		}
+	}
+		
+		
+		
+		public static void loadGeotiffs(Bundle savedInstance, SmartMapView map, MenuActivity ctx){
+			
+			int count = savedInstance.getInt("GEOTIFFCOUNT") ;
+			
+			for(int i =0 ; i < count ; i++){
+				String path = savedInstance.getString("GEOTIFF"+i) ;
+				try {
+					TMSOverlay overlay = DataImport.importGeoTIFFFileFolder(path, ctx) ;
+					map.addGeoTIFFOverlay(overlay) ;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
+			}
+			
+		}
+		
 	
 
 

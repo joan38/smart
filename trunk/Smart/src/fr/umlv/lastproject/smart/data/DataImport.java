@@ -54,7 +54,7 @@ public final class DataImport {
 		final int maxZoom = Integer.parseInt(metadata[3].toString());
 		final BoundingBoxE6 extent = (BoundingBoxE6) metadata[4];
 		return importGeoTIFFFileZIP(folderName, context, minZoom, maxZoom,
-				tileExtension, extent);
+				tileExtension, extent, pathName);
 
 	}
 
@@ -68,7 +68,7 @@ public final class DataImport {
 	 */
 	public static TMSOverlay importGeoTIFFFileZIP(final String folderName,
 			final Context context, final int minZoom, final int maxZoom,
-			final String tileExtension, final BoundingBoxE6 extent) {
+			final String tileExtension, final BoundingBoxE6 extent, String path) {
 		if (folderName == null
 				|| minZoom < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL
 				|| maxZoom > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
@@ -84,7 +84,7 @@ public final class DataImport {
 		mProvider.setUseDataConnection(false);
 
 		final TMSOverlay mTilesOverlay = new TMSOverlay(mProvider, context,
-				minZoom, maxZoom, folderName, extent);
+				minZoom, maxZoom, folderName, extent, path);
 
 		return mTilesOverlay;
 	}
