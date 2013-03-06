@@ -27,6 +27,16 @@ import android.widget.Toast;
  */
 
 public class BundleCreator {
+	
+	
+	public static Bundle createBundle(SmartMapView mapView, boolean missionCreated){
+		Bundle b = new Bundle() ;
+		BundleCreator.savePosition(b, mapView);
+		BundleCreator.saveMission(b, missionCreated);
+		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOberlays());
+		BundleCreator.saveGeotiffs(b,mapView.getGeoTIFFOverlays());
+		return b ;
+	}
 
 
 	/**
@@ -259,6 +269,18 @@ public class BundleCreator {
 
 				}
 			}
+			
+		}
+
+		public static void saveTrack(Bundle outState, boolean trackStarted,
+				GPSTrack gpsTrack) {
+			
+			
+		}
+
+		public static void loadTrack(Bundle savedInstanceState,
+				SmartMapView mapView, MenuActivity menuActivity) {
+			// TODO Auto-generated method stub
 			
 		}
 		
