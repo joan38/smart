@@ -21,8 +21,9 @@
     <string name="exitMsg">Are you sure you want to quit SMART ?</string>
     <string name="exitMsgWithMission">Are you sure you want to quit SMART ? Current mission will be stopped</string>
     <string name="help">Help</string>
-    <string name="helpLayer">This is the layer menu.\nYou can unchecked a layer to hide it or slide to remove it.\nTo reorganize, long pressed on a layer to drag and grop in the list.\nTo modify a symbology, select a picture.</string>
+    <string name="helpLayer">This is the layer menu.\nYo u can unchecked a layer to hide it or slide to remove it.\nTo reorganize, long pressed on a layer to drag and grop in the list.\nTo modify a symbology, select a picture.</string>
     <string name="helpMap">This is the Map screen.\nYou can move the map by dragging with your finger.\nTo zoom in or out, pinch or spread the screen.\nIf your GPS was activated, touch the target icon to locate your position on the map.</string>
+    <string name="helpMenu">You can add a shortcut to the shortcut bar in the main page on long-pressed a picture in this menu.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
@@ -59,6 +60,7 @@
         <item>Position survey</item>
         <item>Line survey</item>
         <item>Polygon survey</item>
+        <item>Polygon track</item>
         <item>Track GPS</item>
         <item>KML import</item>
         <item>GeoTIFF import</item>
@@ -71,6 +73,7 @@
     </string-array>
 
     <string name="stopMission">Stop mission</string>
+    <string name="stoPolygonTrack">Stop polygon track</string>
     <string name="stopGPSTrack">Stop track</string>
 
     <string-array name="typeFields">
@@ -79,7 +82,7 @@
         <item>Boolean</item>
         <item>List</item>
         <item>Picture</item>
-        <item>Height</item>
+        <item>Height Measure</item>
     </string-array>
 
     <string name="title_activity_layers">LayersActivity</string>
@@ -160,7 +163,7 @@
     <string name="missionDelete">Mission delete</string>
     <string name="theme">Theme</string>
     <string name="title_activity_height">HeightActivity</string>
-    <string name="user_height_text">Enter the height of your Point Of View (usually your height minus 25 cm)</string>
+    <string name="user_height_text">Enter the height of your Point Of View (usually your height minus 15 cm)</string>
     <string name="track_title">Create a GPS Track</string>
     <string name="height_title">POV Height</string>
     <string name="height_field_missing">Height value must be set</string>
@@ -171,6 +174,8 @@
     <string name="track_notstarted">Track cannot be started</string>
     <string name="track_started">Track is started!</string>
     <string name="track_stop">Track is stoped!</string>
+    <string name="polygon_track_started">Polygon track is started</string>
+    <string name="polygon_track_stoped">Polygon track is stoped</string>
     <string name="point_survey">Tap to make a point</string>
     <string name="line_survey">Tap to make some points and double-tap to finish the line</string>
     <string name="polygon_survey">Tap to make some points and double-tap to close the polygon</string>

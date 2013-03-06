@@ -28,17 +28,19 @@ public final class SmartConstants {
 	public static final int POINT_SURVEY_POSITION = 3;
 	public static final int LINE_SURVEY = 4;
 	public static final int POLYGON_SURVEY = 5;
-	public static final int GPS_TRACK = 6;
-	public static final int IMPORT_KML = 7;
-	public static final int IMPORT_GEOTIFF = 8;
-	public static final int IMPORT_SHAPE = 9;
-	public static final int IMPORT_WMS = 10;
-	public static final int EXPORT_MISSION = 11;
-	public static final int MEASURE = 12;
-	public static final int EXPORT_FORM = 13;
-	public static final int DELETE_MISSION = 14;
-	public static final int STOP_MISSION = 15;
-	public static final int STOP_GPS_TRACK = 16;
+	public static final int POLYGON_TRACK = 6;
+	public static final int GPS_TRACK = 7;
+	public static final int IMPORT_KML = 8;
+	public static final int IMPORT_GEOTIFF = 9;
+	public static final int IMPORT_SHAPE = 10;
+	public static final int IMPORT_WMS = 11;
+	public static final int EXPORT_MISSION = 12;
+	public static final int MEASURE = 13;
+	public static final int EXPORT_FORM = 14;
+	public static final int DELETE_MISSION = 15;
+	public static final int STOP_MISSION = 16;
+	public static final int STOP_GPS_TRACK = 17;
+
 	
 	public static final int GPS_REFRESH_TIME = 5000;
 	public static final int GPS_REFRESH_DISTANCE = 10;
@@ -78,12 +80,13 @@ public final class SmartConstants {
 	public static int[] icons = { R.drawable.startmission,
 			R.drawable.createform, R.drawable.pointsurvey,
 			R.drawable.pointsurvey_position, R.drawable.linesurvey,
-			R.drawable.polygonsurvey, R.drawable.startgpstrack,
-			R.drawable.importvector, R.drawable.importraster,
-			R.drawable.importvector, R.drawable.importwms,
-			R.drawable.exportmission, R.drawable.measure,
+			R.drawable.polygonsurvey, R.drawable.startpolygontrack,
+			R.drawable.startgpstrack, R.drawable.importvector,
+			R.drawable.importraster, R.drawable.importvector,
+			R.drawable.importwms, R.drawable.exportmission, R.drawable.measure,
 			R.drawable.exportform, R.drawable.deletemission,
-			R.drawable.stopmission, R.drawable.stopgpstrack };
+			R.drawable.stopmission, R.drawable.stopgpstrack,
+			R.drawable.stoppolygontrack };
 
 	private SmartConstants() {
 	}
