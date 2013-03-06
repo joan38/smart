@@ -232,6 +232,7 @@ public class GPSTrack {
 	public void startTrack() {
 		if (!isStarted && !isFinished) {
 			isStarted = true;
+			geometryLayer.setSelectable(false);
 			switch (this.trackMode) {
 			case DISTANCE:
 				logger.log(Level.INFO, "Track started by meter distance");
@@ -266,8 +267,8 @@ public class GPSTrack {
 					this.geometryLayer.removeGeometry(geometry);
 				} else {
 					form.openForm((MenuActivity) activity, geometry, mission);
-					geometryLayer.setSelectable(true);
 				}
+				geometryLayer.setSelectable(true);
 				break;
 			default:
 				break;

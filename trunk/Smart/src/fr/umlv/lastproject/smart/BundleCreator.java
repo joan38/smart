@@ -29,7 +29,7 @@ public class BundleCreator {
 		Bundle b = new Bundle();
 		BundleCreator.savePosition(b, mapView);
 		BundleCreator.saveMission(b, missionCreated);
-		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOberlays());
+		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOverlays());
 		BundleCreator.saveGeotiffs(b, mapView.getGeoTIFFOverlays());
 		return b;
 	}

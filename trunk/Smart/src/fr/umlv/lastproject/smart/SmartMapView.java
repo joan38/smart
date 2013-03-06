@@ -57,7 +57,7 @@ public class SmartMapView extends MapView {
 
 	}
 
-	public List<GeometryLayer> getGeometryOberlays() {
+	public List<GeometryLayer> getGeometryOverlays() {
 		return geometryOverlays;
 	}
 

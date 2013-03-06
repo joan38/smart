@@ -41,6 +41,7 @@ import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.data.DataImport;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
+import fr.umlv.lastproject.smart.dialog.AboutDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
@@ -131,7 +132,7 @@ public class MenuActivity extends Activity {
 		BundleCreator.saveMission(outState, missionCreated);
 
 		BundleCreator
-				.saveGeomtryLayers(outState, mapView.getGeometryOberlays());
+				.saveGeomtryLayers(outState, mapView.getGeometryOverlays());
 		logger.log(Level.INFO, "Saving the application bundle");
 		BundleCreator.saveGeotiffs(outState, mapView.getGeoTIFFOverlays());
 	}
@@ -230,6 +231,8 @@ public class MenuActivity extends Activity {
 		menu.add(0, 2, 0, R.string.gpsSettings);
 		menu.add(0, 3, 0, R.string.theme);
 		menu.add(0, 4, 0, R.string.help);
+		menu.add(0, 5, 0, R.string.about);
+
 		return true;
 	}
 
@@ -355,6 +358,11 @@ public class MenuActivity extends Activity {
 			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
 					R.string.helpMap);
 			helpDialog.show();
+			break;
+
+		case 5:
+			final AboutDialog about = new AboutDialog(this);
+			about.show();
 			break;
 		}
 
@@ -605,6 +613,7 @@ public class MenuActivity extends Activity {
 					} else {
 						try {
 							polygonTrack.stopTrack();
+							Mission.getInstance().trackInProgress(false);
 							polygonTrack = null;
 
 							for (PolygonTrackListener l : this.polygonTrackListeners) {
@@ -722,6 +731,28 @@ public class MenuActivity extends Activity {
 				}
 			});
 			break;
+		case POLYGON_TRACK:
+			if (polygonTrack != null && polygonTrack.isStarted()) {
+				Log.d("debug", polygonTrack + " " + polygonTrack.isStarted());
+				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_POLYGON_TRACK
+						.getId()]);
+			}
+			this.addPolygonTrackListener(new PolygonTrackListener() {
+
+				@Override
+				public void actionPerformed(boolean status) {
+					if (status) {
+						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_POLYGON_TRACK
+								.getId()]);
+						shortcutsView.invalidate();
+					} else {
+						shortcut.setImageResource(SmartConstants.icons[MenuAction.POLYGON_TRACK
+								.getId()]);
+						shortcutsView.invalidate();
+					}
+
+				}
+			});
 		}
 		shortcutsView.addView(shortcut);
 		shortcutsView.invalidate();
@@ -875,10 +906,12 @@ public class MenuActivity extends Activity {
 					}
 					if (polygonTrack == null) {
 						new AlertPolygonTrackDialog(this);
+						Mission.getInstance().trackInProgress(true);
 						break;
 					} else {
 						try {
 							polygonTrack.stopTrack();
+							Mission.getInstance().trackInProgress(false);
 							polygonTrack = null;
 
 							for (PolygonTrackListener l : this.polygonTrackListeners) {
@@ -1004,9 +1037,10 @@ public class MenuActivity extends Activity {
 						+ "_POLYGON"), this.form, MenuActivity.this,
 				this.mission);
 		polygonTrack.startTrack();
+		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
 				.show();
-		for (GPSTrackListener l : this.gpsTrackListeners) {
+		for (PolygonTrackListener l : this.polygonTrackListeners) {
 			l.actionPerformed(true);
 		}
 
@@ -1235,6 +1269,22 @@ public class MenuActivity extends Activity {
 	 */
 	public void removeGPSTrackListener(GPSTrackListener listener) {
 		gpsTrackListeners.remove(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addPolygonTrackListener(PolygonTrackListener listener) {
+		polygonTrackListeners.add(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void removePolygonTrackListener(PolygonTrackListener listener) {
+		polygonTrackListeners.remove(listener);
 	}
 
 	public void startModifHeightActivityForResult(GeometryLayer layer,
