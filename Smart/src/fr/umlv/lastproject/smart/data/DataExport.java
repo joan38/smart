@@ -19,6 +19,7 @@ import fr.umlv.lastproject.smart.database.NumericFieldRecord;
 import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
+import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.utils.SmartException;
 
 public final class DataExport {
@@ -48,7 +49,7 @@ public final class DataExport {
 
 			FileWriter csv = new FileWriter(path + mission.getTitle()
 					+ FileUtils.CSV_TYPE[0]);
-			csv.write("Geometries;Points");
+			csv.write("Geom");
 
 			GeometryRecord geometry = geometryIterator.next();
 			FormRecord formRecord = dbm.getFormRecord(
@@ -59,45 +60,63 @@ public final class DataExport {
 			csv.write("\n");
 
 			while (true) {
-				csv.write(geometry.getType().name() + ";");
+				StringBuilder line = new StringBuilder(geometry.getType()
+						.name() + "(");
 
-				for (PointRecord point : geometry.getPointsRecord()) {
-					csv.write("[" + point.getX() + "," + point.getY() + ","
-							+ (point.getZ() == -1.0 ? 0 : point.getZ()) + "]");
+				if (geometry.getType() == GeometryType.POLYGON) {
+					line.append("(");
 				}
 
+				for (PointRecord point : geometry.getPointsRecord()) {
+					line.append(point.getX()).append(" ").append(point.getY());
+					/*
+					 * line.append(" ").append( (point.getZ() == -1.0 ? 0 :
+					 * point.getZ()));
+					 */
+					line.append(",");
+				}
+				line.deleteCharAt(line.length() - 1);
+				if (geometry.getType() == GeometryType.POLYGON) {
+					// Add the first point at the end
+					PointRecord point = geometry.getPointsRecord().get(0);
+					line.append(",").append(point.getX()).append(" ")
+							.append(point.getY());
+					line.append(")");
+				}
+				line.append(")");
+
 				for (FieldRecord field : formRecord.getFields()) {
-					csv.write(";");
+					line.append(";");
 
 					switch (field.getField().getType()) {
 					case TEXT:
 						TextFieldRecord tf = (TextFieldRecord) field;
-						csv.write(tf.getValue());
+						line.append(tf.getValue());
 						break;
 
 					case NUMERIC:
 						NumericFieldRecord nf = (NumericFieldRecord) field;
-						csv.write(String.valueOf(nf.getValue()));
+						line.append(String.valueOf(nf.getValue()));
 						break;
 
 					case BOOLEAN:
 						BooleanFieldRecord bf = (BooleanFieldRecord) field;
-						csv.write(String.valueOf(bf.getValue()));
+						line.append(String.valueOf(bf.getValue()));
 						break;
 
 					case LIST:
 						ListFieldRecord lf = (ListFieldRecord) field;
-						csv.write(lf.getValue());
+						line.append(lf.getValue());
 						break;
 
 					case PICTURE:
 						PictureFieldRecord pf = (PictureFieldRecord) field;
-						csv.write(pf.getValue());
+						line.append(pf.getValue());
 						break;
 
 					case HEIGHT:
 						HeightFieldRecord hf = (HeightFieldRecord) field;
-						csv.write(String.valueOf(hf.getValue()));
+						line.append(String.valueOf(hf.getValue()));
 						break;
 
 					default:
@@ -105,7 +124,8 @@ public final class DataExport {
 					}
 				}
 
-				csv.write("\n");
+				line.append("\n");
+				csv.write(line.toString());
 
 				if (!geometryIterator.hasNext()) {
 					break;

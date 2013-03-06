@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertDeleteLayerDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
@@ -27,7 +28,7 @@ public class LayersActivity extends ListActivity {
 	private Preferences pref;
 
 	private ListOverlay listOverlay = new ListOverlay();
-	SmartItemLayerAdapter adapter;
+	private SmartItemLayerAdapter adapter;
 	private String mission;
 	private String track;
 
@@ -87,7 +88,12 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
-		pref = Preferences.getInstance(this);
+		try {
+			pref = Preferences.getInstance(this);
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_layers);
 
@@ -148,6 +154,11 @@ public class LayersActivity extends ListActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		pref.save();
+		try {
+			pref.save();
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 }

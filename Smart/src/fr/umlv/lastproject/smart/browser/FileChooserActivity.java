@@ -17,6 +17,7 @@
 package fr.umlv.lastproject.smart.browser;
 
 import java.io.File;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.Preferences;
+import fr.umlv.lastproject.smart.PreferencesException;
 import fr.umlv.lastproject.smart.R;
 
 /**
@@ -64,7 +66,12 @@ public class FileChooserActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		pref = Preferences.getInstance(this);
+		try {
+			pref = Preferences.getInstance(this);
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 		setTheme(pref.theme);
 		setContentView(R.layout.chooser);
 
@@ -86,7 +93,12 @@ public class FileChooserActivity extends FragmentActivity implements
 	protected void onPause() {
 		super.onPause();
 		unregisterStorageListener();
-		pref.save();
+		try {
+			pref.save();
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override

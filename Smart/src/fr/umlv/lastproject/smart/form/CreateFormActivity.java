@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.Preferences;
+import fr.umlv.lastproject.smart.PreferencesException;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -58,7 +59,12 @@ public class CreateFormActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		pref = Preferences.getInstance(this);
+		try {
+			pref = Preferences.getInstance(this);
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_create_form);
 		setTitle(getString(R.string.title_activity_create_form));
@@ -475,6 +481,11 @@ public class CreateFormActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		pref.save();
+		try {
+			pref.save();
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 }
