@@ -38,7 +38,6 @@ public class SmartMapView extends MapView {
 
 	private ListOverlay listOverlay;
 
-
 	/**
 	 * 
 	 * @param context
@@ -48,6 +47,7 @@ public class SmartMapView extends MapView {
 	 */
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
+
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
 		this.listOverlay = new ListOverlay();
 		this.geometryOverlays = new ArrayList<GeometryLayer>();
@@ -56,12 +56,10 @@ public class SmartMapView extends MapView {
 		this.stringToOverlay = new HashMap<String, Overlay>();
 
 	}
-	
-	public List<GeometryLayer> getGeometryOberlays(){
-		return geometryOverlays ;
-	}
-	
 
+	public List<GeometryLayer> getGeometryOberlays() {
+		return geometryOverlays;
+	}
 
 	/**
 	 * 
@@ -172,7 +170,7 @@ public class SmartMapView extends MapView {
 	 *            to remove
 	 */
 	public void removeWMSLayer(final WMSOverlay layer) {
-		this.geometryOverlays.remove(layer);
+		this.wmsOverlays.remove(layer);
 		removeOverlay(layer.getName());
 	}
 
@@ -232,6 +230,8 @@ public class SmartMapView extends MapView {
 		getOverlays().clear();
 		listOverlay.clear();
 		geoTIFFOverlays.clear();
+		geometryOverlays.clear();
+		wmsOverlays.clear();
 	}
 
 	/**
@@ -283,7 +283,5 @@ public class SmartMapView extends MapView {
 		addOverlay(wmsOverlay);
 
 	}
-	
-
 
 }

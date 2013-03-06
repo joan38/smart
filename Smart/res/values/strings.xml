@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Smart</string>
     <string name="menu_settings">Settings</string>
     <string name="infoSettings">Information parameters</string>
@@ -65,7 +66,8 @@
         <item>KML/SHP import</item>
         <item>GeoTIFF import</item>
         <item>WMS import</item>
-        <item>Distance measure</item>
+        <item>Measure distance</item>
+        <item>Measure area</item>
         <item>Export mission</item>
         <item>Export form</item>
         <item>Delete mission</item>
