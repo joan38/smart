@@ -23,6 +23,7 @@
     <string name="help">Aide</string>
     <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.\nPour changer la symbologie, il vous suffit de séléctionner une image.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
+    <string name="helpMenu">Vous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="ok">Ok</string>
@@ -56,6 +57,7 @@
         <item>Relever votre position</item>
         <item>Relever une ligne</item>
         <item>Relever un polygone</item>
+        <item>Relever une trace polygone</item>
         <item>Démarrer une trace GPS</item>
         <item>Importer KML</item>
         <item>Importer GeoTIFF</item>
@@ -68,6 +70,7 @@
     </string-array>
 
     <string name="stopMission">Arrêter la mission</string>
+    <string name="stopPolygonTrack">Arrêter la trace polygone</string>
     <string name="stopGPSTrack">Arrêter la trace</string>
 
     <string-array name="typeFields">
@@ -76,7 +79,7 @@
         <item>Boolean</item>
         <item>Liste</item>
         <item>Photo</item>
-        <item>Hauteur</item>
+        <item>Mesure de Hauteur</item>
     </string-array>
 
     <string name="title_activity_browser">Explorateur de fichiers</string>
@@ -148,7 +151,7 @@
     <string name="missionDelete">Mission supprimée</string>
     <string name="theme">Thème</string>
     <string name="editInfo">Editer la zone d\'info</string>
-    <string name="user_height_text">Entrez la hauteur du point de vue (par exemple votre taille moins 25 cm)</string>
+    <string name="user_height_text">Entrez la hauteur du point de vue (par exemple votre taille moins 15 cm)</string>
     <string name="track_title">Créer une trace GPS</string>
     <string name="height_title">Hauteur du point de vue</string>
     <string name="height_field_missing">La hauteur ne peut être nulle</string>
@@ -168,6 +171,8 @@
     <string name="track_notstarted">La trace ne peut pas être démarrée</string>
     <string name="track_started">La trace GPS a démarré!</string>
     <string name="track_stop">La trace GPS est arrétée!</string>
+    <string name="polygon_track_started">La trace Polygone a démarré</string>
+    <string name="polygon_track_stoped">La trace Polygone est arrétée</string>
     <string name="point_survey">Tapez pour faire un point</string>
     <string name="line_survey">Tape : faire plusieurs points\nDouble-tape : finir la ligne</string>
     <string name="polygon_survey">Tape : faire plusieurs points\nDouble-tape : fermer le polygone</string>
