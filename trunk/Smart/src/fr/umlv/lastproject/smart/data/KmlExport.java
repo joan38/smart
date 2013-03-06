@@ -1,6 +1,8 @@
 package fr.umlv.lastproject.smart.data;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,6 +32,7 @@ import fr.umlv.lastproject.smart.database.PictureFieldRecord;
 import fr.umlv.lastproject.smart.database.PointRecord;
 import fr.umlv.lastproject.smart.database.TextFieldRecord;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * Utils for export in Kml
@@ -38,6 +41,8 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * 
  */
 public final class KmlExport {
+
+	private final static Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Export the given mission in a Kml file.
@@ -104,6 +109,8 @@ public final class KmlExport {
 			List<GeometryRecord> geometries = dbm
 					.getGeometriesFromMission(mission.getId());
 			if (geometries.size() < 1) {
+				logger.log(Level.SEVERE,
+						"Try to export mission without geometry");
 				throw new KmlExportException("No geometry in the given mission");
 			}
 
@@ -141,12 +148,17 @@ public final class KmlExport {
 			transformer.transform(source, result);
 
 			dbm.close();
+			logger.log(Level.INFO,
+					"Export mission to KML :" + mission.getTitle());
 			return path + mission.getTitle() + FileUtils.KML_TYPE[0];
 		} catch (ParserConfigurationException e) {
+			logger.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (TransformerException e) {
+			logger.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (SmartException e) {
+			logger.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		}
 	}

@@ -3,6 +3,8 @@ package fr.umlv.lastproject.smart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.graphics.Color;
 import android.location.LocationManager;
@@ -11,6 +13,7 @@ import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * Main class for tracking Starts and stops a track
@@ -31,6 +34,8 @@ public class GPSTrack {
 
 	private final LineGeometry lineGeometry;
 	private final String trackName;
+
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * To know if we track by distance (meters) or time (seconds)
@@ -128,11 +133,13 @@ public class GPSTrack {
 			isStarted = true;
 			switch (this.trackMode) {
 			case DISTANCE:
+				logger.log(Level.INFO, "Track started by meter distance");
 				gps.start(0, trackMode.getParameter());
 				break;
 
 			default:
 				gps.start(trackMode.getParameter() * MULT, 0);
+				logger.log(Level.INFO, "Track started by time distance");
 				break;
 			}
 		}
@@ -145,6 +152,7 @@ public class GPSTrack {
 	 */
 	public void stopTrack() throws IOException {
 		if (isStarted && !isFinished) {
+			logger.log(Level.INFO, "Track stopped");
 			gps.removeGPSListener(gpsListener);
 			isFinished = true;
 			/** Writing of gpx file */

@@ -1,6 +1,8 @@
 package fr.umlv.lastproject.smart.dialog;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,6 +15,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * 
@@ -23,6 +26,8 @@ import fr.umlv.lastproject.smart.R;
  * 
  */
 public class AlertMeasureRequestDialog extends AlertDialog.Builder {
+
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Constructor
@@ -69,10 +74,12 @@ public class AlertMeasureRequestDialog extends AlertDialog.Builder {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
+				logger.log(Level.INFO, "Measure distance "
+						+ (absolute.get() ? "from 2 points"
+								: "from your position"));
 				menuActivity.measure(absolute.get());
 			}
 		}).setNegativeButton(R.string.cancel, null);
 
 	}
-
 }

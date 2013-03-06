@@ -51,10 +51,6 @@ public class Kml {
 
 	public Kml(File file) {
 		this.file = file;
-		//
-		// for (GeometryType type : GeometryType.values()) {
-		// this.geometries.put(type, new ArrayList<Geometry>());
-		// }
 	}
 
 	/**

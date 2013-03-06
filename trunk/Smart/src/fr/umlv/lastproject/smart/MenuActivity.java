@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.osmdroid.events.MapAdapter;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
@@ -70,20 +72,19 @@ import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
+/**
+ * 
+ * @author thibault Brun
+ * @author tanios Faddoul
+ * @author EVERYBODY !
+ * 
+ * @Description : This class contains the Menus container
+ * 
+ */
 public class MenuActivity extends Activity {
 
-	// static final int sensor = Sensor;
-
-	/**
-	 * 
-	 * @author thibault Brun
-	 * @author tanios Faddoul
-	 * @author EVERYBODY !
-	 * 
-	 * @Description : This class contains the Menus container
-	 * 
-	 */
 	private SmartMapView mapView;
 	private MapController mapController;
 	private OverlayManager overlayManager;
@@ -101,7 +102,6 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private Preferences pref;
-	private Map<Integer, Boolean> shorcutsMap;
 	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
 	private List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
 	private Mission mission;
@@ -115,28 +115,33 @@ public class MenuActivity extends Activity {
 	private Dialog dialog;
 	private GeometryLayer geometryLayer;
 
+	private final Logger logger = SmartLogger.getLocator().getLogger();
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		BundleCreator.savePosition(outState, mapView) ;
+		BundleCreator.savePosition(outState, mapView);
 		BundleCreator.saveMission(outState, missionCreated);
-		BundleCreator.saveGeomtryLayers(outState, mapView.getGeometryOberlays()) ;
-	}
+		BundleCreator
+				.saveGeomtryLayers(outState, mapView.getGeometryOberlays());
+		logger.log(Level.INFO, "Saving the application bundle");
 
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		File f = new File(SmartConstants.APP_PATH) ;
+		File f = new File(SmartConstants.APP_PATH);
 		f.mkdir();
 		pref = Preferences.getInstance(this);
 		setTheme(pref.theme);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
 		initMap();
-		if(savedInstanceState != null){
-			BundleCreator.loadPosition(savedInstanceState, mapView) ;
-			missionCreated = BundleCreator.loadMission(savedInstanceState, mapView, this) ;
+		if (savedInstanceState != null) {
+			BundleCreator.loadPosition(savedInstanceState, mapView);
+			missionCreated = BundleCreator.loadMission(savedInstanceState,
+					mapView, this);
 			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
 		}
 		initGps();
@@ -160,6 +165,7 @@ public class MenuActivity extends Activity {
 						LayersActivity.class);
 
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
+
 				if (Mission.getInstance() != null
 						&& Mission.getInstance().isStatus()) {
 					layersActivity.putExtra("mission", Mission.getInstance()
@@ -199,15 +205,14 @@ public class MenuActivity extends Activity {
 
 		return true;
 	}
-	
-
 
 	/**
 	 * This method is use to init the map
 	 */
 	public void initMap() {
+		logger.log(Level.INFO, "Init application map");
 		mapView = (SmartMapView) findViewById(R.id.mapview);
-		
+
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
 
@@ -259,7 +264,8 @@ public class MenuActivity extends Activity {
 		// mapView.addGeoTIFFOverlay(new TMSOverlay(
 		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
 
-		directedLocationOverlay = new DirectedLocationOverlay(getApplicationContext());
+		directedLocationOverlay = new DirectedLocationOverlay(
+				getApplicationContext());
 		directedLocationOverlay.setShowAccuracy(true);
 		overlayManager.add(directedLocationOverlay);
 
@@ -366,7 +372,7 @@ public class MenuActivity extends Activity {
 	 * This method is use to connect the GPS to the positionOverlay
 	 */
 	public void initGps() {
-
+		logger.log(Level.INFO, "Init application GPS");
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		gps = new GPS(locationManager);
 
@@ -455,7 +461,7 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.LAYERS_VIEW:
 				ListOverlay listOverlay = (ListOverlay) data
-				.getSerializableExtra("overlays");
+						.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -470,7 +476,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-											.getName());
+									.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -481,11 +487,16 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
+
 				formPath = data.getData().getPath();
+				logger.log(Level.INFO,
+						"Getting mission path from brower activity : "
+								+ formPath);
 				missionDialog.setPathForm(formPath);
 				break;
 
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
+				logger.log(Level.INFO, "Export form by email");
 				Uri file = data.getData();
 
 				Intent sendIntent = new Intent(Intent.ACTION_SEND);
@@ -498,15 +509,22 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.IMPORT_KML_BROWSER_ACTIVITY:
 				String kmlPath = data.getData().getPath();
+				logger.log(Level.INFO,
+						"Getting KML path from brower activity :" + kmlPath);
 				try {
+					logger.log(Level.INFO, "Adding KML layer to the map :"
+							+ kmlPath);
 					mapView.addGeometryLayers(DataImport.importKml(this,
 							kmlPath));
 					Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
-					.show();
+							.show();
 				} catch (XmlPullParserException e) {
+					logger.log(Level.SEVERE, "KML file is invalid :" + kmlPath);
 					Toast.makeText(this, R.string.kmlParseError,
 							Toast.LENGTH_SHORT).show();
 				} catch (IOException e) {
+					logger.log(Level.SEVERE, "KML file can't be read :"
+							+ kmlPath);
 					Toast.makeText(this, R.string.kmlReadError,
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
@@ -515,14 +533,15 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
 				String shpPath = data.getData().getPath();
-				GeometryLayer gl = DataImport.importShapeFile(this,
-						shpPath) ;
+				logger.log(Level.INFO,
+						"Import ShapeFile from browser activity :" + shpPath);
+				GeometryLayer gl = DataImport.importShapeFile(this, shpPath);
 				mapView.addGeometryLayer(gl);
-				mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+				mapView.getController().setCenter(gl.getExtent().getCenter());
 				mapView.invalidate();
 
 				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-				.show();
+						.show();
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
@@ -530,6 +549,8 @@ public class MenuActivity extends Activity {
 				final ProgressDialog progressDialog = ProgressDialog.show(this,
 						getString(R.string.tiff_progress_title),
 						getString(R.string.tiff_progress));
+				logger.log(Level.INFO,
+						"Getting TIFF path from browser activity :" + tiffPath);
 				final Thread tiffThread = new Thread(new Runnable() {
 
 					@Override
@@ -539,9 +560,12 @@ public class MenuActivity extends Activity {
 
 							tms = DataImport.importGeoTIFFFileFolder(tiffPath,
 									MenuActivity.this);
+							logger.log(Level.INFO,
+									"Trying to import TIFF file :" + tiffPath);
 
 						} catch (IOException e) {
-							//
+							logger.log(Level.SEVERE,
+									"TIFF file can't be imported :" + tiffPath);
 						}
 						final TMSOverlay overlay = tms;
 						runOnUiThread(new Runnable() {
@@ -557,8 +581,9 @@ public class MenuActivity extends Activity {
 									Toast.makeText(MenuActivity.this,
 											R.string.geotiffImport,
 											Toast.LENGTH_SHORT).show();
-									mapView.getController().setCenter(overlay.getExtent().getCenter()) ;
-									mapView.getController().setZoom(12) ;
+									mapView.getController().setCenter(
+											overlay.getExtent().getCenter());
+									mapView.getController().setZoom(12);
 								}
 
 								progressDialog.dismiss();
@@ -573,17 +598,16 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.HEIGHT_ACTIVITY:
-				Log.d("TESTX", "ACTIVITY RESULT");
 				final Bundle bundle = data.getExtras();
 				final Object oResult = bundle.get(HeightActivity.HEIGHT_RESULT);
 				if (oResult == null) {
 					final String error = (bundle
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
-									.get(HeightActivity.ERROR_RESULT).toString()
-									: getString(R.string.height_error);
-									Toast.makeText(this, error, Toast.LENGTH_LONG);
-									createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
-									return;
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+					return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
@@ -600,11 +624,11 @@ public class MenuActivity extends Activity {
 				if (oResult2 == null) {
 					final String error = (bundle2
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
-									.get(HeightActivity.ERROR_RESULT).toString()
-									: getString(R.string.height_error);
-									Toast.makeText(this, error, Toast.LENGTH_LONG);
-									createDialog(FORM_MODIFY_DIALOG, new Bundle());
-									return;
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					createDialog(FORM_MODIFY_DIALOG, new Bundle());
+					return;
 				}
 				final double heightValue2 = Double.parseDouble(oResult2
 						.toString());
@@ -624,15 +648,12 @@ public class MenuActivity extends Activity {
 				createShortcut(shortcuts);
 			} else if (requestCode == SmartConstants.GPS_ACTIVITY) {
 				if (!gps.isEnabled(locationManager)) {
+					logger.log(Level.WARNING, "GPS want to be enabled");
 					Toast.makeText(this, R.string.track_notstarted,
 							Toast.LENGTH_LONG).show();
 					return;
 				}
 				if (gpsTrack == null) {
-					// final AlertTrackDialog trackDialog = new
-					// AlertTrackDialog(
-					// this);
-					// trackDialog.show();
 					new AlertTrackDialog(this, mapView.getListOverlay());
 
 				} else {
@@ -649,6 +670,7 @@ public class MenuActivity extends Activity {
 								Toast.LENGTH_LONG).show();
 
 					} catch (IOException e) {
+						logger.log(Level.SEVERE, "Error on the track stop");
 						gpsTrack = null;
 						Toast.makeText(this, R.string.track_error,
 								Toast.LENGTH_LONG).show();
@@ -657,12 +679,10 @@ public class MenuActivity extends Activity {
 					}
 				}
 			} else if (requestCode == SmartConstants.HEIGHT_ACTIVITY) {
-				Log.d("TESTX", "ACTIVITY RESULT CANCELED");
 				createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
 				return;
 
 			} else if (requestCode == SmartConstants.HEIGHT_MODIFY_ACTIVITY) {
-				Log.d("TESTX", "ACTIVITY RESULT CANCELED");
 				createDialog(FORM_MODIFY_DIALOG, new Bundle());
 				return;
 
@@ -773,6 +793,8 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.POINT_SURVEY:
 				if (Mission.getInstance() == null) {
+					logger.log(Level.WARNING,
+							"Impossible point survey : mission not created");
 					Toast.makeText(
 							this,
 							getResources()
@@ -788,6 +810,8 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.POINT_SURVEY_POSITION:
 				if (Mission.getInstance() == null) {
+					logger.log(Level.WARNING,
+							"Impossible position point survey : mission not created");
 					Toast.makeText(
 							this,
 							getResources()
@@ -803,6 +827,8 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.LINE_SURVEY:
 				if (Mission.getInstance() == null) {
+					logger.log(Level.WARNING,
+							"Impossible line survey : mission not created");
 					Toast.makeText(
 							this,
 							getResources()
@@ -818,6 +844,8 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.POLYGON_SURVEY:
 				if (Mission.getInstance() == null) {
+					logger.log(Level.WARNING,
+							"Impossible polygon survey : mission not created");
 					Toast.makeText(
 							this,
 							getResources()
@@ -832,8 +860,6 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.GPS_TRACK:
-				// final AlertTrackDialog trackDialog = new
-				// AlertTrackDialog(this);
 				File trackfolder = new File(SmartConstants.TRACK_PATH);
 				trackfolder.mkdir();
 				if (!gps.isEnabled(locationManager)) {
@@ -843,7 +869,6 @@ public class MenuActivity extends Activity {
 					return;
 				}
 				if (gpsTrack == null) {
-					// trackDialog.show();
 					new AlertTrackDialog(this, mapView.getListOverlay());
 					break;
 				} else {
@@ -860,7 +885,7 @@ public class MenuActivity extends Activity {
 								Toast.LENGTH_LONG).show();
 					} catch (IOException e) {
 						gpsTrack = null;
-
+						logger.log(Level.SEVERE, "Error while stopping track");
 						Toast.makeText(this, R.string.track_error,
 								Toast.LENGTH_LONG).show();
 						trackStarted = false;
@@ -868,9 +893,9 @@ public class MenuActivity extends Activity {
 
 					trackStarted = false;
 					Toast.makeText(this, R.string.track_stop, Toast.LENGTH_LONG)
-					.show();
-				} 
-			
+							.show();
+				}
+
 				break;
 
 			case SmartConstants.IMPORT_KML:
@@ -951,7 +976,6 @@ public class MenuActivity extends Activity {
 				form = Form.read(formPath);
 			} catch (FormIOException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-
 			}
 		}
 		Mission.createMission(missionName, MenuActivity.this, mapView, form);
@@ -1004,7 +1028,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mapView.getTileProvider().clearTileCache() ;
+		mapView.getTileProvider().clearTileCache();
 		pref.save();
 	}
 
@@ -1013,11 +1037,12 @@ public class MenuActivity extends Activity {
 		super.onDestroy();
 		cleanTIFFFolder();
 		cleanTmpFolder();
-		mapView.getTileProvider().clearTileCache() ;
-		System.gc() ;
+		mapView.getTileProvider().clearTileCache();
+		System.gc();
 	}
 
 	private void cleanTmpFolder() {
+		logger.log(Level.INFO, "tmp folder cleaned");
 		final List<File> files = FileUtils.getFileList(SmartConstants.TMP_PATH);
 		for (File file : files) {
 
@@ -1030,6 +1055,7 @@ public class MenuActivity extends Activity {
 	private void cleanTIFFFolder() {
 		final List<File> files = FileUtils
 				.getFileList(SmartConstants.TIFF_PATH);
+		logger.log(Level.INFO, "Tiff folder cleaned");
 		for (File file : files) {
 			if (".zip".equals(FileUtils.getExtension(file.getPath()))) {
 				file.delete();
@@ -1183,14 +1209,12 @@ public class MenuActivity extends Activity {
 		this.mission = m;
 		createDialog(FORM_MODIFY_DIALOG, null);
 	}
-	
+
 	@Override
 	protected void onStop() {
-		mapView.getTileProvider().clearTileCache() ;
+		mapView.getTileProvider().clearTileCache();
 		System.gc();
 		super.onStop();
 	}
-	
-	
-	
+
 }

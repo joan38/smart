@@ -1,10 +1,13 @@
 package fr.umlv.lastproject.smart;
 
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is
@@ -13,7 +16,7 @@ import android.widget.TextView;
  * 
  */
 public class InfoOverlay {
-	
+
 	private static final DecimalFormat LOCATION_FORMAT = new DecimalFormat(
 			"####0.00000");
 	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
@@ -25,7 +28,7 @@ public class InfoOverlay {
 	private float accuracy;
 	private float bearing;
 	private float speed;
-	
+
 	private boolean isLatitudeVisible;
 	private boolean isLongitudeVisible;
 	private boolean isAltitudeVisible;
@@ -35,6 +38,8 @@ public class InfoOverlay {
 
 	private final View infoView;
 	private int nbInfoVisible = 4;
+
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * InfoOverlay constructor
@@ -131,9 +136,11 @@ public class InfoOverlay {
 		if (view.getVisibility() == View.INVISIBLE && nbInfoVisible > 0) {
 			item.setTitle(R.string.hideInfoZone);
 			view.setVisibility(View.VISIBLE);
+			logger.log(Level.INFO, "Info zone set visible");
 		} else {
 			item.setTitle(R.string.showInfoZone);
 			view.setVisibility(View.INVISIBLE);
+			logger.log(Level.INFO, "Info zone set invisible");
 		}
 	}
 }

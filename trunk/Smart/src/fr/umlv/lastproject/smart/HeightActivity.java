@@ -1,5 +1,8 @@
 package fr.umlv.lastproject.smart;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertHeightDialog;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public class HeightActivity extends Activity implements SensorEventListener {
 
@@ -28,6 +32,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 	private long firstTouch, secondTouch;
 	private double userHeight;
 	private static final long delay = 1000;
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,9 @@ public class HeightActivity extends Activity implements SensorEventListener {
 				SensorManager.SENSOR_DELAY_NORMAL);
 		bottomAngle = Float.MIN_VALUE;
 		topAngle = Float.MIN_VALUE;
+
+		logger.log(Level.INFO, "Height measure started");
+
 		final AlertHeightDialog dialog = new AlertHeightDialog(this);
 		dialog.show();
 
@@ -146,6 +154,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 		final Intent intent = new Intent();
 		intent.putExtra(ERROR_RESULT, getString(errorId));
 		setResult(RESULT_OK, intent);
+		logger.log(Level.INFO, "Height measure end");
 		finish();
 
 	}
