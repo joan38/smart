@@ -160,6 +160,7 @@ public class DbManager {
 				dbRetour.execSQL(CREATE_TABLE_GEOMETRIES);
 				dbRetour.execSQL(CREATE_TABLE_POINTS);
 			} catch (SQLiteException e) {
+				dbRetour.close();
 				logger.log(Level.SEVERE, "Open database error : "+e.getMessage());
 				throw new SmartException("Open database error");
 			}
@@ -818,13 +819,19 @@ public class DbManager {
 	 * 
 	 * @param idGeometry
 	 * @return id of the form
+	 * @throws SmartException 
 	 */
-	public int getIdForm(long idGeometry){
+	public int getIdForm(long idGeometry) throws SmartException{
 
 		Cursor c = mDb.rawQuery(SELECT + GEOMETRIES_COL_ID_FORM_RECORD + FROM + TABLE_GEOMETRIES + WHERE + GEOMETRIES_COL_ID+"="+idGeometry, null);
 		c.moveToNext();
-		return c.getInt(0);
-
+		int idForm=0;
+		try{
+			idForm = c.getInt(0);
+		} catch (Exception e){
+			throw new SmartException("No geometry in database");
+		}
+		return idForm;
 	}
 
 	/**

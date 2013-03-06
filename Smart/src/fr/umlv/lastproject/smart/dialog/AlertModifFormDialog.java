@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.sax.StartElementListener;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -50,6 +53,7 @@ import fr.umlv.lastproject.smart.form.PictureActivity;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.utils.SmartException;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is used to display the form and change the values of differents
@@ -71,7 +75,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	private final Form form;
 	private final Geometry geom;
 	private final GeometryLayer layer;
-
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 	private ArrayList<FormEditedListener> listeners = new ArrayList<FormEditedListener>();
 
 	/**
@@ -107,9 +111,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		try {
 			idForm = buildForm(layoutDynamic, context, form.getFieldsList(),
 					idGeometry);
+			
 		} catch (SmartException e) {
+			logger.log(Level.SEVERE, "No geometry in database");
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
+			
 		}
 
 		setView(alertDialogView);
@@ -258,6 +265,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 			idForm = buildForm(layoutDynamic, context, form.getFieldsList(),
 					idGeometry, values);
 		} catch (SmartException e) {
+			logger.log(Level.SEVERE, "No geometry in database");
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
 		}
