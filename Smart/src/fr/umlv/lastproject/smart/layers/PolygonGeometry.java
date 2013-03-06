@@ -8,13 +8,14 @@ import java.util.List;
 
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Region;
-import android.graphics.Paint.Style;
 
 /**
  * This class represent the Polygon geometry to draw
@@ -74,121 +75,127 @@ public class PolygonGeometry extends Geometry {
 		return this.points;
 	}
 
-    @Override
-    public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
-            Paint paint = new Paint();
-            paint.setStyle(Style.FILL_AND_STROKE);
-            paint.setStrokeWidth(s.getSize());
-            paint.setColor(s.getColor());
+	@Override
+	public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
+		if (points.size() < 2) {
+			return;
+		}
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL_AND_STROKE);
+		paint.setStrokeWidth(s.getSize());
+		paint.setColor(s.getColor());
 
+		Path p = new Path();
+		if (isSelected()) {
+			paint.setAlpha(220);
+		} else {
+			paint.setAlpha(150);
+		}
+		for (int j = 0; j < getPoints().size() + 1; j++) {
+			// on récupere les 2 points
+			PointGeometry pointA = getPoints().get(j % getPoints().size());
 
-            Path p = new Path() ;
-            if (isSelected()) {
-                paint.setAlpha(220) ;
-            } else {
-                paint.setAlpha(150) ;
+			// Converting coordinates in pixel
+			Point pixelA = map.getProjection().toPixels(
+					pointA.getCoordinates(), null);
+			if (j == 0)
+				p.moveTo(pixelA.x, pixelA.y);
 
-            }
+			p.lineTo(pixelA.x, pixelA.y);
 
-            for (int j = 0; j < getPoints().size() +1; j++) {
-                    // on récupere les 2 points
-                    PointGeometry pointA = getPoints().get(j
-                                    % getPoints().size());
+		}
+		p.close();
+		c.drawPath(p, paint);
 
-                    // Converting coordinates in pixel
-                    Point pixelA = map.getProjection().toPixels(pointA.getCoordinates(),
-                                    null);
-                    if(j==0) p.moveTo(pixelA.x, pixelA.y);
+	}
 
-                    p.lineTo(pixelA.x, pixelA.y);
-            }
-            p.close();
-            c.drawPath(p, paint);
-            
-    }
+	@Override
+	public boolean isSelected(MapView m, Rect click) {
+		if (points.size() < 2) {
+			return false;
+		}
+		Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox()));
+		Path p = new Path();
+		for (int j = 0; j < getPoints().size() + 1; j++) {
+			if (getPoints().get(j % getPoints().size()).isSelected(m, click)) {
+				return true;
+			}
+			Point ps = m.getProjection().toPixels(
+					getPoints().get(j % getPoints().size()).getCoordinates(),
+					null);
+			if (j == 0)
+				p.moveTo(ps.x, ps.y);
+			p.lineTo(ps.x, ps.y);
+		}
+		p.close();
+		clip.setPath(p, clip);
+		if (!clip.quickReject(click)) {
+			return true;
+		}
 
-    @Override
-    public boolean isSelected(MapView m, Rect click) {
-            
-            Region clip = new Region(m.getProjection().toPixels(m.getBoundingBox())) ;
-            Path p = new Path() ;
-            for (int j = 0; j < getPoints().size() +1; j++) {
-                    if(getPoints().get(j%getPoints().size()).isSelected(m, click)){
-                            return true ;
-                    }
-                    Point ps = m.getProjection().toPixels(getPoints().get(j%getPoints().size()).getCoordinates(),null);
-                    if(j==0) p.moveTo(ps.x, ps.y);
-                    p.lineTo(ps.x, ps.y);
-            }
-            p.close();
-            clip.setPath(p, clip);
-            if(!clip.quickReject(click)   ){
-                    return true ;
-            }
-            
-            
-            
-            
-            return false;
-    }
-    
-    /**
-   	 * 
-   	 * @param out
-   	 *            the object to get
-   	 * @throws IOException
-   	 *             if canot read
-   	 */
-   	private void writeObject(ObjectOutputStream out) throws IOException {
-   		out.writeObject(points);
-   		out.writeBoolean(isSelected());
-   		out.writeLong(getId()) ;
-   		out.writeObject(getSymbology());
-   	}
+		return false;
+	}
 
-   	/**
-   	 * 
-   	 * @param in
-   	 *            object to read
-   	 * @throws IOException
-   	 *             if object not readable
-   	 * @throws ClassNotFoundException
-   	 *             if class does not exist
-   	 */
-   	private void readObject(ObjectInputStream in) throws IOException,
-   			ClassNotFoundException {
-   		
-   		this.points = (List<PointGeometry>)  in.readObject();
-   		this.setSelected(in.readBoolean()) ;
-   		this.setId(in.readLong()) ;
-   		this.setType(GeometryType.POLYGON) ;
-   		this.setSymbology((Symbology)in.readObject()) ;
-   	}
+	/**
+	 * 
+	 * @param out
+	 *            the object to get
+	 * @throws IOException
+	 *             if canot read
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeObject(points);
+		out.writeBoolean(isSelected());
+		out.writeLong(getId());
+		out.writeObject(getSymbology());
+	}
+
+	/**
+	 * 
+	 * @param in
+	 *            object to read
+	 * @throws IOException
+	 *             if object not readable
+	 * @throws ClassNotFoundException
+	 *             if class does not exist
+	 */
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+
+		this.points = (List<PointGeometry>) in.readObject();
+		this.setSelected(in.readBoolean());
+		this.setId(in.readLong());
+		this.setType(GeometryType.POLYGON);
+		this.setSymbology((Symbology) in.readObject());
+	}
 
 	@Override
 	public BoundingBoxE6 getBoundingBox() {
-		double north= 90 ;
-		double south = -90 ;
+		double north = 90;
+		double south = -90;
 		double east = 180;
-		double west = -180 ;
+		double west = -180;
 
-		if(points.size() >0){
-			north = points.get(0).getBoundingBox().getLatNorthE6() /1E6; 
-			south = points.get(0).getBoundingBox().getLatSouthE6()/1E6; 
-			east  = points.get(0).getBoundingBox().getLonEastE6()/1E6;
-			west  = points.get(0).getBoundingBox().getLonWestE6()/1E6;
+		if (points.size() > 0) {
+			north = points.get(0).getBoundingBox().getLatNorthE6() / 1E6;
+			south = points.get(0).getBoundingBox().getLatSouthE6() / 1E6;
+			east = points.get(0).getBoundingBox().getLonEastE6() / 1E6;
+			west = points.get(0).getBoundingBox().getLonWestE6() / 1E6;
 		}
 
-
-		for(PointGeometry g : points){
-			BoundingBoxE6 tmp = g.getBoundingBox() ;
-			north = (north <  tmp.getLatNorthE6()/1E6 ?  tmp.getLatNorthE6() /1E6: north) ;
-			south = (south > tmp.getLatSouthE6()/1E6 ? tmp.getLatSouthE6()/1E6 : south) ;
-			east = (east < tmp.getLonEastE6()/1E6 ? tmp.getLonEastE6()/1E6 : east) ;
-			west = (west > tmp.getLonWestE6() /1E6? tmp.getLonWestE6()/1E6 : west) ;
+		for (PointGeometry g : points) {
+			BoundingBoxE6 tmp = g.getBoundingBox();
+			north = (north < tmp.getLatNorthE6() / 1E6 ? tmp.getLatNorthE6() / 1E6
+					: north);
+			south = (south > tmp.getLatSouthE6() / 1E6 ? tmp.getLatSouthE6() / 1E6
+					: south);
+			east = (east < tmp.getLonEastE6() / 1E6 ? tmp.getLonEastE6() / 1E6
+					: east);
+			west = (west > tmp.getLonWestE6() / 1E6 ? tmp.getLonWestE6() / 1E6
+					: west);
 		}
 
-		return  new BoundingBoxE6(north, east, south, west);	
+		return new BoundingBoxE6(north, east, south, west);
 	}
-   	
+
 }

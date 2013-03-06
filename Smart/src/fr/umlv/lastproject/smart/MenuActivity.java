@@ -59,6 +59,7 @@ import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
+import fr.umlv.lastproject.smart.form.AlertPolygonTrackDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormEditedListener;
 import fr.umlv.lastproject.smart.form.FormIOException;
@@ -98,12 +99,15 @@ public class MenuActivity extends Activity {
 	private String formPath;
 	private boolean missionCreated = false;
 	private boolean trackStarted = false;
+	private boolean polygonTrackStarted = false;
 	private String missionName;
 	private GPSTrack gpsTrack;
+	private GPSTrack polygonTrack;
 	private AlertCreateMissionDialog missionDialog;
 	private Preferences pref;
 	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
 	private List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
+	private List<PolygonTrackListener> polygonTrackListeners = new ArrayList<PolygonTrackListener>();
 	private Mission mission;
 	private Form form;
 	private Geometry geom;
@@ -114,6 +118,7 @@ public class MenuActivity extends Activity {
 	private int heightIndex;
 	private Dialog dialog;
 	private GeometryLayer geometryLayer;
+	private int trackType = -1;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -125,7 +130,6 @@ public class MenuActivity extends Activity {
 		BundleCreator
 				.saveGeomtryLayers(outState, mapView.getGeometryOberlays());
 		logger.log(Level.INFO, "Saving the application bundle");
-
 	}
 
 	@Override
@@ -153,6 +157,8 @@ public class MenuActivity extends Activity {
 						HomeActivity.class);
 				homeActivity.putExtra("missionCreated", missionCreated);
 				homeActivity.putExtra("trackStarted", trackStarted);
+				homeActivity.putExtra("polygonTrackStarted",
+						polygonTrackStarted);
 				startActivityForResult(homeActivity, SmartConstants.HOME_VIEW);
 			}
 		});
@@ -200,8 +206,8 @@ public class MenuActivity extends Activity {
 		menu.add(0, 0, 0, R.string.infoSettings);
 		menu.add(0, 1, 0, R.string.hideInfoZone);
 		menu.add(0, 2, 0, R.string.gpsSettings);
-		menu.add(0, 3, 0, R.string.help);
-		menu.add(0, 4, 0, R.string.theme);
+		menu.add(0, 3, 0, R.string.theme);
+		menu.add(0, 4, 0, R.string.help);
 
 		return true;
 	}
@@ -260,6 +266,7 @@ public class MenuActivity extends Activity {
 		mapView.addGeoTIFFOverlay(new TMSOverlay(
 				new MapTileProviderBasic(this), this, 10, 16, "geo1",
 				new BoundingBoxE6(90, -180, -90, 180)));
+
 		//
 		// mapView.addGeoTIFFOverlay(new TMSOverlay(
 		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
@@ -360,13 +367,13 @@ public class MenuActivity extends Activity {
 
 	}
 
-	private void checkGPSEnabled() {
-		if (!gps.isEnabled(locationManager)) {
-			final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
-					this);
-			gpsSettingDialog.show();
-		}
-	}
+	// private void checkGPSEnabled() {
+	// if (!gps.isEnabled(locationManager)) {
+	// final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
+	// this);
+	// gpsSettingDialog.show();
+	// }
+	// }
 
 	/**
 	 * This method is use to connect the GPS to the positionOverlay
@@ -428,18 +435,18 @@ public class MenuActivity extends Activity {
 			break;
 
 		case 3:
-			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
-					R.string.helpMap);
-			helpDialog.show();
-			break;
-
-		case 4:
 			if (!missionCreated) {
 				new AlertThemeDialog(this, getApplication());
 			} else {
 				Toast.makeText(this, "Stop the mission before",
 						Toast.LENGTH_LONG).show();
 			}
+			break;
+
+		case 4:
+			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+					R.string.helpMap);
+			helpDialog.show();
 			break;
 		}
 
@@ -510,12 +517,12 @@ public class MenuActivity extends Activity {
 			case SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY:
 				String path = data.getData().getPath();
 				String extension = FileUtils.getExtension(path);
-				if(extension.equalsIgnoreCase(".kml")){
+				if (extension.equalsIgnoreCase(".kml")) {
 					try {
 						mapView.addGeometryLayers(DataImport.importKml(this,
 								path));
-						Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
-						.show();
+						Toast.makeText(this, R.string.kmlImport,
+								Toast.LENGTH_SHORT).show();
 					} catch (XmlPullParserException e) {
 						Toast.makeText(this, R.string.kmlParseError,
 								Toast.LENGTH_SHORT).show();
@@ -524,28 +531,29 @@ public class MenuActivity extends Activity {
 								Toast.LENGTH_SHORT).show();
 						e.printStackTrace();
 					}
-				} else if(extension.equalsIgnoreCase(".shp")){
-					GeometryLayer gl = DataImport.importShapeFile(this,path) ;
+				} else if (extension.equalsIgnoreCase(".shp")) {
+					GeometryLayer gl = DataImport.importShapeFile(this, path);
 					mapView.addGeometryLayer(gl);
-					mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+					mapView.getController().setCenter(
+							gl.getExtent().getCenter());
 					mapView.invalidate();
-	
-					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT).show();
+
+					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+							.show();
 				}
-			break;
+				break;
 
-//			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-//				String shpPath = data.getData().getPath();
-//				GeometryLayer gl = DataImport.importShapeFile(this,
-//						shpPath) ;
-//				mapView.addGeometryLayer(gl);
-//				mapView.getController().setCenter(gl.getExtent().getCenter()) ;
-//				mapView.invalidate();
-//
-//				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-//				.show();
-//				break;
-
+			// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
+			// String shpPath = data.getData().getPath();
+			// GeometryLayer gl = DataImport.importShapeFile(this,
+			// shpPath) ;
+			// mapView.addGeometryLayer(gl);
+			// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+			// mapView.invalidate();
+			//
+			// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+			// .show();
+			// break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();
@@ -656,31 +664,62 @@ public class MenuActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 					return;
 				}
-				if (gpsTrack == null) {
-					new AlertTrackDialog(this, mapView.getListOverlay());
 
-				} else {
-					try {
-						gpsTrack.stopTrack();
-						gpsTrack = null;
+				switch (trackType) {
+				case SmartConstants.GPS_TRACK:
+					if (gpsTrack == null) {
+						new AlertTrackDialog(this, mapView.getListOverlay());
+					} else {
+						try {
+							gpsTrack.stopTrack();
+							gpsTrack = null;
 
-						for (GPSTrackListener l : this.gpsTrackListeners) {
-							l.actionPerformed(false);
+							for (GPSTrackListener l : this.gpsTrackListeners) {
+								l.actionPerformed(false);
+							}
+
+							trackStarted = false;
+							Toast.makeText(this, R.string.track_stop,
+									Toast.LENGTH_LONG).show();
+
+						} catch (IOException e) {
+							logger.log(Level.SEVERE, "Error on the track stop");
+							gpsTrack = null;
+							Toast.makeText(this, R.string.track_error,
+									Toast.LENGTH_LONG).show();
+							trackStarted = false;
 						}
-
-						trackStarted = false;
-						Toast.makeText(this, R.string.track_stop,
-								Toast.LENGTH_LONG).show();
-
-					} catch (IOException e) {
-						logger.log(Level.SEVERE, "Error on the track stop");
-						gpsTrack = null;
-						Toast.makeText(this, R.string.track_error,
-								Toast.LENGTH_LONG).show();
-						trackStarted = false;
-
 					}
+					break;
+				case SmartConstants.POLYGON_TRACK:
+					if (polygonTrack == null) {
+						new AlertPolygonTrackDialog(this);
+					} else {
+						try {
+							polygonTrack.stopTrack();
+							polygonTrack = null;
+
+							for (PolygonTrackListener l : this.polygonTrackListeners) {
+								l.actionPerformed(false);
+							}
+
+							polygonTrackStarted = false;
+							Toast.makeText(this, R.string.polygon_track_stoped,
+									Toast.LENGTH_LONG).show();
+						} catch (IOException e) {
+							polygonTrack = null;
+							Toast.makeText(this, R.string.track_error,
+									Toast.LENGTH_LONG).show();
+							polygonTrackStarted = false;
+
+						}
+					}
+					break;
+				default:
+					break;
 				}
+
+				trackType = -1;
 			} else if (requestCode == SmartConstants.HEIGHT_ACTIVITY) {
 				createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
 				return;
@@ -862,14 +901,14 @@ public class MenuActivity extends Activity {
 				}
 				break;
 
-			case SmartConstants.POLYGON_TRACK:
-				break;
 			case SmartConstants.GPS_TRACK:
+
 				File trackfolder = new File(SmartConstants.TRACK_PATH);
 				trackfolder.mkdir();
 				if (!gps.isEnabled(locationManager)) {
 					final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
 							this);
+					trackType = SmartConstants.GPS_TRACK;
 					gpsTrackDialog.show();
 					return;
 				}
@@ -903,7 +942,49 @@ public class MenuActivity extends Activity {
 
 				break;
 
+			case SmartConstants.POLYGON_TRACK:
+				if (Mission.getInstance() == null) {
+					Toast.makeText(
+							this,
+							getResources()
+									.getText(R.string.noMissionInProgress),
+							Toast.LENGTH_LONG).show();
+				} else {
+					if (!gps.isEnabled(locationManager)) {
+						final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
+								this);
+						trackType = SmartConstants.POLYGON_TRACK;
+						gpsTrackDialog.show();
+						return;
+					}
+					if (polygonTrack == null) {
+						new AlertPolygonTrackDialog(this);
+						break;
+					} else {
+						try {
+							polygonTrack.stopTrack();
+							polygonTrack = null;
+
+							for (PolygonTrackListener l : this.polygonTrackListeners) {
+								l.actionPerformed(false);
+							}
+
+							polygonTrackStarted = false;
+							Toast.makeText(this, R.string.polygon_track_stoped,
+									Toast.LENGTH_LONG).show();
+						} catch (IOException e) {
+							polygonTrack = null;
+
+							Toast.makeText(this, R.string.track_error,
+									Toast.LENGTH_LONG).show();
+							polygonTrackStarted = false;
+						}
+					}
+				}
+				break;
+
 			case SmartConstants.IMPORT_KML_SHP:
+
 				Intent importKMLIntent = FileUtils.createGetContentIntent(
 						FileUtils.KML_SHP_TYPE,
 						Environment.getExternalStorageDirectory() + "");
@@ -911,13 +992,13 @@ public class MenuActivity extends Activity {
 						SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY);
 				break;
 
-//			case SmartConstants.IMPORT_SHAPE:
-//				Intent importSHPItent = FileUtils.createGetContentIntent(
-//						FileUtils.SHP_TYPE,
-//						Environment.getExternalStorageDirectory() + "");
-//				startActivityForResult(importSHPItent,
-//						SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-//				break;
+			// case SmartConstants.IMPORT_SHAPE:
+			// Intent importSHPItent = FileUtils.createGetContentIntent(
+			// FileUtils.SHP_TYPE,
+			// Environment.getExternalStorageDirectory() + "");
+			// startActivityForResult(importSHPItent,
+			// SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
+			// break;
 
 			case SmartConstants.IMPORT_GEOTIFF:
 				Intent importTiffItent = FileUtils.createGetContentIntent(
@@ -942,7 +1023,6 @@ public class MenuActivity extends Activity {
 				MissionDialogUtils.showExportDialog(this);
 				break;
 
-			
 			case SmartConstants.EXPORT_FORM:
 				Intent intentForm = FileUtils.createGetContentIntent(
 						FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
@@ -963,7 +1043,8 @@ public class MenuActivity extends Activity {
 	}
 
 	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
-		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView);
+		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView,
+				GeometryType.LINE);
 		gpsTrack.startTrack();
 		Toast.makeText(this, R.string.track_started, Toast.LENGTH_LONG).show();
 		for (GPSTrackListener l : this.gpsTrackListeners) {
@@ -973,9 +1054,25 @@ public class MenuActivity extends Activity {
 		trackStarted = true;
 	}
 
+	public void createPolygonTrack(final TRACK_MODE trackMode) {
+		polygonTrack = new GPSTrack(trackMode, missionName, locationManager,
+				mapView, GeometryType.POLYGON,
+				(GeometryLayer) mapView.getOverlay(this.missionName
+						+ "_POLYGON"), this.form, MenuActivity.this,
+				this.mission);
+		polygonTrack.startTrack();
+		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
+				.show();
+		for (GPSTrackListener l : this.gpsTrackListeners) {
+			l.actionPerformed(true);
+		}
+
+		polygonTrackStarted = true;
+	}
+
 	public void startMission(final String missionName) {
 		this.setMissionName(missionName);
-		Form form = new Form();
+		form = new Form();
 		if (formPath != null) {
 			try {
 				form = Form.read(formPath);
