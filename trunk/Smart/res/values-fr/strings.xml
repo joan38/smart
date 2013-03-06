@@ -59,19 +59,18 @@
         <item>Relever un polygone</item>
         <item>Relever une trace polygone</item>
         <item>Démarrer une trace GPS</item>
-        <item>Importer KML</item>
+        <item>Importer KML/SHP</item>
         <item>Importer GeoTIFF</item>
-        <item>Importer ShapeFile</item>
         <item>Importer WMS</item>
-        <item>Export de mission</item>
         <item>Mesurer une distance</item>
+        <item>Exporter une mission</item>
         <item>Exporter un formulaire</item>
         <item>Supprimer une mission</item>
     </string-array>
 
     <string name="stopMission">Arrêter la mission</string>
     <string name="stopPolygonTrack">Arrêter la trace polygone</string>
-    <string name="stopGPSTrack">Arrêter la trace</string>
+    <string name="stopGPSTrack">Arrêter la trace GPS</string>
 
     <string-array name="typeFields">
         <item>Texte</item>

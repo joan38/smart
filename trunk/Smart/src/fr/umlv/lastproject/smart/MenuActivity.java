@@ -507,42 +507,45 @@ public class MenuActivity extends Activity {
 
 				break;
 
-			case SmartConstants.IMPORT_KML_BROWSER_ACTIVITY:
-				String kmlPath = data.getData().getPath();
-				logger.log(Level.INFO,
-						"Getting KML path from brower activity :" + kmlPath);
-				try {
-					logger.log(Level.INFO, "Adding KML layer to the map :"
-							+ kmlPath);
-					mapView.addGeometryLayers(DataImport.importKml(this,
-							kmlPath));
-					Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
-							.show();
-				} catch (XmlPullParserException e) {
-					logger.log(Level.SEVERE, "KML file is invalid :" + kmlPath);
-					Toast.makeText(this, R.string.kmlParseError,
-							Toast.LENGTH_SHORT).show();
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, "KML file can't be read :"
-							+ kmlPath);
-					Toast.makeText(this, R.string.kmlReadError,
-							Toast.LENGTH_SHORT).show();
-					e.printStackTrace();
-				}
-				break;
-
-			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-				String shpPath = data.getData().getPath();
-				logger.log(Level.INFO,
-						"Import ShapeFile from browser activity :" + shpPath);
-				GeometryLayer gl = DataImport.importShapeFile(this, shpPath);
-				mapView.addGeometryLayer(gl);
-				mapView.getController().setCenter(gl.getExtent().getCenter());
-				mapView.invalidate();
-
-				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+			case SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY:
+				String path = data.getData().getPath();
+				String extension = FileUtils.getExtension(path);
+				if(extension.equalsIgnoreCase(".kml")){
+					try {
+						mapView.addGeometryLayers(DataImport.importKml(this,
+								path));
+						Toast.makeText(this, R.string.kmlImport, Toast.LENGTH_SHORT)
 						.show();
-				break;
+					} catch (XmlPullParserException e) {
+						Toast.makeText(this, R.string.kmlParseError,
+								Toast.LENGTH_SHORT).show();
+					} catch (IOException e) {
+						Toast.makeText(this, R.string.kmlReadError,
+								Toast.LENGTH_SHORT).show();
+						e.printStackTrace();
+					}
+				} else if(extension.equalsIgnoreCase(".shp")){
+					GeometryLayer gl = DataImport.importShapeFile(this,path) ;
+					mapView.addGeometryLayer(gl);
+					mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+					mapView.invalidate();
+	
+					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT).show();
+				}
+			break;
+
+//			case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
+//				String shpPath = data.getData().getPath();
+//				GeometryLayer gl = DataImport.importShapeFile(this,
+//						shpPath) ;
+//				mapView.addGeometryLayer(gl);
+//				mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+//				mapView.invalidate();
+//
+//				Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+//				.show();
+//				break;
+
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();
@@ -859,6 +862,8 @@ public class MenuActivity extends Activity {
 				}
 				break;
 
+			case SmartConstants.POLYGON_TRACK:
+				break;
 			case SmartConstants.GPS_TRACK:
 				File trackfolder = new File(SmartConstants.TRACK_PATH);
 				trackfolder.mkdir();
@@ -898,21 +903,21 @@ public class MenuActivity extends Activity {
 
 				break;
 
-			case SmartConstants.IMPORT_KML:
+			case SmartConstants.IMPORT_KML_SHP:
 				Intent importKMLIntent = FileUtils.createGetContentIntent(
-						FileUtils.KML_TYPE,
+						FileUtils.KML_SHP_TYPE,
 						Environment.getExternalStorageDirectory() + "");
 				startActivityForResult(importKMLIntent,
-						SmartConstants.IMPORT_KML_BROWSER_ACTIVITY);
+						SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY);
 				break;
 
-			case SmartConstants.IMPORT_SHAPE:
-				Intent importSHPItent = FileUtils.createGetContentIntent(
-						FileUtils.SHP_TYPE,
-						Environment.getExternalStorageDirectory() + "");
-				startActivityForResult(importSHPItent,
-						SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-				break;
+//			case SmartConstants.IMPORT_SHAPE:
+//				Intent importSHPItent = FileUtils.createGetContentIntent(
+//						FileUtils.SHP_TYPE,
+//						Environment.getExternalStorageDirectory() + "");
+//				startActivityForResult(importSHPItent,
+//						SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
+//				break;
 
 			case SmartConstants.IMPORT_GEOTIFF:
 				Intent importTiffItent = FileUtils.createGetContentIntent(
@@ -927,16 +932,17 @@ public class MenuActivity extends Activity {
 				dialog.show();
 				break;
 
-			case SmartConstants.EXPORT_MISSION:
-				MissionDialogUtils.showExportDialog(this);
-				break;
-
 			case SmartConstants.MEASURE:
 				AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(
 						this);
 				amrd.show();
 				break;
 
+			case SmartConstants.EXPORT_MISSION:
+				MissionDialogUtils.showExportDialog(this);
+				break;
+
+			
 			case SmartConstants.EXPORT_FORM:
 				Intent intentForm = FileUtils.createGetContentIntent(
 						FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
@@ -949,7 +955,6 @@ public class MenuActivity extends Activity {
 				break;
 
 			default:
-				// Mission.getInstance().stopMission();
 				break;
 			}
 		} catch (SmartException e) {

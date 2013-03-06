@@ -60,14 +60,13 @@
         <item>Position survey</item>
         <item>Line survey</item>
         <item>Polygon survey</item>
-        <item>Polygon track</item>
+        <item>Polygon track survey</item>
         <item>Track GPS</item>
-        <item>KML import</item>
+        <item>KML/SHP import</item>
         <item>GeoTIFF import</item>
-        <item>ShapeFile import</item>
         <item>WMS import</item>
-        <item>Export mission</item>
         <item>Distance measure</item>
+        <item>Export mission</item>
         <item>Export form</item>
         <item>Delete mission</item>
     </string-array>

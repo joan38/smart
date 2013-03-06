@@ -143,14 +143,16 @@ public final class KmlExport {
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(kml);
 			StreamResult result = new StreamResult(path + mission.getTitle()
-					+ FileUtils.KML_TYPE[0]);
+					+ FileUtils.KML_SHP_TYPE[1]);
 
 			transformer.transform(source, result);
 
 			dbm.close();
 			logger.log(Level.INFO,
-					"Export mission to KML :" + mission.getTitle());
-			return path + mission.getTitle() + FileUtils.KML_TYPE[0];
+		"Export mission to KML :" + mission.getTitle());
+			return path + mission.getTitle() + FileUtils.KML_SHP_TYPE[1];
+			
+
 		} catch (ParserConfigurationException e) {
 			logger.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
