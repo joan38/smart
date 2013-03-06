@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
@@ -49,6 +50,8 @@ public class HomeActivity extends Activity {
 		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
 		boolean trackStarted = getIntent().getExtras().getBoolean(
 				"trackStarted");
+		boolean polygonTrackStarted = getIntent().getExtras().getBoolean(
+				"polygonTrackStarted");
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
@@ -68,6 +71,15 @@ public class HomeActivity extends Activity {
 				}
 				break;
 
+			case SmartConstants.POLYGON_TRACK:
+				if (polygonTrackStarted) {
+					item = new ListViewItem(R.drawable.stoppolygontrack,
+							getString(R.string.stopPolygonTrack));
+				} else {
+					item = new ListViewItem(icons[i], items[i]);
+				}
+				break;
+
 			case SmartConstants.GPS_TRACK:
 				if (trackStarted) {
 					item = new ListViewItem(R.drawable.stopgpstrack,
@@ -77,17 +89,6 @@ public class HomeActivity extends Activity {
 				}
 				break;
 
-			case SmartConstants.POINT_SURVEY:
-				item = new ListViewItem(icons[i], items[i]);
-				break;
-
-			case SmartConstants.LINE_SURVEY:
-				item = new ListViewItem(icons[i], items[i]);
-				break;
-
-			case SmartConstants.POLYGON_SURVEY:
-				item = new ListViewItem(icons[i], items[i]);
-				break;
 			default:
 				item = new ListViewItem(icons[i], items[i]);
 				break;
@@ -134,6 +135,7 @@ public class HomeActivity extends Activity {
 			menu.add(0, 1, 0, R.string.addShortcut);
 			menu.add(0, 2, 0, R.string.cancel);
 		}
+		menu.add(0, 0, 0, R.string.help);
 	}
 
 	@Override
@@ -147,6 +149,10 @@ public class HomeActivity extends Activity {
 			if (index == -1) {
 				shortcut.add(info.position);
 			}
+		} else if (item.getItemId() == 0) {
+			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+					R.string.helpMenu);
+			helpDialog.show();
 		}
 		return super.onContextItemSelected(item);
 	}

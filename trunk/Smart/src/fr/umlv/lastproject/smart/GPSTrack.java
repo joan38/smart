@@ -6,13 +6,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.location.LocationManager;
+import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.form.Mission;
+import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.PolygonGeometry;
+import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
@@ -27,13 +33,16 @@ public class GPSTrack {
 	private static final int MULT = 1000;
 	private final TRACK_MODE trackMode;
 	private final GPS gps;
+	private final GeometryType type;
 	private final List<TrackPoint> trackPoints;
 	private final IGPSListener gpsListener;
 	private final GeometryLayer geometryLayer;
 	private boolean isFinished, isStarted;
-
-	private final LineGeometry lineGeometry;
+	private final Geometry geometry;
 	private final String trackName;
+	private Form form = null;
+	private Activity activity = null;
+	private Mission mission = null;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -64,17 +73,37 @@ public class GPSTrack {
 	/**
 	 * 
 	 * @param mode
-	 *            of the track
 	 * @param trackName
-	 *            name of the track
 	 * @param lm
-	 *            the locationManager
 	 * @param mapView
-	 *            the map where will be the track
+	 * @param type
+	 * @param layer
+	 * @param form
+	 * @param activity
+	 * @param mission
 	 */
 	public GPSTrack(final TRACK_MODE mode, final String trackName,
-			final LocationManager lm, final SmartMapView mapView) {
+			final LocationManager lm, final SmartMapView mapView,
+			final GeometryType type, final GeometryLayer layer,
+			final Form form, final Activity activity, final Mission mission) {
 
+		this.geometryLayer = layer;
+		this.type = type;
+		this.form = form;
+		this.mission = mission;
+		this.activity = activity;
+		switch (type) {
+		case LINE:
+			this.geometry = new LineGeometry();
+			break;
+		case POLYGON:
+			this.geometry = new PolygonGeometry();
+			break;
+		default:
+			geometry = null;
+			break;
+		}
+		this.geometryLayer.addGeometry(geometry);
 		isFinished = false;
 		isStarted = false;
 		this.trackName = trackName;
@@ -90,21 +119,93 @@ public class GPSTrack {
 				final TrackPoint trackPoint = new TrackPoint(longitude,
 						latitude, event.getAltitude(), event.getTime());
 				trackPoints.add(trackPoint);
-
-				lineGeometry.addPoint(new PointGeometry(latitude, longitude));
+				switch (type) {
+				case LINE:
+					((LineGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				case POLYGON:
+					((PolygonGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				default:
+					break;
+				}
 			}
 		};
 		gps.addGPSListener(gpsListener);
-		this.geometryLayer = new GeometryLayer(mapView.getContext());
-		this.geometryLayer.setType(GeometryType.LINE);
-		this.geometryLayer.setName(trackName);
-		lineGeometry = new LineGeometry();
-		this.geometryLayer.addGeometry(lineGeometry);
-		this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS,
-				Color.RED));
-		mapView.addGeometryLayer(geometryLayer);
-		// mapView.getOverlays().add(geometryLayer);
 
+	}
+
+	/**
+	 * 
+	 * @param mode
+	 *            of the track
+	 * @param trackName
+	 *            name of the track
+	 * @param lm
+	 *            the locationManager
+	 * @param mapView
+	 *            the map where will be the track
+	 * @param type
+	 *            the type of the geometry
+	 */
+	public GPSTrack(final TRACK_MODE mode, final String trackName,
+			final LocationManager lm, final SmartMapView mapView,
+			final GeometryType type) {
+
+		this.geometryLayer = new GeometryLayer(mapView.getContext());
+		this.geometryLayer.setType(type);
+		this.geometryLayer.setName(trackName);
+		this.type = type;
+		switch (type) {
+		case LINE:
+			this.geometry = new LineGeometry();
+			this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS,
+					Color.RED));
+			break;
+		case POLYGON:
+			this.geometry = new PolygonGeometry();
+			this.geometryLayer.setSymbology(new PolygonSymbology(
+					LINE_THICKNESS, Color.RED));
+			break;
+		default:
+			geometry = null;
+			break;
+		}
+		this.geometryLayer.addGeometry(geometry);
+		isFinished = false;
+		isStarted = false;
+		this.trackName = trackName;
+		this.trackMode = mode;
+		this.gps = new GPS(lm);
+		this.trackPoints = new ArrayList<TrackPoint>();
+		this.gpsListener = new IGPSListener() {
+
+			@Override
+			public void actionPerformed(GPSEvent event) {
+				final double latitude = event.getLatitude();
+				final double longitude = event.getLongitude();
+				final TrackPoint trackPoint = new TrackPoint(longitude,
+						latitude, event.getAltitude(), event.getTime());
+				trackPoints.add(trackPoint);
+				switch (type) {
+				case LINE:
+					((LineGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				case POLYGON:
+					((PolygonGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				default:
+					break;
+				}
+			}
+		};
+		gps.addGPSListener(gpsListener);
+
+		mapView.addGeometryLayer(geometryLayer);
 	}
 
 	/**
@@ -156,7 +257,22 @@ public class GPSTrack {
 			gps.removeGPSListener(gpsListener);
 			isFinished = true;
 			/** Writing of gpx file */
-			GPXWriter.writeGpxFile(trackName, trackPoints);
+			switch (type) {
+			case LINE:
+				GPXWriter.writeGpxFile(trackName, trackPoints);
+				break;
+			case POLYGON:
+				if (((PolygonGeometry) geometry).getPoints().size() < 1) {
+					this.geometryLayer.removeGeometry(geometry);
+				} else {
+					form.openForm((MenuActivity) activity, geometry, mission);
+					geometryLayer.setSelectable(true);
+				}
+				break;
+			default:
+				break;
+			}
+
 		}
 
 	}
