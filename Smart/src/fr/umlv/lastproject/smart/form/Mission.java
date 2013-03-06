@@ -43,6 +43,8 @@ public final class Mission {
 	private GeometryLayer lineLayer;
 	private GeometryLayer polygonLayer;
 
+	private boolean trackinprogress = false;
+
 	private final MenuActivity context;
 
 	/* the name of the mission */
@@ -107,11 +109,21 @@ public final class Mission {
 
 	}
 
-	public Mission(String mname, MenuActivity menuActivity,
+	/**
+	 * 
+	 * @param title
+	 * @param menuActivity
+	 * @param mapView2
+	 * @param f
+	 * @param missionPoint
+	 * @param missionLine
+	 * @param missionPolygon
+	 */
+	public Mission(String title, MenuActivity menuActivity,
 			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
 			GeometryLayer missionLine, GeometryLayer missionPolygon) {
 
-		this.title = mname;
+		this.title = title;
 		this.context = menuActivity;
 		this.mapView = mapView2;
 		this.form = f;
@@ -130,8 +142,8 @@ public final class Mission {
 		pointLayer = missionPoint;
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
-		for(Geometry g : pointLayer.getGeometries()){
-			if(g.getId() == -1){
+		for (Geometry g : pointLayer.getGeometries()) {
+			if (g.getId() == -1) {
 				pointLayer.removeGeometry(g);
 			}
 		}
@@ -139,25 +151,31 @@ public final class Mission {
 		lineLayer = missionLine;
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
-		for(Geometry g : lineLayer.getGeometries()){
-			if(g.getId() == -1){
+		for (Geometry g : lineLayer.getGeometries()) {
+			if (g.getId() == -1) {
 				lineLayer.removeGeometry(g);
 			}
 		}
 
-
 		polygonLayer = missionPolygon;
 		polygonLayer.setSelectable(true);
 		polygonLayer.addSelectedGeometryListener(list);
-		for(Geometry g : polygonLayer.getGeometries()){
-			if(g.getId() == -1){
+		for (Geometry g : polygonLayer.getGeometries()) {
+			if (g.getId() == -1) {
 				polygonLayer.removeGeometry(g);
 			}
 		}
 
-
 		survey = new Survey(mapView);
 
+	}
+
+	/**
+	 * 
+	 * @param status
+	 */
+	public void trackInProgress(boolean status) {
+		this.trackinprogress = status;
 	}
 
 	/**
@@ -432,7 +450,9 @@ public final class Mission {
 	public void setSelectable(boolean b) {
 		pointLayer.setSelectable(b);
 		lineLayer.setSelectable(b);
-		polygonLayer.setSelectable(b);
+		if (!trackinprogress) {
+			polygonLayer.setSelectable(b);
+		}
 	}
 
 }

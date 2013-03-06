@@ -199,14 +199,17 @@ public class FormDialog extends AlertDialog.Builder {
 						dialog.dismiss();
 					}
 				});
+		if (mission != null) {
+			setNegativeButton(R.string.cancel,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
 
-		setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						mission.removeGeometry(g);
-						dialog.dismiss();
-					}
-				});
+							mission.removeGeometry(g);
+
+							dialog.dismiss();
+						}
+					});
+		}
 	}
 
 	public FormDialog(final MenuActivity menuActivity, final Form form,

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="teamtype">Une application de :</string>
+    <string name="teamname">Thibault Douilly, Marc Barat, Thibault Brun, Maelle Cabot, Tanios Faddoul, Joan Goyeau (absent)</string>
+    
     <string name="app_name">Smart</string>
     <string name="menu_settings">Paramètres</string>
     <string name="infoSettings">Paramètres d\'informations</string>
@@ -24,6 +27,7 @@
     <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.\nPour changer la symbologie, il vous suffit de séléctionner une image.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
     <string name="helpMenu">Vous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
+    <string name="about">A propos</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="ok">Ok</string>
