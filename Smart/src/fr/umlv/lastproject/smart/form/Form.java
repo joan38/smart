@@ -30,6 +30,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.util.Log;
 import fr.umlv.lastproject.smart.MenuActivity;
+import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
@@ -168,10 +169,8 @@ public class Form implements Serializable {
 	 */
 	public void openForm(final MenuActivity context, final Geometry g,
 			final Mission mission) {
-
-		// final FormDialog dialog = new FormDialog(context, this, g, mission);
-		context.createFormDialog(this, g, mission);
-
+		final FormDialog dialog = new FormDialog(context, this, g, mission);
+		dialog.show();
 	}
 
 	/**

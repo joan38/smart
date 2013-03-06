@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,6 +17,7 @@ import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.layers.Symbology;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * 
@@ -24,6 +27,8 @@ import fr.umlv.lastproject.smart.layers.Symbology;
  * 
  */
 public class KmlImport {
+
+	private final static Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Return a list of GeometryLayer with all the geometry type in the kml
@@ -67,6 +72,8 @@ public class KmlImport {
 				break;
 
 			default:
+				logger.log(Level.SEVERE,
+						"The given GeometryType is not supported for the KML export");
 				throw new IllegalStateException(
 						"The given GeometryType is not supported for the KML export");
 			}

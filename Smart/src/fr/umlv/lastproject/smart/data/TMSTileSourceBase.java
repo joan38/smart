@@ -4,8 +4,6 @@ import org.osmdroid.ResourceProxy.string;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.BitmapTileSourceBase;
 
-import android.util.Log;
-
 /**
  * 
  * @author Marc
@@ -36,7 +34,6 @@ public class TMSTileSourceBase extends BitmapTileSourceBase {
 		int yTMS = (int) (Math.pow(2, tile.getZoomLevel()) - tile.getY() - 1);
 		sb.append(yTMS);
 		sb.append(imageFilenameEnding());
-		Log.d("TESTX", sb.toString());
 		return sb.toString();
 	}
 

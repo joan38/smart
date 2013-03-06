@@ -1,6 +1,8 @@
 package fr.umlv.lastproject.smart;
 
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import fr.umlv.lastproject.smart.dialog.AlertDeleteLayerDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * 
@@ -27,6 +30,8 @@ public class LayersActivity extends ListActivity {
 	SmartItemLayerAdapter adapter;
 	private String mission;
 	private String track;
+
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
 		@Override
@@ -86,6 +91,8 @@ public class LayersActivity extends ListActivity {
 		setTheme(pref.theme);
 		setContentView(R.layout.activity_layers);
 
+		logger.log(Level.INFO, "Layers menu opened");
+
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 		mission = getIntent().getExtras().getString("mission");
 		track = getIntent().getExtras().getString("track");
@@ -134,6 +141,7 @@ public class LayersActivity extends ListActivity {
 		intentReturn.putExtra("overlays", listOverlay);
 		intentReturn.putExtra("editSymbo", false);
 		setResult(RESULT_OK, intentReturn);
+		logger.log(Level.INFO, "Back from layers menu");
 		finish();
 	}
 

@@ -2,6 +2,8 @@ package fr.umlv.lastproject.smart;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is the Home Activity, where all SMART functionalities is available
@@ -30,6 +33,7 @@ public class HomeActivity extends Activity {
 	private int[] icons;
 	private List<Integer> shortcut = new ArrayList<Integer>();
 	private Preferences pref;
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class HomeActivity extends Activity {
 		setTheme(pref.theme);
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
+
+		logger.log(Level.INFO, "Functionalities menu opened");
 
 		// Retry the mission status
 		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
@@ -150,6 +156,7 @@ public class HomeActivity extends Activity {
 		Intent intentReturn = new Intent(HomeActivity.this, MenuActivity.class);
 		intentReturn.putExtra("shortcut", shortcut.toArray());
 		setResult(RESULT_CANCELED, intentReturn);
+		logger.log(Level.INFO, "Back from functionalities menu");
 		finish();
 	}
 

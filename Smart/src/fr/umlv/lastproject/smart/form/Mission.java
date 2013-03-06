@@ -34,7 +34,6 @@ public final class Mission {
 	private static Mission mission = null;
 	final static Logger logger = SmartLogger.getLocator().getLogger();
 
-
 	private static final int POINT_RADIUS = 10;
 	private static final int LINE_THICKNESS = 10;
 	private static final int POLY_THICKNESS = 10;
@@ -111,7 +110,7 @@ public final class Mission {
 	public Mission(String mname, MenuActivity menuActivity,
 			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
 			GeometryLayer missionLine, GeometryLayer missionPolygon) {
-		
+
 		this.title = mname;
 		this.context = menuActivity;
 		this.mapView = mapView2;
@@ -128,7 +127,7 @@ public final class Mission {
 			}
 		};
 
-		pointLayer = missionPoint ;
+		pointLayer = missionPoint;
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
 
@@ -141,10 +140,7 @@ public final class Mission {
 		polygonLayer.addSelectedGeometryListener(list);
 
 		survey = new Survey(mapView);
-		
 
-
-		
 	}
 
 	/**
@@ -183,26 +179,27 @@ public final class Mission {
 			dbm.insertMission(new MissionRecord());
 			logger.log(Level.INFO, "Mission saved in database");
 		} catch (SmartException e) {
-			logger.log(Level.SEVERE, "Mission unsaved in database "+e.getMessage());
+			logger.log(Level.SEVERE,
+					"Mission unsaved in database " + e.getMessage());
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		dbm.close();
 
 		return mission;
 	}
-	
-	public static Mission createMission(String mname, MenuActivity menuActivity,
-			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
-			GeometryLayer missionLine, GeometryLayer missionPolygon) {
 
-		mission = new Mission(mname, menuActivity, mapView2, f, missionPoint, missionLine, missionPolygon);
+	public static Mission createMission(String mname,
+			MenuActivity menuActivity, SmartMapView mapView2, Form f,
+			GeometryLayer missionPoint, GeometryLayer missionLine,
+			GeometryLayer missionPolygon) {
+
+		mission = new Mission(mname, menuActivity, mapView2, f, missionPoint,
+				missionLine, missionPolygon);
 		// ecriture en base
 
 		return mission;
 
 	}
-
-	
 
 	/**
 	 * Start the mission.
@@ -211,6 +208,7 @@ public final class Mission {
 	 */
 	public boolean startMission() {
 		status = true;
+		logger.log(Level.INFO, "Mission " + title + " started");
 		return status;
 	}
 
@@ -229,7 +227,7 @@ public final class Mission {
 			Log.e("", e.getMessage());
 		}
 		dbManager.stopMission(id);
-		logger.log(Level.INFO, "Mission stopped");
+		logger.log(Level.INFO, "Mission " + title + " stopped");
 		dbManager.close();
 		status = false;
 		setSelectable(false);
@@ -274,6 +272,7 @@ public final class Mission {
 	}
 
 	public void startSurvey(PointGeometry p) {
+		logger.log(Level.INFO, "Position point survey in progress");
 		pointLayer.addGeometry(p);
 		form.openForm(context, p, Mission.this);
 	}
@@ -293,7 +292,6 @@ public final class Mission {
 		logger.log(Level.INFO, "Survey in progress");
 		switch (type) {
 		case LINE:
-			Log.d("", "mission survey line");
 			survey.startSurvey(lineLayer);
 			survey.addStopListeners(new SurveyStopListener() {
 				@Override
@@ -393,7 +391,7 @@ public final class Mission {
 	 */
 	public void removeGeometry(Geometry g) {
 		if (g == null) {
-			Log.d("TEST2", "Trying to remove a null geometry");
+			logger.log(Level.WARNING, "Try to remove null geometry");
 			return;
 		}
 
@@ -410,7 +408,7 @@ public final class Mission {
 		default:
 			break;
 		}
-		logger.log(Level.INFO,"Geometry "+g.getId()+" removed");
+		logger.log(Level.INFO, "Geometry " + g.getId() + " removed");
 		mapView.invalidate();
 	}
 
