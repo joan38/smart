@@ -88,7 +88,7 @@ public class InfoOverlay {
 		((TextView) infoView.findViewById(R.id.bearing))
 				.setText(R.string.bearing);
 		((TextView) infoView.findViewById(R.id.bearingValue))
-				.setText(ACCURACY_FORMAT.format(bearing) + "Â°");
+				.setText(ACCURACY_FORMAT.format(bearing) + "°");
 
 		((TextView) infoView.findViewById(R.id.speed)).setText(R.string.speed);
 		((TextView) infoView.findViewById(R.id.speedValue))
