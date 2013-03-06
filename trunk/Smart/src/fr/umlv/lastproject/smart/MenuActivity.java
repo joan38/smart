@@ -228,22 +228,17 @@ public class MenuActivity extends Activity {
 	public void initMap() {
 		logger.log(Level.INFO, "Init application map");
 		mapView = (SmartMapView) findViewById(R.id.mapview);
-
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
-
 		mapView.setTileSource(TileSourceFactory.MAPNIK);
-
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(15);
 		mapController.setCenter(new GeoPoint(48.85, 2.35));
-
 		directedLocationOverlay = new DirectedLocationOverlay(
 				getApplicationContext());
 		directedLocationOverlay.setShowAccuracy(true);
 		overlayManager.add(directedLocationOverlay);
-
 		mapView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -938,6 +933,7 @@ public class MenuActivity extends Activity {
 				MissionDialogUtils.showDeleteDialog(this);
 				break;
 			case SmartConstants.AREA_MEASURE:
+				Mission.getInstance().setSelectable(false);
 				Log.d("AIRE", "SMART CONSTANT");
 				final Survey areaSurvey = new Survey(mapView);
 				final GeometryLayer areaLayer = new GeometryLayer(this);
@@ -948,6 +944,7 @@ public class MenuActivity extends Activity {
 
 					@Override
 					public void actionPerformed(Geometry g) {
+						Mission.getInstance().setSelectable(true) ;
 						Log.d("AIRE", "STOP LISTENER");
 						final double result = PolygonArea
 								.getPolygonArea((PolygonGeometry) g) / 1E6;
