@@ -49,6 +49,7 @@
     <string name="pleaseSelectMission">Merci de selectionner une mission</string>
     <string name="noGeometryInMission">Pas de geometrie dans la mission</string>
     <string name="noMissionAvailable">Pas de mission disponible</string>
+    <string name="unableLoadPref">Erreur lors du chargement des préférences</string>
 
     <string-array name="items">
         <item>Démarrer une mission</item>

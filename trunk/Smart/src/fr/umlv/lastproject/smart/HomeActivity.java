@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -32,14 +33,19 @@ public class HomeActivity extends Activity {
 	private List<ListViewItem> listItem;
 	private String[] items;
 	private int[] icons;
-	private List<Integer> shortcut = new ArrayList<Integer>();
+	private ArrayList<Integer> shortcut = new ArrayList<Integer>();
 	private Preferences pref;
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		pref = Preferences.getInstance(this);
+		try {
+			pref = Preferences.getInstance(this);
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 		setTheme(pref.theme);
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
@@ -61,8 +67,8 @@ public class HomeActivity extends Activity {
 		for (int i = 0; i < items.length; i++) {
 			ListViewItem item;
 
-			switch (i) {
-			case SmartConstants.CREATE_MISSION:
+			switch (MenuAction.getFromId(i)) {
+			case CREATE_MISSION:
 				if (enabled) {
 					item = new ListViewItem(R.drawable.stopmission,
 							getString(R.string.stopMission));
@@ -71,7 +77,7 @@ public class HomeActivity extends Activity {
 				}
 				break;
 
-			case SmartConstants.POLYGON_TRACK:
+			case POLYGON_TRACK:
 				if (polygonTrackStarted) {
 					item = new ListViewItem(R.drawable.stoppolygontrack,
 							getString(R.string.stopPolygonTrack));
@@ -80,7 +86,7 @@ public class HomeActivity extends Activity {
 				}
 				break;
 
-			case SmartConstants.GPS_TRACK:
+			case GPS_TRACK:
 				if (trackStarted) {
 					item = new ListViewItem(R.drawable.stopgpstrack,
 							getString(R.string.stopGPSTrack));
@@ -111,7 +117,7 @@ public class HomeActivity extends Activity {
 						MenuActivity.class);
 				intentReturn.putExtra("function", items[position]);
 				intentReturn.putExtra("position", position);
-				intentReturn.putExtra("shortcut", shortcut.toArray());
+				intentReturn.putIntegerArrayListExtra("shortcut", shortcut);
 				setResult(RESULT_OK, intentReturn);
 				finish();
 			}
@@ -140,7 +146,6 @@ public class HomeActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
 
@@ -160,7 +165,7 @@ public class HomeActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		Intent intentReturn = new Intent(HomeActivity.this, MenuActivity.class);
-		intentReturn.putExtra("shortcut", shortcut.toArray());
+		intentReturn.putIntegerArrayListExtra("shortcut", shortcut);
 		setResult(RESULT_CANCELED, intentReturn);
 		logger.log(Level.INFO, "Back from functionalities menu");
 		finish();
@@ -169,6 +174,11 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		pref.save();
+		try {
+			pref.save();
+		} catch (PreferencesException e) {
+			Toast.makeText(this, getString(R.string.unableLoadPref),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 }

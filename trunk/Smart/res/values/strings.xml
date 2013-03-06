@@ -53,6 +53,7 @@
     <string name="pleaseSelectMission">Please select a mission</string>
     <string name="noGeometryInMission">No geometry in the given mission</string>
     <string name="noMissionAvailable">No available mission</string>
+    <string name="unableLoadPref">Unable to load the preferences</string>
 
     <string-array name="items">
         <item>Start mission</item>
