@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.osmdroid.events.MapAdapter;
-import org.osmdroid.events.ScrollEvent;
-import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
@@ -32,9 +28,11 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -108,7 +106,7 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack;
 	private GPSTrack polygonTrack;
 	private AlertCreateMissionDialog missionDialog;
-	private Preferences pref;
+	private Preferences pref ;
 	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
 	private List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
 	private List<PolygonTrackListener> polygonTrackListeners = new ArrayList<PolygonTrackListener>();
@@ -135,6 +133,7 @@ public class MenuActivity extends Activity {
 		BundleCreator
 				.saveGeomtryLayers(outState, mapView.getGeometryOberlays());
 		logger.log(Level.INFO, "Saving the application bundle");
+		BundleCreator.saveGeotiffs(outState,mapView.getGeoTIFFOverlays());
 	}
 
 	@Override
@@ -142,18 +141,23 @@ public class MenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		File f = new File(SmartConstants.APP_PATH);
 		f.mkdir();
-		pref = Preferences.getInstance(this);
-		setTheme(pref.theme);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_smart);
 
 		initMap();
+		pref = Preferences.getInstance(this);
+
 		if (savedInstanceState != null) {
 			BundleCreator.loadPosition(savedInstanceState, mapView);
 			missionCreated = BundleCreator.loadMission(savedInstanceState,
 					mapView, this);
 			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
+			BundleCreator.loadGeotiffs(savedInstanceState, mapView, this);
+		}else{
+			setTheme(pref.theme);
+
 		}
+
 		initGps();
 		ImageView home = (ImageView) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
@@ -232,102 +236,24 @@ public class MenuActivity extends Activity {
 
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
-		mapView.setUseDataConnection(true);
-
-		// mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
 		mapController.setZoom(15);
 		mapController.setCenter(new GeoPoint(48.85, 2.35));
-
-		// overlayManager.add(new ScaleBarOverlay(this));
-
-		// final WMSMapTileProviderBasic tileProvider = new
-		// WMSMapTileProviderBasic(
-		// getApplicationContext());
-		// final ITileSource tileSource = new WMSTileSource(
-		// "WMS",
-		// null,
-		// 0,
-		// 15,
-		// 256,
-		// ".png",
-		// "http://sampleserver1.arcgisonline.com/arcgis/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"
-		// +
-		// "?REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=0&STYLES=default&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT="
-		// + "TRUE&SRS=EPSG:4326&WIDTH=256&HEIGHT=256&QUERY_LAYERS=0&BBOX=");
-		// tileProvider.setTileSource(tileSource);
-		// final TilesOverlay tilesOverlay = new TilesOverlay(tileProvider,
-		// this.getBaseContext());
-		//
-		// tilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
-		//
-		// // mapView.getOverlays().add(tilesOverlay);
-		//
-		// mapView.getOverlays().clear();
-		// // mapView.getOverlayManager().getTilesOverlay().setEnabled(false);
-		// mapView.getOverlays().add(0, tilesOverlay);
-		// mapView.invalidate();
-		// if (true)
-		// return;
-
-		mapView.addGeoTIFFOverlay(new TMSOverlay(
-				new MapTileProviderBasic(this), this, 10, 16, "geo1",
-				new BoundingBoxE6(90, -180, -90, 180)));
-
-		//
-		// mapView.addGeoTIFFOverlay(new TMSOverlay(
-		// new MapTileProviderBasic(this), this, 10, 16, "geo2"));
 
 		directedLocationOverlay = new DirectedLocationOverlay(
 				getApplicationContext());
 		directedLocationOverlay.setShowAccuracy(true);
 		overlayManager.add(directedLocationOverlay);
 
-		mapView.setMapListener(new MapAdapter() {
+		mapView.setOnTouchListener(new OnTouchListener() {
+			
 			@Override
-			public boolean onScroll(ScrollEvent event) {
-
+			public boolean onTouch(View v, MotionEvent event) {
 				isMapTracked = false;
 				centerMap.setVisibility(View.VISIBLE);
-				return super.onScroll(event);
+				return true;
 			}
-
-			// @Override
-			// public boolean onZoom(ZoomEvent event) {
-			// final int oldZoom = zoomLevel;
-			// final int newZoom = mapView.getZoomLevel();
-			//
-			// Log.d("TEST", "" + mapView.getGeoTIFFOverlays().size());
-			//
-			// for (TMSOverlay o : mapView.getGeoTIFFOverlays()) {
-			// Log.d("TEST",
-			// "" + o.getZoomLevelMin() + " / "
-			// + o.getZoomLevelMax());
-			// }
-			//
-			// int zoomEvent = event.getZoomLevel();
-			// Log.d("TEST", "" + zoomEvent);
-			// for (TMSOverlay overlay : mapView.getGeoTIFFOverlays()) {
-			// if (zoomEvent - overlay.getZoomLevelMax() == 1
-			// && oldZoom < newZoom) {
-			// final AlertZoomDialog dialog = new AlertZoomDialog(
-			// MenuActivity.this, true, mapView);
-			// dialog.show();
-			// return true;
-			//
-			// } else if (overlay.getZoomLevelMin() - zoomEvent == 1
-			// && newZoom < oldZoom) {
-			// final AlertZoomDialog dialog = new AlertZoomDialog(
-			// MenuActivity.this, false, mapView);
-			// dialog.show();
-			// return true;
-			// }
-			//
-			// }
-			// zoomLevel = newZoom;
-			// return true;
-			//
-			// }
 		});
+
 
 		infoOverlay = new InfoOverlay(findViewById(R.id.table));
 		// centerOverlay = new CenterOverlay(findViewById(R.id.centermap));
@@ -342,34 +268,6 @@ public class MenuActivity extends Activity {
 				centerMap.setVisibility(View.INVISIBLE);
 			}
 		});
-
-		/**
-		 * Exemple d'utilisation d'un shapefile
-		 */
-		/*
-		 * GeometryLayer gltest = DataImport.importShapeFile(this,
-		 * "/storage/sdcard0/Download/shp/TestPolygon.shp");
-		 * 
-		 * Log.d("layer retourne", "Layer retourne "+gltest.toString());
-		 * 
-		 * gltest.setSymbology(new PolygonSymbology(30, Color.BLACK));
-		 * 
-		 * overlayManager.add(gltest) ;
-		 */
-
-		/**
-		 * Exemple d'utilisation d'une mission
-		 */
-		/*
-		 * Mission.createMission("ma mission thibault yoyo",
-		 * getApplicationContext(), mapView);
-		 * Mission.getInstance().startMission();
-		 * overlayManager.add(Mission.getInstance().getPolygonLayer() ) ;
-		 * overlayManager.add(Mission.getInstance().getLineLayer() ) ;
-		 * overlayManager.add(Mission.getInstance().getPointLayer() ) ;
-		 * Mission.getInstance().startSurvey(GeometryType.POLYGON );
-		 * Mission.getInstance().stopMission();
-		 */
 
 	}
 
@@ -1161,7 +1059,6 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mapView.getTileProvider().clearTileCache();
 		pref.save();
 	}
 
