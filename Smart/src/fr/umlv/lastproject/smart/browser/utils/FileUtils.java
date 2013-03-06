@@ -56,8 +56,8 @@ public final class FileUtils {
 
 	private static FileFilter fileFilter;
 
-	public static final String[] SHP_TYPE = { ".shp" };
-	public static final String[] KML_TYPE = { ".kml" };
+	public static final String[] KML_SHP_TYPE = { ".shp", ".kml" };
+	//public static final String[] KML_TYPE = { ".kml" };
 	public static final String[] CSV_TYPE = { ".csv" };
 	public static final String[] TIF_TYPE = { ".tif", ".tiff" };
 	/* We do not want any file displayed */
@@ -298,12 +298,10 @@ public final class FileUtils {
 				// Return files only (not directories) and skip hidden files
 				if (file.isFile()) {
 					for (String filt : filter) {
-						if (!fileName.endsWith(filt)) {
-							return false;
+						if (fileName.endsWith(filt)) {
+							return true;
 						}
 					}
-					return true;
-
 				}
 				return false;
 			}
