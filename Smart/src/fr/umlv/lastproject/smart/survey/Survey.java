@@ -61,8 +61,9 @@ public class Survey {
 			stop();
 		}
 
-		Mission.getInstance().setSelectable(false);
-
+		if (Mission.isCreated()) {
+			Mission.getInstance().setSelectable(false);
+		}
 		geometryLayer = layer;
 		geometryLayer.setEditable(true);
 
@@ -192,7 +193,9 @@ public class Survey {
 
 		stopListeners.clear();
 		lastGeometry = null;
-		Mission.getInstance().setSelectable(true);
+		if (Mission.isCreated()) {
+			Mission.getInstance().setSelectable(true);
+		}
 
 	}
 }
