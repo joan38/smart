@@ -131,4 +131,8 @@ public final class DataImport {
 		return KmlImport.getLayerFromKML(filename, type, context);
 	}
 
+	// public static WMSOverlay importWMS(Context context, String wmsURL) {
+	//
+	// }
+
 }

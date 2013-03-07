@@ -30,7 +30,7 @@ public interface Layer {
 		}
 
 		public Extent(BoundingBoxE6 bounding) {
-			this(bounding, 10);
+			this(bounding, -1);
 		}
 
 		/**
@@ -114,6 +114,6 @@ public interface Layer {
 
 	boolean hasSymbologyEditable();
 
-	BoundingBoxE6 getExtent();
+	Extent getExtent();
 
 }

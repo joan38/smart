@@ -29,6 +29,102 @@ import fr.umlv.lastproject.smart.form.SelectedGeometryListener;
  */
 public class GeometryLayer extends Overlay implements Layer {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((context == null) ? 0 : context.hashCode());
+		result = prime
+				* result
+				+ ((doubleTapListeners == null) ? 0 : doubleTapListeners
+						.hashCode());
+		result = prime * result + (editable ? 1231 : 1237);
+		result = prime * result
+				+ ((geometries == null) ? 0 : geometries.hashCode());
+		result = prime * result + (isSelectable ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((paint == null) ? 0 : paint.hashCode());
+		result = prime
+				* result
+				+ ((selectedListener == null) ? 0 : selectedListener.hashCode());
+		result = prime
+				* result
+				+ ((singleTapListeners == null) ? 0 : singleTapListeners
+						.hashCode());
+		result = prime * result
+				+ ((symbology == null) ? 0 : symbology.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GeometryLayer other = (GeometryLayer) obj;
+		if (context == null) {
+			if (other.context != null)
+				return false;
+		} else if (!context.equals(other.context))
+			return false;
+		if (doubleTapListeners == null) {
+			if (other.doubleTapListeners != null)
+				return false;
+		} else if (!doubleTapListeners.equals(other.doubleTapListeners))
+			return false;
+		if (editable != other.editable)
+			return false;
+		if (geometries == null) {
+			if (other.geometries != null)
+				return false;
+		} else if (!geometries.equals(other.geometries))
+			return false;
+		if (isSelectable != other.isSelectable)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (paint == null) {
+			if (other.paint != null)
+				return false;
+		} else if (!paint.equals(other.paint))
+			return false;
+		if (selectedListener == null) {
+			if (other.selectedListener != null)
+				return false;
+		} else if (!selectedListener.equals(other.selectedListener))
+			return false;
+		if (singleTapListeners == null) {
+			if (other.singleTapListeners != null)
+				return false;
+		} else if (!singleTapListeners.equals(other.singleTapListeners))
+			return false;
+		if (symbology == null) {
+			if (other.symbology != null)
+				return false;
+		} else if (!symbology.equals(other.symbology))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+
 	/**
 	 * To work with OSMDROID
 	 */
@@ -245,9 +341,9 @@ public class GeometryLayer extends Overlay implements Layer {
 
 					for (int i = 0; i < singleTapListeners.size(); i++) {
 						singleTapListeners.get(i)
-						.actionPerformed(
-								new PointGeometry(firstLatitude,
-										firstLongitude));
+								.actionPerformed(
+										new PointGeometry(firstLatitude,
+												firstLongitude));
 					}
 					final IGeoPoint secondPoint = mapView.getProjection()
 							.fromPixels(x1, y1);
@@ -463,29 +559,32 @@ public class GeometryLayer extends Overlay implements Layer {
 	}
 
 	@Override
-	public BoundingBoxE6 getExtent() {
-		double north=90;
-		double south = -90 ;
-		double east = 180 ;
-		double west = -180 ;
+	public Extent getExtent() {
+		double north = 90;
+		double south = -90;
+		double east = 180;
+		double west = -180;
 
-		if(geometries.size() >0){
-			north = geometries.get(0).getBoundingBox().getLatNorthE6() /1E6; 
-			south = geometries.get(0).getBoundingBox().getLatSouthE6()/1E6; 
-			east  = geometries.get(0).getBoundingBox().getLonEastE6()/1E6;
-			west  = geometries.get(0).getBoundingBox().getLonWestE6()/1E6;
+		if (geometries.size() > 0) {
+			north = geometries.get(0).getBoundingBox().getLatNorthE6() / 1E6;
+			south = geometries.get(0).getBoundingBox().getLatSouthE6() / 1E6;
+			east = geometries.get(0).getBoundingBox().getLonEastE6() / 1E6;
+			west = geometries.get(0).getBoundingBox().getLonWestE6() / 1E6;
 		}
 
-
-		for(Geometry g : geometries){
-			BoundingBoxE6 tmp = g.getBoundingBox() ;
-			north = (north <  tmp.getLatNorthE6()/1E6 ?  tmp.getLatNorthE6() /1E6: north) ;
-			south = (south > tmp.getLatSouthE6()/1E6 ? tmp.getLatSouthE6()/1E6 : south) ;
-			east = (east < tmp.getLonEastE6()/1E6 ? tmp.getLonEastE6()/1E6 : east) ;
-			west = (west < tmp.getLonWestE6()/1E6 ? tmp.getLonWestE6() /1E6: west) ;
+		for (Geometry g : geometries) {
+			BoundingBoxE6 tmp = g.getBoundingBox();
+			north = (north < tmp.getLatNorthE6() / 1E6 ? tmp.getLatNorthE6() / 1E6
+					: north);
+			south = (south > tmp.getLatSouthE6() / 1E6 ? tmp.getLatSouthE6() / 1E6
+					: south);
+			east = (east < tmp.getLonEastE6() / 1E6 ? tmp.getLonEastE6() / 1E6
+					: east);
+			west = (west < tmp.getLonWestE6() / 1E6 ? tmp.getLonWestE6() / 1E6
+					: west);
 		}
 
-		return  new BoundingBoxE6(north, east, south, west);	
+		return new Extent(new BoundingBoxE6(north, east, south, west));
 	}
 
 }

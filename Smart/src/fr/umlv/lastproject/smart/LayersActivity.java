@@ -7,12 +7,17 @@ import java.util.logging.Logger;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertDeleteLayerDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
+import fr.umlv.lastproject.smart.drag.DragSortController;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -31,6 +36,7 @@ public class LayersActivity extends ListActivity {
 	private SmartItemLayerAdapter adapter;
 	private String mission;
 	private String track;
+	private int itemPosition;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -66,6 +72,85 @@ public class LayersActivity extends ListActivity {
 		}
 	};
 
+	private DragSortListView mDslv;
+	private DragSortController mController;
+
+	public int dragStartMode = DragSortController.ON_DOWN;
+	public boolean removeEnabled = false;
+	public int removeMode = DragSortController.FLING_REMOVE;
+	public boolean sortEnabled = true;
+	public boolean dragEnabled = true;
+
+	public DragSortController buildController(DragSortListView dslv) {
+		MyDSController c = new MyDSController(dslv);
+		return c;
+	}
+
+	private class MyDSController extends DragSortController {
+
+		DragSortListView mDslv;
+
+		public MyDSController(DragSortListView dslv) {
+			// super(dslv);
+			super(dslv, 0, 1, 1);
+			setDragHandleId(R.id.drag_handle);
+			mDslv = dslv;
+
+			mDslv.setDropListener(onDrop);
+			mDslv.setRemoveListener(onRemove);
+			// mDslv.setClickable(true);
+
+			mDslv.setDragEnabled(dragEnabled);
+			setDragInitMode(ON_DRAG);
+			// setRemoveMode(removeMode);
+			setRemoveEnabled(true);
+
+		}
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+			super.onLongPress(e);
+			if (LayersActivity.this.mDslv.getAdapter().isEmpty()) {
+				return;
+			}
+			final int x = (int) e.getX();
+			final int y = (int) e.getY();
+
+			int touchPos = itemPosition;
+			if (touchPos < 0) {
+				return;
+			}
+			final Intent intentReturn = new Intent();
+			intentReturn.putExtra("overlays", listOverlay);
+			intentReturn.putExtra("editSymbo", false);
+			intentReturn.putExtra("zoomTo", touchPos);
+			setResult(RESULT_OK, intentReturn);
+			finish();
+		}
+
+		@Override
+		public void onDestroyFloatView(View floatView) {
+			// do nothing; block super from crashing
+		}
+
+		@Override
+		public int startDragPosition(MotionEvent ev) {
+			int res = super.dragHandleHitPosition(ev);
+			itemPosition = res;
+			CheckBox check = (CheckBox) findViewById(R.id.layer_check);
+			ImageView image = (ImageView) findViewById(R.id.layer_symbo);
+
+			double badWidth = check.getWidth() + image.getWidth();
+
+			if ((int) ev.getX() > badWidth && res >= 0) {
+				Log.d("DRAG", "DRAG DOIT SE FAIRE : " + res);
+				return res;
+			} else {
+				return DragSortController.MISS;
+			}
+		}
+	}
+
 	public void removeLayer(int which, boolean remove) {
 		DragSortListView list = getListView();
 		LayerItem item = adapter.getItem(which);
@@ -88,6 +173,7 @@ public class LayersActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.menuLayersTitle);
+
 		try {
 			pref = Preferences.getInstance(this);
 		} catch (PreferencesException e) {
@@ -103,20 +189,19 @@ public class LayersActivity extends ListActivity {
 		mission = getIntent().getExtras().getString("mission");
 		track = getIntent().getExtras().getString("track");
 
-		ListView listView = getListView();
-		listView.setTextFilterEnabled(true);
-
 		Collections.reverse(listOverlay.toList());
 
 		adapter = new SmartItemLayerAdapter(this,
 				R.layout.listview_layers_items, listOverlay.toList(), this,
 				listOverlay, mission);
 
-		listView.setAdapter(adapter);
+		mDslv = getListView();
+		mDslv.setAdapter(adapter);
+		mDslv.setTextFilterEnabled(true);
 
-		DragSortListView list = getListView();
-		list.setDropListener(onDrop);
-		list.setRemoveListener(onRemove);
+		mController = buildController(mDslv);
+
+		mDslv.setOnTouchListener(mController);
 
 	}
 

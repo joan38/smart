@@ -3,8 +3,11 @@ package fr.umlv.lastproject.smart;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
@@ -35,6 +38,7 @@ public class SmartMapView extends MapView {
 	private final List<TMSOverlay> geoTIFFOverlays;
 	private final List<GeometryLayer> geometryOverlays;
 	private final List<WMSOverlay> wmsOverlays;
+	private final Set<Layer> layers;
 
 	private ListOverlay listOverlay;
 
@@ -47,7 +51,7 @@ public class SmartMapView extends MapView {
 	 */
 	public SmartMapView(final Context context, final AttributeSet set) {
 		super(context, set);
-
+		this.layers = new HashSet<Layer>();
 		this.geoTIFFOverlays = new ArrayList<TMSOverlay>();
 		this.listOverlay = new ListOverlay();
 		this.geometryOverlays = new ArrayList<GeometryLayer>();
@@ -73,6 +77,7 @@ public class SmartMapView extends MapView {
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
+		this.layers.add(layer);
 		final Overlay overlay = layer.getOverlay();
 		getOverlays().add(overlay);
 		stringToOverlay.put(name, overlay);
@@ -130,6 +135,18 @@ public class SmartMapView extends MapView {
 		addOverlay(layer);
 	}
 
+	public Layer getLayer(LayerItem item) {
+		final Iterator<Layer> it = layers.iterator();
+		Layer tmpLayer = null;
+		while (it.hasNext()) {
+			Layer temp = it.next();
+			if (temp.getName().equals(item.getName())) {
+				tmpLayer = temp;
+			}
+		}
+		return tmpLayer;
+	}
+
 	/**
 	 * 
 	 * @param overlay
@@ -139,6 +156,17 @@ public class SmartMapView extends MapView {
 		getOverlays().remove(stringToOverlay.get(name));
 		stringToOverlay.remove(name);
 		listOverlay.remove(name);
+		final Iterator<Layer> it = layers.iterator();
+		Layer tmpLayer = null;
+		while (it.hasNext()) {
+			Layer temp = it.next();
+			if (temp.getName().equals(name)) {
+				tmpLayer = temp;
+			}
+		}
+		if (tmpLayer != null) {
+			layers.remove(tmpLayer);
+		}
 	}
 
 	/**
@@ -232,6 +260,7 @@ public class SmartMapView extends MapView {
 		geoTIFFOverlays.clear();
 		geometryOverlays.clear();
 		wmsOverlays.clear();
+		layers.clear();
 	}
 
 	/**
