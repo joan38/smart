@@ -222,10 +222,12 @@ public class GPSTrack {
 	 */
 	public GPSTrack(final TrackMode mode, final String trackName,
 			final LocationManager lm, final SmartMapView mapView,
-			final GeometryType type, List<TrackPoint> points, GeometryLayer l) {
+			final GeometryType type, List<TrackPoint> points, GeometryLayer l,
+			MenuActivity activity) {
 
 		this.geometryLayer = l;
 		this.type = type;
+		this.activity = activity;
 
 		switch (type) {
 		case LINE:
@@ -350,8 +352,10 @@ public class GPSTrack {
 				if (((PolygonGeometry) geometry).getPoints().size() < 1) {
 					this.geometryLayer.removeGeometry(geometry);
 				} else {
-					form.openForm((MenuActivity) activity, geometry,
-							Mission.getInstance());
+					Mission.getInstance()
+							.getForm()
+							.openForm((MenuActivity) activity, geometry,
+									Mission.getInstance());
 				}
 				geometryLayer.setSelectable(true);
 				break;
@@ -377,6 +381,10 @@ public class GPSTrack {
 
 	public TrackMode getTrackMode() {
 		return trackMode;
+	}
+
+	public Geometry getGeometry() {
+		return geometry;
 	}
 
 }
