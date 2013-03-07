@@ -85,7 +85,7 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 			ShapeAdapter shapeAdapter = new ShapeAdapter(menu, shape,
 					android.R.layout.simple_list_item_1, null, null);
 			shapeSpinner.setAdapter(shapeAdapter);
-			for (int i = 0; i < SmartConstants.shapeSymbology.length; i++) {
+			for (int i = 0; i < SmartConstants.getShapeSymbology().length; i++) {
 				if (i == ((PointSymbology) layer.getSymbology()).getType()
 						.getId()) {
 					shapeSpinner.setSelection(i);

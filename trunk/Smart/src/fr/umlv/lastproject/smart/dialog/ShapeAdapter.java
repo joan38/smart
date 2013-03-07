@@ -22,14 +22,14 @@ public class ShapeAdapter extends SimpleAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = super.getView(position, convertView, parent);
-		view.setBackgroundResource(SmartConstants.shapeSymbology[position]);
+		view.setBackgroundResource(SmartConstants.getShapeSymbology()[position]);
 		return view;
 	}
 
 	@Override
 	public View getDropDownView (int position, View convertView, ViewGroup parent) {
 		View view = super.getView(position, convertView, parent);
-		view.setBackgroundResource(SmartConstants.shapeSymbology[position]);
+		view.setBackgroundResource(SmartConstants.getShapeSymbology()[position]);
 		return view;
 	}
 
