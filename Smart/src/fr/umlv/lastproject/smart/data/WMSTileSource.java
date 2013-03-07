@@ -111,7 +111,7 @@ public class WMSTileSource extends OnlineTileSourceBase {
 
 	static double tile2lat(int y, int z) {
 		double n = Math.PI - (2.0 * Math.PI * y) / Math.pow(2.0, z);
-		return Math.toDegrees(Math.atan(Math.sinh(n)));
+		return Math.toDegrees(Math.atan(Math.sinh(Math.abs(n))));
 	}
 
 }

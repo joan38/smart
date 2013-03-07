@@ -13,16 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.SmartMapView;
 
 public class WMSDialog extends AlertDialog.Builder {
 
-	public WMSDialog(final MenuActivity menu) {
-		super(menu);
+	public WMSDialog(final SmartMapView mapView) {
+		super(mapView.getContext());
 		setCancelable(false);
 
-		LayoutInflater factory = LayoutInflater.from(menu);
+		LayoutInflater factory = LayoutInflater.from(mapView.getContext());
 		final View alertDialogView = factory.inflate(
 				fr.umlv.lastproject.smart.R.layout.import_wms, null);
 
@@ -39,13 +39,13 @@ public class WMSDialog extends AlertDialog.Builder {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
 				final String wms = wmsUrl.getText().toString();
-				final Toast toast = Toast.makeText(menu, R.string.wms_error,
-						Toast.LENGTH_LONG);
+				final Toast toast = Toast.makeText(mapView.getContext(),
+						R.string.wms_error, Toast.LENGTH_LONG);
 				URL u = null;
 				try {
 					u = new URL(wms);
 				} catch (MalformedURLException e) {
-					Log.d("TESTX",
+					Log.d("TEST2",
 							"CONNECTION MALFORMED URL : " + e.getMessage()
 									+ " / " + u + "/ " + wmsUrl);
 
@@ -70,23 +70,17 @@ public class WMSDialog extends AlertDialog.Builder {
 
 							urlc.connect();
 							if (urlc.getResponseCode() == 200) {
-								Log.d("TESTX", "CONNECTION PING");
+								Log.d("TEST2", "CONNECTION PING");
 
-								// mapView.addWMSLayer(url.toString(), wmsName
-								// .getText().toString());
-								// Toast.makeText(mapView.getContext(),
-								// R.string.wms_success, Toast.LENGTH_LONG)
-								// .show();
+								mapView.addWMSLayer(url.toString(), wmsName
+										.getText().toString());
 
+								return;
 							}
-							urlc.disconnect();
-
-							return;
-							// toast.show();
+							toast.show();
 
 						} catch (IOException e) {
 							toast.show();
-
 						}
 
 					}

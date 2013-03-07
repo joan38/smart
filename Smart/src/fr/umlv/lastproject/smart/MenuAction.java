@@ -241,7 +241,7 @@ public enum MenuAction {
 
 		@Override
 		public void doAction(MenuActivity activity) {
-			final WMSDialog dialog = new WMSDialog(activity);
+			final WMSDialog dialog = new WMSDialog(activity.getMapView());
 			dialog.show();
 		}
 	},
@@ -281,7 +281,7 @@ public enum MenuAction {
 					areaSurvey.stop();
 					activity.getMapView().removeGeometryLayer(areaLayer);
 					final AlertMeasureResultDialog areaDialog = new AlertMeasureResultDialog(
-							activity, result, " kmÂ²");
+							activity, result, " km²");
 					areaDialog.show();
 				}
 			});

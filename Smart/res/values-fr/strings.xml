@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="teamtype">Une application de :</string>
     <string name="teamname">Thibault Douilly, Marc Barat, Thibault Brun, Maelle Cabot, Tanios Faddoul, Joan Goyeau (absent)</string>
-    
     <string name="app_name">Smart</string>
-    <string name="menu_settings">Paramètres</string>
-    <string name="infoSettings">Paramètres d\'informations</string>
+    <string name="menu_settings">Paramètres du menu</string>
+    <string name="infoSettings">Informations à afficher</string>
     <string name="latitude">Latitude :</string>
     <string name="longitude">Longitude :</string>
     <string name="altitude">Altitude :</string>
@@ -14,17 +14,17 @@
     <string name="bearing">Orientation :</string>
     <string name="centerMap">Recentrage de la carte</string>
     <string name="findGPS">Recherche du signal GPS..</string>
-    <string name="gpsSettings">Paramétrages du GPS</string>
-    <string name="gpsMessage">Cette application requiert le GPS.\nValider pour accéder aux paramétrages.\nVous pouvez également y accéder par le menu de paramétrages.</string>
+    <string name="gpsSettings">Paramètrages du GPS</string>
+    <string name="gpsMessage">Cette application requiert le GPS.\nValider pour accéder aux paramètrages.\nVous pouvez également y accéder par le menu de paramètrage.</string>
     <string name="cancel">Annuler</string>
     <string name="validate">Valider</string>
     <string name="hideInfoZone">Cacher la zone d\'informations</string>
     <string name="showInfoZone">Afficher la zone d\'informations</string>
     <string name="exit">Quitter ?</string>
-    <string name="exitMsg">Êtes-vous sûr(e) de vouloir quitter SMART ?</string>
-    <string name="exitMsgWithMission">Êtes-vous sûr(e) de vouloir quitter SMART ? La mission en cours sera arrêtée</string>
+    <string name="exitMsg">Quitter SMART ?</string>
+    <string name="exitMsgWithMission">Quitter SMART ? La mission en cours sera arrêtée.</string>
     <string name="help">Aide</string>
-    <string name="helpLayer">Voici le menu des couches.\nVous pouvez décocher une couche pour la masquer ou la faire glisser sur le coté pour la supprimer.\nSi vous désirez en changer l\'ordre, pressez une couche et déplacez-là dans la liste.\nPour changer la symbologie, il vous suffit de séléctionner une image.</string>
+    <string name="helpLayer">Menu des couches.\nLa visibilité d'une couche est liée à sa case à cocher. Pour supprimer une couche, il faut la faire glisser à gauche ou à droite.\nLa hiérarchie des couches est gérée par glisser-déposer.\nPour changer la symbologie d'une couche, il vous suffit de séléctionner son aperçu.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
     <string name="helpMenu">Vous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
     <string name="about">A propos</string>
@@ -33,25 +33,25 @@
     <string name="ok">Ok</string>
     <string name="option">Option</string>
     <string name="delete">Supprimer</string>
-    <string name="deleteLayer">Êtes-vous sûr(e) de vouloir supprimer cette couche ?</string>
+    <string name="deleteLayer">Supprimer cette couche ?</string>
     <string name="warning">Attention</string>
     <string name="deleteLayerFalse">Impossible de supprimer la couche, celle-ci appartient à une mission ou à une trace encore en cours.</string>
     <string name="visibilityLayer">Vous ne pouvez pas modifier la visibilité de cette couche, celle-ci appartient à une mission encore en cours.</string>
-    <string name="addShortcut">Ajouter en raccouci ?</string>
-    <string name="removeShortcut">Retirer le raccourci</string>
-    <string name="shouldRestartApp">Vous devez redemarrer l\'application pour appliquer les changements.</string>
+    <string name="addShortcut">Ajouter aux raccoucis ?</string>
+    <string name="removeShortcut">Supprimer le raccourci</string>
+    <string name="shouldRestartApp">Redémarrer l\'application pour appliquer les changements</string>
     <string name="error">Erreur</string>
     <string name="kmlParseError">Erreur. Le fichier Kml est invalide</string>
     <string name="kmlReadError">Erreur. Le fichier Kml ne peut être lu</string>
-    <string name="kmlImport">Import de couche kml : réussi</string>
+    <string name="kmlImport">Import de couche kml réussi</string>
     <string name="geotiffReadError">Erreur. Le répertoire GéoTiff ne peut être lu</string>
-    <string name="geotiffImport">Import de couche GeoTiff : réussi</string>
-    <string name="shpImport">Import de couche ShapeFile : réussi</string>
-    <string name="wms_success">Chargement de la couche WMS : réussi</string>
-    <string name="layerAlreadyExists">La couche existe déjà</string>
+    <string name="geotiffImport">Import de couche GeoTiff réussi</string>
+    <string name="shpImport">Import de couche ShapeFile réussi</string>
+    <string name="wms_success">Chargement de la couche WMS réussi</string>
+    <string name="layerAlreadyExists">Erreur : Une couche du même nom existe déjà</string>
     <string name="shortcut_remove">Le raccourci a été supprimé</string>
-    <string name="pleaseSelectMission">Merci de selectionner une mission</string>
-    <string name="noGeometryInMission">Pas de geometrie dans la mission</string>
+    <string name="pleaseSelectMission">Merci de sélectionner une mission</string>
+    <string name="noGeometryInMission">Pas de geométrie dans la mission</string>
     <string name="noMissionAvailable">Pas de mission disponible</string>
     <string name="unableLoadPref">Erreur lors du chargement des préférences</string>
 
@@ -81,7 +81,7 @@
     <string-array name="typeFields">
         <item>Texte</item>
         <item>Numérique</item>
-        <item>Boolean</item>
+        <item>Booléen</item>
         <item>Liste</item>
         <item>Photo</item>
         <item>Mesure de Hauteur</item>
@@ -92,7 +92,7 @@
     <string name="storage_removed">Espace disque non disponible.</string>
     <string name="choose_file">Sélectionner un fichier</string>
     <string name="title_activity_create_form">Créer un formulaire</string>
-    <string name="error_selecting_file">Erreur lors de sélection du fichier</string>
+    <string name="error_selecting_file">Erreur lors de la sélection du fichier</string>
     <string name="zoomIn">Tuiles manquantes : Êtes-vous sûr(e) de vouloir zoomer ?</string>
     <string name="zoomOut">Tuiles manquantes : Êtes-vous sûr(e) de vouloir dézoomer ?</string>
     <string name="zoomTitle">Tuiles manquantes pour ce niveau de zoom</string>
@@ -112,8 +112,8 @@
     <string name="export_form">Exporter un formulaire</string>
     <string name="defaultForm">Défaut</string>
     <string name="othertForm">Autre</string>
-    <string name="missionExported">Mission exporté</string>
-    <string name="polygon_track_text_name">Attention : pendant le relevé d\'une trace polygone vous pouvez continuer à faire d\'autre relevé polygone mais vous ne pourrez pas les éditer avant d\'avoir arrêté la trace polygone.</string>
+    <string name="missionExported">Mission exportée</string>
+    <string name="polygon_track_text_name">Attention : pendant le relevé d\'une trace polygone vous pouvez continuer à faire d\'autres relevés de polygones, mais vous ne pourrez pas les éditer avant d\'avoir arrêté la trace polygone.</string>
     <string name="track_name_missing">Saisir un nom pour la trace</string>
     <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string>
     <string name="track_param_false">Le paramètre doit être un nombre entier</string>
@@ -128,8 +128,8 @@
     <string name="MeasureTitle">Mesure</string>
     <string name="MeasureRelative">Par rapport à votre position</string>
     <string name="MeasureAbsolute">Entre deux points sur la carte</string>
-    <string name="MeasureRelativeText">Sélectionnez un point sur la carte</string>
-    <string name="MeasureAbsoluteText">Sélectionnez deux points sur la carte</string>
+    <string name="MeasureRelativeText">Sélectionner un point sur la carte</string>
+    <string name="MeasureAbsoluteText">Sélectionner deux points sur la carte</string>
     <string name="field_name_already_used">Nom déjà utilisé</string>
     <string name="field_error_min_max">Erreur de saisie : Min > Max</string>
     <string name="field_text">Champ texte : </string>
@@ -139,8 +139,8 @@
     <string name="field_numeric">Champ numérique : </string>
     <string name="field_height">Champ hauteur : </string>
     <string name="invalid">Invalide</string>
-    <string name="sure">Êtes-vous sûr(e) de vouloir supprimer la/les mission(s) ? </string>
-    <string name="sureSurvey">Êtes-vous sûr(e) de vouloir supprimer le relevé ? </string>
+    <string name="sure">Supprimer la/les mission(s) ? </string>
+    <string name="sureSurvey">Supprimer le relevé ? </string>
     <string name="result">Résultat</string>
     <string name="menuFunctionalitiesTitle">Menu des fonctionnalités</string>
     <string name="menuLayersTitle">Gestion des couches</string>
@@ -150,17 +150,17 @@
     <string name="color">Couleur</string>
     <string name="taille">Taille</string>
     <string name="form">Forme</string>
-    <string name="wmsurl">Renseignez l\'URL WMS </string>
+    <string name="wmsurl">Renseigner l\'URL WMS </string>
     <string name="wmstitle">Importer une couche WMS </string>
     <string name="wms_error">L\'url WMS semble ne pas être accessible</string>
     <string name="wms_name">Nom de la couche WMS</string>
-    <string name="noMissionInProgress">Impossible : aucune mission en cours</string>
+    <string name="noMissionInProgress">Impossible d'effectuer un relevé : aucune mission en cours</string>
     <string name="missionStop">Mission arrêtée</string>
     <string name="missionStart">Mission démarrée</string>
-    <string name="missionDelete">Mission supprimée</string>
+    <string name="missionDelete">Supprimer mission</string>
     <string name="theme">Thème</string>
-    <string name="editInfo">Editer la zone d\'info</string>
-    <string name="user_height_text">Entrez la hauteur du point de vue (par exemple votre taille moins 15 cm)</string>
+    <string name="editInfo">Editer la zone d\'infos</string>
+    <string name="user_height_text">Saisir la hauteur du point de vue en cm (par exemple votre taille moins 15 cm)</string>
     <string name="track_title">Créer une trace GPS</string>
     <string name="height_title">Hauteur du point de vue</string>
     <string name="height_field_missing">La hauteur ne peut être nulle</string>
@@ -171,25 +171,24 @@
     <string name="displayAccuracy">Afficher la précision :</string>
     <string name="displayBearing">Afficher l\'orientation :</string>
     <string name="displaySpeed">Afficher la vitesse :</string>
-    <string name="height_bottom_instructions">Alignez votre regard avec la tranche droite du smartphone ainsi que le pied de l\'objet visé.\nAppuyez ensuite sur l\'écran.</string>
-    <string name="height_top_instructions">Alignez votre regard avec la tranche droite du smartphone ainsi que le sommet de l\'objet visé. \nAppuyez à nouveau sur l\'écran.</string>
+    <string name="height_bottom_instructions">Aligner le regard avec la tranche droite du smartphone ainsi que le pied de l\'objet visé.\nAppuyer ensuite sur l\'écran.</string>
+    <string name="height_top_instructions">Aligner le regard avec la tranche droite du smartphone ainsi que le sommet de l\'objet visé. \nAppuyer à nouveau sur l\'écran.</string>
     <string name="height_error">Erreur. \nViser à nouveau.</string>
-    <string name="height_result_error">Erreur : résultat erroné.</string>
+    <string name="height_result_error">Erreur lors de la mesure de la hauteur</string>
     <string name="gpsCompulsory">Le GPS doit être activé</string>
     <string name="gpsTrackMessage">Vérifier que le GPS est activé. La fonctionnalité ne peut pas fonctionner sans GPS.</string>
     <string name="track_notstarted">La trace ne peut pas être démarrée</string>
-    <string name="track_started">La trace GPS a démarré!</string>
-    <string name="track_stop">La trace GPS est arrétée!</string>
+    <string name="track_started">La trace GPS a démarré</string>
+    <string name="track_stop">La trace GPS est arrétée</string>
     <string name="polygon_track_started">La trace Polygone a démarré</string>
     <string name="polygon_track_stoped">La trace Polygone est arrétée</string>
-    <string name="point_survey">Tapez pour faire un point</string>
+    <string name="point_survey">Taper pour faire un point</string>
     <string name="line_survey">Tape : faire plusieurs points\nDouble-tape : finir la ligne</string>
     <string name="polygon_survey">Tape : faire plusieurs points\nDouble-tape : fermer le polygone</string>
     <string name="tiff_progress">Création de l\'archive.</string>
-    <string name="tiff_progress_title">Veuillez patienter.</string>
-    
+    <string name="tiff_progress_title">Veuillez patienter</string>
     <string name="survayError">Erreur : relevé non enregistré</string>
     <string name="vector_progress">Import des données vectorielles</string>
-    <string name="vector_progress_title">Veuillez patienter.</string>
+    <string name="vector_progress_title">Veuillez patienter</string>
 
 </resources>
