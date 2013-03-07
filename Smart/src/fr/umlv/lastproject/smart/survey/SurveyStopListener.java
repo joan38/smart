@@ -5,14 +5,15 @@ import fr.umlv.lastproject.smart.layers.Geometry;
 /**
  * 
  * @author thibault brun
- *
+ * 
  */
 public interface SurveyStopListener {
-	
+
 	/**
 	 * 
-	 * @param g the geometry returned by the event
+	 * @param g
+	 *            the geometry returned by the event
 	 */
-	public void actionPerformed(Geometry g) ;
+	void actionPerformed(Geometry g);
 
 }

@@ -724,7 +724,7 @@ public class MenuActivity extends Activity {
 				return true;
 			}
 		};
-		shortcut.setImageResource(SmartConstants.icons[menuAction.getId()]);
+		shortcut.setImageResource(SmartConstants.getIcons()[menuAction.getId()]);
 		shortcut.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -750,7 +750,7 @@ public class MenuActivity extends Activity {
 			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 				Log.d("debug", (Mission.getInstance() + " " + Mission
 						.getInstance().isStarted()));
-				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
+				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_MISSION
 						.getId()]);
 			}
 
@@ -759,11 +759,11 @@ public class MenuActivity extends Activity {
 				@Override
 				public void actionPerformed(boolean status) {
 					if (status) {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_MISSION
 								.getId()]);
 						shortcutsView.invalidate();
 					} else {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.CREATE_MISSION
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.CREATE_MISSION
 								.getId()]);
 						shortcutsView.invalidate();
 					}
@@ -774,7 +774,7 @@ public class MenuActivity extends Activity {
 		case GPS_TRACK:
 			if (gpsTrack != null && gpsTrack.isStarted()) {
 				Log.d("debug", gpsTrack + " " + gpsTrack.isStarted());
-				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
+				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_GPS_TRACK
 						.getId()]);
 			}
 			this.addGPSTrackListener(new GPSTrackListener() {
@@ -782,11 +782,11 @@ public class MenuActivity extends Activity {
 				@Override
 				public void actionPerformed(boolean status) {
 					if (status) {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_GPS_TRACK
 								.getId()]);
 						shortcutsView.invalidate();
 					} else {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.GPS_TRACK
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.GPS_TRACK
 								.getId()]);
 						shortcutsView.invalidate();
 					}
@@ -796,7 +796,7 @@ public class MenuActivity extends Activity {
 		case POLYGON_TRACK:
 			if (polygonTrack != null && polygonTrack.isStarted()) {
 				Log.d("debug", polygonTrack + " " + polygonTrack.isStarted());
-				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_POLYGON_TRACK
+				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_POLYGON_TRACK
 						.getId()]);
 			}
 			this.addPolygonTrackListener(new PolygonTrackListener() {
@@ -804,11 +804,11 @@ public class MenuActivity extends Activity {
 				@Override
 				public void actionPerformed(boolean status) {
 					if (status) {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_POLYGON_TRACK
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_POLYGON_TRACK
 								.getId()]);
 						shortcutsView.invalidate();
 					} else {
-						shortcut.setImageResource(SmartConstants.icons[MenuAction.POLYGON_TRACK
+						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.POLYGON_TRACK
 								.getId()]);
 						shortcutsView.invalidate();
 					}

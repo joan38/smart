@@ -62,7 +62,7 @@ public class HomeActivity extends Activity {
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
-		icons = SmartConstants.icons;
+		icons = SmartConstants.getIcons();
 
 		listItem = new ArrayList<ListViewItem>();
 		for (int i = 0; i < items.length; i++) {
