@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -48,13 +47,13 @@ public class CreateFormActivity extends Activity {
 	private TableLayout tableLayout;
 	private final List<EditText> allEds = new ArrayList<EditText>();
 	private FieldType fieldType;
-	private ArrayList<EditText> listFieldValues = new ArrayList<EditText>();
-	private ArrayList<TableRow> rowDynamic = new ArrayList<TableRow>();
+	private List<EditText> listFieldValues = new ArrayList<EditText>();
+	private List<TableRow> rowDynamic = new ArrayList<TableRow>();
 	private Preferences pref;
 	private static final int PADDING_LEFT = 40;
 	private static final int PADDING_TOP = 30;
 	private Button validate;
-	final Logger logger = SmartLogger.getLocator().getLogger();
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 
 	@Override
@@ -390,7 +389,9 @@ public class CreateFormActivity extends Activity {
 				// Save the form
 				try {
 					File f = new File(SmartConstants.FORM_PATH) ;
-					if(!f.exists())f.mkdir();
+					if(!f.exists()) {
+						f.mkdir();
+					}
 					form.write(SmartConstants.FORM_PATH);
 					logger.log(Level.INFO, "Form "+form.getTitle()+" saved");
 				} catch (FormIOException e) {

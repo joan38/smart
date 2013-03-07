@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
@@ -34,7 +33,7 @@ public class PictureActivity extends Activity {
 
 	private File picture;
 	private static final int PICTURE_RESULT = 1;
-	final Logger logger = SmartLogger.getLocator().getLogger();
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	private GPS gps;
 	private LocationManager locationManager;
@@ -53,7 +52,7 @@ public class PictureActivity extends Activity {
 			finish();
 			return;
 		} else {
-			boolean takePicture = startIntent.getBooleanExtra("takePicture",
+			takePicture = startIntent.getBooleanExtra("takePicture",
 					false);
 			if (!takePicture) {
 				finish();
@@ -227,10 +226,5 @@ public class PictureActivity extends Activity {
 		outState.putBoolean("takePicture", takePicture);
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		// ignore orientation/keyboard change
-		super.onConfigurationChanged(newConfig);
-	}
 
 }

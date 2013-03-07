@@ -1,5 +1,6 @@
 package fr.umlv.lastproject.smart.utils;
 
+
 /**
  * This class is used to generate a custom exception
  * 
@@ -15,6 +16,10 @@ public class SmartException extends Exception{
 
 	public SmartException(String message) {
 		super(message);
+	}
+
+	public SmartException(Exception e, String string) {
+		super(string, e);
 	}
 	
 	
