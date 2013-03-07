@@ -266,7 +266,7 @@ public enum MenuAction {
 			if (Mission.isCreated()) {
 				Mission.getInstance().setSelectable(false);
 			}
-			
+
 			Log.d("AIRE", "SMART CONSTANT");
 			final Survey areaSurvey = new Survey(activity.getMapView());
 			final GeometryLayer areaLayer = new GeometryLayer(activity);
@@ -277,7 +277,9 @@ public enum MenuAction {
 
 				@Override
 				public void actionPerformed(Geometry g) {
-					Mission.getInstance().setSelectable(true);
+					if (Mission.isCreated()) {
+						Mission.getInstance().setSelectable(true);
+					}
 					Log.d("AIRE", "STOP LISTENER");
 					final double result = PolygonArea
 							.getPolygonArea((PolygonGeometry) g) / 1E6;

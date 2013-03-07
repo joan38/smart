@@ -23,12 +23,11 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 public class Survey {
 
 	private final SmartMapView mapView;
-	private final List<SurveyStopListener> stopListeners ;
-	private  GeometryLayer geometryLayer;
+	private final List<SurveyStopListener> stopListeners;
+	private GeometryLayer geometryLayer;
 	private GeometryLayerDoubleTapListener dlistener;
 	private GeometryLayerSingleTapListener slistener;
-	private  Geometry lastGeometry;
-	
+	private Geometry lastGeometry;
 
 	/**
 	 * 
@@ -36,30 +35,31 @@ public class Survey {
 	 *            the type of the geometry which will be surveyed
 	 */
 	public Survey(final SmartMapView map) {
-		if(map==null ){
+		if (map == null) {
 			throw new IllegalArgumentException();
 		}
 		this.mapView = map;
 		this.stopListeners = new ArrayList<SurveyStopListener>();
-		this.lastGeometry=null;
+		this.lastGeometry = null;
 
 	}
 
-
 	/**
-	 * this method is use to start a survey
-	 * the type of survey is defined by the type of the layer
-	 * @param layer the layer wher the survey will be
+	 * this method is use to start a survey the type of survey is defined by the
+	 * type of the layer
+	 * 
+	 * @param layer
+	 *            the layer wher the survey will be
 	 * 
 	 */
 	public void startSurvey(final GeometryLayer layer) {
-		if( layer==null || layer.getType()==null){
+		if (layer == null || layer.getType() == null) {
 			throw new IllegalArgumentException();
 		}
-		if(this.geometryLayer!=null){
+		if (this.geometryLayer != null) {
 			stop();
 		}
-		geometryLayer=layer;
+		geometryLayer = layer;
 		geometryLayer.setEditable(true);
 
 		switch (geometryLayer.getType()) {
@@ -68,7 +68,7 @@ public class Survey {
 				@Override
 				public void actionPerformed(PointGeometry p) {
 					geometryLayer.addGeometry(p);
-					lastGeometry=p;
+					lastGeometry = p;
 					for (SurveyStopListener listener : stopListeners) {
 						listener.actionPerformed(p);
 					}
@@ -87,7 +87,7 @@ public class Survey {
 					geometryLayer.getGeometries().remove(l);
 					l.addPoint(p);
 					geometryLayer.addGeometry(l);
-					lastGeometry=l;
+					lastGeometry = l;
 					mapView.invalidate();
 				}
 			};
@@ -100,7 +100,7 @@ public class Survey {
 					geometryLayer.getGeometries().remove(l);
 					l.addPoint(p);
 					geometryLayer.addGeometry(l);
-					lastGeometry=l;
+					lastGeometry = l;
 					for (SurveyStopListener listener : stopListeners) {
 						listener.actionPerformed(l);
 					}
@@ -121,7 +121,7 @@ public class Survey {
 					geometryLayer.getGeometries().remove(poly);
 					poly.addPoint(p);
 					geometryLayer.addGeometry(poly);
-					lastGeometry=poly;
+					lastGeometry = poly;
 					mapView.invalidate();
 				}
 			};
@@ -134,7 +134,7 @@ public class Survey {
 					geometryLayer.getGeometries().remove(poly);
 					poly.addPoint(p);
 					geometryLayer.addGeometry(poly);
-					lastGeometry=poly;
+					lastGeometry = poly;
 					for (SurveyStopListener listener : stopListeners) {
 						listener.actionPerformed(poly);
 					}
@@ -149,12 +149,12 @@ public class Survey {
 		default:
 			break;
 		}
-		
 	}
 
 	/**
 	 * 
-	 * @param listener the listener used when stop
+	 * @param listener
+	 *            the listener used when stop
 	 */
 	public void addStopListeners(SurveyStopListener listener) {
 		stopListeners.add(listener);
@@ -162,17 +162,18 @@ public class Survey {
 
 	/**
 	 * 
-	 * @param listener the listener which will be unused 
+	 * @param listener
+	 *            the listener which will be unused
 	 */
 	public void removeStopListeners(SurveyStopListener listener) {
 		stopListeners.remove(listener);
 	}
-	
+
 	/**
 	 * the survey is OK
 	 */
-	public void validateSurvey(){
-		lastGeometry=null;
+	public void validateSurvey() {
+		lastGeometry = null;
 	}
 
 	/**
@@ -182,12 +183,12 @@ public class Survey {
 		geometryLayer.removeGeometryLayerDoubleTapListener(dlistener);
 		geometryLayer.removeGeometryLayerSingleTapListener(slistener);
 		geometryLayer.setEditable(false);
-		if(lastGeometry!=null){
+		if (lastGeometry != null) {
 			geometryLayer.getGeometries().remove(lastGeometry);
 		}
-		
+
 		stopListeners.clear();
-		lastGeometry=null;
+		lastGeometry = null;
 
 	}
 }
