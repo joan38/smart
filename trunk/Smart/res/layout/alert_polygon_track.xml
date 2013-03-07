@@ -8,6 +8,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".TrackActivity" >
+    
+    <TextView
+        android:id="@+id/polygontrackname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:inputType="none"
+        android:text="@string/polygon_track_text_name" />
 
     <TextView
         android:id="@+id/tracktextparam"

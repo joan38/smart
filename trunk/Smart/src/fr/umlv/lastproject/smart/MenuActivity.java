@@ -43,7 +43,6 @@ import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.data.DataImport;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
-import fr.umlv.lastproject.smart.dialog.AboutDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
@@ -230,7 +229,7 @@ public class MenuActivity extends Activity {
 		menu.add(0, 2, 0, R.string.gpsSettings);
 		menu.add(0, 3, 0, R.string.theme);
 		menu.add(0, 4, 0, R.string.help);
-		menu.add(0, 5, 0, R.string.about);
+		// menu.add(0, 5, 0, R.string.about);
 
 		return true;
 	}
@@ -359,10 +358,10 @@ public class MenuActivity extends Activity {
 			helpDialog.show();
 			break;
 
-		case 5:
-			final AboutDialog about = new AboutDialog(this);
-			about.show();
-			break;
+		// case 5:
+		// final AboutDialog about = new AboutDialog(this);
+		// about.show();
+		// break;
 		}
 
 		return super.onOptionsItemSelected(item);
