@@ -45,8 +45,12 @@ public class GPS {
 	 *            : the location manager to test
 	 * @return true if GPS is enable
 	 */
-	public boolean isEnabled(LocationManager lm) {
-		return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	public boolean isEnabled() {
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+
+	public LocationManager getLocationManager() {
+		return locationManager;
 	}
 
 	/**
@@ -60,11 +64,8 @@ public class GPS {
 	 *            : distance to refresh location
 	 */
 	public void start(int ms, int meter) {
-
-		this.locationManager.requestLocationUpdates(
-				LocationManager.GPS_PROVIDER, ms, meter,
-				new SmartLocationListener(gpsListeners));
-
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				ms, meter, new SmartLocationListener(gpsListeners));
 	}
 
 	/**

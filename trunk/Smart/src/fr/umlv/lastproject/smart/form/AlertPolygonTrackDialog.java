@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 
@@ -51,7 +51,7 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 						final RadioButton radioButton = (RadioButton) alertTrackView
 								.findViewById(radioGroup
 										.getCheckedRadioButtonId());
-						final TRACK_MODE trackMode = TRACK_MODE
+						final TrackMode trackMode = TrackMode
 								.valueOf(radioButton.getTag().toString());
 
 						final Object oParam = trackParameter.getText();

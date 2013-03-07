@@ -31,7 +31,7 @@ public class GPSTrack {
 
 	private static final int LINE_THICKNESS = 5;
 	private static final int MULT = 1000;
-	private final TRACK_MODE trackMode;
+	private final TrackMode trackMode;
 
 	private final GPS gps;
 	private final GeometryType type;
@@ -52,12 +52,12 @@ public class GPSTrack {
 	 * @author Marc
 	 * 
 	 */
-	public enum TRACK_MODE {
+	public enum TrackMode {
 		TIME(1), DISTANCE(10);
 
 		private int parameter;
 
-		TRACK_MODE(final int param) {
+		TrackMode(final int param) {
 			this.parameter = param;
 		}
 
@@ -82,7 +82,7 @@ public class GPSTrack {
 	 * @param activity
 	 * @param mission
 	 */
-	public GPSTrack(final TRACK_MODE mode, final String trackName,
+	public GPSTrack(final TrackMode mode, final String trackName,
 			final LocationManager lm, final SmartMapView mapView,
 			final GeometryType type, final GeometryLayer layer,
 			final Form form, final Activity activity) {
@@ -135,10 +135,6 @@ public class GPSTrack {
 		gps.addGPSListener(gpsListener);
 
 	}
-	
-	
-	
-
 
 	/**
 	 * 
@@ -153,7 +149,7 @@ public class GPSTrack {
 	 * @param type
 	 *            the type of the geometry
 	 */
-	public GPSTrack(final TRACK_MODE mode, final String trackName,
+	public GPSTrack(final TrackMode mode, final String trackName,
 			final LocationManager lm, final SmartMapView mapView,
 			final GeometryType type) {
 
@@ -210,7 +206,7 @@ public class GPSTrack {
 
 		mapView.addGeometryLayer(geometryLayer);
 	}
-	
+
 	/**
 	 * 
 	 * @param mode
@@ -224,13 +220,13 @@ public class GPSTrack {
 	 * @param type
 	 *            the type of the geometry
 	 */
-	public GPSTrack(final TRACK_MODE mode, final String trackName,
+	public GPSTrack(final TrackMode mode, final String trackName,
 			final LocationManager lm, final SmartMapView mapView,
 			final GeometryType type, List<TrackPoint> points, GeometryLayer l) {
 
 		this.geometryLayer = l;
 		this.type = type;
-		
+
 		switch (type) {
 		case LINE:
 			this.geometry = new LineGeometry();
@@ -248,26 +244,25 @@ public class GPSTrack {
 		this.trackName = trackName;
 		this.trackMode = mode;
 		this.gps = new GPS(lm);
-		this.trackPoints = points ;
-		
-		for(TrackPoint p : points){
-			double lat = p.getLatitude() ;
-			double lon = p.getLongitude() ;
-			
+		this.trackPoints = points;
+
+		for (TrackPoint p : points) {
+			double lat = p.getLatitude();
+			double lon = p.getLongitude();
+
 			switch (type) {
 			case LINE:
-				((LineGeometry) geometry).addPoint(new PointGeometry(
-						lat, lon));
+				((LineGeometry) geometry).addPoint(new PointGeometry(lat, lon));
 				break;
 			case POLYGON:
-				((PolygonGeometry) geometry).addPoint(new PointGeometry(
-						lat, lon));
+				((PolygonGeometry) geometry).addPoint(new PointGeometry(lat,
+						lon));
 				break;
 			default:
 				break;
 			}
 		}
-		
+
 		this.gpsListener = new IGPSListener() {
 
 			@Override
@@ -294,10 +289,6 @@ public class GPSTrack {
 		gps.addGPSListener(gpsListener);
 
 	}
-
-	
-	
-	
 
 	/**
 	 * Gets the graphics layer
@@ -348,11 +339,13 @@ public class GPSTrack {
 			logger.log(Level.INFO, "Track stopped");
 			gps.removeGPSListener(gpsListener);
 			isFinished = true;
+			isStarted = false;
 			/** Writing of gpx file */
 			switch (type) {
 			case LINE:
 				GPXWriter.writeGpxFile(trackName, trackPoints);
 				break;
+
 			case POLYGON:
 				if (((PolygonGeometry) geometry).getPoints().size() < 1) {
 					this.geometryLayer.removeGeometry(geometry);
@@ -362,10 +355,10 @@ public class GPSTrack {
 				}
 				geometryLayer.setSelectable(true);
 				break;
+
 			default:
 				break;
 			}
-
 		}
 
 	}
@@ -382,7 +375,7 @@ public class GPSTrack {
 		return trackName;
 	}
 
-	public TRACK_MODE getTrackMode() {
+	public TrackMode getTrackMode() {
 		return trackMode;
 	}
 

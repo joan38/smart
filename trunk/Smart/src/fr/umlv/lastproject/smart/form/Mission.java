@@ -56,22 +56,22 @@ public final class Mission {
 	private boolean status = false;
 
 	private final SmartMapView mapView;
-	private Form form;
+	private final Form form;
 	private Survey survey;
 
 	/**
 	 * 
 	 * @param title
 	 *            of the mission
-	 * @param context
+	 * @param activity
 	 *            the context
 	 */
-	private Mission(String title, final MenuActivity context,
-			final SmartMapView mapview, Form f) {
+	private Mission(String title, final MenuActivity activity,
+			final SmartMapView mapview, Form form) {
 		this.title = title;
-		this.context = context;
+		this.context = activity;
 		this.mapView = mapview;
-		this.form = f;
+		this.form = form;
 
 		SelectedGeometryListener list = new SelectedGeometryListener() {
 
@@ -79,26 +79,26 @@ public final class Mission {
 			public void actionPerformed(Geometry g, GeometryLayer l) {
 				setSelectable(false);
 				mapview.invalidate();
-				context.createModifFormDialog(getForm(), g, l, Mission.this);
+				activity.createModifFormDialog(getForm(), g, l);
 				g.setSelected(false);
 			}
 		};
 
-		pointLayer = new GeometryLayer(context);
+		pointLayer = new GeometryLayer(activity);
 		pointLayer.setType(GeometryType.POINT);
 		pointLayer.setName(title + "_POINT");
 		pointLayer.setSymbology(new PointSymbology());
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
 
-		lineLayer = new GeometryLayer(context);
+		lineLayer = new GeometryLayer(activity);
 		lineLayer.setType(GeometryType.LINE);
 		lineLayer.setName(title + "_LINE");
 		lineLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.BLACK));
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
 
-		polygonLayer = new GeometryLayer(context);
+		polygonLayer = new GeometryLayer(activity);
 		polygonLayer.setType(GeometryType.POLYGON);
 		polygonLayer.setName(title + "_POLYGON");
 		polygonLayer.setSymbology(new PolygonSymbology(POLY_THICKNESS,
@@ -107,35 +107,23 @@ public final class Mission {
 		polygonLayer.addSelectedGeometryListener(list);
 
 		survey = new Survey(mapview);
-
 	}
 
-	/**
-	 * 
-	 * @param title
-	 * @param menuActivity
-	 * @param mapView2
-	 * @param f
-	 * @param missionPoint
-	 * @param missionLine
-	 * @param missionPolygon
-	 */
-	public Mission(String title, MenuActivity menuActivity,
-			SmartMapView mapView2, Form f, GeometryLayer missionPoint,
+	private Mission(String title, MenuActivity menuActivity,
+			SmartMapView mapView, Form form, GeometryLayer missionPoint,
 			GeometryLayer missionLine, GeometryLayer missionPolygon) {
-
 		this.title = title;
 		this.context = menuActivity;
-		this.mapView = mapView2;
-		this.form = f;
+		this.mapView = mapView;
+		this.form = form;
 
 		SelectedGeometryListener list = new SelectedGeometryListener() {
 
 			@Override
 			public void actionPerformed(Geometry g, GeometryLayer l) {
 				setSelectable(false);
-				mapView.invalidate();
-				context.createModifFormDialog(getForm(), g, l, Mission.this);
+				Mission.this.mapView.invalidate();
+				context.createModifFormDialog(getForm(), g, l);
 				g.setSelected(false);
 			}
 		};
@@ -143,20 +131,39 @@ public final class Mission {
 		pointLayer = missionPoint;
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
+
+		for (Geometry g : pointLayer.getGeometries()) {
+			if (g.getId() == -1) {
+				pointLayer.removeGeometry(g);
+			}
+		}
+
 		removeGeometryNotSave(pointLayer);
 
 		lineLayer = missionLine;
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
-		removeGeometryNotSave(lineLayer);
 
+		for (Geometry g : lineLayer.getGeometries()) {
+			if (g.getId() == -1) {
+				lineLayer.removeGeometry(g);
+			}
+		}
+
+		removeGeometryNotSave(lineLayer);
 		polygonLayer = missionPolygon;
 		polygonLayer.setSelectable(true);
 		polygonLayer.addSelectedGeometryListener(list);
+
+		for (Geometry g : polygonLayer.getGeometries()) {
+			if (g.getId() == -1) {
+				polygonLayer.removeGeometry(g);
+			}
+		}
+
 		removeGeometryNotSave(polygonLayer);
 
 		survey = new Survey(mapView);
-
 	}
 
 	/**
@@ -187,42 +194,40 @@ public final class Mission {
 	 * 
 	 * @param name
 	 *            of the mission
-	 * @param context
+	 * @param activity
 	 *            of the application
 	 * @param mapview
 	 *            of the mission
 	 * @return the new mission
 	 */
-	public static Mission createMission(String name, MenuActivity context,
-			SmartMapView mapview, Form f) {
-		mission = new Mission(name, context, mapview, f);
-		// ecriture en base
+	public static Mission createMission(String name, MenuActivity activity,
+			SmartMapView mapview, Form form) {
+		mission = new Mission(name, activity, mapview, form);
+
+		// Ecriture en base
 		DbManager dbm = new DbManager();
 		try {
-			dbm.open(context);
+			dbm.open(activity);
 			dbm.insertMission(new MissionRecord());
 			logger.log(Level.INFO, "Mission saved in database");
 		} catch (SmartException e) {
 			logger.log(Level.SEVERE,
 					"Mission unsaved in database " + e.getMessage());
-			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		dbm.close();
 
 		return mission;
 	}
 
-	public static Mission createMission(String mname,
-			MenuActivity menuActivity, SmartMapView mapView2, Form f,
-			GeometryLayer missionPoint, GeometryLayer missionLine,
-			GeometryLayer missionPolygon) {
+	public static Mission createMission(String name, MenuActivity activity,
+			SmartMapView mapView, Form form, GeometryLayer missionPoint,
+			GeometryLayer missionLine, GeometryLayer missionPolygon) {
 
-		mission = new Mission(mname, menuActivity, mapView2, f, missionPoint,
+		mission = new Mission(name, activity, mapView, form, missionPoint,
 				missionLine, missionPolygon);
-		// ecriture en base
 
 		return mission;
-
 	}
 
 	/**
@@ -242,7 +247,6 @@ public final class Mission {
 	 * @return status of the mission
 	 */
 	public boolean stopMission() {
-
 		DbManager dbManager = new DbManager();
 		try {
 			dbManager.open(context);
@@ -256,6 +260,7 @@ public final class Mission {
 		status = false;
 		setSelectable(false);
 		mission = null;
+
 		return status;
 	}
 
@@ -318,16 +323,16 @@ public final class Mission {
 		case LINE:
 			survey.startSurvey(lineLayer);
 			survey.addStopListeners(new SurveyStopListener() {
+
 				@Override
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 					setSelectable(true);
-
 				}
 			});
-
 			break;
+
 		case POINT:
 			survey.startSurvey(pointLayer);
 			survey.addStopListeners(new SurveyStopListener() {
@@ -336,11 +341,10 @@ public final class Mission {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 					setSelectable(true);
-
 				}
 			});
-
 			break;
+
 		case POLYGON:
 			survey.startSurvey(polygonLayer);
 			survey.addStopListeners(new SurveyStopListener() {
@@ -349,13 +353,12 @@ public final class Mission {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
 					setSelectable(true);
-
 				}
 			});
+			break;
 
-			break;
 		default:
-			break;
+			throw new IllegalStateException("Geometry not handled");
 		}
 	}
 
@@ -402,8 +405,12 @@ public final class Mission {
 	 * 
 	 * @return
 	 */
-	public boolean isStatus() {
+	public boolean isStarted() {
 		return status;
+	}
+
+	public static boolean isCreated() {
+		return (mission != null);
 	}
 
 	/**

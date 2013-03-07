@@ -16,6 +16,7 @@ import org.osmdroid.views.overlay.OverlayManager;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,7 +24,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -36,19 +36,16 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.data.DataImport;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
 import fr.umlv.lastproject.smart.dialog.AboutDialog;
-import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
-import fr.umlv.lastproject.smart.dialog.AlertCreateMissionDialog;
 import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
 import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
-import fr.umlv.lastproject.smart.dialog.AlertGPSTrackDialog;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
-import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
 import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
 import fr.umlv.lastproject.smart.dialog.AlertSettingInfoDialog;
@@ -56,8 +53,6 @@ import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
 import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
 import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
-import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
-import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.AlertPolygonTrackDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormEditedListener;
@@ -68,15 +63,9 @@ import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
-import fr.umlv.lastproject.smart.layers.PolygonGeometry;
-import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
-import fr.umlv.lastproject.smart.survey.Survey;
-import fr.umlv.lastproject.smart.survey.SurveyStopListener;
-import fr.umlv.lastproject.smart.utils.PolygonArea;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
-import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
@@ -94,25 +83,18 @@ public class MenuActivity extends Activity {
 	private MapController mapController;
 	private OverlayManager overlayManager;
 	private GPS gps;
-	private LocationManager locationManager;
 	private InfoOverlay infoOverlay;
 	private DirectedLocationOverlay directedLocationOverlay;
 	private View centerMap;
 	private boolean isMapTracked = true;
 	private GeoPoint lastPosition = new GeoPoint(0, 0);
 	private String formPath;
-	private boolean missionCreated = false;
-	private boolean trackStarted = false;
-	private boolean polygonTrackStarted = false;
-	private String missionName;
-	private GPSTrack gpsTrack=null;
-	private GPSTrack polygonTrack=null;
-	private AlertCreateMissionDialog missionDialog;
+	private GPSTrack gpsTrack = null;
+	private GPSTrack polygonTrack = null;
 	private Preferences pref;
-	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
-	private List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
-	private List<PolygonTrackListener> polygonTrackListeners = new ArrayList<PolygonTrackListener>();
-	private Mission mission;
+	private final List<MissionListener> missionListeners = new ArrayList<MissionListener>();
+	private final List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
+	private final List<PolygonTrackListener> polygonTrackListeners = new ArrayList<PolygonTrackListener>();
 	private Form form;
 	private Geometry geom;
 	private Object[] valuesList;
@@ -122,15 +104,15 @@ public class MenuActivity extends Activity {
 	private int heightIndex;
 	private Dialog dialog;
 	private GeometryLayer geometryLayer;
-	private MenuAction trackType;
+	private AlertDialog createMissionDialog;
 
-	private final Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger logger = SmartLogger.getLocator().getLogger();
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-
 		super.onSaveInstanceState(outState);
-		outState.putAll(BundleCreator.createBundle(mapView, missionCreated, trackStarted, gpsTrack, polygonTrackStarted, polygonTrack)) ;
+		outState.putAll(BundleCreator.createBundle(mapView, gpsTrack,
+				polygonTrack));
 		logger.log(Level.INFO, "Saving the application bundle");
 	}
 
@@ -157,25 +139,25 @@ public class MenuActivity extends Activity {
 		initMap();
 		initGps();
 
-		setTheme(pref.theme);
-
-
 		ImageView home = (ImageView) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				Intent homeActivity = new Intent(MenuActivity.this,
 						HomeActivity.class);
-				homeActivity.putExtra("missionCreated", missionCreated);
-				homeActivity.putExtra("trackStarted", trackStarted);
-				homeActivity.putExtra("polygonTrackStarted",
-						polygonTrackStarted);
+				homeActivity.putExtra("trackStarted", (gpsTrack == null ? false
+						: gpsTrack.isStarted()));
+				homeActivity.putExtra(
+						"polygonTrackStarted",
+						(polygonTrack == null ? false : polygonTrack
+								.isStarted()));
 				startActivityForResult(homeActivity, SmartConstants.HOME_VIEW);
 			}
 		});
 
 		ImageView layers = (ImageView) findViewById(R.id.layers);
 		layers.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				Intent layersActivity = new Intent(MenuActivity.this,
@@ -184,7 +166,7 @@ public class MenuActivity extends Activity {
 				layersActivity.putExtra("overlays", mapView.getListOverlay());
 
 				if (Mission.getInstance() != null
-						&& Mission.getInstance().isStatus()) {
+						&& Mission.getInstance().isStarted()) {
 					layersActivity.putExtra("mission", Mission.getInstance()
 							.getTitle());
 				} else {
@@ -208,23 +190,23 @@ public class MenuActivity extends Activity {
 		}
 		if (savedInstanceState != null) {
 			BundleCreator.loadPosition(savedInstanceState, mapView);
-			missionCreated = BundleCreator.loadMission(savedInstanceState,
-					mapView, this);
+			BundleCreator.loadMission(savedInstanceState, mapView, this);
 			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
 			BundleCreator.loadGeotiffs(savedInstanceState, mapView, this);
-			gpsTrack = BundleCreator.loadTrack(savedInstanceState, mapView, this, locationManager);
-			trackStarted = (gpsTrack == null ? false : gpsTrack.isStarted()) ;
-			for (GPSTrackListener l : gpsTrackListeners){
-				l.actionPerformed(trackStarted) ;
+			gpsTrack = BundleCreator.loadTrack(savedInstanceState, mapView,
+					this, gps.getLocationManager());
+			for (GPSTrackListener l : gpsTrackListeners) {
+				l.actionPerformed(gpsTrack.isStarted());
 			}
-			
-			/*polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState, mapView,Mission.getInstance().getPolygonLayer(), locationManager) ;
-			polygonTrackStarted = (polygonTrack == null ? false : polygonTrack.isStarted()) ;
-			for (PolygonTrackListener l : polygonTrackListeners){
-				l.actionPerformed(polygonTrackStarted) ;
-			}*/
 
-
+			/*
+			 * polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState,
+			 * mapView,Mission.getInstance().getPolygonLayer(), locationManager)
+			 * ; polygonTrackStarted = (polygonTrack == null ? false :
+			 * polygonTrack.isStarted()) ; for (PolygonTrackListener l :
+			 * polygonTrackListeners){ l.actionPerformed(polygonTrackStarted) ;
+			 * }
+			 */
 
 		}
 
@@ -306,10 +288,10 @@ public class MenuActivity extends Activity {
 	 */
 	public void initGps() {
 		logger.log(Level.INFO, "Init application GPS");
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		gps = new GPS(locationManager);
 
-		if (!gps.isEnabled(locationManager)) {
+		if (!gps.isEnabled()) {
 			final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
 					this);
 			gpsSettingDialog.show();
@@ -360,11 +342,11 @@ public class MenuActivity extends Activity {
 			break;
 
 		case 3:
-			if (!missionCreated) {
-				new AlertThemeDialog(this);
-			} else {
+			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 				Toast.makeText(this, "Stop the mission before",
 						Toast.LENGTH_LONG).show();
+			} else {
+				new AlertThemeDialog(this);
 			}
 			break;
 
@@ -395,12 +377,12 @@ public class MenuActivity extends Activity {
 			Integer index = (Integer) data.getSerializableExtra("position");
 			switch (requestCode) {
 			case SmartConstants.HOME_VIEW:
-				doAction(MenuAction.getFromId(index));
+				MenuAction.getFromId(index).doAction(this);
 				break;
 
 			case SmartConstants.LAYERS_VIEW:
 				ListOverlay listOverlay = (ListOverlay) data
-				.getSerializableExtra("overlays");
+						.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -415,7 +397,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-											.getName());
+									.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -426,12 +408,15 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
-
 				formPath = data.getData().getPath();
+
+				TextView pathTextView = (TextView) createMissionDialog
+						.findViewById(R.id.selectFormButton);
+				pathTextView.setText(data.getData().getPath());
+
 				logger.log(Level.INFO,
 						"Getting mission path from brower activity : "
 								+ formPath);
-				missionDialog.setPathForm(formPath);
 				break;
 
 			case SmartConstants.FORM_BROWSER_ACTIVITY:
@@ -443,7 +428,6 @@ public class MenuActivity extends Activity {
 				sendIntent.putExtra(Intent.EXTRA_STREAM, file);
 				startActivity(Intent.createChooser(sendIntent,
 						"Select E-Mail Application"));
-
 				break;
 
 			case SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY:
@@ -471,21 +455,21 @@ public class MenuActivity extends Activity {
 					mapView.invalidate();
 
 					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-					.show();
+							.show();
 				}
 				break;
 
-				// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-				// String shpPath = data.getData().getPath();
-				// GeometryLayer gl = DataImport.importShapeFile(this,
-				// shpPath) ;
-				// mapView.addGeometryLayer(gl);
-				// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
-				// mapView.invalidate();
-				//
-				// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-				// .show();
-				// break;
+			// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
+			// String shpPath = data.getData().getPath();
+			// GeometryLayer gl = DataImport.importShapeFile(this,
+			// shpPath) ;
+			// mapView.addGeometryLayer(gl);
+			// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+			// mapView.invalidate();
+			//
+			// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+			// .show();
+			// break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();
@@ -547,11 +531,11 @@ public class MenuActivity extends Activity {
 				if (oResult == null) {
 					final String error = (bundle
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
-									.get(HeightActivity.ERROR_RESULT).toString()
-									: getString(R.string.height_error);
-									Toast.makeText(this, error, Toast.LENGTH_LONG);
-									createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
-									return;
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+					return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
@@ -568,11 +552,11 @@ public class MenuActivity extends Activity {
 				if (oResult2 == null) {
 					final String error = (bundle2
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
-									.get(HeightActivity.ERROR_RESULT).toString()
-									: getString(R.string.height_error);
-									Toast.makeText(this, error, Toast.LENGTH_LONG);
-									createDialog(FORM_MODIFY_DIALOG, new Bundle());
-									return;
+							.get(HeightActivity.ERROR_RESULT).toString()
+							: getString(R.string.height_error);
+					Toast.makeText(this, error, Toast.LENGTH_LONG);
+					createDialog(FORM_MODIFY_DIALOG, new Bundle());
+					return;
 				}
 				final double heightValue2 = Double.parseDouble(oResult2
 						.toString());
@@ -590,13 +574,15 @@ public class MenuActivity extends Activity {
 					createShortcut(MenuAction.getFromId(i));
 				}
 			} else if (requestCode == SmartConstants.GPS_ACTIVITY) {
-				if (!gps.isEnabled(locationManager)) {
+				if (!gps.isEnabled()) {
 					logger.log(Level.WARNING, "GPS want to be enabled");
 					Toast.makeText(this, R.string.track_notstarted,
 							Toast.LENGTH_LONG).show();
 					return;
 				}
 
+				MenuAction trackType = (MenuAction) data
+						.getSerializableExtra("trackType");
 				switch (trackType) {
 				case GPS_TRACK:
 					if (gpsTrack == null) {
@@ -610,16 +596,13 @@ public class MenuActivity extends Activity {
 								l.actionPerformed(false);
 							}
 
-							trackStarted = false;
 							Toast.makeText(this, R.string.track_stop,
 									Toast.LENGTH_LONG).show();
-
 						} catch (IOException e) {
 							logger.log(Level.SEVERE, "Error on the track stop");
 							gpsTrack = null;
 							Toast.makeText(this, R.string.track_error,
 									Toast.LENGTH_LONG).show();
-							trackStarted = false;
 						}
 					}
 					break;
@@ -636,14 +619,12 @@ public class MenuActivity extends Activity {
 								l.actionPerformed(false);
 							}
 
-							polygonTrackStarted = false;
 							Toast.makeText(this, R.string.polygon_track_stoped,
 									Toast.LENGTH_LONG).show();
 						} catch (IOException e) {
 							polygonTrack = null;
 							Toast.makeText(this, R.string.track_error,
 									Toast.LENGTH_LONG).show();
-							polygonTrackStarted = false;
 						}
 					}
 					break;
@@ -662,9 +643,15 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	private void createShortcut(final MenuAction menuItem) {
+	private boolean createShortcut(final MenuAction menuItem) {
+		if (pref.shortcuts.contains(menuItem.getId())) {
+			return false;
+		}
+
 		pref.shortcuts.add(menuItem.getId());
 		showShortcut(menuItem);
+
+		return true;
 	}
 
 	private void showShortcut(final MenuAction menuAction) {
@@ -681,7 +668,7 @@ public class MenuActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				doAction(menuAction);
+				menuAction.doAction(MenuActivity.this);
 			}
 		});
 		shortcut.setOnLongClickListener(new OnLongClickListener() {
@@ -700,11 +687,11 @@ public class MenuActivity extends Activity {
 		switch (menuAction) {
 		case CREATE_MISSION:
 			if (Mission.getInstance() != null
-			&& Mission.getInstance().isStatus()) {
+					&& Mission.getInstance().isStarted()) {
 				Log.d("debug", (Mission.getInstance() + " " + Mission
-						.getInstance().isStatus()));
+						.getInstance().isStarted()));
 				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
-				                                               .getId()]);
+						.getId()]);
 			}
 
 			this.addMissionListener(new MissionListener() {
@@ -713,14 +700,13 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
-						                                               .getId()]);
+								.getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.CREATE_MISSION
-						                                               .getId()]);
+								.getId()]);
 						shortcutsView.invalidate();
 					}
-
 				}
 			});
 			break;
@@ -729,7 +715,7 @@ public class MenuActivity extends Activity {
 			if (gpsTrack != null && gpsTrack.isStarted()) {
 				Log.d("debug", gpsTrack + " " + gpsTrack.isStarted());
 				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
-				                                               .getId()]);
+						.getId()]);
 			}
 			this.addGPSTrackListener(new GPSTrackListener() {
 
@@ -737,11 +723,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
-						                                               .getId()]);
+								.getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.GPS_TRACK
-						                                               .getId()]);
+								.getId()]);
 						shortcutsView.invalidate();
 					}
 				}
@@ -774,298 +760,33 @@ public class MenuActivity extends Activity {
 		shortcutsView.invalidate();
 	}
 
-	private void doAction(MenuAction index) {
-		try {
-			switch (index) {
-			case CREATE_MISSION:
-				if (missionCreated) {
-					missionCreated = Mission.getInstance().stopMission();
-
-					for (MissionListener l : this.missionListeners) {
-						l.actionPerformed(false);
-					}
-
-					Toast.makeText(this,
-							getResources().getText(R.string.missionStop),
-							Toast.LENGTH_LONG).show();
-				} else {
-					missionDialog = new AlertCreateMissionDialog(this,
-							mapView.getListOverlay());
-				}
-				break;
-
-			case CREATE_FORM:
-				new AlertCreateFormDialog(this);
-				break;
-
-			case POINT_SURVEY:
-				if (Mission.getInstance() == null) {
-					logger.log(Level.WARNING,
-							"Impossible point survey : mission not created");
-					Toast.makeText(
-							this,
-							getResources()
-							.getText(R.string.noMissionInProgress),
-							Toast.LENGTH_LONG).show();
-				} else {
-					Mission.getInstance().startSurvey(GeometryType.POINT);
-					Toast.makeText(this,
-							getResources().getText(R.string.point_survey),
-							Toast.LENGTH_LONG).show();
-				}
-				break;
-
-			case POINT_SURVEY_POSITION:
-				if (Mission.getInstance() == null) {
-					logger.log(Level.WARNING,
-							"Impossible position point survey : mission not created");
-					Toast.makeText(
-							this,
-							getResources()
-							.getText(R.string.noMissionInProgress),
-							Toast.LENGTH_LONG).show();
-				} else {
-					Mission.getInstance().startSurvey(
-							new PointGeometry(
-									lastPosition.getLatitudeE6() / 1E6,
-									lastPosition.getLongitudeE6() / 1E6));
-				}
-				break;
-
-			case LINE_SURVEY:
-				if (Mission.getInstance() == null) {
-					logger.log(Level.WARNING,
-							"Impossible line survey : mission not created");
-					Toast.makeText(
-							this,
-							getResources()
-							.getText(R.string.noMissionInProgress),
-							Toast.LENGTH_LONG).show();
-				} else {
-					Mission.getInstance().startSurvey(GeometryType.LINE);
-					Toast.makeText(this,
-							getResources().getText(R.string.line_survey),
-							Toast.LENGTH_LONG).show();
-				}
-				break;
-
-			case POLYGON_SURVEY:
-				if (Mission.getInstance() == null) {
-					logger.log(Level.WARNING,
-							"Impossible polygon survey : mission not created");
-					Toast.makeText(
-							this,
-							getResources()
-							.getText(R.string.noMissionInProgress),
-							Toast.LENGTH_LONG).show();
-				} else {
-					Mission.getInstance().startSurvey(GeometryType.POLYGON);
-					Toast.makeText(this,
-							getResources().getText(R.string.polygon_survey),
-							Toast.LENGTH_LONG).show();
-				}
-				break;
-
-			case GPS_TRACK:
-				File trackfolder = new File(SmartConstants.TRACK_PATH);
-				trackfolder.mkdir();
-				if (!gps.isEnabled(locationManager)) {
-					final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
-							this);
-					trackType = MenuAction.GPS_TRACK;
-					gpsTrackDialog.show();
-					return;
-				}
-				if (gpsTrack == null) {
-					new AlertTrackDialog(this, mapView.getListOverlay());
-					break;
-				} else {
-					try {
-						gpsTrack.stopTrack();
-						gpsTrack = null;
-
-						for (GPSTrackListener l : this.gpsTrackListeners) {
-							l.actionPerformed(false);
-						}
-
-						trackStarted = false;
-						Toast.makeText(this, R.string.track_stop,
-								Toast.LENGTH_LONG).show();
-					} catch (IOException e) {
-						gpsTrack = null;
-						logger.log(Level.SEVERE, "Error while stopping track");
-						Toast.makeText(this, R.string.track_error,
-								Toast.LENGTH_LONG).show();
-						trackStarted = false;
-					}
-
-					trackStarted = false;
-					Toast.makeText(this, R.string.track_stop, Toast.LENGTH_LONG)
-					.show();
-				}
-				break;
-
-			case POLYGON_TRACK:
-				if (Mission.getInstance() == null) {
-					Toast.makeText(
-							this,
-							getResources()
-							.getText(R.string.noMissionInProgress),
-							Toast.LENGTH_LONG).show();
-				} else {
-					if (!gps.isEnabled(locationManager)) {
-						final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
-								this);
-						trackType = MenuAction.POLYGON_TRACK;
-						gpsTrackDialog.show();
-						return;
-					}
-					if (polygonTrack == null) {
-						new AlertPolygonTrackDialog(this);
-						Mission.getInstance().trackInProgress(true);
-						break;
-					} else {
-						try {
-							polygonTrack.stopTrack();
-							Mission.getInstance().trackInProgress(false);
-							polygonTrack = null;
-
-							for (PolygonTrackListener l : this.polygonTrackListeners) {
-								l.actionPerformed(false);
-							}
-
-							polygonTrackStarted = false;
-							Toast.makeText(this, R.string.polygon_track_stoped,
-									Toast.LENGTH_LONG).show();
-						} catch (IOException e) {
-							polygonTrack = null;
-
-							Toast.makeText(this, R.string.track_error,
-									Toast.LENGTH_LONG).show();
-							polygonTrackStarted = false;
-						}
-					}
-				}
-				break;
-
-			case IMPORT_KML_SHP:
-				Intent importKMLIntent = FileUtils.createGetContentIntent(
-						FileUtils.KML_SHP_TYPE,
-						Environment.getExternalStorageDirectory() + "");
-				startActivityForResult(importKMLIntent,
-						SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY);
-				break;
-
-				// case SmartConstants.IMPORT_SHAPE:
-				// Intent importSHPItent = FileUtils.createGetContentIntent(
-				// FileUtils.SHP_TYPE,
-				// Environment.getExternalStorageDirectory() + "");
-				// startActivityForResult(importSHPItent,
-				// SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-				// break;
-
-			case IMPORT_GEOTIFF:
-				Intent importTiffItent = FileUtils.createGetContentIntent(
-						FileUtils.TIF_TYPE,
-						Environment.getExternalStorageDirectory() + "");
-				startActivityForResult(importTiffItent,
-						SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY);
-				break;
-
-			case IMPORT_WMS:
-				final WMSDialog dialog = new WMSDialog(this);
-				dialog.show();
-				break;
-
-			case MEASURE:
-				AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(
-						this);
-				amrd.show();
-				break;
-
-			case EXPORT_MISSION:
-				MissionDialogUtils.showExportDialog(this);
-				break;
-
-			case EXPORT_FORM:
-				Intent intentForm = FileUtils.createGetContentIntent(
-						FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
-				startActivityForResult(intentForm,
-						SmartConstants.FORM_BROWSER_ACTIVITY);
-				break;
-
-			case DELETE_MISSION:
-				MissionDialogUtils.showDeleteDialog(this);
-				break;
-
-			case AREA_MEASURE:
-				if(Mission.getInstance() != null){
-					Mission.getInstance().setSelectable(false);
-				}
-				Log.d("AIRE", "SMART CONSTANT");
-				final Survey areaSurvey = new Survey(mapView);
-				final GeometryLayer areaLayer = new GeometryLayer(this);
-				areaLayer.setName("AREA_MEASURE");
-				areaLayer.setType(GeometryType.POLYGON);
-				areaLayer.setSymbology(new PolygonSymbology());
-				areaSurvey.addStopListeners(new SurveyStopListener() {
-
-					@Override
-					public void actionPerformed(Geometry g) {
-						if(Mission.getInstance() != null){
-							Mission.getInstance().setSelectable(true);
-						}
-						Log.d("AIRE", "STOP LISTENER");
-						final double result = PolygonArea
-								.getPolygonArea((PolygonGeometry) g) / 1E6;
-						areaSurvey.stop();
-						mapView.removeGeometryLayer(areaLayer);
-						final AlertMeasureResultDialog areaDialog = new AlertMeasureResultDialog(
-								MenuActivity.this, result, " km²");
-						areaDialog.show();
-
-					}
-				});
-				areaSurvey.startSurvey(areaLayer);
-				mapView.addGeometryLayer(areaLayer);
-				break;
-
-			default:
-				throw new IllegalStateException("MenuAction not handled");
-			}
-		} catch (SmartException e) {
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-		}
-	}
-
-	public void createGPSTrack(final String name, final TRACK_MODE trackMode) {
-		gpsTrack = new GPSTrack(trackMode, name, locationManager, mapView,
-				GeometryType.LINE);
+	public void createGPSTrack(final String name, final TrackMode trackMode) {
+		gpsTrack = new GPSTrack(trackMode, name, gps.getLocationManager(),
+				mapView, GeometryType.LINE);
 		gpsTrack.startTrack();
+
 		Toast.makeText(this, R.string.track_started, Toast.LENGTH_LONG).show();
+
 		for (GPSTrackListener l : this.gpsTrackListeners) {
 			l.actionPerformed(true);
 		}
-
-		trackStarted = true;
 	}
 
-	public void createPolygonTrack(final TRACK_MODE trackMode) {
-		polygonTrack = new GPSTrack(trackMode, missionName, locationManager,
-				mapView, GeometryType.POLYGON,Mission.getInstance().getPolygonLayer(), this.form, MenuActivity.this);
+	public void createPolygonTrack(final TrackMode trackMode) {
+		polygonTrack = new GPSTrack(trackMode,
+				Mission.getInstance().getTitle(), gps.getLocationManager(),
+				mapView, GeometryType.POLYGON, Mission.getInstance()
+						.getPolygonLayer(), this.form, MenuActivity.this);
 		polygonTrack.startTrack();
 		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
-		.show();
+				.show();
 		for (PolygonTrackListener l : this.polygonTrackListeners) {
 			l.actionPerformed(true);
 		}
-
-		polygonTrackStarted = true;
 	}
 
 	public void startMission(final String missionName) {
-		this.setMissionName(missionName);
 		form = new Form();
 		if (formPath != null) {
 			try {
@@ -1074,8 +795,7 @@ public class MenuActivity extends Activity {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
-		Mission.createMission(missionName, MenuActivity.this, mapView, form);
-		missionCreated = Mission.getInstance().startMission();
+		Mission.createMission(missionName, this, mapView, form).startMission();
 
 		for (MissionListener l : this.missionListeners) {
 			l.actionPerformed(true);
@@ -1084,14 +804,6 @@ public class MenuActivity extends Activity {
 		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getPointLayer());
-	}
-
-	public String getMissionName() {
-		return missionName;
-	}
-
-	public void setMissionName(final String missionName) {
-		this.missionName = missionName;
 	}
 
 	public void measure(boolean absolute) {
@@ -1121,6 +833,26 @@ public class MenuActivity extends Activity {
 		return this.mapView;
 	}
 
+	public GPSTrack getGpsTrack() {
+		return gpsTrack;
+	}
+
+	public void setCreateMissionDialog(AlertDialog createMissionDialog) {
+		this.createMissionDialog = createMissionDialog;
+	}
+
+	public GPSTrack getPolygonTrack() {
+		return polygonTrack;
+	}
+
+	public GeoPoint getLastPosition() {
+		return lastPosition;
+	}
+
+	public GPS getGps() {
+		return gps;
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -1145,11 +877,8 @@ public class MenuActivity extends Activity {
 		logger.log(Level.INFO, "tmp folder cleaned");
 		final List<File> files = FileUtils.getFileList(SmartConstants.TMP_PATH);
 		for (File file : files) {
-
 			file.delete();
-
 		}
-
 	}
 
 	private void cleanTIFFFolder() {
@@ -1161,13 +890,11 @@ public class MenuActivity extends Activity {
 				file.delete();
 			}
 		}
-
 	}
 
-	public void startHeightActivityForResult(Form form, Mission miss,
-			Geometry geom, Object[] valuesList, int heightIndex) {
+	public void startHeightActivityForResult(Form form, Geometry geom,
+			Object[] valuesList, int heightIndex) {
 		this.form = form;
-		this.mission = miss;
 		this.geom = geom;
 		this.valuesList = valuesList;
 		this.heightIndex = heightIndex;
@@ -1176,43 +903,38 @@ public class MenuActivity extends Activity {
 				SmartConstants.HEIGHT_ACTIVITY);
 	}
 
-	public void createFormDialog(Form form, Geometry g, Mission mission) {
+	public void createFormDialog(Form form, Geometry g) {
 		this.form = form;
-		this.mission = mission;
 		this.geom = g;
 		createDialog(FORM_DIALOG_ID, null);
-
 	}
 
 	private void createDialog(int id, Bundle bundle) {
 		if (dialog != null) {
 			dialog.dismiss();
 		}
-		if (id == FORM_DIALOG_ID) {
 
+		if (id == FORM_DIALOG_ID) {
 			// Simple Form Dialog
 			if (bundle == null) {
 				final FormDialog formDialog = new FormDialog(this, form, geom,
-						mission);
+						Mission.getInstance());
 				dialog = formDialog.create();
 				Log.d("TESTX", "CREATE DIALOG");
 				dialog.show();
 			}
 			// Retrieve what user already filled
 		} else if (id == FORM_FILLED_DIALOG_ID) {
-
 			if (bundle.get("height") != null) {
 				double height = bundle.getDouble("height");
 				valuesList[heightIndex] = height;
 			}
 
 			final FormDialog dialogFilled = new FormDialog(this, form, geom,
-					mission, valuesList);
+					Mission.getInstance(), valuesList);
 			this.dialog = dialogFilled.create();
 			dialog.show();
-
 		} else if (id == FORM_MODIFY_DIALOG) {
-
 			if (bundle == null) {
 				AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
 						this, this.form, this.geom, this.geometryLayer);
@@ -1221,7 +943,7 @@ public class MenuActivity extends Activity {
 					@Override
 					public void actionPerformed(Geometry g) {
 						g.setSelected(false);
-						mission.setSelectable(true);
+						Mission.getInstance().setSelectable(true);
 						mapView.invalidate();
 
 					}
@@ -1243,19 +965,29 @@ public class MenuActivity extends Activity {
 					@Override
 					public void actionPerformed(Geometry g) {
 						g.setSelected(false);
-						mission.setSelectable(true);
+						Mission.getInstance().setSelectable(true);
 						mapView.invalidate();
-
 					}
 				});
 				this.dialog = modifyDialog.create();
 				dialog.show();
 			}
-
 		}
-
 	}
 
+	public List<MissionListener> getMissionListeners() {
+		return missionListeners;
+	}
+
+	public List<GPSTrackListener> getGpsTrackListeners() {
+		return gpsTrackListeners;
+	}
+
+	public List<PolygonTrackListener> getPolygonTrackListeners() {
+		return polygonTrackListeners;
+	}
+
+	// TODO: A VIRER DANS LA CLASSE MISSION !
 	/**
 	 * 
 	 * @param listener
@@ -1306,7 +1038,6 @@ public class MenuActivity extends Activity {
 
 	public void startModifHeightActivityForResult(GeometryLayer layer,
 			Form form2, Geometry geom2, Object[] valuesList2, int heightIndex2) {
-
 		this.geom = geom2;
 		this.form = form2;
 		this.valuesList = valuesList2;
@@ -1317,12 +1048,10 @@ public class MenuActivity extends Activity {
 				SmartConstants.HEIGHT_MODIFY_ACTIVITY);
 	}
 
-	public void createModifFormDialog(Form form2, Geometry g, GeometryLayer l,
-			Mission m) {
-		this.form = form2;
+	public void createModifFormDialog(Form form, Geometry g, GeometryLayer l) {
+		this.form = form;
 		this.geometryLayer = l;
 		this.geom = g;
-		this.mission = m;
 		createDialog(FORM_MODIFY_DIALOG, null);
 	}
 
@@ -1332,5 +1061,4 @@ public class MenuActivity extends Activity {
 		System.gc();
 		super.onStop();
 	}
-
 }
