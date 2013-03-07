@@ -34,7 +34,7 @@ public class BundleCreator {
 		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOverlays());
 		BundleCreator.saveGeotiffs(b, mapView.getGeoTIFFOverlays());
 		BundleCreator.saveTrack(b, gpsTrack);
-		// BundleCreator.savePolygonTrack(b, polygonTrack);
+		BundleCreator.savePolygonTrack(b, polygonTrack);
 		return b;
 	}
 
@@ -315,9 +315,7 @@ public class BundleCreator {
 
 	public static void loadGeotiffs(Bundle savedInstance, SmartMapView map,
 			MenuActivity ctx) {
-
 		int count = savedInstance.getInt("GEOTIFFCOUNT");
-
 		for (int i = 0; i < count; i++) {
 			String path = savedInstance.getString("GEOTIFF" + i);
 			try {
@@ -330,7 +328,6 @@ public class BundleCreator {
 
 			}
 		}
-
 	}
 
 	public static void saveTrack(Bundle outState, GPSTrack gpsTrack) {
@@ -338,16 +335,11 @@ public class BundleCreator {
 		outState.putBoolean("GPSTRACKSTARTED", started);
 		if (!started)
 			return;
-
 		outState.putString("GPSTRACKNAME", gpsTrack.getName());
-
 		outState.putString("GPSTRACKMODE", gpsTrack.getTrackMode().name());
-
 		outState.putInt("GPSTRACKVALUE", gpsTrack.getTrackMode().getParameter());
-
 		int count = gpsTrack.getTrackPoints().size();
 		outState.putInt("GPSTRACKCOUNT", count);
-
 		for (int i = 0; i < count; i++) {
 			outState.putSerializable("GPSTRACKPOINT" + i, gpsTrack
 					.getTrackPoints().get(i));
@@ -355,7 +347,8 @@ public class BundleCreator {
 	}
 
 	public static GPSTrack loadTrack(Bundle savedInstanceState,
-			SmartMapView mapView, MenuActivity menuActivity, LocationManager lm) {
+			SmartMapView mapView, MenuActivity menuActivity,
+			LocationManager lm, MenuActivity activity) {
 		boolean started = savedInstanceState.getBoolean("GPSTRACKSTARTED");
 		if (!started)
 			return null;
@@ -377,7 +370,7 @@ public class BundleCreator {
 				layer = l;
 		}
 		GPSTrack track = new GPSTrack(mode, name, lm, mapView,
-				GeometryType.LINE, points, layer);
+				GeometryType.LINE, points, layer, activity);
 		track.startTrack();
 		return track;
 	}
@@ -388,18 +381,15 @@ public class BundleCreator {
 		outState.putBoolean("GPSTRACKPOLYGONSTARTED", started);
 		if (!started)
 			return;
-
 		outState.putString("GPSTRACKPOLYGONNAME", gpsTrack.getName());
-
 		outState.putString("GPSTRACKPOLYGONMODE", gpsTrack.getTrackMode()
 				.name());
-
 		outState.putInt("GPSTRACKPOLYGONVALUE", gpsTrack.getTrackMode()
 				.getParameter());
-
 		int count = gpsTrack.getTrackPoints().size();
 		outState.putInt("GPSTRACKPOLYGONCOUNT", count);
-
+		Mission.getInstance().getPolygonLayer()
+				.removeGeometry(gpsTrack.getGeometry());
 		for (int i = 0; i < count; i++) {
 			outState.putSerializable("GPSTRACKPOLYGONPOINT" + i, gpsTrack
 					.getTrackPoints().get(i));
@@ -407,14 +397,13 @@ public class BundleCreator {
 	}
 
 	public static GPSTrack loadPolygonTrack(Bundle savedInstanceState,
-			SmartMapView mapView, GeometryLayer layer, LocationManager lm) {
+			SmartMapView mapView, GeometryLayer layer, LocationManager lm,
+			MenuActivity activity) {
 		// TODO Auto-generated method stub
-
 		boolean started = savedInstanceState
 				.getBoolean("GPSTRACKPOLYGONSTARTED");
 		if (!started)
 			return null;
-
 		String name = savedInstanceState.getString("GPSTRACKPOLYGONNAME");
 		String modeName = savedInstanceState.getString("GPSTRACKPOLYGONMODE");
 		int modeValue = savedInstanceState.getInt("GPSTRACKPOLYGONVALUE");
@@ -426,12 +415,10 @@ public class BundleCreator {
 			points.add((TrackPoint) savedInstanceState
 					.getSerializable("GPSTRACKPOLYGONPOINT" + i));
 		}
-
 		GPSTrack track = new GPSTrack(mode, name, lm, mapView,
-				GeometryType.POLYGON, points, layer);
-		track.startTrack();
+				GeometryType.POLYGON, points, layer, activity);
 
+		track.startTrack();
 		return track;
 	}
-
 }

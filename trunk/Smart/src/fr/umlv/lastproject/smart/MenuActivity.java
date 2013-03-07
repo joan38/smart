@@ -194,19 +194,20 @@ public class MenuActivity extends Activity {
 			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
 			BundleCreator.loadGeotiffs(savedInstanceState, mapView, this);
 			gpsTrack = BundleCreator.loadTrack(savedInstanceState, mapView,
-					this, gps.getLocationManager());
+					this, gps.getLocationManager(), this);
 			for (GPSTrackListener l : gpsTrackListeners) {
 				l.actionPerformed(gpsTrack.isStarted());
 			}
-
-			/*
-			 * polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState,
-			 * mapView,Mission.getInstance().getPolygonLayer(), locationManager)
-			 * ; polygonTrackStarted = (polygonTrack == null ? false :
-			 * polygonTrack.isStarted()) ; for (PolygonTrackListener l :
-			 * polygonTrackListeners){ l.actionPerformed(polygonTrackStarted) ;
-			 * }
-			 */
+			if (Mission.getInstance() != null) {
+				polygonTrack = BundleCreator.loadPolygonTrack(
+						savedInstanceState, mapView, Mission.getInstance()
+								.getPolygonLayer(), gps.getLocationManager(),
+						this);
+			}
+			for (PolygonTrackListener l : polygonTrackListeners) {
+				l.actionPerformed(polygonTrack == null ? false : polygonTrack
+						.isStarted());
+			}
 
 		}
 
@@ -368,11 +369,6 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
-			// ArrayList<Integer> shortcuts = data
-			// .getIntegerArrayListExtra("shortcut");
-			// for (Integer i : shortcuts) {
-			// createShortcut(MenuAction.getFromId(i));
-			// }
 
 			Integer index = (Integer) data.getSerializableExtra("position");
 			switch (requestCode) {
@@ -384,15 +380,7 @@ public class MenuActivity extends Activity {
 				ListOverlay listOverlay = (ListOverlay) data
 						.getSerializableExtra("overlays");
 
-				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
-				// "layers");
-
 				if ((Boolean) data.getSerializableExtra("editSymbo")) {
-					// mapView.setReorderedLayers(listOverlay);
-					// GeometryLayer layer = (GeometryLayer)
-					// mapView.getOverlays()
-					// .get((String) data
-					// .getSerializableExtra("symboToEdit"));
 					GeometryLayer layer = (GeometryLayer) mapView
 							.getOverlay(listOverlay
 									.get((Integer) data
@@ -458,18 +446,6 @@ public class MenuActivity extends Activity {
 							.show();
 				}
 				break;
-
-			// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-			// String shpPath = data.getData().getPath();
-			// GeometryLayer gl = DataImport.importShapeFile(this,
-			// shpPath) ;
-			// mapView.addGeometryLayer(gl);
-			// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
-			// mapView.invalidate();
-			//
-			// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-			// .show();
-			// break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();

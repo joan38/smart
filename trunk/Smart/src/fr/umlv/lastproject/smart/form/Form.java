@@ -48,7 +48,7 @@ public class Form implements Serializable {
 	private static final long serialVersionUID = -30424477427478579L;
 	private String title;
 	private List<Field> fieldsList;
-	
+
 	final static Logger logger = SmartLogger.getLocator().getLogger();
 
 	private static final String VALUESTAG = "values";
@@ -221,7 +221,7 @@ public class Form implements Serializable {
 									.equalsIgnoreCase(TITLETAG)) {
 								title = xpp.getAttributeValue(i).replace(" ",
 										"");
-							}else if (xpp.getAttributeName(i)
+							} else if (xpp.getAttributeName(i)
 									.equalsIgnoreCase(VALUESTAG)) {
 								values = xpp.getAttributeValue(i);
 							}
@@ -262,10 +262,10 @@ public class Form implements Serializable {
 
 				eventype = xpp.next();
 			}
-			logger.log(Level.INFO,"Form reading successfull");
+			logger.log(Level.INFO, "Form reading successfull");
 			return form;
 		} catch (IOException e) {
-			logger.log(Level.SEVERE,"Unable to import the form "+path);
+			logger.log(Level.SEVERE, "Unable to import the form " + path);
 			throw new FormIOException("Unable to import the form " + path, e);
 		} catch (XmlPullParserException e) {
 			throw new FormIOException("Unable to import the form " + path, e);
@@ -359,10 +359,12 @@ public class Form implements Serializable {
 			transformer.transform(source, result);
 			logger.log(Level.INFO, "Form writting successfull");
 		} catch (ParserConfigurationException e) {
-			logger.log(Level.SEVERE, "Unable to export the form "+e.getMessage());
+			logger.log(Level.SEVERE,
+					"Unable to export the form " + e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		} catch (TransformerException e) {
-			logger.log(Level.SEVERE, "Unable to export the form "+e.getMessage());
+			logger.log(Level.SEVERE,
+					"Unable to export the form " + e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		}
 	}
