@@ -113,6 +113,7 @@
     <string name="defaultForm">Défaut</string>
     <string name="othertForm">Autre</string>
     <string name="missionExported">Mission exporté</string>
+    <string name="polygon_track_text_name">Attention : pendant le relevé d\'une trace polygone vous pouvez continuer à faire d\'autre relevé polygone mais vous ne pourrez pas les éditer avant d\'avoir arrêté la trace polygone.</string>
     <string name="track_name_missing">Saisir un nom pour la trace</string>
     <string name="track_param_missing">Saisir un paramètre pour le mode sélectionné</string>
     <string name="track_param_false">Le paramètre doit être un nombre entier</string>

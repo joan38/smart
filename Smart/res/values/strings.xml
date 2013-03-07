@@ -111,6 +111,7 @@
     <string name="defaultForm">Default</string>
     <string name="othertForm">Other</string>
     <string name="missionExported">Mission exported</string>
+    <string name="polygon_track_text_name">Warning : during a polygon track you can continue to do some polygon survey but you can\'t edit them before stop the track.</string>
     <string name="track_text_name">Enter a name for this track</string>
     <string name="track_text_param">Enter a value for the mode selected </string>
     <string name="track_radio_time">Time (s)</string>
@@ -131,7 +132,7 @@
     <string name="form_title">Form</string>
     <string name="MeasureTitle">Measure</string>
     <string name="MeasureRelative">Relative to your position</string>
-    <string name="MeasureAbsolute">Beetween two points on the 	 map</string>
+    <string name="MeasureAbsolute">Beetween two points on the map</string>
     <string name="MeasureRelativeText">Select a point on the map</string>
     <string name="MeasureAbsoluteText">Select two points on the map</string>
     <string name="field_name_already_used">Name already used</string>
@@ -191,6 +192,9 @@
     <string name="tiff_progress_title">Please wait</string>
     
     <string name="survayError">Error : survey don\'t save</string>
+
+    <string name="cheatcode1">geom2013</string>
+
     <string name="vector_progress">Importing vector data</string>
     <string name="vector_progress_title">Please wait</string>
 

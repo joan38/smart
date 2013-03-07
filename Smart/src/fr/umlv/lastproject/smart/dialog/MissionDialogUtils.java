@@ -102,6 +102,12 @@ public final class MissionDialogUtils {
 					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
 							false);
 				} else {
+					if (s.toString().equals(
+							activity.getResources().getString(
+									R.string.cheatcode1))) {
+						final AboutDialog about = new AboutDialog(activity);
+						about.show();
+					}
 					DbManager dbManager = new DbManager();
 					try {
 						dbManager.open(activity);
