@@ -9,9 +9,9 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#6F000000" >
+        android:background="#11000000">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/layers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
