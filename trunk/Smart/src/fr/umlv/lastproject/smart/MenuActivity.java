@@ -127,7 +127,7 @@ public class MenuActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			return;
 		}
-
+		// TODO a supprr
 		setTheme(pref.theme);
 
 		File f = new File(SmartConstants.APP_PATH);
