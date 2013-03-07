@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fr.umlv.lastproject.smart.utils.SmartConstants;
-import fr.umlv.lastproject.smart.utils.SmartLogger;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -19,6 +17,8 @@ import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.form.CreateFormActivity;
 import fr.umlv.lastproject.smart.form.Form;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
  * This class is used to define the name of form to create
@@ -27,9 +27,8 @@ import fr.umlv.lastproject.smart.form.Form;
  * 
  */
 public class AlertCreateFormDialog extends AlertDialog.Builder {
-	
-	final Logger logger = SmartLogger.getLocator().getLogger();
 
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Constructor
@@ -53,17 +52,17 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = setPositiveButton(R.string.validate,
 				new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				logger.log(Level.INFO, "Creation of form in progress");
-				Intent intent = new Intent(menu,
-						CreateFormActivity.class);
-				intent.putExtra("form", new Form(et.getText()
-						.toString()));
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						logger.log(Level.INFO, "Creation of form in progress");
+						Intent intent = new Intent(menu,
+								CreateFormActivity.class);
+						intent.putExtra("form", new Form(et.getText()
+								.toString()));
 
-				menu.startActivity(intent);
-			}
-		}).setNegativeButton(R.string.cancel, new OnClickListener() {
+						menu.startActivity(intent);
+					}
+				}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
@@ -73,7 +72,6 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 
 		dialog.show();
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
 
 		et.addTextChangedListener(new TextWatcher() {
 
@@ -98,12 +96,13 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 					File folder = new File(SmartConstants.FORM_PATH
 							+ et.getText().toString() + ".form");
 					if (folder.exists()) {
-						et.setError(menu.getResources().getString(R.string.invalid));
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-								false);
+						et.setError(menu.getResources().getString(
+								R.string.invalid));
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+								.setEnabled(false);
 					} else {
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-								true);
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+								.setEnabled(true);
 					}
 				}
 			}

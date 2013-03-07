@@ -24,6 +24,9 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class AlertSymbologyDialog extends AlertDialog.Builder {
 
+	private static final int SPINNER_WIDTH = 200;
+	private static final int SIZE = 20;
+
 	public AlertSymbologyDialog(final MenuActivity menu,
 			final GeometryLayer layer, final LayerItem layerItem) {
 		super(menu);
@@ -41,7 +44,7 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 
 		final Spinner spinner = (Spinner) symbologyDialog
 				.findViewById(R.id.colorSpinner);
-		spinner.setMinimumWidth(200);
+		spinner.setMinimumWidth(SPINNER_WIDTH);
 		List<? extends Map<String, ?>> colors = new LinkedList<Map<String, ?>>();
 		for (int i = 0; i < SmartConstants.getColors().length; i++) {
 			colors.add(null);
@@ -54,7 +57,7 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 		final Spinner tailleSpinner = (Spinner) symbologyDialog
 				.findViewById(R.id.tailleSpinner);
 		final List<Integer> tailles = new LinkedList<Integer>();
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= SIZE; i++) {
 			tailles.add(i);
 		}
 		ArrayAdapter<Integer> tailleAdapter = new ArrayAdapter<Integer>(menu,
@@ -107,8 +110,6 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 						layer.setSymbology(new PointSymbology(taille,
 								SmartConstants.getColors()[positionColor],
 								PointSymbologieType.getFromId(positionShape)));
-						// layer.editSymbology(taille,
-						// SmartConstants.colors[positionColor]);
 						layerItem.setOverview(layer.getOverview());
 						menu.getMapView().invalidate();
 
