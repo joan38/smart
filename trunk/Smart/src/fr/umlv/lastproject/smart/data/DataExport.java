@@ -68,7 +68,7 @@ public final class DataExport {
 				}
 
 				for (PointRecord point : geometry.getPointsRecord()) {
-					line.append(point.getX()).append(" ").append(point.getY());
+					line.append(point.getY()).append(" ").append(point.getX());
 					/*
 					 * line.append(" ").append( (point.getZ() == -1.0 ? 0 :
 					 * point.getZ()));
@@ -79,8 +79,12 @@ public final class DataExport {
 				if (geometry.getType() == GeometryType.POLYGON) {
 					// Add the first point at the end
 					PointRecord point = geometry.getPointsRecord().get(0);
-					line.append(",").append(point.getX()).append(" ")
-							.append(point.getY());
+					line.append(",").append(point.getY()).append(" ")
+							.append(point.getX());
+					/*
+					 * line.append(" ").append( (point.getZ() == -1.0 ? 0 :
+					 * point.getZ()));
+					 */
 					line.append(")");
 				}
 				line.append(")");
