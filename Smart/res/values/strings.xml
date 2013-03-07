@@ -106,6 +106,7 @@
     <string name="mission">Mission</string>
     <string name="export_mission">Export mission</string>
     <string name="delete_mission">Delete mission</string>
+    <string name="delete_survey">Delete survey</string>
     <string name="export_form">Export Form</string>
     <string name="defaultForm">Default</string>
     <string name="othertForm">Other</string>
@@ -143,6 +144,7 @@
     <string name="field_error_min_max">Error : Min > Max</string>
     <string name="invalid">Invalid</string>
     <string name="sure">Delete mission(s) ?</string>
+    <string name="sureSurvey">Delete survey ?</string>
     <string name="result">Result</string>
     <string name="menuFunctionalitiesTitle">Functionalities menu</string>
     <string name="menuLayersTitle">Layers managing</string>
