@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.umlv.lastproject.smart.SmartMapView;
+import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryLayerDoubleTapListener;
@@ -59,6 +60,9 @@ public class Survey {
 		if (this.geometryLayer != null) {
 			stop();
 		}
+
+		Mission.getInstance().setSelectable(false);
+
 		geometryLayer = layer;
 		geometryLayer.setEditable(true);
 
@@ -188,6 +192,7 @@ public class Survey {
 
 		stopListeners.clear();
 		lastGeometry = null;
+		Mission.getInstance().setSelectable(true);
 
 	}
 }
