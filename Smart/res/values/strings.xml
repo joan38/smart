@@ -183,13 +183,15 @@
     <string name="track_started">Track is started!</string>
     <string name="track_stop">Track is stoped!</string>
     <string name="polygon_track_started">Polygon track is started</string>
-    <string name="polygon_track_stoped">Polygon track is stoped</string>
+    <string name="polygon_track_stoped">Polygon track is stopped</string>
     <string name="point_survey">Tap to make a point</string>
     <string name="line_survey">Tap to make some points and double-tap to finish the line</string>
     <string name="polygon_survey">Tap to make some points and double-tap to close the polygon</string>
-    <string name="tiff_progress">Zipping archive.</string>
-    <string name="tiff_progress_title">Please wait.</string>
+    <string name="tiff_progress">Zipping archive</string>
+    <string name="tiff_progress_title">Please wait</string>
     
     <string name="survayError">Error : survey don\'t save</string>
+    <string name="vector_progress">Importing vector data</string>
+    <string name="vector_progress_title">Please wait</string>
 
 </resources>

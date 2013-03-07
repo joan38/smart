@@ -188,5 +188,7 @@
     <string name="tiff_progress_title">Veuillez patienter.</string>
     
     <string name="survayError">Erreur : relevé non enregistré</string>
+    <string name="vector_progress">Import des données vectorielles</string>
+    <string name="vector_progress_title">Veuillez patienter.</string>
 
 </resources>

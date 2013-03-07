@@ -135,7 +135,11 @@ public class LayersActivity extends ListActivity {
 
 		@Override
 		public int startDragPosition(MotionEvent ev) {
+
 			int res = super.dragHandleHitPosition(ev);
+			if (adapter.isEmpty()) {
+				return DragSortController.MISS;
+			}
 			itemPosition = res;
 			CheckBox check = (CheckBox) findViewById(R.id.layer_check);
 			ImageView image = (ImageView) findViewById(R.id.layer_symbo);
