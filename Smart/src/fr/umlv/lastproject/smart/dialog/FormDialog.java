@@ -556,8 +556,8 @@ public class FormDialog extends AlertDialog.Builder {
 
 						// Intent intent = new Intent(c, PictureActivity.class);
 
-						menuActivity.startHeightActivityForResult(form,
-								mission, geom, valuesList, heightIndex);
+						menuActivity.startHeightActivityForResult(form, geom,
+								valuesList, heightIndex);
 
 					}
 				});
@@ -782,9 +782,8 @@ public class FormDialog extends AlertDialog.Builder {
 					public void onClick(View v) {
 
 						// Intent intent = new Intent(c, PictureActivity.class);
-						c.startHeightActivityForResult(form, mission, geom,
-								valuesList, heightIndex);
-
+						c.startHeightActivityForResult(form, geom, valuesList,
+								heightIndex);
 					}
 				});
 				LinearLayout heightLayout = new LinearLayout(c);

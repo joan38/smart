@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.GPSTrack.TRACK_MODE;
+import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
 import fr.umlv.lastproject.smart.ListOverlay;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
@@ -57,7 +57,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 						final RadioButton radioButton = (RadioButton) alertTrackView
 								.findViewById(radioGroup
 										.getCheckedRadioButtonId());
-						final TRACK_MODE trackMode = TRACK_MODE
+						final TrackMode trackMode = TrackMode
 								.valueOf(radioButton.getTag().toString());
 						final Object oName = trackName.getText();
 						if (oName == null) {
@@ -101,8 +101,6 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -146,15 +144,11 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override

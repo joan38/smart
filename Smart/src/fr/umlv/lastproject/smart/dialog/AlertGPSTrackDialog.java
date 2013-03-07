@@ -1,10 +1,12 @@
 package fr.umlv.lastproject.smart.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import fr.umlv.lastproject.smart.MenuActivity;
+import android.os.Bundle;
+import fr.umlv.lastproject.smart.MenuAction;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
@@ -21,7 +23,7 @@ public class AlertGPSTrackDialog extends AlertDialog.Builder {
 	 * 
 	 * @param menu
 	 */
-	public AlertGPSTrackDialog(final MenuActivity menu) {
+	public AlertGPSTrackDialog(final Activity menu, final MenuAction trackType) {
 		super(menu);
 		setTitle(R.string.gpsCompulsory);
 		setMessage(R.string.gpsTrackMessage);
@@ -40,11 +42,12 @@ public class AlertGPSTrackDialog extends AlertDialog.Builder {
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent(
 						android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				Bundle extras = new Bundle();
+				extras.putSerializable("trackType", trackType);
+				intent.putExtras(extras);
 				dialog.dismiss();
 				menu.startActivityForResult(intent, SmartConstants.GPS_ACTIVITY);
-
 			}
 		});
 	}
-
 }

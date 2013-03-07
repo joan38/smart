@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
+import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
@@ -54,7 +55,6 @@ public class HomeActivity extends Activity {
 		logger.log(Level.INFO, "Functionalities menu opened");
 
 		// Retry the mission status
-		boolean enabled = getIntent().getExtras().getBoolean("missionCreated");
 		boolean trackStarted = getIntent().getExtras().getBoolean(
 				"trackStarted");
 		boolean polygonTrackStarted = getIntent().getExtras().getBoolean(
@@ -70,7 +70,7 @@ public class HomeActivity extends Activity {
 
 			switch (MenuAction.getFromId(i)) {
 			case CREATE_MISSION:
-				if (enabled) {
+				if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 					item = new ListViewItem(R.drawable.stopmission,
 							getString(R.string.stopMission));
 				} else {
