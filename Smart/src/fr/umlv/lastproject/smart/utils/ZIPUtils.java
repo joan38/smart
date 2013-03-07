@@ -83,11 +83,8 @@ public final class ZIPUtils {
 
 				inputStream = new FileInputStream(file);
 				origin = new BufferedInputStream(inputStream, BUFFER);
-				Log.d("TEST2", "file zip : " + file.toString());
 				entry = new ZipEntry(rootFolder + file.split(rootFolder)[1]);
-
 				out.putNextEntry(entry);
-				Log.v("TEST2", "Adding: " + entry);
 
 				int count;
 				while ((count = origin.read(data, 0, BUFFER)) != -1) {
@@ -166,7 +163,6 @@ public final class ZIPUtils {
 					x = pair.first;
 					y = pair.second;
 				} catch (Exception e) {
-					Log.d("TESTX", "EXCEPTION METADATA");
 					y = -1;
 					break;
 				}
@@ -200,9 +196,6 @@ public final class ZIPUtils {
 			BoundingBox box = tile2boundingBox(x, y, minZoom);
 			boundingBox = new BoundingBoxE6(box.north, box.east, box.south,
 					box.west);
-			Log.d("TESTX", "X : " + x + " / Y : " + y + " / zoom : " + minZoom);
-			Log.d("TESTX", "North : " + box.north + " / EAST : " + box.east
-					+ " / SOUTH : " + box.south + " / WEST : " + box.west);
 		}
 
 		metaData[1] = extension;
@@ -216,7 +209,6 @@ public final class ZIPUtils {
 
 	private static Pair<Integer, Integer> searchBoundingBox(
 			File tileDirectories, final String extension) throws Exception {
-		Log.d("TESTX", "SEARCH BOUNDING BOX");
 		File[] dirs = tileDirectories.listFiles(new FileFilter() {
 
 			@Override
@@ -229,7 +221,6 @@ public final class ZIPUtils {
 		});
 
 		for (File dir : dirs) {
-			Log.d("TESTX", dir.getPath());
 			if (dir.isDirectory()) {
 				File[] tiles = dir.listFiles(new FileFilter() {
 
@@ -247,9 +238,7 @@ public final class ZIPUtils {
 							.lastIndexOf('/') + 1);
 					String tileNameWithoutExtensionY = tileNameWithExtensionY
 							.split(extension)[0];
-					Log.d("TESTX", "plop : " + tileNameWithExtensionY);
-					Log.d("TESTX", "plop : " + tileNameWithoutExtensionY);
-					Log.d("TESTX", "plop : " + extension);
+
 					String tileX = dir.getPath();
 					String tileNameWithoutExtensionX = tileX.substring(tileX
 							.lastIndexOf("/") + 1);
@@ -326,7 +315,7 @@ public final class ZIPUtils {
 		bb.south = tile2lat(y + 1, zoom);
 		bb.west = tile2lon(x, zoom);
 		bb.east = tile2lon(x + 1, zoom);
-		getTileNumber(bb.north, bb.west, zoom);
+		// getTileNumber(bb.north, bb.west, zoom);
 		return bb;
 	}
 
@@ -340,15 +329,14 @@ public final class ZIPUtils {
 		return Math.toDegrees(Math.atan(Math.sinh(Math.abs(n))));
 	}
 
-	public static void getTileNumber(final double lat, final double lon,
-			final int zoom) {
-		int xtile = (int) Math.floor((lon + 180) / 360 * (1 << zoom));
-		int ytile = (int) Math
-				.floor((1 - Math.log(Math.tan(Math.toRadians(lat)) + 1
-						/ Math.cos(Math.toRadians(lat)))
-						/ Math.PI)
-						/ 2 * (1 << zoom));
-		Log.d("", "" + zoom + "/" + xtile + "/" + ytile);
-	}
+	// public static void getTileNumber(final double lat, final double lon,
+	// final int zoom) {
+	// int xtile = (int) Math.floor((lon + 180) / 360 * (1 << zoom));
+	// int ytile = (int) Math
+	// .floor((1 - Math.log(Math.tan(Math.toRadians(lat)) + 1
+	// / Math.cos(Math.toRadians(lat)))
+	// / Math.PI)
+	// / 2 * (1 << zoom));
+	// }
 
 }

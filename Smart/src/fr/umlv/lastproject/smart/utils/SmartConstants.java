@@ -49,7 +49,7 @@ public final class SmartConstants {
 	public static final String LOG_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/SMART/Log/";
 
-	public static int[] colors = new int[] { Color.BLACK,
+	private static int[] colors = new int[] { Color.BLACK,
 			Color.rgb(100, 149, 237), Color.rgb(0, 0, 128),
 			Color.rgb(238, 203, 173), Color.rgb(34, 139, 34),
 			Color.rgb(255, 140, 0), Color.rgb(152, 251, 152),
@@ -57,7 +57,7 @@ public final class SmartConstants {
 			Color.rgb(49, 79, 79), Color.rgb(139, 69, 19) };
 
 	// Icons array for functionalities list
-	public static int[] icons = { R.drawable.startmission,
+	private static int[] icons = { R.drawable.startmission,
 			R.drawable.createform, R.drawable.pointsurvey,
 			R.drawable.pointsurvey_position, R.drawable.linesurvey,
 			R.drawable.polygonsurvey, R.drawable.startpolygontrack,
@@ -67,11 +67,17 @@ public final class SmartConstants {
 			R.drawable.exportform, R.drawable.deletemission,
 			R.drawable.stopmission, R.drawable.stopgpstrack,
 			R.drawable.stoppolygontrack };
-	
-	public static int[] shapeSymbology = { R.drawable.circle,
-		R.drawable.square };
+
+	public static int[] shapeSymbology = { R.drawable.circle, R.drawable.square };
 
 	private SmartConstants() {
 	}
 
+	public static int[] getIcons() {
+		return icons;
+	}
+
+	public static int[] getColors() {
+		return colors;
+	}
 }
