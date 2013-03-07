@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.DirectedLocationOverlay;
@@ -62,6 +63,7 @@ import fr.umlv.lastproject.smart.form.MissionListener;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.layers.Layer;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
@@ -381,6 +383,26 @@ public class MenuActivity extends Activity {
 				ListOverlay listOverlay = (ListOverlay) data
 						.getSerializableExtra("overlays");
 
+				final Bundle extras = data.getExtras();
+				Object oZoomTo = extras.get("zoomTo");
+				if (oZoomTo != null) {
+
+					try {
+						final Layer layer = mapView.getLayer(listOverlay
+								.get(Integer.parseInt(oZoomTo.toString())));
+						mapView.zoomToBoundingBox(layer.getExtent()
+								.getBoundingBox());
+						// TODO set zoom
+						if (layer.getExtent().getZoom() != -1) {
+							mapView.getController().setZoom(
+									layer.getExtent().getZoom());
+						}
+					} catch (Exception e) {
+						//
+					}
+
+				}
+
 				if ((Boolean) data.getSerializableExtra("editSymbo")) {
 					GeometryLayer layer = (GeometryLayer) mapView
 							.getOverlay(listOverlay
@@ -420,32 +442,96 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY:
-				String path = data.getData().getPath();
-				String extension = FileUtils.getExtension(path);
-				if (extension.equalsIgnoreCase(".kml")) {
-					try {
-						mapView.addGeometryLayers(DataImport.importKml(this,
-								path));
-						Toast.makeText(this, R.string.kmlImport,
-								Toast.LENGTH_SHORT).show();
-					} catch (XmlPullParserException e) {
-						Toast.makeText(this, R.string.kmlParseError,
-								Toast.LENGTH_SHORT).show();
-					} catch (IOException e) {
-						Toast.makeText(this, R.string.kmlReadError,
-								Toast.LENGTH_SHORT).show();
-						e.printStackTrace();
-					}
-				} else if (extension.equalsIgnoreCase(".shp")) {
-					GeometryLayer gl = DataImport.importShapeFile(this, path);
-					mapView.addGeometryLayer(gl);
-					mapView.getController().setCenter(
-							gl.getExtent().getBoundingBox().getCenter());
-					mapView.invalidate();
+				final String path = data.getData().getPath();
+				final String extension = FileUtils.getExtension(path);
+				final ProgressDialog progressDialogKmlShp = ProgressDialog
+						.show(this, getString(R.string.vector_progress_title),
+								getString(R.string.vector_progress));
 
-					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-							.show();
-				}
+				logger.log(Level.INFO, "Getting vector data :" + path);
+				final Thread vectorThread = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						List<GeometryLayer> geometryLayersToImport = new ArrayList<GeometryLayer>();
+						int err = R.string.kmlParseError;
+						int succ = R.string.kmlImport;
+						if (extension.equalsIgnoreCase(".kml")) {
+							try {
+								geometryLayersToImport = DataImport.importKml(
+										MenuActivity.this, path);
+								succ = R.string.kmlImport;
+
+							} catch (XmlPullParserException e) {
+								err = R.string.kmlParseError;
+
+							} catch (IOException e) {
+								err = R.string.kmlReadError;
+
+							}
+						} else if (extension.equalsIgnoreCase(".shp")) {
+							geometryLayersToImport.add(DataImport
+									.importShapeFile(MenuActivity.this, path));
+
+							succ = R.string.shpImport;
+
+						}
+						final int error = err;
+						final int success = succ;
+						final List<GeometryLayer> layers = geometryLayersToImport;
+						runOnUiThread(new Runnable() {
+
+							public void run() {
+								if (layers == null || layers.isEmpty()) {
+									Toast.makeText(MenuActivity.this, error,
+											Toast.LENGTH_SHORT).show();
+								} else {
+									mapView.addGeometryLayers(layers);
+									Toast.makeText(MenuActivity.this, success,
+											Toast.LENGTH_SHORT).show();
+									final BoundingBoxE6 vectorBB = layers
+											.get(0).getExtent()
+											.getBoundingBox();
+									if (layers.size() > 1) {
+										int northBB = 0, southBB = 0, eastBB = 0, westBB = 0;
+										for (int i = 0; i < layers.size(); i++) {
+											BoundingBoxE6 tmpBB = layers.get(i)
+													.getExtent()
+													.getBoundingBox();
+											int tmpNorth = tmpBB
+													.getLatNorthE6();
+											int tmpSouth = tmpBB
+													.getLatSouthE6();
+											int tmpEast = tmpBB.getLonEastE6();
+											int tmpWest = tmpBB.getLonWestE6();
+											if (tmpNorth > northBB) {
+												northBB = tmpNorth;
+											}
+											if (tmpSouth < southBB) {
+												southBB = tmpSouth;
+											}
+											if (tmpEast > eastBB) {
+												eastBB = tmpEast;
+											}
+											if (tmpWest < westBB) {
+												westBB = tmpWest;
+											}
+										}
+									}
+									mapView.zoomToBoundingBox(vectorBB);
+
+								}
+
+								progressDialogKmlShp.dismiss();
+
+							}
+						});
+
+					}
+
+				});
+				vectorThread.start();
+
 				break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
