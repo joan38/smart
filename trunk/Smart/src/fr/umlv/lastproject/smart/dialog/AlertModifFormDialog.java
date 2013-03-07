@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.sax.StartElementListener;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -76,7 +75,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	private final Geometry geom;
 	private final GeometryLayer layer;
 	private final Logger logger = SmartLogger.getLocator().getLogger();
-	private ArrayList<FormEditedListener> listeners = new ArrayList<FormEditedListener>();
+	private List<FormEditedListener> listeners = new ArrayList<FormEditedListener>();
 
 	/**
 	 * Constructor
@@ -210,23 +209,9 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						DbManager dbManager = new DbManager();
-						try {
-							dbManager.open(context);
-							dbManager.deleteRecord(idGeometry, idRowForm,
-									form.getTitle());
-							l.removeGeometry(g);
-							Mission.getInstance().getMapView().invalidate();
-						} catch (SmartException e) {
-							Toast.makeText(context, e.getMessage(),
-									Toast.LENGTH_LONG).show();
-							Log.e("", e.getMessage());
-						}
-						dbManager.close();
-						for (FormEditedListener l : listeners) {
-							l.actionPerformed(g);
-						}
-
+						
+						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(context, idGeometry, idRowForm, form.getTitle(), l,g, listeners);
+						dialogDelete.show();
 					}
 				});
 
@@ -361,22 +346,8 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						DbManager dbManager = new DbManager();
-						try {
-							dbManager.open(context);
-							dbManager.deleteRecord(idGeometry, idRowForm,
-									form.getTitle());
-							l.removeGeometry(g);
-							Mission.getInstance().getMapView().invalidate();
-						} catch (SmartException e) {
-							Toast.makeText(context, e.getMessage(),
-									Toast.LENGTH_LONG).show();
-							Log.e("", e.getMessage());
-						}
-						dbManager.close();
-						for (FormEditedListener l : listeners) {
-							l.actionPerformed(g);
-						}
+						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(context, idGeometry, idRowForm, form.getTitle(), l,g, listeners);
+						dialogDelete.show();
 
 					}
 				});

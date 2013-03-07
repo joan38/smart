@@ -196,7 +196,7 @@ public final class MissionDialogUtils {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						AlertValidationDialog alertValidationDialog = new AlertValidationDialog(
+						AlertValidationDeleteMissionDialog alertValidationDialog = new AlertValidationDeleteMissionDialog(
 								context, missionsToDelete);
 						alertValidationDialog.show();
 					}
