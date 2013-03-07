@@ -19,7 +19,6 @@ import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.AlertPolygonTrackDialog;
 import fr.umlv.lastproject.smart.form.Mission;
-import fr.umlv.lastproject.smart.form.MissionListener;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -41,10 +40,6 @@ public enum MenuAction {
 		public void doAction(MenuActivity activity) {
 			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 				Mission.getInstance().stopMission();
-
-				for (MissionListener l : activity.getMissionListeners()) {
-					l.actionPerformed(false);
-				}
 
 				Toast.makeText(activity,
 						activity.getText(R.string.missionStop),

@@ -140,7 +140,6 @@ public class Survey {
 					}
 					geometryLayer.setEditable(false);
 					mapView.invalidate();
-
 				}
 			};
 			geometryLayer.addGeometryLayerDoubleTapListener(dlistener);
