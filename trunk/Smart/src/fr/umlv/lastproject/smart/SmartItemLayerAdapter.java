@@ -5,7 +5,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +39,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		this.activity = activity;
 		this.listOverlay = listOverlay;
 		this.mission = mission;
+
 	}
 
 	private class SmartHolder {
@@ -74,6 +74,10 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 		}
 
 		smartHolder.txtTitle.setText(item.getName());
+
+		smartHolder.txtTitle.setText(item.getName()
+				+ "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+
 		if (item.getOverview() != null) {
 			smartHolder.imageView.setImageBitmap(item.getOverview());
 
@@ -108,7 +112,6 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 		// if the layer symbology is editable, we add listener on the ImageView
 		if (listOverlay.get(position).isEditable()) {
-			Log.d("symbo", listOverlay.get(position).isEditable() + "");
 			smartHolder.imageView.setOnClickListener(new OnClickListener() {
 
 				@Override
