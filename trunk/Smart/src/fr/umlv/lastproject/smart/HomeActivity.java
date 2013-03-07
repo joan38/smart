@@ -6,16 +6,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
@@ -108,6 +109,25 @@ public class HomeActivity extends Activity {
 				R.layout.listview_home_items, listItem);
 		listView.setAdapter(adapter);
 
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				final int pos = arg2;
+				new AlertDialog.Builder(HomeActivity.this)
+						.setPositiveButton(R.string.yes, new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								shortcut.add(Integer.valueOf(pos));
+							}
+						}).setNegativeButton(R.string.cancel, null)
+						.setTitle(R.string.addShortcut).show();
+				return true;
+			}
+		});
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -123,44 +143,56 @@ public class HomeActivity extends Activity {
 			}
 		});
 
-		registerForContextMenu(listView);
+		// registerForContextMenu(listView);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_home, menu);
+		menu.add(0, 0, 0, R.string.help);
 		return true;
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		if (v.getId() == R.id.listView) {
-			menu.setHeaderTitle("Option");
-			menu.add(0, 1, 0, R.string.addShortcut);
-			menu.add(0, 2, 0, R.string.cancel);
-		}
-		menu.add(0, 0, 0, R.string.help);
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-				.getMenuInfo();
-
-		int index = shortcut.indexOf(info.position);
-		if (item.getItemId() == 1) {
-			if (index == -1) {
-				shortcut.add(info.position);
-			}
-		} else if (item.getItemId() == 0) {
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case 0:
 			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
 					R.string.helpMenu);
 			helpDialog.show();
 		}
-		return super.onContextItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
+
+	// @Override
+	// public void onCreateContextMenu(ContextMenu menu, View v,
+	// ContextMenuInfo menuInfo) {
+	// // if (v.getId() == R.id.listView) {
+	// // menu.setHeaderTitle("Option");
+	// // menu.add(0, 1, 0, R.string.addShortcut);
+	// // menu.add(0, 2, 0, R.string.cancel);
+	// // }
+	// menu.add(0, 0, 0, R.string.help);
+	// }
+
+	// @Override
+	// public boolean onContextItemSelected(MenuItem item) {
+	// AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+	// .getMenuInfo();
+	//
+	// int index = shortcut.indexOf(info.position);
+	// if (item.getItemId() == 1) {
+	// if (index == -1) {
+	// shortcut.add(info.position);
+	// }
+	// } else if (item.getItemId() == 0) {
+	// final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+	// R.string.helpMenu);
+	// helpDialog.show();
+	// }
+	// return super.onContextItemSelected(item);
+	// }
 
 	@Override
 	public void onBackPressed() {

@@ -42,7 +42,6 @@ public class GPSTrack {
 	private final String trackName;
 	private Form form = null;
 	private Activity activity = null;
-	private Mission mission = null;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -85,12 +84,11 @@ public class GPSTrack {
 	public GPSTrack(final TRACK_MODE mode, final String trackName,
 			final LocationManager lm, final SmartMapView mapView,
 			final GeometryType type, final GeometryLayer layer,
-			final Form form, final Activity activity, final Mission mission) {
+			final Form form, final Activity activity) {
 
 		this.geometryLayer = layer;
 		this.type = type;
 		this.form = form;
-		this.mission = mission;
 		this.activity = activity;
 		switch (type) {
 		case LINE:
@@ -266,7 +264,8 @@ public class GPSTrack {
 				if (((PolygonGeometry) geometry).getPoints().size() < 1) {
 					this.geometryLayer.removeGeometry(geometry);
 				} else {
-					form.openForm((MenuActivity) activity, geometry, mission);
+					form.openForm((MenuActivity) activity, geometry,
+							Mission.getInstance());
 				}
 				geometryLayer.setSelectable(true);
 				break;

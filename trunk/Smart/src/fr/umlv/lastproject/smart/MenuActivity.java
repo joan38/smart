@@ -1034,8 +1034,7 @@ public class MenuActivity extends Activity {
 		polygonTrack = new GPSTrack(trackMode, missionName, locationManager,
 				mapView, GeometryType.POLYGON,
 				(GeometryLayer) mapView.getOverlay(this.missionName
-						+ "_POLYGON"), this.form, MenuActivity.this,
-				this.mission);
+						+ "_POLYGON"), this.form, MenuActivity.this);
 		polygonTrack.startTrack();
 		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)

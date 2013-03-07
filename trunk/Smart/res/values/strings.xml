@@ -34,7 +34,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="option">Option</string>
-    <string name="addShortcut">Add shortcut</string>
+    <string name="addShortcut">Add shortcut ?</string>
     <string name="removeShortcut">Remove shortcut</string>
     <string name="symbo_desc">Symbologie</string>
     <string name="delete">Delete</string>
