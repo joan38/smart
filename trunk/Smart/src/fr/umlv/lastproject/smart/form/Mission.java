@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.MenuActivity;
+import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.SmartMapView;
 import fr.umlv.lastproject.smart.database.DbManager;
 import fr.umlv.lastproject.smart.database.MissionRecord;
@@ -142,29 +143,17 @@ public final class Mission {
 		pointLayer = missionPoint;
 		pointLayer.setSelectable(true);
 		pointLayer.addSelectedGeometryListener(list);
-		for (Geometry g : pointLayer.getGeometries()) {
-			if (g.getId() == -1) {
-				pointLayer.removeGeometry(g);
-			}
-		}
+		removeGeometryNotSave(pointLayer);
 
 		lineLayer = missionLine;
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
-		for (Geometry g : lineLayer.getGeometries()) {
-			if (g.getId() == -1) {
-				lineLayer.removeGeometry(g);
-			}
-		}
+		removeGeometryNotSave(lineLayer);
 
 		polygonLayer = missionPolygon;
 		polygonLayer.setSelectable(true);
 		polygonLayer.addSelectedGeometryListener(list);
-		for (Geometry g : polygonLayer.getGeometries()) {
-			if (g.getId() == -1) {
-				polygonLayer.removeGeometry(g);
-			}
-		}
+		removeGeometryNotSave(polygonLayer);
 
 		survey = new Survey(mapView);
 
@@ -452,6 +441,16 @@ public final class Mission {
 		lineLayer.setSelectable(b);
 		if (!trackinprogress) {
 			polygonLayer.setSelectable(b);
+		}
+	}
+
+	private void removeGeometryNotSave(GeometryLayer layer) {
+		for (Geometry g : layer.getGeometries()) {
+			if (g.getId() == -1) {
+				Toast.makeText(context, R.string.survayError, Toast.LENGTH_LONG)
+						.show();
+				layer.removeGeometry(g);
+			}
 		}
 	}
 

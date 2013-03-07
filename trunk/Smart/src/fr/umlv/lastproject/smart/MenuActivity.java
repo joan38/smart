@@ -74,6 +74,7 @@ import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.survey.Survey;
 import fr.umlv.lastproject.smart.survey.SurveyStopListener;
+import fr.umlv.lastproject.smart.utils.PolygonArea;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;

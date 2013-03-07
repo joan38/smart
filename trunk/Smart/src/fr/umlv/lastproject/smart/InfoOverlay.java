@@ -38,6 +38,7 @@ public class InfoOverlay {
 
 	private final View infoView;
 	private int nbInfoVisible = 4;
+	private boolean isVisible = true;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -119,8 +120,10 @@ public class InfoOverlay {
 
 		if (nbInfoVisible == 0) {
 			infoView.setVisibility(View.GONE);
+			isVisible = false;
 		} else {
 			infoView.setVisibility(View.VISIBLE);
+			isVisible = true;
 		}
 	}
 
@@ -133,11 +136,13 @@ public class InfoOverlay {
 	 *            : the menu item to change name
 	 */
 	public void hideInfoZone(View view, MenuItem item) {
-		if (view.getVisibility() == View.INVISIBLE && nbInfoVisible > 0) {
+		if (view.getVisibility() != View.VISIBLE && isVisible) {
+			isVisible = false;
 			item.setTitle(R.string.hideInfoZone);
 			view.setVisibility(View.VISIBLE);
 			logger.log(Level.INFO, "Info zone set visible");
 		} else {
+			isVisible = true;
 			item.setTitle(R.string.showInfoZone);
 			view.setVisibility(View.INVISIBLE);
 			logger.log(Level.INFO, "Info zone set invisible");

@@ -185,5 +185,7 @@
     <string name="polygon_survey">Tape : faire plusieurs points\nDouble-tape : fermer le polygone</string>
     <string name="tiff_progress">Création de l\'archive.</string>
     <string name="tiff_progress_title">Veuillez patienter.</string>
+    
+    <string name="survayError">Erreur : relevé non enregistré</string>
 
 </resources>

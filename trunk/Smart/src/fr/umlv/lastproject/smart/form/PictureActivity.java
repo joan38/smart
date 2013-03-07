@@ -16,9 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 import fr.umlv.lastproject.smart.GPS;
 import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
@@ -37,7 +35,6 @@ public class PictureActivity extends Activity {
 	private File picture;
 	private static final int PICTURE_RESULT = 1;
 	final Logger logger = SmartLogger.getLocator().getLogger();
-
 
 	private GPS gps;
 	private LocationManager locationManager;
@@ -126,9 +123,8 @@ public class PictureActivity extends Activity {
 			// Récupration de la photo à geoTag
 			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename
 					+ ".jpg");
-			Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE,"Error picture not found");
+			logger.log(Level.SEVERE, "Error picture not found");
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
