@@ -105,8 +105,8 @@ public class MenuActivity extends Activity {
 	private boolean trackStarted = false;
 	private boolean polygonTrackStarted = false;
 	private String missionName;
-	private GPSTrack gpsTrack;
-	private GPSTrack polygonTrack;
+	private GPSTrack gpsTrack=null;
+	private GPSTrack polygonTrack=null;
 	private AlertCreateMissionDialog missionDialog;
 	private Preferences pref;
 	private List<MissionListener> missionListeners = new ArrayList<MissionListener>();
@@ -128,14 +128,10 @@ public class MenuActivity extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		BundleCreator.savePosition(outState, mapView);
-		BundleCreator.saveMission(outState, missionCreated);
 
-		BundleCreator
-				.saveGeomtryLayers(outState, mapView.getGeometryOverlays());
+		super.onSaveInstanceState(outState);
+		outState.putAll(BundleCreator.createBundle(mapView, missionCreated, trackStarted, gpsTrack, polygonTrackStarted, polygonTrack)) ;
 		logger.log(Level.INFO, "Saving the application bundle");
-		BundleCreator.saveGeotiffs(outState, mapView.getGeoTIFFOverlays());
 	}
 
 	@Override
@@ -159,16 +155,11 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_smart);
 
 		initMap();
-
-		if (savedInstanceState != null) {
-			BundleCreator.loadPosition(savedInstanceState, mapView);
-			missionCreated = BundleCreator.loadMission(savedInstanceState,
-					mapView, this);
-			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
-			BundleCreator.loadGeotiffs(savedInstanceState, mapView, this);
-		}
-
 		initGps();
+
+		setTheme(pref.theme);
+
+
 		ImageView home = (ImageView) findViewById(R.id.home);
 		home.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -215,6 +206,28 @@ public class MenuActivity extends Activity {
 		for (Integer menuAction : pref.shortcuts) {
 			showShortcut(MenuAction.getFromId(menuAction));
 		}
+		if (savedInstanceState != null) {
+			BundleCreator.loadPosition(savedInstanceState, mapView);
+			missionCreated = BundleCreator.loadMission(savedInstanceState,
+					mapView, this);
+			BundleCreator.loadGeometryLayers(savedInstanceState, this, mapView);
+			BundleCreator.loadGeotiffs(savedInstanceState, mapView, this);
+			gpsTrack = BundleCreator.loadTrack(savedInstanceState, mapView, this, locationManager);
+			trackStarted = (gpsTrack == null ? false : gpsTrack.isStarted()) ;
+			for (GPSTrackListener l : gpsTrackListeners){
+				l.actionPerformed(trackStarted) ;
+			}
+			
+			polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState, mapView,Mission.getInstance().getPolygonLayer(), locationManager) ;
+			polygonTrackStarted = (polygonTrack == null ? false : polygonTrack.isStarted()) ;
+			for (PolygonTrackListener l : polygonTrackListeners){
+				l.actionPerformed(polygonTrackStarted) ;
+			}
+
+
+
+		}
+
 	}
 
 	@Override
@@ -387,7 +400,7 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.LAYERS_VIEW:
 				ListOverlay listOverlay = (ListOverlay) data
-						.getSerializableExtra("overlays");
+				.getSerializableExtra("overlays");
 
 				// ListOverlay listOverlay = (ListOverlay) data.getExtras().get(
 				// "layers");
@@ -402,7 +415,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-									.getName());
+											.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -458,21 +471,21 @@ public class MenuActivity extends Activity {
 					mapView.invalidate();
 
 					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-							.show();
+					.show();
 				}
 				break;
 
-			// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
-			// String shpPath = data.getData().getPath();
-			// GeometryLayer gl = DataImport.importShapeFile(this,
-			// shpPath) ;
-			// mapView.addGeometryLayer(gl);
-			// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
-			// mapView.invalidate();
-			//
-			// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
-			// .show();
-			// break;
+				// case SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY:
+				// String shpPath = data.getData().getPath();
+				// GeometryLayer gl = DataImport.importShapeFile(this,
+				// shpPath) ;
+				// mapView.addGeometryLayer(gl);
+				// mapView.getController().setCenter(gl.getExtent().getCenter()) ;
+				// mapView.invalidate();
+				//
+				// Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
+				// .show();
+				// break;
 
 			case SmartConstants.IMPORT_TIFF_BROWSER_ACTIVITY:
 				final String tiffPath = data.getData().getPath();
@@ -534,11 +547,11 @@ public class MenuActivity extends Activity {
 				if (oResult == null) {
 					final String error = (bundle
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+									return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
@@ -555,11 +568,11 @@ public class MenuActivity extends Activity {
 				if (oResult2 == null) {
 					final String error = (bundle2
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_MODIFY_DIALOG, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_MODIFY_DIALOG, new Bundle());
+									return;
 				}
 				final double heightValue2 = Double.parseDouble(oResult2
 						.toString());
@@ -687,11 +700,11 @@ public class MenuActivity extends Activity {
 		switch (menuAction) {
 		case CREATE_MISSION:
 			if (Mission.getInstance() != null
-					&& Mission.getInstance().isStatus()) {
+			&& Mission.getInstance().isStatus()) {
 				Log.d("debug", (Mission.getInstance() + " " + Mission
 						.getInstance().isStatus()));
 				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
-						.getId()]);
+				                                               .getId()]);
 			}
 
 			this.addMissionListener(new MissionListener() {
@@ -700,11 +713,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
-								.getId()]);
+						                                               .getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.CREATE_MISSION
-								.getId()]);
+						                                               .getId()]);
 						shortcutsView.invalidate();
 					}
 
@@ -716,7 +729,7 @@ public class MenuActivity extends Activity {
 			if (gpsTrack != null && gpsTrack.isStarted()) {
 				Log.d("debug", gpsTrack + " " + gpsTrack.isStarted());
 				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
-						.getId()]);
+				                                               .getId()]);
 			}
 			this.addGPSTrackListener(new GPSTrackListener() {
 
@@ -724,11 +737,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_GPS_TRACK
-								.getId()]);
+						                                               .getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.icons[MenuAction.GPS_TRACK
-								.getId()]);
+						                                               .getId()]);
 						shortcutsView.invalidate();
 					}
 				}
@@ -792,7 +805,7 @@ public class MenuActivity extends Activity {
 					Toast.makeText(
 							this,
 							getResources()
-									.getText(R.string.noMissionInProgress),
+							.getText(R.string.noMissionInProgress),
 							Toast.LENGTH_LONG).show();
 				} else {
 					Mission.getInstance().startSurvey(GeometryType.POINT);
@@ -809,7 +822,7 @@ public class MenuActivity extends Activity {
 					Toast.makeText(
 							this,
 							getResources()
-									.getText(R.string.noMissionInProgress),
+							.getText(R.string.noMissionInProgress),
 							Toast.LENGTH_LONG).show();
 				} else {
 					Mission.getInstance().startSurvey(
@@ -826,7 +839,7 @@ public class MenuActivity extends Activity {
 					Toast.makeText(
 							this,
 							getResources()
-									.getText(R.string.noMissionInProgress),
+							.getText(R.string.noMissionInProgress),
 							Toast.LENGTH_LONG).show();
 				} else {
 					Mission.getInstance().startSurvey(GeometryType.LINE);
@@ -843,7 +856,7 @@ public class MenuActivity extends Activity {
 					Toast.makeText(
 							this,
 							getResources()
-									.getText(R.string.noMissionInProgress),
+							.getText(R.string.noMissionInProgress),
 							Toast.LENGTH_LONG).show();
 				} else {
 					Mission.getInstance().startSurvey(GeometryType.POLYGON);
@@ -888,7 +901,7 @@ public class MenuActivity extends Activity {
 
 					trackStarted = false;
 					Toast.makeText(this, R.string.track_stop, Toast.LENGTH_LONG)
-							.show();
+					.show();
 				}
 				break;
 
@@ -897,7 +910,7 @@ public class MenuActivity extends Activity {
 					Toast.makeText(
 							this,
 							getResources()
-									.getText(R.string.noMissionInProgress),
+							.getText(R.string.noMissionInProgress),
 							Toast.LENGTH_LONG).show();
 				} else {
 					if (!gps.isEnabled(locationManager)) {
@@ -943,13 +956,13 @@ public class MenuActivity extends Activity {
 						SmartConstants.IMPORT_KML_SHP_BROWSER_ACTIVITY);
 				break;
 
-			// case SmartConstants.IMPORT_SHAPE:
-			// Intent importSHPItent = FileUtils.createGetContentIntent(
-			// FileUtils.SHP_TYPE,
-			// Environment.getExternalStorageDirectory() + "");
-			// startActivityForResult(importSHPItent,
-			// SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
-			// break;
+				// case SmartConstants.IMPORT_SHAPE:
+				// Intent importSHPItent = FileUtils.createGetContentIntent(
+				// FileUtils.SHP_TYPE,
+				// Environment.getExternalStorageDirectory() + "");
+				// startActivityForResult(importSHPItent,
+				// SmartConstants.IMPORT_SHP_BROWSER_ACTIVITY);
+				// break;
 
 			case IMPORT_GEOTIFF:
 				Intent importTiffItent = FileUtils.createGetContentIntent(
@@ -986,7 +999,9 @@ public class MenuActivity extends Activity {
 				break;
 
 			case AREA_MEASURE:
-				Mission.getInstance().setSelectable(false);
+				if(Mission.getInstance() != null){
+					Mission.getInstance().setSelectable(false);
+				}
 				Log.d("AIRE", "SMART CONSTANT");
 				final Survey areaSurvey = new Survey(mapView);
 				final GeometryLayer areaLayer = new GeometryLayer(this);
@@ -997,7 +1012,9 @@ public class MenuActivity extends Activity {
 
 					@Override
 					public void actionPerformed(Geometry g) {
-						Mission.getInstance().setSelectable(true);
+						if(Mission.getInstance() != null){
+							Mission.getInstance().setSelectable(true);
+						}
 						Log.d("AIRE", "STOP LISTENER");
 						final double result = PolygonArea
 								.getPolygonArea((PolygonGeometry) g) / 1E6;
@@ -1035,13 +1052,11 @@ public class MenuActivity extends Activity {
 
 	public void createPolygonTrack(final TRACK_MODE trackMode) {
 		polygonTrack = new GPSTrack(trackMode, missionName, locationManager,
-				mapView, GeometryType.POLYGON,
-				(GeometryLayer) mapView.getOverlay(this.missionName
-						+ "_POLYGON"), this.form, MenuActivity.this);
+				mapView, GeometryType.POLYGON,Mission.getInstance().getPolygonLayer(), this.form, MenuActivity.this);
 		polygonTrack.startTrack();
 		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
-				.show();
+		.show();
 		for (PolygonTrackListener l : this.polygonTrackListeners) {
 			l.actionPerformed(true);
 		}
