@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 
-import android.R.string;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
@@ -33,7 +33,8 @@ public final class ZIPUtils {
 
 	private static final int METADATA_SIZE = 5;
 
-	private static final String ZIP_FOLDER = "/mnt/sdcard/osmdroid/";
+	private static final String ZIP_FOLDER = Environment
+			.getExternalStorageDirectory() + "/osmdroid/";
 
 	private ZIPUtils() {
 	}
@@ -146,13 +147,11 @@ public final class ZIPUtils {
 		metaData[0] = directory.substring(directory.lastIndexOf('/') + 1);
 		final File[] tileDirectories = file.listFiles();
 
-		 
 		String extension = getExtension(file);
-		
 
-		 String lastZoomTileDirectory=null;		
-		for(File f : tileDirectories){
-			if(f.isDirectory()){
+		String lastZoomTileDirectory = null;
+		for (File f : tileDirectories) {
+			if (f.isDirectory()) {
 				lastZoomTileDirectory = f.toString();
 			}
 		}
@@ -178,10 +177,10 @@ public final class ZIPUtils {
 		}
 		BoundingBoxE6 boundingBox = new BoundingBoxE6(90, 180, -90, -180);
 
-		String firstZoomTileDirectory ;
-		if(i >= tileDirectories.length){
+		String firstZoomTileDirectory;
+		if (i >= tileDirectories.length) {
 			firstZoomTileDirectory = tileDirectories[0].toString();
-		}else{
+		} else {
 			firstZoomTileDirectory = tileDirectories[i].toString();
 
 		}
@@ -257,10 +256,10 @@ public final class ZIPUtils {
 					Log.d("TESTXB",
 							"X : "
 									+ Integer
-									.parseInt(tileNameWithoutExtensionX)
+											.parseInt(tileNameWithoutExtensionX)
 									+ " / Y : "
 									+ Integer
-									.parseInt(tileNameWithoutExtensionY));
+											.parseInt(tileNameWithoutExtensionY));
 
 					return new Pair<Integer, Integer>(
 							Integer.parseInt(tileNameWithoutExtensionX),
@@ -283,20 +282,22 @@ public final class ZIPUtils {
 			throw new IllegalArgumentException();
 		}
 
-		if(file.isDirectory()){
-			for(File f : file.listFiles()){
+		if (file.isDirectory()) {
+			for (File f : file.listFiles()) {
 				String ext = getExtension(f);
-				if(ext != null) {
-					return ext ;
+				if (ext != null) {
+					return ext;
 				}
 			}
 		}
-		String ext =FileUtils.getExtension(file.toString()) ;
-		if(ext != null && (
-				ext.equals(".png") || ext.equals(".PNG") || ext.equals(".jpg") || ext.equals(".JPG") || ext.equals(".JPEG"))){
-			return ext ;
+		String ext = FileUtils.getExtension(file.toString());
+		if (ext != null
+				&& (ext.equals(".png") || ext.equals(".PNG")
+						|| ext.equals(".jpg") || ext.equals(".JPG") || ext
+							.equals(".JPEG"))) {
+			return ext;
 		}
-		return null ;
+		return null;
 	}
 
 	private static class BoundingBox {
@@ -325,7 +326,7 @@ public final class ZIPUtils {
 		bb.south = tile2lat(y + 1, zoom);
 		bb.west = tile2lon(x, zoom);
 		bb.east = tile2lon(x + 1, zoom);
-		getTileNumber(bb.north, bb.west, zoom); 
+		getTileNumber(bb.north, bb.west, zoom);
 		return bb;
 	}
 
@@ -338,12 +339,16 @@ public final class ZIPUtils {
 		/* WARNING MATH.ABS IS VERY NOT SURE SEE OSM FORMULA OPENSOURCE HIPPY :) */
 		return Math.toDegrees(Math.atan(Math.sinh(Math.abs(n))));
 	}
-	
-	 public static void getTileNumber(final double lat, final double lon, final int zoom) {
-		   int xtile = (int)Math.floor( (lon + 180) / 360 * (1<<zoom) ) ;
-		   int ytile = (int)Math.floor( (1 - Math.log(Math.tan(Math.toRadians(lat)) + 1 / Math.cos(Math.toRadians(lat))) / Math.PI) / 2 * (1<<zoom) ) ;
-		    Log.d("","" + zoom + "/" + xtile + "/" + ytile);
-	 }
 
+	public static void getTileNumber(final double lat, final double lon,
+			final int zoom) {
+		int xtile = (int) Math.floor((lon + 180) / 360 * (1 << zoom));
+		int ytile = (int) Math
+				.floor((1 - Math.log(Math.tan(Math.toRadians(lat)) + 1
+						/ Math.cos(Math.toRadians(lat)))
+						/ Math.PI)
+						/ 2 * (1 << zoom));
+		Log.d("", "" + zoom + "/" + xtile + "/" + ytile);
+	}
 
 }

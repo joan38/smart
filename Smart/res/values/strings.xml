@@ -188,5 +188,7 @@
     <string name="polygon_survey">Tap to make some points and double-tap to close the polygon</string>
     <string name="tiff_progress">Zipping archive.</string>
     <string name="tiff_progress_title">Please wait.</string>
+    
+    <string name="survayError">Error : survey don\'t save</string>
 
 </resources>
