@@ -17,7 +17,6 @@ public final class SmartConstants {
 	public static final int MISSION_BROWSER_ACTIVITY = 3;
 	public static final int FORM_BROWSER_ACTIVITY = 4;
 	public static final int IMPORT_KML_SHP_BROWSER_ACTIVITY = 5;
-	// public static final int IMPORT_SHP_BROWSER_ACTIVITY = 6;
 	public static final int IMPORT_TIFF_BROWSER_ACTIVITY = 6;
 	public static final int HEIGHT_ACTIVITY = 7;
 	public static final int GPS_ACTIVITY = 8;
@@ -68,6 +67,9 @@ public final class SmartConstants {
 			R.drawable.exportform, R.drawable.deletemission,
 			R.drawable.stopmission, R.drawable.stopgpstrack,
 			R.drawable.stoppolygontrack };
+	
+	public static int[] shapeSymbology = { R.drawable.circle,
+		R.drawable.rect };
 
 	private SmartConstants() {
 	}

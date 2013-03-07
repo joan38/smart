@@ -24,7 +24,14 @@ public class PointSymbology extends Symbology {
 		public int getId(){
 			return id ;
 		}
-		
+		public static PointSymbologieType getFromId(int id){
+			for(PointSymbologieType p : values()){
+				if(p.id == id){
+					return p;
+				}
+			}
+			return null;
+		}
 	}
 
 

@@ -7,14 +7,24 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import fr.umlv.lastproject.smart.LayerItem;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
+import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.PointSymbology;
+import fr.umlv.lastproject.smart.layers.PointSymbology.PointSymbologieType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class AlertSymbologyDialog extends AlertDialog.Builder {
@@ -27,7 +37,9 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View symbologyDialog = inflater.inflate(R.layout.alert_symbology,
 				null);
+		TableRow rowShape = (TableRow) symbologyDialog.findViewById(R.id.symbologyRow3);
 
+		rowShape.setVisibility(View.GONE);
 		setView(symbologyDialog);
 		setTitle(R.string.symbo);
 
@@ -62,6 +74,29 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 			}
 		}
 
+		final Spinner shapeSpinner = (Spinner) symbologyDialog.findViewById(R.id.shapeSpinner);
+
+		
+		if(layer.getType() == GeometryType.POINT){
+			Log.d("TEST", "points");
+			rowShape.setVisibility(View.VISIBLE);
+			
+			
+			List<? extends Map<String, ?>> shape = new LinkedList<Map<String, ?>>();
+			for (int i = 0; i < 2; i++) {
+				shape.add(null);
+			}
+
+			ShapeAdapter shapeAdapter = new ShapeAdapter(menu, shape,
+					android.R.layout.simple_list_item_1, null, null);
+			shapeSpinner.setAdapter(shapeAdapter);
+			for(int i=0 ; i < SmartConstants.shapeSymbology.length ; i++){
+					if(i == ((PointSymbology)layer.getSymbology()).getType().getId() ){
+					shapeSpinner.setSelection(i) ;
+					break ;
+				}
+			}
+		}
 
 		
 		
@@ -73,9 +108,10 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 						int positionColor = spinner.getSelectedItemPosition();
 						Integer taille = tailles.get(tailleSpinner
 								.getSelectedItemPosition());
-
-						layer.editSymbology(taille,
-								SmartConstants.colors[positionColor]);
+						int positionShape = shapeSpinner.getSelectedItemPosition();
+						layer.setSymbology(new PointSymbology(taille, SmartConstants.colors[positionColor], PointSymbologieType.getFromId(positionShape)));
+//						layer.editSymbology(taille,
+//								SmartConstants.colors[positionColor]);
 						layerItem.setOverview(layer.getOverview());
 						menu.getMapView().invalidate();
 
