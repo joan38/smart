@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="text"
+            android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
             android:padding="10dip" />
     </TableRow>
 

@@ -40,6 +40,7 @@
 			android:layout_height = "wrap_content"
 			android:layout_weight="1" 
 			android:padding="10dip"
+			android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
 			android:id = "@+id/valueName" />
 	
 		</TableRow>
