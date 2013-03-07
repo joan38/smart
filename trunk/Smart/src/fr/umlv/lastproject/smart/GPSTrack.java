@@ -32,6 +32,7 @@ public class GPSTrack {
 	private static final int LINE_THICKNESS = 5;
 	private static final int MULT = 1000;
 	private final TRACK_MODE trackMode;
+
 	private final GPS gps;
 	private final GeometryType type;
 	private final List<TrackPoint> trackPoints;
@@ -134,6 +135,10 @@ public class GPSTrack {
 		gps.addGPSListener(gpsListener);
 
 	}
+	
+	
+	
+
 
 	/**
 	 * 
@@ -205,6 +210,94 @@ public class GPSTrack {
 
 		mapView.addGeometryLayer(geometryLayer);
 	}
+	
+	/**
+	 * 
+	 * @param mode
+	 *            of the track
+	 * @param trackName
+	 *            name of the track
+	 * @param lm
+	 *            the locationManager
+	 * @param mapView
+	 *            the map where will be the track
+	 * @param type
+	 *            the type of the geometry
+	 */
+	public GPSTrack(final TRACK_MODE mode, final String trackName,
+			final LocationManager lm, final SmartMapView mapView,
+			final GeometryType type, List<TrackPoint> points, GeometryLayer l) {
+
+		this.geometryLayer = l;
+		this.type = type;
+		
+		switch (type) {
+		case LINE:
+			this.geometry = new LineGeometry();
+			break;
+		case POLYGON:
+			this.geometry = new PolygonGeometry();
+			break;
+		default:
+			geometry = null;
+			break;
+		}
+		this.geometryLayer.addGeometry(geometry);
+		isFinished = false;
+		isStarted = false;
+		this.trackName = trackName;
+		this.trackMode = mode;
+		this.gps = new GPS(lm);
+		this.trackPoints = points ;
+		
+		for(TrackPoint p : points){
+			double lat = p.getLatitude() ;
+			double lon = p.getLongitude() ;
+			
+			switch (type) {
+			case LINE:
+				((LineGeometry) geometry).addPoint(new PointGeometry(
+						lat, lon));
+				break;
+			case POLYGON:
+				((PolygonGeometry) geometry).addPoint(new PointGeometry(
+						lat, lon));
+				break;
+			default:
+				break;
+			}
+		}
+		
+		this.gpsListener = new IGPSListener() {
+
+			@Override
+			public void actionPerformed(GPSEvent event) {
+				final double latitude = event.getLatitude();
+				final double longitude = event.getLongitude();
+				final TrackPoint trackPoint = new TrackPoint(longitude,
+						latitude, event.getAltitude(), event.getTime());
+				trackPoints.add(trackPoint);
+				switch (type) {
+				case LINE:
+					((LineGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				case POLYGON:
+					((PolygonGeometry) geometry).addPoint(new PointGeometry(
+							latitude, longitude));
+					break;
+				default:
+					break;
+				}
+			}
+		};
+		gps.addGPSListener(gpsListener);
+
+	}
+
+	
+	
+	
 
 	/**
 	 * Gets the graphics layer
@@ -287,6 +380,10 @@ public class GPSTrack {
 
 	public String getName() {
 		return trackName;
+	}
+
+	public TRACK_MODE getTrackMode() {
+		return trackMode;
 	}
 
 }

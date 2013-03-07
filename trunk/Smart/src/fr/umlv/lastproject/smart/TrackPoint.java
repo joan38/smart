@@ -1,7 +1,16 @@
 package fr.umlv.lastproject.smart;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.Symbology;
 
 
 /**
@@ -13,12 +22,12 @@ import java.util.Date;
  * @author Marc
  *
  */
-public class TrackPoint {
+public class TrackPoint implements Serializable{
 	
-	private final double longitude;
-	private final double latitude;
-	private final double elevation;
-	private final String time;
+	private  double longitude;
+	private  double latitude;
+	private  double elevation;
+	private  String time;
 	 /**
      * Date format for a point timestamp.
      */
@@ -69,5 +78,30 @@ public class TrackPoint {
 	public String getTime() {
 		return time;
 	}
+	
+   	private void writeObject(ObjectOutputStream out) throws IOException {
+   		out.writeDouble(latitude);
+   		out.writeDouble(longitude);
+   		out.writeDouble(elevation) ;
+   		out.writeObject(time);
+   	}
+
+   	/**
+   	 * 
+   	 * @param in
+   	 *            object to read
+   	 * @throws IOException
+   	 *             if object not readable
+   	 * @throws ClassNotFoundException
+   	 *             if class does not exist
+   	 */
+   	private void readObject(ObjectInputStream in) throws IOException,
+   			ClassNotFoundException {
+   		
+   		this.latitude = in.readDouble() ;
+   		this.longitude = in.readDouble()  ;
+   		this.elevation=in.readDouble()  ;
+   		this.time=(String)in.readObject();
+   	}
 
 }
