@@ -18,6 +18,10 @@ import fr.umlv.lastproject.smart.SmartMapView;
 
 public class WMSDialog extends AlertDialog.Builder {
 
+	private static int SECOND = 1000;
+	private static int TIMEOUT = 1000;
+	private static int PING = 200;
+
 	public WMSDialog(final SmartMapView mapView) {
 		super(mapView.getContext());
 		setCancelable(false);
@@ -65,11 +69,11 @@ public class WMSDialog extends AlertDialog.Builder {
 							urlc.setRequestProperty("User-Agent",
 									"Android Application:2.2");
 							urlc.setRequestProperty("Connection", "close");
-							urlc.setConnectTimeout(1000 * 30); // mTimeout is in
-																// seconds
+							// mTimeout is in seconds
+							urlc.setConnectTimeout(SECOND * TIMEOUT);
 
 							urlc.connect();
-							if (urlc.getResponseCode() == 200) {
+							if (urlc.getResponseCode() == PING) {
 								Log.d("TEST2", "CONNECTION PING");
 
 								mapView.addWMSLayer(url.toString(), wmsName

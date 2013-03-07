@@ -17,13 +17,13 @@ public class AlertDeleteLayerDialog extends AlertDialog.Builder {
 		if (isRemovable) {
 			setMessage(R.string.deleteLayer);
 			setNegativeButton(R.string.no,
-					this.createListener(activity, Boolean.valueOf(false), id));
+					this.createListener(activity, Boolean.FALSE, id));
 			setPositiveButton(R.string.yes,
-					this.createListener(activity, Boolean.valueOf(true), id));
+					this.createListener(activity, Boolean.TRUE, id));
 		} else {
 			setMessage(R.string.deleteLayerFalse);
 			setPositiveButton(R.string.ok,
-					this.createListener(activity, Boolean.valueOf(false), id));
+					this.createListener(activity, Boolean.FALSE, id));
 		}
 	}
 

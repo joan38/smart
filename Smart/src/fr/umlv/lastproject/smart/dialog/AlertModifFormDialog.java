@@ -69,6 +69,9 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	private static final int PADDING_LEFT = 20;
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
+
+	private static final String UNKNOW_FIELD = "Unkown field";
+
 	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
 			"#####0.00");
 	private final Form form;
@@ -110,12 +113,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		try {
 			idForm = buildForm(layoutDynamic, context, form.getFieldsList(),
 					idGeometry);
-			
+
 		} catch (SmartException e) {
 			logger.log(Level.SEVERE, "No geometry in database");
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
-			
+
 		}
 
 		setView(alertDialogView);
@@ -160,8 +163,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "edit "
-										+ ((EditText) valuesList[i]).getText());
 								l.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -169,9 +170,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "picture "
-										+ ((EditText) valuesList[i]).getText()
-												.toString());
 								p.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -184,7 +182,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 								break;
 
 							default:
-								throw new IllegalStateException("Unkown field");
+								throw new IllegalStateException(UNKNOW_FIELD);
 							}
 						}
 
@@ -209,8 +207,10 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						
-						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(context, idGeometry, idRowForm, form.getTitle(), l,g, listeners);
+
+						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(
+								context, idGeometry, idRowForm,
+								form.getTitle(), l, g, listeners);
 						dialogDelete.show();
 					}
 				});
@@ -297,8 +297,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "edit "
-										+ ((EditText) valuesList[i]).getText());
 								l.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -306,9 +304,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "picture "
-										+ ((EditText) valuesList[i]).getText()
-												.toString());
 								p.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -321,7 +316,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 								break;
 
 							default:
-								throw new IllegalStateException("Unkown field");
+								throw new IllegalStateException(UNKNOW_FIELD);
 							}
 						}
 
@@ -346,7 +341,9 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(context, idGeometry, idRowForm, form.getTitle(), l,g, listeners);
+						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(
+								context, idGeometry, idRowForm,
+								form.getTitle(), l, g, listeners);
 						dialogDelete.show();
 
 					}
@@ -404,23 +401,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						// TODO
-						// if (!editText.getText().toString().equals("")) {
-						// if (Double.parseDouble(editText.getText()
-						// .toString()) > ((NumericField)nf.getField()).getMax()
-						// || Double.parseDouble(editText.getText()
-						// .toString()) <
-						// ((NumericField)nf.getField()).getMin()) {
-						// editText.setError("Invalid");
-						// }
-						// }
 
 					}
 
 					@Override
 					public void beforeTextChanged(CharSequence arg0, int arg1,
 							int arg2, int arg3) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -450,7 +436,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				RadioButton buttonNo = new RadioButton(c);
 				buttonNo.setId(1);
 				buttonNo.setText(R.string.no);
-				Log.d("TEST", "value boolean " + bf.getValue());
 				if (bf.getValue()) {
 					buttonYes.setChecked(true);
 				} else {
@@ -465,7 +450,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						Log.d("TEST", "checked id " + checkedId);
 						valuesList[j] = checkedId;
 					}
 				});
@@ -541,13 +525,11 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 						namePicture = namePicture.replace(" ", "_");
 						namePicture = namePicture.replace(":", "");
 						namePicture = namePicture.replace("/", "_");
-						Log.d("pictureActivity", "jvai l'appel");
 						Intent intent = new Intent(c, PictureActivity.class);
 						intent.putExtra("takePicture", true);
 						intent.putExtra("namePicture", namePicture);
 
 						c.startActivity(intent);
-						Log.d("pictureActivity", "je l'ai appeler !!!!");
 
 						namePictureView.setText(namePicture);
 
@@ -575,8 +557,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				final TextView heightName = new TextView(c);
-				// heightName.setText(ACCURACY_FORMAT.format(String.valueOf(hf
-				// .getValue())) + " m");
 				double t = Double.parseDouble(String.valueOf(values[i]));
 				heightName.setText(ACCURACY_FORMAT.format(t) + " m");
 
@@ -589,8 +569,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 					@Override
 					public void onClick(View v) {
 
-						// Intent intent = new Intent(c, PictureActivity.class);
-
 						c.startModifHeightActivityForResult(layer, form, geom,
 								valuesList, heightIndex);
 
@@ -600,15 +578,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				heightLayout.addView(textView);
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
-				// zheightLayout.addView(heightPicture);
-				// l.addView(editText);
-				// valuesList[i]=editText;
 				layoutDynamic.addView(heightLayout);
 				valuesList[i] = values[i];
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKNOW_FIELD);
 			}
 		}
 		return idForm;
@@ -661,23 +636,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						// TODO
-						// if (!editText.getText().toString().equals("")) {
-						// if (Double.parseDouble(editText.getText()
-						// .toString()) > ((NumericField)nf.getField()).getMax()
-						// || Double.parseDouble(editText.getText()
-						// .toString()) <
-						// ((NumericField)nf.getField()).getMin()) {
-						// editText.setError("Invalid");
-						// }
-						// }
 
 					}
 
 					@Override
 					public void beforeTextChanged(CharSequence arg0, int arg1,
 							int arg2, int arg3) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -707,7 +671,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				RadioButton buttonNo = new RadioButton(c);
 				buttonNo.setId(1);
 				buttonNo.setText(R.string.no);
-				Log.d("TEST", "value boolean " + bf.getValue());
 				if (bf.getValue()) {
 					buttonYes.setChecked(true);
 				} else {
@@ -722,7 +685,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						Log.d("TEST", "checked id " + checkedId);
 						valuesList[j] = checkedId;
 					}
 				});
@@ -798,13 +760,11 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 						namePicture = namePicture.replace(" ", "_");
 						namePicture = namePicture.replace(":", "");
 						namePicture = namePicture.replace("/", "_");
-						Log.d("pictureActivity", "jvai l'appel");
 						Intent intent = new Intent(c, PictureActivity.class);
 						intent.putExtra("takePicture", true);
 						intent.putExtra("namePicture", namePicture);
 
 						c.startActivity(intent);
-						Log.d("pictureActivity", "je l'ai appeler !!!!");
 
 						namePictureView.setText(namePicture);
 
@@ -832,8 +792,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				final TextView heightName = new TextView(c);
-				// heightName.setText(ACCURACY_FORMAT.format(String.valueOf(hf
-				// .getValue())) + " m");
 				double t = Double.parseDouble(String.valueOf(hf.getValue()));
 				heightName.setText(ACCURACY_FORMAT.format(t) + " m");
 
@@ -845,9 +803,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(View v) {
-
-						// Intent intent = new Intent(c, PictureActivity.class);
-
 						c.startModifHeightActivityForResult(layer, form, geom,
 								valuesList, heightIndex);
 
@@ -857,15 +812,12 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				heightLayout.addView(textView);
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
-				// zheightLayout.addView(heightPicture);
-				// l.addView(editText);
-				// valuesList[i]=editText;
 				layoutDynamic.addView(heightLayout);
 				valuesList[i] = hf.getValue();
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKNOW_FIELD);
 			}
 		}
 		return idForm;

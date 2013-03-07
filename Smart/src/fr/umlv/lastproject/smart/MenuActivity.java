@@ -951,10 +951,10 @@ public class MenuActivity extends Activity {
 	}
 
 	public void startHeightActivityForResult(Form form, Geometry geom,
-			Object[] valuesList, int heightIndex) {
+			final Object[] valuesList, int heightIndex) {
 		this.form = form;
 		this.geom = geom;
-		this.valuesList = valuesList;
+		this.valuesList = valuesList.clone();
 		this.heightIndex = heightIndex;
 
 		startActivityForResult(new Intent(this, HeightActivity.class),
@@ -1074,10 +1074,11 @@ public class MenuActivity extends Activity {
 	}
 
 	public void startModifHeightActivityForResult(GeometryLayer layer,
-			Form form2, Geometry geom2, Object[] valuesList2, int heightIndex2) {
+			Form form2, Geometry geom2, final Object[] valuesList2,
+			int heightIndex2) {
 		this.geom = geom2;
 		this.form = form2;
-		this.valuesList = valuesList2;
+		this.valuesList = valuesList2.clone();
 		this.heightIndex = heightIndex2;
 		this.geometryLayer = layer;
 

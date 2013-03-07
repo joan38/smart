@@ -63,7 +63,6 @@ import fr.umlv.lastproject.smart.utils.SmartException;
 public class HeightDialog extends AlertDialog.Builder {
 
 	private Object[] valuesList;
-	private TableLayout layoutDynamic;
 
 	private static final int PADDING_LEFT = 20;
 	private static final int PADDING_TOP = 10;
@@ -87,7 +86,7 @@ public class HeightDialog extends AlertDialog.Builder {
 				fr.umlv.lastproject.smart.R.layout.activity_formulaire_viewer,
 				null);
 
-		layoutDynamic = (TableLayout) alertDialogView
+		TableLayout layoutDynamic = (TableLayout) alertDialogView
 				.findViewById(R.id.layoutDynamicFormulaire);
 		layoutDynamic.setVerticalScrollBarEnabled(true);
 
@@ -233,17 +232,6 @@ public class HeightDialog extends AlertDialog.Builder {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						// TODO
-						// if (editText.getText().toString().equals("")){
-						// editText.setError("Invalid");
-						//
-						// } else if(
-						// Double.parseDouble(editText.getText().toString()) >=
-						// nf.getMax()
-						// || Double.parseDouble(editText.getText()
-						// .toString()) <= nf.getMin()) {
-						// editText.setError("Invalid");
-						// }
 
 					}
 
@@ -407,9 +395,6 @@ public class HeightDialog extends AlertDialog.Builder {
 				LinearLayout heightLayout = new LinearLayout(c);
 				heightLayout.addView(textView);
 				heightLayout.addView(heightPicture);
-				// zheightLayout.addView(heightPicture);
-				// l.addView(editText);
-				// valuesList[i]=editText;
 				valuesList[i] = 0;
 				l.addView(heightLayout);
 

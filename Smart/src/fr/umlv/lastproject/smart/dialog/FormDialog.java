@@ -69,8 +69,9 @@ public class FormDialog extends AlertDialog.Builder {
 	private static final int PADDING_TOP = 10;
 	private static final int PADDING_RIGHT = 5;
 
+	private static final String UNKNOW_FIELD_TYPE = "Unknow field type";
+
 	private final Form form;
-	private final Mission mission;
 	private final Geometry geom;
 	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
 			"#####0.00");
@@ -90,7 +91,6 @@ public class FormDialog extends AlertDialog.Builder {
 		setCancelable(false);
 		this.form = form;
 		this.geom = g;
-		this.mission = mission;
 
 		final LayoutInflater factory = LayoutInflater.from(context);
 		final View alertDialogView = factory.inflate(
@@ -151,8 +151,6 @@ public class FormDialog extends AlertDialog.Builder {
 							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "edit "
-										+ ((EditText) valuesList[i]).getText());
 								l.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -160,9 +158,6 @@ public class FormDialog extends AlertDialog.Builder {
 							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
 										.getFields().get(i);
-								Log.d("TEST", "picture "
-										+ ((EditText) valuesList[i]).getText()
-												.toString());
 								p.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
@@ -176,7 +171,7 @@ public class FormDialog extends AlertDialog.Builder {
 
 							default:
 								throw new IllegalStateException(
-										"Unkown field type");
+										UNKNOW_FIELD_TYPE);
 							}
 						}
 
@@ -218,7 +213,6 @@ public class FormDialog extends AlertDialog.Builder {
 		setCancelable(false);
 		this.form = form;
 		this.geom = geom;
-		this.mission = mission;
 
 		final LayoutInflater factory = LayoutInflater.from(menuActivity);
 		final View alertDialogView = factory.inflate(
@@ -229,7 +223,7 @@ public class FormDialog extends AlertDialog.Builder {
 				.findViewById(R.id.layoutDynamicFormulaire);
 		layoutDynamic.setVerticalScrollBarEnabled(true);
 
-		valuesList = values;
+		valuesList = values.clone();
 
 		buildForm(layoutDynamic, menuActivity, form.getFieldsList(), values);
 
@@ -304,7 +298,7 @@ public class FormDialog extends AlertDialog.Builder {
 
 							default:
 								throw new IllegalStateException(
-										"Unkown field type");
+										UNKNOW_FIELD_TYPE);
 							}
 						}
 
@@ -344,7 +338,6 @@ public class FormDialog extends AlertDialog.Builder {
 			Field field = fieldsList.get(i);
 			TextView textView = new TextView(menuActivity);
 			final EditText editText = new EditText(menuActivity);
-			Log.d("TESTX", "BUILD FORM DEJA PRE REMPLI");
 
 			switch (field.getType()) {
 			case TEXT:
@@ -352,7 +345,6 @@ public class FormDialog extends AlertDialog.Builder {
 				textView.setTag(tf.getLabel());
 				textView.setText(tf.getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
-				// valuesList[i] = editText;
 				final EditText oldText = (EditText) values[i];
 				editText.setText(oldText.getText());
 				tableLayout.addView(textView);
@@ -369,17 +361,6 @@ public class FormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						// TODO
-						// if (editText.getText().toString().equals("")){
-						// editText.setError("Invalid");
-						//
-						// } else if(
-						// Double.parseDouble(editText.getText().toString()) >=
-						// nf.getMax()
-						// || Double.parseDouble(editText.getText()
-						// .toString()) <= nf.getMin()) {
-						// editText.setError("Invalid");
-						// }
 
 					}
 
@@ -411,12 +392,9 @@ public class FormDialog extends AlertDialog.Builder {
 				RadioButton buttonYes = new RadioButton(menuActivity);
 				buttonYes.setId(0);
 				buttonYes.setText(R.string.yes);
-				// buttonYes.setChecked(true);
 				RadioButton buttonNo = new RadioButton(menuActivity);
 				buttonNo.setId(1);
-				// valuesList[i] = 0;
 				buttonNo.setText(R.string.no);
-				// valuesList[i] = 0;
 				if (Integer.parseInt(values[i].toString()) == 0) {
 					buttonYes.setChecked(true);
 				} else {
@@ -470,8 +448,6 @@ public class FormDialog extends AlertDialog.Builder {
 							int position, long arg3) {
 						EditText et = new EditText(menuActivity);
 						et.setText(lf.getValues().get(position));
-						Log.d("TEST", "selected "
-								+ lf.getValues().get(position));
 						valuesList[h] = et;
 					}
 
@@ -554,8 +530,6 @@ public class FormDialog extends AlertDialog.Builder {
 					@Override
 					public void onClick(View v) {
 
-						// Intent intent = new Intent(c, PictureActivity.class);
-
 						menuActivity.startHeightActivityForResult(form, geom,
 								valuesList, heightIndex);
 
@@ -565,15 +539,12 @@ public class FormDialog extends AlertDialog.Builder {
 				heightLayout.addView(textView);
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
-				// zheightLayout.addView(heightPicture);
-				// l.addView(editText);
-				// valuesList[i]=editText;
 				tableLayout.addView(heightLayout);
 
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field type");
+				throw new IllegalStateException(UNKNOW_FIELD_TYPE);
 			}
 		}
 	}
@@ -614,17 +585,6 @@ public class FormDialog extends AlertDialog.Builder {
 
 					@Override
 					public void afterTextChanged(Editable arg0) {
-						// TODO
-						// if (editText.getText().toString().equals("")){
-						// editText.setError("Invalid");
-						//
-						// } else if(
-						// Double.parseDouble(editText.getText().toString()) >=
-						// nf.getMax()
-						// || Double.parseDouble(editText.getText()
-						// .toString()) <= nf.getMin()) {
-						// editText.setError("Invalid");
-						// }
 
 					}
 
@@ -696,8 +656,6 @@ public class FormDialog extends AlertDialog.Builder {
 							int position, long arg3) {
 						EditText et = new EditText(c);
 						et.setText(lf.getValues().get(position));
-						Log.d("TEST", "selected "
-								+ lf.getValues().get(position));
 						valuesList[h] = et;
 					}
 
@@ -781,7 +739,6 @@ public class FormDialog extends AlertDialog.Builder {
 					@Override
 					public void onClick(View v) {
 
-						// Intent intent = new Intent(c, PictureActivity.class);
 						c.startHeightActivityForResult(form, geom, valuesList,
 								heightIndex);
 					}
@@ -791,16 +748,13 @@ public class FormDialog extends AlertDialog.Builder {
 
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
-				// zheightLayout.addView(heightPicture);
-				// l.addView(editText);
-				// valuesList[i]=editText;
 				valuesList[i] = 0;
 				l.addView(heightLayout);
 
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field type");
+				throw new IllegalStateException(UNKNOW_FIELD_TYPE);
 			}
 		}
 	}

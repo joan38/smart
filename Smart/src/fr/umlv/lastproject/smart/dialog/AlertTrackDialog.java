@@ -139,7 +139,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 
 		trackParameter.addTextChangedListener(new TextWatcher() {
 
-			boolean isValidate;
+			private boolean isValidate;
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
