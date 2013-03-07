@@ -47,7 +47,7 @@ public class PointSymbology extends Symbology {
 	 * Color : Black / Radius : 5
 	 */
 	public PointSymbology() {
-		this(VALUE_RADIUS, Color.BLACK, PointSymbologieType.SQUARE);
+		this(VALUE_RADIUS, Color.BLACK, PointSymbologieType.CIRCLE);
 	}
 
 	/**

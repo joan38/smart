@@ -764,7 +764,7 @@ public class MenuActivity extends Activity {
 		gpsTrack = new GPSTrack(trackMode, name, gps.getLocationManager(),
 				mapView, GeometryType.LINE);
 		gpsTrack.startTrack();
-
+					formPath = null;
 		Toast.makeText(this, R.string.track_started, Toast.LENGTH_LONG).show();
 
 		for (GPSTrackListener l : this.gpsTrackListeners) {

@@ -69,7 +69,7 @@ public final class SmartConstants {
 			R.drawable.stoppolygontrack };
 	
 	public static int[] shapeSymbology = { R.drawable.circle,
-		R.drawable.rect };
+		R.drawable.square };
 
 	private SmartConstants() {
 	}
