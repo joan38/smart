@@ -23,14 +23,14 @@ public class ColorAdapter extends SimpleAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 	  View view = super.getView(position, convertView, parent);
-	  view.setBackgroundColor(SmartConstants.colors[position]);
+	  view.setBackgroundColor(SmartConstants.getColors()[position]);
 	  return view;
 	}
 	
 	@Override
 	public View getDropDownView (int position, View convertView, ViewGroup parent) {
 	    View v = super.getView(position, convertView, parent);
-	    v.setBackgroundColor(SmartConstants.colors[position]);
+	    v.setBackgroundColor(SmartConstants.getColors()[position]);
 	    return v;
 	}
 

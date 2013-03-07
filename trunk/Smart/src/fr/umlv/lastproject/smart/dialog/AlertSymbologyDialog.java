@@ -32,7 +32,8 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 		final LayoutInflater inflater = LayoutInflater.from(menu);
 		final View symbologyDialog = inflater.inflate(R.layout.alert_symbology,
 				null);
-		TableRow rowShape = (TableRow) symbologyDialog.findViewById(R.id.symbologyRow3);
+		TableRow rowShape = (TableRow) symbologyDialog
+				.findViewById(R.id.symbologyRow3);
 
 		rowShape.setVisibility(View.GONE);
 		setView(symbologyDialog);
@@ -42,7 +43,7 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 				.findViewById(R.id.colorSpinner);
 		spinner.setMinimumWidth(200);
 		List<? extends Map<String, ?>> colors = new LinkedList<Map<String, ?>>();
-		for (int i = 0; i < SmartConstants.colors.length; i++) {
+		for (int i = 0; i < SmartConstants.getColors().length; i++) {
 			colors.add(null);
 		}
 
@@ -59,24 +60,23 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 		ArrayAdapter<Integer> tailleAdapter = new ArrayAdapter<Integer>(menu,
 				android.R.layout.simple_list_item_1, tailles);
 		tailleSpinner.setAdapter(tailleAdapter);
-		
-		tailleSpinner.setSelection(layer.getSymbology().getSize()-1) ;
-		for(int i=0 ; i < SmartConstants.colors.length ; i++){
-			int a = SmartConstants.colors[i] ;
-				if(a == layer.getSymbology().getColor()){
-				spinner.setSelection(i) ;
-				break ;
+
+		tailleSpinner.setSelection(layer.getSymbology().getSize() - 1);
+		for (int i = 0; i < SmartConstants.getColors().length; i++) {
+			int a = SmartConstants.getColors()[i];
+			if (a == layer.getSymbology().getColor()) {
+				spinner.setSelection(i);
+				break;
 			}
 		}
 
-		final Spinner shapeSpinner = (Spinner) symbologyDialog.findViewById(R.id.shapeSpinner);
+		final Spinner shapeSpinner = (Spinner) symbologyDialog
+				.findViewById(R.id.shapeSpinner);
 
-		
-		if(layer.getType() == GeometryType.POINT){
+		if (layer.getType() == GeometryType.POINT) {
 			Log.d("TEST", "points");
 			rowShape.setVisibility(View.VISIBLE);
-			
-			
+
 			List<? extends Map<String, ?>> shape = new LinkedList<Map<String, ?>>();
 			for (int i = 0; i < 2; i++) {
 				shape.add(null);
@@ -85,16 +85,15 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 			ShapeAdapter shapeAdapter = new ShapeAdapter(menu, shape,
 					android.R.layout.simple_list_item_1, null, null);
 			shapeSpinner.setAdapter(shapeAdapter);
-			for(int i=0 ; i < SmartConstants.shapeSymbology.length ; i++){
-					if(i == ((PointSymbology)layer.getSymbology()).getType().getId() ){
-					shapeSpinner.setSelection(i) ;
-					break ;
+			for (int i = 0; i < SmartConstants.shapeSymbology.length; i++) {
+				if (i == ((PointSymbology) layer.getSymbology()).getType()
+						.getId()) {
+					shapeSpinner.setSelection(i);
+					break;
 				}
 			}
 		}
 
-		
-		
 		final AlertDialog dialog = this
 				.setPositiveButton(R.string.validate, new OnClickListener() {
 
@@ -103,10 +102,13 @@ public class AlertSymbologyDialog extends AlertDialog.Builder {
 						int positionColor = spinner.getSelectedItemPosition();
 						Integer taille = tailles.get(tailleSpinner
 								.getSelectedItemPosition());
-						int positionShape = shapeSpinner.getSelectedItemPosition();
-						layer.setSymbology(new PointSymbology(taille, SmartConstants.colors[positionColor], PointSymbologieType.getFromId(positionShape)));
-//						layer.editSymbology(taille,
-//								SmartConstants.colors[positionColor]);
+						int positionShape = shapeSpinner
+								.getSelectedItemPosition();
+						layer.setSymbology(new PointSymbology(taille,
+								SmartConstants.getColors()[positionColor],
+								PointSymbologieType.getFromId(positionShape)));
+						// layer.editSymbology(taille,
+						// SmartConstants.colors[positionColor]);
 						layerItem.setOverview(layer.getOverview());
 						menu.getMapView().invalidate();
 
