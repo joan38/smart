@@ -153,6 +153,7 @@
     <string name="symbo">Symbology</string>
     <string name="color">Color</string>
     <string name="taille">Size</string>
+    <string name="form">Shape</string>
     <string name="wmsurl">Enter WMS URL </string>
     <string name="wmstitle">Import WMS Layer </string>
     <string name="wms_error">Error while importing wms : url is not reachable</string>
