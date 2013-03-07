@@ -16,7 +16,6 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 
 import android.os.Environment;
-import android.util.Log;
 import android.util.Pair;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 
@@ -242,13 +241,6 @@ public final class ZIPUtils {
 					String tileX = dir.getPath();
 					String tileNameWithoutExtensionX = tileX.substring(tileX
 							.lastIndexOf("/") + 1);
-					Log.d("TESTXB",
-							"X : "
-									+ Integer
-											.parseInt(tileNameWithoutExtensionX)
-									+ " / Y : "
-									+ Integer
-											.parseInt(tileNameWithoutExtensionY));
 
 					return new Pair<Integer, Integer>(
 							Integer.parseInt(tileNameWithoutExtensionX),

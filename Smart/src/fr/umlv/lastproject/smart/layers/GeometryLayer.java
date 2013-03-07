@@ -80,51 +80,69 @@ public class GeometryLayer extends Overlay implements Layer {
 		}
 		GeometryLayer other = (GeometryLayer) obj;
 		if (context == null) {
-			if (other.context != null)
+			if (other.context != null) {
 				return false;
+			}
 		} else if (!context.equals(other.context))
 			return false;
 		if (doubleTapListeners == null) {
-			if (other.doubleTapListeners != null)
+			if (other.doubleTapListeners != null) {
 				return false;
-		} else if (!doubleTapListeners.equals(other.doubleTapListeners))
+			}
+		} else if (!doubleTapListeners.equals(other.doubleTapListeners)) {
 			return false;
-		if (editable != other.editable)
+		}
+		if (editable != other.editable) {
 			return false;
+		}
 		if (geometries == null) {
-			if (other.geometries != null)
+			if (other.geometries != null) {
 				return false;
-		} else if (!geometries.equals(other.geometries))
+			}
+		} else if (!geometries.equals(other.geometries)) {
 			return false;
-		if (isSelectable != other.isSelectable)
+		}
+		if (isSelectable != other.isSelectable) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		if (paint == null) {
-			if (other.paint != null)
+			if (other.paint != null) {
 				return false;
-		} else if (!paint.equals(other.paint))
+			}
+		} else if (!paint.equals(other.paint)) {
 			return false;
+		}
 		if (selectedListener == null) {
-			if (other.selectedListener != null)
+			if (other.selectedListener != null) {
 				return false;
-		} else if (!selectedListener.equals(other.selectedListener))
+			}
+		} else if (!selectedListener.equals(other.selectedListener)) {
 			return false;
+		}
 		if (singleTapListeners == null) {
-			if (other.singleTapListeners != null)
+			if (other.singleTapListeners != null) {
 				return false;
-		} else if (!singleTapListeners.equals(other.singleTapListeners))
+			}
+		} else if (!singleTapListeners.equals(other.singleTapListeners)) {
 			return false;
+		}
 		if (symbology == null) {
-			if (other.symbology != null)
+			if (other.symbology != null) {
 				return false;
-		} else if (!symbology.equals(other.symbology))
+			}
+		} else if (!symbology.equals(other.symbology)) {
 			return false;
-		if (type != other.type)
+		}
+		if (type != other.type) {
 			return false;
+		}
 		return true;
 	}
 
@@ -147,8 +165,8 @@ public class GeometryLayer extends Overlay implements Layer {
 	private static final int BUFFER = 100;
 	private static final String DEFAULT_NAME = "default";
 
-	private static final float radius = 12;
-	private static final float lineSize = 12;
+	private static final float RADIUS = 12;
+	private static final float LINESIZE = 12;
 	private static final float rectSize = 12;
 	private static final float strokeWidth = 5;
 
@@ -480,17 +498,17 @@ public class GeometryLayer extends Overlay implements Layer {
 
 		final Canvas canvas = new Canvas(bitmap);
 
-		final Paint paint = new Paint();
+		paint = new Paint();
 
 		paint.setColor(symbology.getColor());
 		switch (type) {
 		case POINT:
-			canvas.drawCircle(middlex, middley, radius, paint);
+			canvas.drawCircle(middlex, middley, RADIUS, paint);
 			break;
 		case LINE:
 			paint.setStrokeWidth(strokeWidth);
-			canvas.drawLine(lineSize, lineSize, height - lineSize, width
-					- lineSize, paint);
+			canvas.drawLine(LINESIZE, LINESIZE, height - LINESIZE, width
+					- LINESIZE, paint);
 			break;
 		case POLYGON:
 			canvas.drawRect(rectSize, rectSize, height - rectSize, width
@@ -569,22 +587,26 @@ public class GeometryLayer extends Overlay implements Layer {
 		double west = -180;
 
 		if (geometries.size() > 0) {
-			north = geometries.get(0).getBoundingBox().getLatNorthE6() / 1E6;
-			south = geometries.get(0).getBoundingBox().getLatSouthE6() / 1E6;
-			east = geometries.get(0).getBoundingBox().getLonEastE6() / 1E6;
-			west = geometries.get(0).getBoundingBox().getLonWestE6() / 1E6;
+			north = geometries.get(0).getBoundingBox().getLatNorthE6()
+					/ VALUE_1E6;
+			south = geometries.get(0).getBoundingBox().getLatSouthE6()
+					/ VALUE_1E6;
+			east = geometries.get(0).getBoundingBox().getLonEastE6()
+					/ VALUE_1E6;
+			west = geometries.get(0).getBoundingBox().getLonWestE6()
+					/ VALUE_1E6;
 		}
 
 		for (Geometry g : geometries) {
 			BoundingBoxE6 tmp = g.getBoundingBox();
-			north = (north < tmp.getLatNorthE6() / 1E6 ? tmp.getLatNorthE6() / 1E6
-					: north);
-			south = (south > tmp.getLatSouthE6() / 1E6 ? tmp.getLatSouthE6() / 1E6
-					: south);
-			east = (east < tmp.getLonEastE6() / 1E6 ? tmp.getLonEastE6() / 1E6
-					: east);
-			west = (west < tmp.getLonWestE6() / 1E6 ? tmp.getLonWestE6() / 1E6
-					: west);
+			north = (north < tmp.getLatNorthE6() / VALUE_1E6 ? tmp
+					.getLatNorthE6() / VALUE_1E6 : north);
+			south = (south > tmp.getLatSouthE6() / VALUE_1E6 ? tmp
+					.getLatSouthE6() / VALUE_1E6 : south);
+			east = (east < tmp.getLonEastE6() / VALUE_1E6 ? tmp.getLonEastE6()
+					/ VALUE_1E6 : east);
+			west = (west < tmp.getLonWestE6() / VALUE_1E6 ? tmp.getLonWestE6()
+					/ VALUE_1E6 : west);
 		}
 
 		return new Extent(new BoundingBoxE6(north, east, south, west));

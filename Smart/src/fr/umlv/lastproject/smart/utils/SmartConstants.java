@@ -68,7 +68,8 @@ public final class SmartConstants {
 			R.drawable.stopmission, R.drawable.stopgpstrack,
 			R.drawable.stoppolygontrack };
 
-	public static int[] shapeSymbology = { R.drawable.circle, R.drawable.square };
+	private static int[] shapeSymbology = { R.drawable.circle,
+			R.drawable.square };
 
 	private SmartConstants() {
 	}
@@ -79,5 +80,9 @@ public final class SmartConstants {
 
 	public static int[] getColors() {
 		return colors;
+	}
+
+	public static int[] getShapeSymbology() {
+		return shapeSymbology;
 	}
 }
