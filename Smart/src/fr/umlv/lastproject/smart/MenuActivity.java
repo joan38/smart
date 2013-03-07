@@ -196,7 +196,8 @@ public class MenuActivity extends Activity {
 			gpsTrack = BundleCreator.loadTrack(savedInstanceState, mapView,
 					this, gps.getLocationManager(), this);
 			for (GPSTrackListener l : gpsTrackListeners) {
-				l.actionPerformed(gpsTrack.isStarted());
+				l.actionPerformed(gpsTrack == null ? false : gpsTrack
+						.isStarted());
 			}
 			if (Mission.getInstance() != null) {
 				polygonTrack = BundleCreator.loadPolygonTrack(
@@ -740,7 +741,7 @@ public class MenuActivity extends Activity {
 		gpsTrack = new GPSTrack(trackMode, name, gps.getLocationManager(),
 				mapView, GeometryType.LINE);
 		gpsTrack.startTrack();
-					formPath = null;
+		formPath = null;
 		Toast.makeText(this, R.string.track_started, Toast.LENGTH_LONG).show();
 
 		for (GPSTrackListener l : this.gpsTrackListeners) {
