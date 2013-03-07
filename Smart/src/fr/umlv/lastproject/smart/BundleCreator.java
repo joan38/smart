@@ -42,7 +42,7 @@ public class BundleCreator {
 		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOverlays());
 		BundleCreator.saveGeotiffs(b,mapView.getGeoTIFFOverlays());
 		BundleCreator.saveTrack(b, gpsTrack);
-		BundleCreator.savePolygonTrack(b, polygonTrack);
+	//	BundleCreator.savePolygonTrack(b, polygonTrack);
 		return b ;
 	}
 

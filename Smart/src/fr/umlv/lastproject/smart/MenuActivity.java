@@ -218,11 +218,11 @@ public class MenuActivity extends Activity {
 				l.actionPerformed(trackStarted) ;
 			}
 			
-			polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState, mapView,Mission.getInstance().getPolygonLayer(), locationManager) ;
+			/*polygonTrack = BundleCreator.loadPolygonTrack(savedInstanceState, mapView,Mission.getInstance().getPolygonLayer(), locationManager) ;
 			polygonTrackStarted = (polygonTrack == null ? false : polygonTrack.isStarted()) ;
 			for (PolygonTrackListener l : polygonTrackListeners){
 				l.actionPerformed(polygonTrackStarted) ;
-			}
+			}*/
 
 
 
