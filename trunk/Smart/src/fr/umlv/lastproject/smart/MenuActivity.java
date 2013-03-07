@@ -865,6 +865,7 @@ public class MenuActivity extends Activity {
 
 	public void measure(boolean absolute) {
 		final MenuActivity ma = this;
+		Mission.getInstance().setSelectable(false);
 
 		final Measures m = new Measures(mapView);
 
@@ -875,6 +876,7 @@ public class MenuActivity extends Activity {
 						ma, distance, " m");
 				amrd.show();
 				m.stop();
+				Mission.getInstance().setSelectable(true);
 			}
 		});
 
