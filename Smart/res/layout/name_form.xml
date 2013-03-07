@@ -19,6 +19,7 @@ style="@style/AppTheme"
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
 		android:padding="10dip"
+		android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
 		android:id = "@+id/nameForm" />
 
 </LinearLayout>
