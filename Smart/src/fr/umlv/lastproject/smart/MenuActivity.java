@@ -454,7 +454,7 @@ public class MenuActivity extends Activity {
 					GeometryLayer gl = DataImport.importShapeFile(this, path);
 					mapView.addGeometryLayer(gl);
 					mapView.getController().setCenter(
-							gl.getExtent().getCenter());
+							gl.getExtent().getBoundingBox().getCenter());
 					mapView.invalidate();
 
 					Toast.makeText(this, R.string.shpImport, Toast.LENGTH_SHORT)
@@ -512,7 +512,9 @@ public class MenuActivity extends Activity {
 											R.string.geotiffImport,
 											Toast.LENGTH_SHORT).show();
 									mapView.getController().setCenter(
-											overlay.getExtent().getCenter());
+											overlay.getExtent()
+													.getBoundingBox()
+													.getCenter());
 									mapView.getController().setZoom(12);
 								}
 
