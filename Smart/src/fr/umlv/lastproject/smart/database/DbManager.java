@@ -42,9 +42,9 @@ import fr.umlv.lastproject.smart.layers.GeometryType;;
 public class DbManager {
 
 	public static final String DB_NAME = "smart.db";
-	final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger logger = SmartLogger.getLocator().getLogger();
 
-	
+
 
 	public static final String TABLE_MISSIONS = "missions";
 	private static final String MISSIONS_COL_ID = "id";
@@ -84,6 +84,9 @@ public class DbManager {
 	private static final String SELECT = "SELECT ";
 	private static final String FROM = " FROM ";
 	private static final String WHERE = " WHERE ";
+	private static final String UNKOWN_FIELD = "Unkown field";
+	private static final String INSERT_ERROR = "Insert database error";
+
 
 	private DbHelper mDbHelper;
 	private SQLiteDatabase mDb;
@@ -133,7 +136,7 @@ public class DbManager {
 
 			File ssfolder = new File(SmartConstants.BDD_PATH);
 			ssfolder.mkdir();
-			
+
 		}
 
 		@Override
@@ -162,7 +165,7 @@ public class DbManager {
 			} catch (SQLiteException e) {
 				dbRetour.close();
 				logger.log(Level.SEVERE, "Open database error : "+e.getMessage());
-				throw new SmartException("Open database error");
+				throw new SmartException(e, "Open database error");
 			}
 
 			return dbRetour;
@@ -238,7 +241,7 @@ public class DbManager {
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKOWN_FIELD);
 			}
 		}
 
@@ -255,7 +258,7 @@ public class DbManager {
 			db.close();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE,"Table form "+f.getTitle()+" not created "+e.getMessage());
-			throw new SmartException("Database Error");
+			throw new SmartException(e, "Database Error");
 		}
 
 		return 0;
@@ -308,7 +311,7 @@ public class DbManager {
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKOWN_FIELD);
 			}
 		}
 		SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -320,9 +323,8 @@ public class DbManager {
 			logger.log(Level.INFO,"Form record inserted in database");
 			return id;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			logger.log(Level.SEVERE, "Form record insert database error "+e.getMessage());
-			throw new SmartException("Insert database error");
+			throw new SmartException(e, INSERT_ERROR );
 		}
 	}
 
@@ -372,7 +374,7 @@ public class DbManager {
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKOWN_FIELD);
 			}
 		}
 
@@ -411,7 +413,7 @@ public class DbManager {
 			int id = getMissionId(Mission.getInstance().getTitle());
 			Mission.getInstance().setId(id);
 			mission.setId(id);
-			throw new SmartException("Insert database error");
+			throw new SmartException(e, INSERT_ERROR);
 		}
 	}
 
@@ -460,7 +462,7 @@ public class DbManager {
 		mDb.delete(TABLE_GEOMETRIES, "id=" + idGeometry, null);
 		mDb.delete(nameForm, "id=" + idForm, null);
 	}
-	
+
 
 	/**
 	 * Request the table "missions" with a criterion of name
@@ -520,11 +522,10 @@ public class DbManager {
 
 		if (c.getCount() == 0) {
 			return -1;
-		} else {
-			c.moveToNext();
-			MissionRecord r = cursorToMission(c);
-			return r.getId();
 		}
+		c.moveToNext();
+		MissionRecord r = cursorToMission(c);
+		return r.getId();
 	}
 
 	/**
@@ -569,8 +570,8 @@ public class DbManager {
 	 */
 	public List<MissionRecord> getAllMissions() {
 		Cursor c = mDb.rawQuery(SELECT + " * " + FROM + TABLE_MISSIONS  
-				 + " ORDER BY " + MISSIONS_COL_TITLE+" ;", null);
-		
+				+ " ORDER BY " + MISSIONS_COL_TITLE+" ;", null);
+
 
 		LinkedList<MissionRecord> missions = new LinkedList<MissionRecord>();
 		while (c.moveToNext()) {
@@ -635,7 +636,7 @@ public class DbManager {
 			return id;
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Geometry not inserted in database "+e.getMessage());
-			throw new SmartException("Insert database error");
+			throw new SmartException(e, INSERT_ERROR);
 		}
 	}
 
@@ -743,7 +744,7 @@ public class DbManager {
 			return id;
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Point not inserted in database "+e.getMessage());
-			throw new SmartException("Insert database error");
+			throw new SmartException(e, INSERT_ERROR);
 		}
 	}
 
@@ -829,7 +830,7 @@ public class DbManager {
 		try{
 			idForm = c.getInt(0);
 		} catch (Exception e){
-			throw new SmartException("No geometry in database");
+			throw new SmartException(e, "No geometry in database");
 		}
 		return idForm;
 	}
@@ -907,8 +908,6 @@ public class DbManager {
 				formRecord.addField(new TextFieldRecord(t, c.getString(i)));
 				break;
 			case NUMERIC:
-				// TODO
-				//NumericField n = new NumericField(c.getColumnName(i), ((NumericField)fields.get(j)).getMin(), ((NumericField)fields.get(j)).getMax());
 				NumericField n = new NumericField(c.getColumnName(i));
 				formRecord.addField(new NumericFieldRecord(n, c.getDouble(i)));
 				break;
@@ -937,7 +936,7 @@ public class DbManager {
 				break;
 
 			default:
-				throw new IllegalStateException("Unkown field");
+				throw new IllegalStateException(UNKOWN_FIELD);
 			}
 
 		}

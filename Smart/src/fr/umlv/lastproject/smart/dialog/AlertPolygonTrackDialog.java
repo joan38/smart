@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.form;
+package fr.umlv.lastproject.smart.dialog;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

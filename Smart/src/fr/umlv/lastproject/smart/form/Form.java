@@ -49,7 +49,7 @@ public class Form implements Serializable {
 	private String title;
 	private List<Field> fieldsList;
 
-	final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger logger = SmartLogger.getLocator().getLogger();
 
 	private static final String VALUESTAG = "values";
 	private static final String COMMENTS = "Commentaires";
@@ -174,6 +174,8 @@ public class Form implements Serializable {
 	}
 
 	/**
+	 * 
+	 * This method read a form XML and build it
 	 * 
 	 * @param path
 	 *            the file to load

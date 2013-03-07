@@ -35,9 +35,8 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 public final class Mission {
 
 	private static Mission mission = null;
-	final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger logger = SmartLogger.getLocator().getLogger();
 
-	private static final int POINT_RADIUS = 10;
 	private static final int LINE_THICKNESS = 10;
 	private static final int POLY_THICKNESS = 10;
 
