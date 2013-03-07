@@ -1,5 +1,7 @@
 package fr.umlv.lastproject.smart.form;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +47,6 @@ public final class Mission {
 	private GeometryLayer polygonLayer;
 
 	private boolean trackinprogress = false;
-
 	private final MenuActivity context;
 
 	/* the name of the mission */
@@ -58,6 +59,8 @@ public final class Mission {
 	private final SmartMapView mapView;
 	private final Form form;
 	private Survey survey;
+
+	private final static List<MissionListener> missionListeners = new ArrayList<MissionListener>();
 
 	/**
 	 * 
@@ -197,6 +200,10 @@ public final class Mission {
 		}
 		dbm.close();
 
+		for (MissionListener l : missionListeners) {
+			l.actionPerformed(true);
+		}
+
 		return mission;
 	}
 
@@ -240,6 +247,10 @@ public final class Mission {
 		status = false;
 		setSelectable(false);
 		mission = null;
+
+		for (MissionListener l : missionListeners) {
+			l.actionPerformed(false);
+		}
 
 		return status;
 	}
@@ -441,4 +452,19 @@ public final class Mission {
 		}
 	}
 
+	/**
+	 * 
+	 * @param listener
+	 */
+	public static void removeMissionListener(MissionListener listener) {
+		missionListeners.remove(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public static void addMissionListener(MissionListener listener) {
+		missionListeners.add(listener);
+	}
 }

@@ -94,7 +94,6 @@ public class MenuActivity extends Activity {
 	private GPSTrack gpsTrack = null;
 	private GPSTrack polygonTrack = null;
 	private Preferences pref;
-	private final List<MissionListener> missionListeners = new ArrayList<MissionListener>();
 	private final List<GPSTrackListener> gpsTrackListeners = new ArrayList<GPSTrackListener>();
 	private final List<PolygonTrackListener> polygonTrackListeners = new ArrayList<PolygonTrackListener>();
 	private Form form;
@@ -129,7 +128,7 @@ public class MenuActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			return;
 		}
-		// TODO a supprr
+
 		setTheme(pref.theme);
 
 		File f = new File(SmartConstants.APP_PATH);
@@ -749,15 +748,14 @@ public class MenuActivity extends Activity {
 
 		switch (menuAction) {
 		case CREATE_MISSION:
-			if (Mission.getInstance() != null
-					&& Mission.getInstance().isStarted()) {
+			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 				Log.d("debug", (Mission.getInstance() + " " + Mission
 						.getInstance().isStarted()));
 				shortcut.setImageResource(SmartConstants.icons[MenuAction.STOP_MISSION
 						.getId()]);
 			}
 
-			this.addMissionListener(new MissionListener() {
+			Mission.addMissionListener(new MissionListener() {
 
 				@Override
 				public void actionPerformed(boolean status) {
@@ -859,10 +857,6 @@ public class MenuActivity extends Activity {
 			}
 		}
 		Mission.createMission(missionName, this, mapView, form).startMission();
-
-		for (MissionListener l : this.missionListeners) {
-			l.actionPerformed(true);
-		}
 
 		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
@@ -1038,33 +1032,12 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	public List<MissionListener> getMissionListeners() {
-		return missionListeners;
-	}
-
 	public List<GPSTrackListener> getGpsTrackListeners() {
 		return gpsTrackListeners;
 	}
 
 	public List<PolygonTrackListener> getPolygonTrackListeners() {
 		return polygonTrackListeners;
-	}
-
-	// TODO: A VIRER DANS LA CLASSE MISSION !
-	/**
-	 * 
-	 * @param listener
-	 */
-	public void addMissionListener(MissionListener listener) {
-		missionListeners.add(listener);
-	}
-
-	/**
-	 * 
-	 * @param listener
-	 */
-	public void removeMissionListener(MissionListener listener) {
-		missionListeners.remove(listener);
 	}
 
 	/**
