@@ -72,7 +72,7 @@ public class FileChooserActivity extends FragmentActivity implements
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();
 		}
-		setTheme(pref.theme);
+		setTheme(pref.getTheme());
 		setContentView(R.layout.chooser);
 
 		mFragmentManager = getSupportFragmentManager();

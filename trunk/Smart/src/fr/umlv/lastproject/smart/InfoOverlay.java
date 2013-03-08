@@ -22,22 +22,10 @@ public class InfoOverlay {
 	private static final DecimalFormat ACCURACY_FORMAT = new DecimalFormat(
 			"####0.00");
 
-	private double latitude;
-	private double longitude;
-	private double altitude;
-	private float accuracy;
-	private float bearing;
-	private float speed;
-
-	private boolean isLatitudeVisible;
-	private boolean isLongitudeVisible;
-	private boolean isAltitudeVisible;
-	private boolean isAccuracyVisible;
-	private boolean isBearingVisible;
-	private boolean isSpeedVisible;
+	private static final int NB_INFO_VISIBLE = 4;
 
 	private final View infoView;
-	private int nbInfoVisible = 4;
+	private int nbInfoVisible = NB_INFO_VISIBLE;
 	private boolean isVisible = true;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
@@ -56,12 +44,12 @@ public class InfoOverlay {
 	 * Function which update the locations infos
 	 */
 	public void updateInfos(GPSEvent event) {
-		latitude = event.getLatitude();
-		longitude = event.getLongitude();
-		altitude = event.getAltitude();
-		accuracy = event.getAccuracy();
-		bearing = event.getBearing();
-		speed = event.getSpeed();
+		double latitude = event.getLatitude();
+		double longitude = event.getLongitude();
+		double altitude = event.getAltitude();
+		float accuracy = event.getAccuracy();
+		float bearing = event.getBearing();
+		float speed = event.getSpeed();
 
 		((TextView) infoView.findViewById(R.id.findGPS))
 				.setVisibility(View.GONE);
