@@ -27,9 +27,9 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  * 
  */
 
-class BundleCreator {
+public final class BundleCreator {
 
-	private final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	public static Bundle createBundle(SmartMapView mapView, GPSTrack gpsTrack,
 			GPSTrack polygonTrack) {
@@ -331,7 +331,7 @@ class BundleCreator {
 						ctx);
 				map.addGeoTIFFOverlay(overlay);
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Load GeoTIFF Error");
+				LOGGER.log(Level.SEVERE, "Load GeoTIFF Error");
 			}
 		}
 	}

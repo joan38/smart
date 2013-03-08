@@ -24,9 +24,9 @@
     <string name="exitMsg">Quit SMART ?</string>
     <string name="exitMsgWithMission">Quit SMART ? Current mission will be stopped.</string>
     <string name="help">Help</string>
-    <string name="helpLayer">Layers menu.\nUncheck a layer to hide it /Slide to remove it.\nLayers hierarchy is modified by drag and drop.\nTo modify  symbology, select the picture associated to the vector layer.</string>
+    <string name="helpLayer">Layers menu.\nUncheck a layer to hide it /Slide to remove it.\nLayers hierarchy is modified by drag and drop on a layer\'s name.\nTo modify  symbology, select the picture associated to the vector layer.\nTo zoom at a layer\'s extent, long press on it.</string>
     <string name="helpMap">Map view.\nTou can drag the map.\n Pinch/double tap to zoom in. Spread the screen to zoom out .\nIf your GPS is activated, touch the target icon to locate your position on the map.</string>
-    <string name="helpMenu">You can add a shortcut to the shortcut bar on map view by long-pressing a picture on the bar.</string>
+    <string name="helpMenu">Menu. You can add a shortcut to the shortcut bar on map view by long-pressing a picture on the bar.</string>
     <string name="about">About</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

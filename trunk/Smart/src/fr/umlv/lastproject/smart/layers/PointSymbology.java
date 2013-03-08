@@ -38,7 +38,7 @@ public class PointSymbology extends Symbology {
 	private int radius;
 	private PointSymbologieType type;
 
-	private static final int VALUE_RADIUS = 10;
+	private static final int VALUE_RADIUS = 8;
 
 	/**
 	 * Point default constructor

@@ -24,9 +24,9 @@
     <string name="exitMsg">Quitter SMART ?</string>
     <string name="exitMsgWithMission">Quitter SMART ? La mission en cours sera arrêtée.</string>
     <string name="help">Aide</string>
-    <string name="helpLayer">Menu des couches.\nLa visibilité d\'une couche est liée à sa case à cocher. Pour supprimer une couche, il faut la faire glisser à gauche ou à droite.\nLa hiérarchie des couches est gérée par glisser-déposer.\nPour changer la symbologie d\'une couche, il vous suffit de séléctionner son aperçu.</string>
+    <string name="helpLayer">Menu des couches.\nLa visibilité d\'une couche est liée à sa case à cocher. Pour supprimer une couche, il faut la faire glisser à gauche ou à droite.\nLa hiérarchie des couches est gérée par un glisser-déposer sur les noms.\nPour changer la symbologie d\'une couche, il vous suffit de séléctionner son aperçu.\nIl est possible de zoomer sur l\'étendu d\'une couche en effectuant un appui long directement sur elle.</string>
     <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
-    <string name="helpMenu">Vous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
+    <string name="helpMenu">Menu.\nVous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
     <string name="about">A propos</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
