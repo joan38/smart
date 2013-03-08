@@ -35,7 +35,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 public final class Mission {
 
 	private static Mission mission = null;
-	private static final Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	private static final int LINE_THICKNESS = 10;
 	private static final int POLY_THICKNESS = 10;
@@ -59,7 +59,7 @@ public final class Mission {
 	private final Form form;
 	private Survey survey;
 
-	private final static List<MissionListener> missionListeners = new ArrayList<MissionListener>();
+	private static final List<MissionListener> MISSION_LISTENERS = new ArrayList<MissionListener>();
 
 	/**
 	 * 
@@ -191,15 +191,15 @@ public final class Mission {
 		try {
 			dbm.open(activity);
 			dbm.insertMission(new MissionRecord());
-			logger.log(Level.INFO, "Mission saved in database");
+			LOGGER.log(Level.INFO, "Mission saved in database");
 		} catch (SmartException e) {
-			logger.log(Level.SEVERE,
+			LOGGER.log(Level.SEVERE,
 					"Mission unsaved in database " + e.getMessage());
 			Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 		dbm.close();
 
-		for (MissionListener l : missionListeners) {
+		for (MissionListener l : MISSION_LISTENERS) {
 			l.actionPerformed(true);
 		}
 
@@ -223,7 +223,7 @@ public final class Mission {
 	 */
 	public boolean startMission() {
 		status = true;
-		logger.log(Level.INFO, "Mission " + title + " started");
+		LOGGER.log(Level.INFO, "Mission " + title + " started");
 		return status;
 	}
 
@@ -241,13 +241,13 @@ public final class Mission {
 			Log.e("", e.getMessage());
 		}
 		dbManager.stopMission(id);
-		logger.log(Level.INFO, "Mission " + title + " stopped");
+		LOGGER.log(Level.INFO, "Mission " + title + " stopped");
 		dbManager.close();
 		status = false;
 		setSelectable(false);
 		mission = null;
 
-		for (MissionListener l : missionListeners) {
+		for (MissionListener l : MISSION_LISTENERS) {
 			l.actionPerformed(false);
 		}
 
@@ -291,7 +291,7 @@ public final class Mission {
 	}
 
 	public void startSurvey(PointGeometry p) {
-		logger.log(Level.INFO, "Position point survey in progress");
+		LOGGER.log(Level.INFO, "Position point survey in progress");
 		pointLayer.addGeometry(p);
 		form.openForm(context, p, Mission.this);
 	}
@@ -308,7 +308,7 @@ public final class Mission {
 		}
 		setSelectable(false);
 
-		logger.log(Level.INFO, "Survey in progress");
+		LOGGER.log(Level.INFO, "Survey in progress");
 		switch (type) {
 		case LINE:
 			survey.startSurvey(lineLayer);
@@ -412,7 +412,7 @@ public final class Mission {
 	 */
 	public void removeGeometry(Geometry g) {
 		if (g == null) {
-			logger.log(Level.WARNING, "Try to remove null geometry");
+			LOGGER.log(Level.WARNING, "Try to remove null geometry");
 			return;
 		}
 
@@ -429,7 +429,7 @@ public final class Mission {
 		default:
 			break;
 		}
-		logger.log(Level.INFO, "Geometry " + g.getId() + " removed");
+		LOGGER.log(Level.INFO, "Geometry " + g.getId() + " removed");
 		mapView.invalidate();
 	}
 
@@ -456,7 +456,7 @@ public final class Mission {
 	 * @param listener
 	 */
 	public static void removeMissionListener(MissionListener listener) {
-		missionListeners.remove(listener);
+		MISSION_LISTENERS.remove(listener);
 	}
 
 	/**
@@ -464,6 +464,6 @@ public final class Mission {
 	 * @param listener
 	 */
 	public static void addMissionListener(MissionListener listener) {
-		missionListeners.add(listener);
+		MISSION_LISTENERS.add(listener);
 	}
 }

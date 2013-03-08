@@ -253,9 +253,9 @@ public class FormDialog extends AlertDialog.Builder {
 									num.setValue(Double
 											.parseDouble(((EditText) valuesList[i])
 													.getText().toString()));
-								} else {
-									num.setValue(-1);
-								}
+								} /*else {
+									num.setValue();
+								}*/
 								break;
 
 							case BOOLEAN:

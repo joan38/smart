@@ -202,7 +202,7 @@ public class MenuActivity extends Activity {
 			if (Mission.getInstance() != null) {
 				polygonTrack = BundleCreator.loadPolygonTrack(
 						savedInstanceState, mapView, Mission.getInstance()
-								.getPolygonLayer(), gps.getLocationManager(),
+						.getPolygonLayer(), gps.getLocationManager(),
 						this);
 			}
 			for (PolygonTrackListener l : polygonTrackListeners) {
@@ -358,10 +358,10 @@ public class MenuActivity extends Activity {
 			helpDialog.show();
 			break;
 
-		// case 5:
-		// final AboutDialog about = new AboutDialog(this);
-		// about.show();
-		// break;
+			// case 5:
+			// final AboutDialog about = new AboutDialog(this);
+			// about.show();
+			// break;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -379,7 +379,7 @@ public class MenuActivity extends Activity {
 
 			case SmartConstants.LAYERS_VIEW:
 				ListOverlay listOverlay = (ListOverlay) data
-						.getSerializableExtra("overlays");
+				.getSerializableExtra("overlays");
 
 				final Bundle extras = data.getExtras();
 				Object oZoomTo = extras.get("zoomTo");
@@ -406,7 +406,7 @@ public class MenuActivity extends Activity {
 							.getOverlay(listOverlay
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
-									.getName());
+											.getName());
 					new AlertSymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
@@ -571,8 +571,8 @@ public class MenuActivity extends Activity {
 											Toast.LENGTH_SHORT).show();
 									mapView.getController().setCenter(
 											overlay.getExtent()
-													.getBoundingBox()
-													.getCenter());
+											.getBoundingBox()
+											.getCenter());
 									mapView.getController().setZoom(12);
 								}
 
@@ -587,16 +587,17 @@ public class MenuActivity extends Activity {
 				break;
 
 			case SmartConstants.HEIGHT_ACTIVITY:
+				
 				final Bundle bundle = data.getExtras();
 				final Object oResult = bundle.get(HeightActivity.HEIGHT_RESULT);
 				if (oResult == null) {
 					final String error = (bundle
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_FILLED_DIALOG_ID, new Bundle());
+									return;
 				}
 				final double heightValue = Double.parseDouble(oResult
 						.toString());
@@ -613,11 +614,11 @@ public class MenuActivity extends Activity {
 				if (oResult2 == null) {
 					final String error = (bundle2
 							.get(HeightActivity.ERROR_RESULT)) == null ? bundle2
-							.get(HeightActivity.ERROR_RESULT).toString()
-							: getString(R.string.height_error);
-					Toast.makeText(this, error, Toast.LENGTH_LONG);
-					createDialog(FORM_MODIFY_DIALOG, new Bundle());
-					return;
+									.get(HeightActivity.ERROR_RESULT).toString()
+									: getString(R.string.height_error);
+									Toast.makeText(this, error, Toast.LENGTH_LONG);
+									createDialog(FORM_MODIFY_DIALOG, new Bundle());
+									return;
 				}
 				final double heightValue2 = Double.parseDouble(oResult2
 						.toString());
@@ -751,7 +752,7 @@ public class MenuActivity extends Activity {
 				Log.d("debug", (Mission.getInstance() + " " + Mission
 						.getInstance().isStarted()));
 				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_MISSION
-						.getId()]);
+				                                                    .getId()]);
 			}
 
 			Mission.addMissionListener(new MissionListener() {
@@ -760,11 +761,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_MISSION
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.CREATE_MISSION
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					}
 				}
@@ -775,7 +776,7 @@ public class MenuActivity extends Activity {
 			if (gpsTrack != null && gpsTrack.isStarted()) {
 				Log.d("debug", gpsTrack + " " + gpsTrack.isStarted());
 				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_GPS_TRACK
-						.getId()]);
+				                                                    .getId()]);
 			}
 			this.addGPSTrackListener(new GPSTrackListener() {
 
@@ -783,11 +784,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_GPS_TRACK
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.GPS_TRACK
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					}
 				}
@@ -797,7 +798,7 @@ public class MenuActivity extends Activity {
 			if (polygonTrack != null && polygonTrack.isStarted()) {
 				Log.d("debug", polygonTrack + " " + polygonTrack.isStarted());
 				shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_POLYGON_TRACK
-						.getId()]);
+				                                                    .getId()]);
 			}
 			this.addPolygonTrackListener(new PolygonTrackListener() {
 
@@ -805,11 +806,11 @@ public class MenuActivity extends Activity {
 				public void actionPerformed(boolean status) {
 					if (status) {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.STOP_POLYGON_TRACK
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					} else {
 						shortcut.setImageResource(SmartConstants.getIcons()[MenuAction.POLYGON_TRACK
-								.getId()]);
+						                                                    .getId()]);
 						shortcutsView.invalidate();
 					}
 
@@ -836,11 +837,11 @@ public class MenuActivity extends Activity {
 		polygonTrack = new GPSTrack(trackMode,
 				Mission.getInstance().getTitle(), gps.getLocationManager(),
 				mapView, GeometryType.POLYGON, Mission.getInstance()
-						.getPolygonLayer(), this.form, MenuActivity.this);
+				.getPolygonLayer(), this.form, MenuActivity.this);
 		polygonTrack.startTrack();
 		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
-				.show();
+		.show();
 		for (PolygonTrackListener l : this.polygonTrackListeners) {
 			l.actionPerformed(true);
 		}
@@ -864,7 +865,9 @@ public class MenuActivity extends Activity {
 
 	public void measure(boolean absolute) {
 		final MenuActivity ma = this;
-		Mission.getInstance().setSelectable(false);
+		if (Mission.isCreated()) {
+			Mission.getInstance().setSelectable(false);
+		}
 
 		final Measures m = new Measures(mapView);
 
@@ -875,7 +878,9 @@ public class MenuActivity extends Activity {
 						ma, distance, " m");
 				amrd.show();
 				m.stop();
-				Mission.getInstance().setSelectable(true);
+				if(Mission.isCreated()){
+					Mission.getInstance().setSelectable(true);
+				}
 			}
 		});
 
