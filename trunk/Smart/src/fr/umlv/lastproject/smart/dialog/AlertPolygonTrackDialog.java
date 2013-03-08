@@ -37,7 +37,7 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 				R.layout.alert_polygon_track, null);
 
 		setView(alertTrackView);
-		setTitle(R.string.track_title);
+		setTitle(R.string.polygon_track_title);
 
 		final EditText trackParameter = (EditText) alertTrackView
 				.findViewById(R.id.trackparameter);
@@ -47,18 +47,25 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = setPositiveButton(R.string.create_button,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						final RadioButton radioButton = (RadioButton) alertTrackView.findViewById(radioGroup.getCheckedRadioButtonId());
-						final TrackMode trackMode = TrackMode.valueOf(radioButton.getTag().toString());
+						final RadioButton radioButton = (RadioButton) alertTrackView
+								.findViewById(radioGroup
+										.getCheckedRadioButtonId());
+						final TrackMode trackMode = TrackMode
+								.valueOf(radioButton.getTag().toString());
 						final Object oParam = trackParameter.getText();
 						if (oParam == null) {
-							Toast.makeText(menu, R.string.track_param_missing,Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_missing,
+									Toast.LENGTH_LONG).show();
 							return;
-						}try {
-							final int param = Integer.parseInt(oParam.toString());
+						}
+						try {
+							final int param = Integer.parseInt(oParam
+									.toString());
 							trackMode.setParameter(param);
 							menu.createPolygonTrack(trackMode);
 						} catch (NumberFormatException e) {
-							Toast.makeText(menu, R.string.track_param_false,Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_false,
+									Toast.LENGTH_LONG).show();
 							return;
 						}
 					}
@@ -74,11 +81,16 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 
 		trackParameter.addTextChangedListener(new TextWatcher() {
 			private boolean isValidate;
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,int count) {}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -87,7 +99,8 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 				} else {
 					isValidate = true;
 				}
-				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(isValidate);
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+						isValidate);
 			}
 		});
 

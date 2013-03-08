@@ -28,15 +28,15 @@ public class AlertThemeDialog extends AlertDialog.Builder {
 
 		RadioGroup themeRadioGroup = (RadioGroup) alertThemeView
 				.findViewById(R.id.groupTheme);
-		themeRadioGroup
-				.check(Theme.getByThemeId(pref.theme).getRadioButtonId());
+		themeRadioGroup.check(Theme.getByThemeId(pref.getTheme())
+				.getRadioButtonId());
 		themeRadioGroup
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						pref.theme = Theme.getByRadioButtonId(checkedId)
-								.getThemeId();
+						pref.setTheme(Theme.getByRadioButtonId(checkedId)
+								.getThemeId());
 					}
 				});
 
