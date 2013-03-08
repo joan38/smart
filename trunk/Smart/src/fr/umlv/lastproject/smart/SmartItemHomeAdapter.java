@@ -36,20 +36,10 @@ public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 		this.context = context;
 	}
 
-	// private view holder class which represent the item componants
 	private class SmartHolder {
 		private ImageView imageView;
 		private TextView txtTitle;
 	}
-
-	/**
-	 * @return the item status
-	 */
-// TODO
-//	@Override
-//	public boolean isEnabled(int position) {
-//		return this.getItem(position).isEnabled();
-//	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -69,12 +59,6 @@ public class SmartItemHomeAdapter extends ArrayAdapter<ListViewItem> {
 		} else {
 			smartHolder = (SmartHolder) convertView.getTag();
 		}
-
-//		if (!item.isEnabled()) {
-//			convertView.setBackgroundColor(Color.LTGRAY);
-//		} else {
-//			convertView.setBackgroundColor(Color.WHITE);
-//		}
 
 		smartHolder.txtTitle.setText(item.getTitle());
 		smartHolder.imageView.setImageResource(item.getImageId());

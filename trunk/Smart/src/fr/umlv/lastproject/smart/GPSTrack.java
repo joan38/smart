@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import android.app.Activity;
 import android.graphics.Color;
 import android.location.LocationManager;
-import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
@@ -41,7 +40,6 @@ public class GPSTrack {
 	private boolean isFinished, isStarted;
 	private final Geometry geometry;
 	private final String trackName;
-	private Form form = null;
 	private Activity activity = null;
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
@@ -83,13 +81,11 @@ public class GPSTrack {
 	 * @param mission
 	 */
 	public GPSTrack(final TrackMode mode, final String trackName,
-			final LocationManager lm, final SmartMapView mapView,
-			final GeometryType type, final GeometryLayer layer,
-			final Form form, final Activity activity) {
+			final LocationManager lm, final GeometryType type,
+			final GeometryLayer layer, final Activity activity) {
 
 		this.geometryLayer = layer;
 		this.type = type;
-		this.form = form;
 		this.activity = activity;
 		switch (type) {
 		case LINE:
@@ -109,29 +105,7 @@ public class GPSTrack {
 		this.trackMode = mode;
 		this.gps = new GPS(lm);
 		this.trackPoints = new ArrayList<TrackPoint>();
-		this.gpsListener = new IGPSListener() {
-
-			@Override
-			public void actionPerformed(GPSEvent event) {
-				final double latitude = event.getLatitude();
-				final double longitude = event.getLongitude();
-				final TrackPoint trackPoint = new TrackPoint(longitude,
-						latitude, event.getAltitude(), event.getTime());
-				trackPoints.add(trackPoint);
-				switch (type) {
-				case LINE:
-					((LineGeometry) geometry).addPoint(new PointGeometry(
-							latitude, longitude));
-					break;
-				case POLYGON:
-					((PolygonGeometry) geometry).addPoint(new PointGeometry(
-							latitude, longitude));
-					break;
-				default:
-					break;
-				}
-			}
-		};
+		this.gpsListener = createListener();
 		gps.addGPSListener(gpsListener);
 
 	}
@@ -179,29 +153,7 @@ public class GPSTrack {
 		this.trackMode = mode;
 		this.gps = new GPS(lm);
 		this.trackPoints = new ArrayList<TrackPoint>();
-		this.gpsListener = new IGPSListener() {
-
-			@Override
-			public void actionPerformed(GPSEvent event) {
-				final double latitude = event.getLatitude();
-				final double longitude = event.getLongitude();
-				final TrackPoint trackPoint = new TrackPoint(longitude,
-						latitude, event.getAltitude(), event.getTime());
-				trackPoints.add(trackPoint);
-				switch (type) {
-				case LINE:
-					((LineGeometry) geometry).addPoint(new PointGeometry(
-							latitude, longitude));
-					break;
-				case POLYGON:
-					((PolygonGeometry) geometry).addPoint(new PointGeometry(
-							latitude, longitude));
-					break;
-				default:
-					break;
-				}
-			}
-		};
+		this.gpsListener = createListener();
 		gps.addGPSListener(gpsListener);
 
 		mapView.addGeometryLayer(geometryLayer);
@@ -221,9 +173,8 @@ public class GPSTrack {
 	 *            the type of the geometry
 	 */
 	public GPSTrack(final TrackMode mode, final String trackName,
-			final LocationManager lm, final SmartMapView mapView,
-			final GeometryType type, List<TrackPoint> points, GeometryLayer l,
-			MenuActivity activity) {
+			final LocationManager lm, final GeometryType type,
+			List<TrackPoint> points, GeometryLayer l, MenuActivity activity) {
 
 		this.geometryLayer = l;
 		this.type = type;
@@ -265,8 +216,13 @@ public class GPSTrack {
 			}
 		}
 
-		this.gpsListener = new IGPSListener() {
+		this.gpsListener = createListener();
+		gps.addGPSListener(gpsListener);
 
+	}
+
+	private IGPSListener createListener() {
+		return new IGPSListener() {
 			@Override
 			public void actionPerformed(GPSEvent event) {
 				final double latitude = event.getLatitude();
@@ -288,8 +244,6 @@ public class GPSTrack {
 				}
 			}
 		};
-		gps.addGPSListener(gpsListener);
-
 	}
 
 	/**

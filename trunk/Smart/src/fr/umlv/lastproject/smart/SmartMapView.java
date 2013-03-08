@@ -227,7 +227,7 @@ public class SmartMapView extends MapView {
 			getOverlays().get(i).setEnabled(overlays.get(i).isVisible());
 			boolean isTMSOverlay = geoTIFFOverlays.remove(o);
 			boolean isGeometryOverlay = geometryOverlays.remove(o);
-			boolean isWMSOverlay = wmsOverlays.remove(o);
+			wmsOverlays.remove(o);
 			if (isTMSOverlay) {
 				newGeotiffoverlays.add((TMSOverlay) o);
 			} else if (isGeometryOverlay) {

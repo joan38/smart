@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public class LayerItem implements Serializable {
 
@@ -24,6 +26,8 @@ public class LayerItem implements Serializable {
 	private Bitmap overview;
 
 	private boolean isEditable;
+
+	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * 
@@ -118,14 +122,16 @@ public class LayerItem implements Serializable {
 		}
 		LayerItem other = (LayerItem) obj;
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
+			}
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
 		if (overview == null) {
-			if (other.overview != null)
+			if (other.overview != null) {
 				return false;
+			}
 		} else if (!overview.equals(other.overview)) {
 			return false;
 		}
@@ -134,6 +140,8 @@ public class LayerItem implements Serializable {
 		}
 		return true;
 	}
+
+	private static final int QUALITY = 100;
 
 	/**
 	 * 
@@ -151,10 +159,9 @@ public class LayerItem implements Serializable {
 		final String fileName = SmartConstants.TMP_PATH + name + ".png";
 		final FileOutputStream stream = new FileOutputStream(new File(fileName));
 		try {
-			overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			overview.compress(Bitmap.CompressFormat.PNG, QUALITY, stream);
 		} catch (OutOfMemoryError error) {
-			Log.e("TESTX", error.getMessage());
-			// overview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			logger.log(Level.SEVERE, "Bitmap compression error");
 		}
 
 		stream.flush();
@@ -179,12 +186,6 @@ public class LayerItem implements Serializable {
 		this.name = (String) in.readObject();
 		this.visible = in.readBoolean();
 
-		// int imageByteArrayLength = in.readInt();
-		// byte[] imageByteArray = new byte[imageByteArrayLength];
-		// in.read(imageByteArray, 0, imageByteArrayLength);
-
-		// this.overview = BitmapFactory.decodeByteArray(imageByteArray, 0,
-		// imageByteArrayLength);
 		try {
 			this.overview = BitmapFactory.decodeFile((String) in.readObject());
 
