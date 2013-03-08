@@ -102,10 +102,12 @@ public class FileListFragment extends ListFragment implements
 	public void onLoadFinished(Loader<List<File>> loader, List<File> data) {
 		mAdapter.setListItems(data);
 
-		if (isResumed())
+		if (isResumed()){
 			setListShown(true);
-		else
+		}
+		else {
 			setListShownNoAnimation(true);
+		}
 	}
 
 	@Override

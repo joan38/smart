@@ -41,14 +41,10 @@ public class WMSTileSource extends OnlineTileSourceBase {
 
 		StringBuffer tileURLString = new StringBuffer();
 		tileURLString.append(getBaseUrl());
-		// tileURLString.append("-125.192865,11.2289864971264,-66.105824,62.5056715028736");
 		tileURLString.append(wmsTileCoordinates(aTile));
-		Log.d("TESTX", tileURLString.toString());
-
 		return tileURLString.toString();
 	}
 
-	private final static double ORIGIN_SHIFT = Math.PI * 6378137;
 
 	/**
 	 * WMS requires the bounding box to be defined as the point (west, south) to
@@ -78,10 +74,10 @@ public class WMSTileSource extends OnlineTileSourceBase {
 	 * A simple class for holding the NSEW lat and lon values.
 	 */
 	class BoundingBox {
-		double north;
-		double south;
-		double east;
-		double west;
+		private double north;
+		private double south;
+		private double east;
+		private double west;
 	}
 
 	/**

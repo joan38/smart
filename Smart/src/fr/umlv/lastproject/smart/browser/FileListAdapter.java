@@ -109,8 +109,8 @@ public class FileListAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
-		TextView nameView;
-		ImageView iconView;
+		private TextView nameView;
+		private ImageView iconView;
 
 		ViewHolder(View row) {
 			nameView = (TextView) row.findViewById(R.id.file_name);

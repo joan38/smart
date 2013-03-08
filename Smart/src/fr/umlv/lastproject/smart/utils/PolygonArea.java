@@ -9,7 +9,7 @@ import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 
 public final class PolygonArea {
 
-	private final static double VALUE_1E6 = 1E6;
+	private static final double VALUE_1E6 = 1E6;
 
 	private PolygonArea() {
 	}
