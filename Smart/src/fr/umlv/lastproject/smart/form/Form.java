@@ -76,8 +76,10 @@ public class Form implements Serializable {
 	 * Create a default Form.
 	 */
 	public Form() {
-		this(DEFAULT_NAME);
+		this.title = DEFAULT_NAME;
+		this.fieldsList = new ArrayList<Field>();
 	}
+	
 
 	/**
 	 * Get the name of the form.
@@ -134,7 +136,7 @@ public class Form implements Serializable {
 	 */
 	public Field deleteField(String label) {
 		for (int i = 0; i < fieldsList.size(); i++) {
-			if (fieldsList.get(i).getLabel().equals(label)) {
+			if (fieldsList.get(i).getLabel().equalsIgnoreCase(label)) {
 				return fieldsList.remove(i);
 			}
 		}

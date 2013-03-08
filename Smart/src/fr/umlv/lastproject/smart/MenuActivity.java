@@ -848,7 +848,7 @@ public class MenuActivity extends Activity {
 	}
 
 	public void startMission(final String missionName) {
-		form = new Form();
+		form = new Form(SmartConstants.DEFAULT_NAME);
 		if (formPath != null) {
 			try {
 				form = Form.read(formPath);
@@ -857,7 +857,7 @@ public class MenuActivity extends Activity {
 			}
 		}
 		Mission.createMission(missionName, this, mapView, form).startMission();
-
+		formPath=null;
 		mapView.addGeometryLayer(Mission.getInstance().getPolygonLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getLineLayer());
 		mapView.addGeometryLayer(Mission.getInstance().getPointLayer());
