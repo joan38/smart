@@ -15,7 +15,7 @@ public class LineSymbology extends Symbology {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static int DEFAULT_THICKNESS = 5;
+	private static final int DEFAULT_THICKNESS = 5;
 
 	/**
 	 * Line default constructor

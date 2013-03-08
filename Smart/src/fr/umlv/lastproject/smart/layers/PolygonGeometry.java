@@ -24,6 +24,10 @@ import android.graphics.Region;
  * 
  */
 public class PolygonGeometry extends Geometry {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<PointGeometry> points;
 
 	public PolygonGeometry() {
@@ -75,6 +79,9 @@ public class PolygonGeometry extends Geometry {
 		return this.points;
 	}
 
+	private static final int ALPHA_SELECTED = 220;
+	private static final int ALPHA_UNSELECTED = 150;
+
 	@Override
 	public void draw(MapView map, Canvas c, Boolean b, Symbology s) {
 		if (points.size() < 2) {
@@ -87,9 +94,9 @@ public class PolygonGeometry extends Geometry {
 
 		Path p = new Path();
 		if (isSelected()) {
-			paint.setAlpha(220);
+			paint.setAlpha(ALPHA_SELECTED);
 		} else {
-			paint.setAlpha(150);
+			paint.setAlpha(ALPHA_UNSELECTED);
 		}
 		for (int j = 0; j < getPoints().size() + 1; j++) {
 			// on récupere les 2 points
@@ -98,8 +105,9 @@ public class PolygonGeometry extends Geometry {
 			// Converting coordinates in pixel
 			Point pixelA = map.getProjection().toPixels(
 					pointA.getCoordinates(), null);
-			if (j == 0)
+			if (j == 0) {
 				p.moveTo(pixelA.x, pixelA.y);
+			}
 
 			p.lineTo(pixelA.x, pixelA.y);
 
@@ -123,8 +131,9 @@ public class PolygonGeometry extends Geometry {
 			Point ps = m.getProjection().toPixels(
 					getPoints().get(j % getPoints().size()).getCoordinates(),
 					null);
-			if (j == 0)
+			if (j == 0) {
 				p.moveTo(ps.x, ps.y);
+			}
 			p.lineTo(ps.x, ps.y);
 		}
 		p.close();
@@ -169,30 +178,37 @@ public class PolygonGeometry extends Geometry {
 		this.setSymbology((Symbology) in.readObject());
 	}
 
+	private static final double NORTH = 90;
+	private static final double SOUTH = -90;
+	private static final double EAST = 180;
+	private static final double WEST = -180;
+
+	private static final double VALUE_1E6 = 1E6;
+
 	@Override
 	public BoundingBoxE6 getBoundingBox() {
-		double north = 90;
-		double south = -90;
-		double east = 180;
-		double west = -180;
+		double north = NORTH;
+		double south = SOUTH;
+		double east = EAST;
+		double west = WEST;
 
 		if (points.size() > 0) {
-			north = points.get(0).getBoundingBox().getLatNorthE6() / 1E6;
-			south = points.get(0).getBoundingBox().getLatSouthE6() / 1E6;
-			east = points.get(0).getBoundingBox().getLonEastE6() / 1E6;
-			west = points.get(0).getBoundingBox().getLonWestE6() / 1E6;
+			north = points.get(0).getBoundingBox().getLatNorthE6() / VALUE_1E6;
+			south = points.get(0).getBoundingBox().getLatSouthE6() / VALUE_1E6;
+			east = points.get(0).getBoundingBox().getLonEastE6() / VALUE_1E6;
+			west = points.get(0).getBoundingBox().getLonWestE6() / VALUE_1E6;
 		}
 
 		for (PointGeometry g : points) {
 			BoundingBoxE6 tmp = g.getBoundingBox();
-			north = (north < tmp.getLatNorthE6() / 1E6 ? tmp.getLatNorthE6() / 1E6
-					: north);
-			south = (south > tmp.getLatSouthE6() / 1E6 ? tmp.getLatSouthE6() / 1E6
-					: south);
-			east = (east < tmp.getLonEastE6() / 1E6 ? tmp.getLonEastE6() / 1E6
-					: east);
-			west = (west > tmp.getLonWestE6() / 1E6 ? tmp.getLonWestE6() / 1E6
-					: west);
+			north = (north < tmp.getLatNorthE6() / VALUE_1E6 ? tmp
+					.getLatNorthE6() / VALUE_1E6 : north);
+			south = (south > tmp.getLatSouthE6() / VALUE_1E6 ? tmp
+					.getLatSouthE6() / VALUE_1E6 : south);
+			east = (east < tmp.getLonEastE6() / VALUE_1E6 ? tmp.getLonEastE6()
+					/ VALUE_1E6 : east);
+			west = (west > tmp.getLonWestE6() / VALUE_1E6 ? tmp.getLonWestE6()
+					/ VALUE_1E6 : west);
 		}
 
 		return new BoundingBoxE6(north, east, south, west);

@@ -272,10 +272,6 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 			} catch (final IOException e) {
 				logger.warn("WMSMapTileDownloader -- IOException downloading MapTile: "
 						+ tile + " : " + e);
-			} catch (final Throwable e) {
-				logger.error(
-						"WMSMapTileDownloader -- Error downloading MapTile: "
-								+ tile, e);
 			} finally {
 				StreamUtils.closeStream(in);
 				StreamUtils.closeStream(out);
