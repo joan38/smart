@@ -8,7 +8,6 @@ import java.net.URL;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,9 +17,9 @@ import fr.umlv.lastproject.smart.SmartMapView;
 
 public class WMSDialog extends AlertDialog.Builder {
 
-	private static int SECOND = 1000;
-	private static int TIMEOUT = 1000;
-	private static int PING = 200;
+	private static final int SECOND = 1000;
+	private static final int TIMEOUT = 1000;
+	private static final int PING = 200;
 
 	public WMSDialog(final SmartMapView mapView) {
 		super(mapView.getContext());
@@ -49,16 +48,10 @@ public class WMSDialog extends AlertDialog.Builder {
 				try {
 					u = new URL(wms);
 				} catch (MalformedURLException e) {
-					Log.d("TEST2",
-							"CONNECTION MALFORMED URL : " + e.getMessage()
-									+ " / " + u + "/ " + wmsUrl);
-
 					toast.show();
 					return;
 				}
 				final URL url = u;
-				Log.d("TEST2", "url to string : " + url.toString());
-
 				final Thread t = new Thread(new Runnable() {
 
 					@Override
@@ -66,19 +59,14 @@ public class WMSDialog extends AlertDialog.Builder {
 						try {
 							final HttpURLConnection urlc = (HttpURLConnection) url
 									.openConnection();
-							urlc.setRequestProperty("User-Agent",
-									"Android Application:2.2");
+							urlc.setRequestProperty("User-Agent","Android Application:2.2");
 							urlc.setRequestProperty("Connection", "close");
 							// mTimeout is in seconds
 							urlc.setConnectTimeout(SECOND * TIMEOUT);
 
 							urlc.connect();
 							if (urlc.getResponseCode() == PING) {
-								Log.d("TEST2", "CONNECTION PING");
-
-								mapView.addWMSLayer(url.toString(), wmsName
-										.getText().toString());
-
+								mapView.addWMSLayer(url.toString(), wmsName.getText().toString());
 								return;
 							}
 							toast.show();

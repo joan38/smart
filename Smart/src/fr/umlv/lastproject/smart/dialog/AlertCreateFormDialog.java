@@ -74,35 +74,21 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
 		et.addTextChangedListener(new TextWatcher() {
-
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-			}
-
+			public void onTextChanged(CharSequence s, int start, int before,int count) {}
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-			}
-
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (s.toString().equals("")) {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-							false);
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 				} else {
-					File folder = new File(SmartConstants.FORM_PATH
-							+ et.getText().toString() + ".form");
+					File folder = new File(SmartConstants.FORM_PATH + et.getText().toString() + ".form");
 					if (folder.exists()) {
-						et.setError(menu.getResources().getString(
-								R.string.invalid));
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-								.setEnabled(false);
+						et.setError(menu.getResources().getString(R.string.invalid));
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 					} else {
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-								.setEnabled(true);
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 					}
 				}
 			}
