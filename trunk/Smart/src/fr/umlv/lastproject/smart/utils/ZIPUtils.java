@@ -66,6 +66,7 @@ public final class ZIPUtils {
 
 		final File dir = new File(directory);
 		if (!dir.isDirectory()) {
+			out.close();
 			throw new IllegalArgumentException("can't compress a file");
 		}
 		ZipEntry entry = null;
