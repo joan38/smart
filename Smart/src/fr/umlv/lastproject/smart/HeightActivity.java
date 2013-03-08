@@ -11,7 +11,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.Window;
@@ -22,10 +21,17 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public class HeightActivity extends Activity implements SensorEventListener {
 
-	private static final double ANGLE_180 = 180.0;
+	private static final int ANGLE_90 = 90;
+	private static final int ANGLE_0 = 0;
+	private static final int ANGLE_N90 = -90;
+
+	private static final double DANGLE_180 = 180.0;
+	private static final float FANGLE_90 = 90.0f;
+
+	private static final int METERS = 100;
 
 	private SensorManager sensorManager;
-	private static final double DEG_TO_RAD = Math.PI / ANGLE_180;
+	private static final double DEG_TO_RAD = Math.PI / DANGLE_180;
 	public static final String HEIGHT_RESULT = "height";
 	public static final String ERROR_RESULT = "error";
 	private final Object lock = new Object();
@@ -74,7 +80,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 			if (!checkAngle(angle)) {
 				return;
 			}
-			bottomAngle = -90 + angle;
+			bottomAngle = ANGLE_N90 + angle;
 			firstTouch = System.currentTimeMillis();
 			setContentView(R.layout.activity_height_top);
 
@@ -87,14 +93,14 @@ public class HeightActivity extends Activity implements SensorEventListener {
 				return;
 			}
 			secondTouch = firstTouch + 2 * DELAY;
-			topAngle = 90 - angle;
+			topAngle = ANGLE_90 - angle;
 
 			finishWithResult(userHeight, bottomAngle, topAngle);
 		}
 	}
 
 	private boolean checkAngle(final float angle) {
-		if (angle < 0 || angle > 90) {
+		if (angle < ANGLE_0 || angle > ANGLE_90) {
 			Toast.makeText(this, getString(R.string.height_error),
 					Toast.LENGTH_LONG).show();
 			return false;
@@ -129,25 +135,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 		}
 		synchronized (lock) {
 			final float yOrientationDegrees = event.values[2];
-			final float x = event.values[0];
-			final float z = event.values[1];
 			angle = yOrientationDegrees;
-			// Log.d("TEST2",
-			// "Orientation Y: " + yOrientationDegrees + " / "
-			// + Math.tan(yOrientationDegrees * DEG_TO_RAD)
-			// + " //// Orientation Z : " + z + " / "
-			// + Math.tan(z * DEG_TO_RAD)
-			// + " ////Orientation X : " + x + " / "
-			// + Math.tan(x * DEG_TO_RAD));
-			Log.d("TEST2", "Orientation Y: " + yOrientationDegrees
-					+ " //// Orientation Z : " + z + " / "
-
-					+ " ////Orientation X : " + x);
-			// Log.d("TEST2",
-			// "Orientation X: " + x + " / " + Math.tan(x * DEG_TO_RAD));
-			// Log.d("TEST2",
-			// "Orientation Z: " + z + " / " + Math.tan(z * DEG_TO_RAD));
-
 		}
 
 	}
@@ -164,7 +152,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 	private void finishWithResult(final double userPOVHeight,
 			final float bottomAngle, final float topAngle) {
 
-		final float firstAngle = bottomAngle + 90.0f;
+		final float firstAngle = bottomAngle + FANGLE_90;
 		final double distance = Math.tan(DEG_TO_RAD * firstAngle)
 				* userPOVHeight;
 		double result = Math.tan(DEG_TO_RAD * topAngle) * distance
@@ -172,7 +160,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 		if (result <= 0) {
 			finishWithResult(R.string.height_result_error);
 		}
-		result /= 100;
+		result /= METERS;
 		final Intent data = new Intent();
 		data.putExtra(HEIGHT_RESULT, result);
 		setResult(RESULT_OK, data);
@@ -182,7 +170,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 	public void setHeight(double height) {
 		if (height <= 0) {
 			Toast.makeText(this, getString(R.string.height_field_missing),
-					Toast.LENGTH_LONG);
+					Toast.LENGTH_LONG).show();
 			final AlertHeightDialog dialog = new AlertHeightDialog(this);
 			dialog.show();
 			return;

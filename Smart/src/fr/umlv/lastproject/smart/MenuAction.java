@@ -63,7 +63,7 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			if (!Mission.isCreated()) {
-				logger.log(Level.WARNING,
+				LOGGER.log(Level.WARNING,
 						"Impossible point survey : mission not created");
 				Toast.makeText(
 						activity,
@@ -83,7 +83,7 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			if (!Mission.isCreated()) {
-				logger.log(Level.WARNING,
+				LOGGER.log(Level.WARNING,
 						"Impossible position point survey : mission not created");
 				Toast.makeText(
 						activity,
@@ -91,10 +91,12 @@ public enum MenuAction {
 								R.string.noMissionInProgress),
 						Toast.LENGTH_LONG).show();
 			} else {
-				Mission.getInstance().startSurvey(
-						new PointGeometry(activity.getLastPosition()
-								.getLatitudeE6() / 1E6, activity
-								.getLastPosition().getLongitudeE6() / 1E6));
+				Mission.getInstance()
+						.startSurvey(
+								new PointGeometry(activity.getLastPosition()
+										.getLatitudeE6() / VALUE_1E6, activity
+										.getLastPosition().getLongitudeE6()
+										/ VALUE_1E6));
 			}
 		}
 	},
@@ -103,7 +105,7 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			if (Mission.getInstance() == null) {
-				logger.log(Level.WARNING,
+				LOGGER.log(Level.WARNING,
 						"Impossible line survey : mission not created");
 				Toast.makeText(
 						activity,
@@ -123,7 +125,7 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			if (Mission.getInstance() == null) {
-				logger.log(Level.WARNING,
+				LOGGER.log(Level.WARNING,
 						"Impossible polygon survey : mission not created");
 				Toast.makeText(
 						activity,
@@ -208,7 +210,7 @@ public enum MenuAction {
 					Toast.makeText(activity, R.string.track_stop,
 							Toast.LENGTH_LONG).show();
 				} catch (IOException e) {
-					logger.log(Level.SEVERE, "Error while stopping track");
+					LOGGER.log(Level.SEVERE, "Error while stopping track");
 					Toast.makeText(activity, R.string.track_error,
 							Toast.LENGTH_LONG).show();
 				}
@@ -277,7 +279,7 @@ public enum MenuAction {
 					}
 					Log.d("AIRE", "STOP LISTENER");
 					final double result = PolygonArea
-							.getPolygonArea((PolygonGeometry) g) / 1E6;
+							.getPolygonArea((PolygonGeometry) g) / VALUE_1E6;
 					areaSurvey.stop();
 					activity.getMapView().removeGeometryLayer(areaLayer);
 					final AlertMeasureResultDialog areaDialog = new AlertMeasureResultDialog(
@@ -347,8 +349,9 @@ public enum MenuAction {
 		}
 	};
 
-	private static final Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 	private final int id;
+	private static final double VALUE_1E6 = 1E6;
 
 	private MenuAction(int id) {
 		this.id = id;

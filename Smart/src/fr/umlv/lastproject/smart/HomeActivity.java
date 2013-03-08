@@ -34,7 +34,6 @@ public class HomeActivity extends Activity {
 
 	private List<ListViewItem> listItem;
 	private String[] items;
-	private int[] icons;
 	private ArrayList<Integer> shortcut = new ArrayList<Integer>();
 	private Preferences pref;
 	private final Logger logger = SmartLogger.getLocator().getLogger();
@@ -62,7 +61,7 @@ public class HomeActivity extends Activity {
 
 		// Retry the list of functionalities names
 		items = getResources().getStringArray(R.array.items);
-		icons = SmartConstants.getIcons();
+		int[] icons = SmartConstants.getIcons();
 
 		listItem = new ArrayList<ListViewItem>();
 		for (int i = 0; i < items.length; i++) {
@@ -142,8 +141,6 @@ public class HomeActivity extends Activity {
 				finish();
 			}
 		});
-
-		// registerForContextMenu(listView);
 	}
 
 	@Override
@@ -164,35 +161,6 @@ public class HomeActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	// @Override
-	// public void onCreateContextMenu(ContextMenu menu, View v,
-	// ContextMenuInfo menuInfo) {
-	// // if (v.getId() == R.id.listView) {
-	// // menu.setHeaderTitle("Option");
-	// // menu.add(0, 1, 0, R.string.addShortcut);
-	// // menu.add(0, 2, 0, R.string.cancel);
-	// // }
-	// menu.add(0, 0, 0, R.string.help);
-	// }
-
-	// @Override
-	// public boolean onContextItemSelected(MenuItem item) {
-	// AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-	// .getMenuInfo();
-	//
-	// int index = shortcut.indexOf(info.position);
-	// if (item.getItemId() == 1) {
-	// if (index == -1) {
-	// shortcut.add(info.position);
-	// }
-	// } else if (item.getItemId() == 0) {
-	// final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
-	// R.string.helpMenu);
-	// helpDialog.show();
-	// }
-	// return super.onContextItemSelected(item);
-	// }
 
 	@Override
 	public void onBackPressed() {

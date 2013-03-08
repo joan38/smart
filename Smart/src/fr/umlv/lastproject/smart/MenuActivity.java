@@ -836,8 +836,8 @@ public class MenuActivity extends Activity {
 	public void createPolygonTrack(final TrackMode trackMode) {
 		polygonTrack = new GPSTrack(trackMode,
 				Mission.getInstance().getTitle(), gps.getLocationManager(),
-				mapView, GeometryType.POLYGON, Mission.getInstance()
-						.getPolygonLayer(), this.form, MenuActivity.this);
+				GeometryType.POLYGON, Mission.getInstance().getPolygonLayer(),
+				MenuActivity.this);
 		polygonTrack.startTrack();
 		Mission.getInstance().trackInProgress(true);
 		Toast.makeText(this, R.string.polygon_track_started, Toast.LENGTH_LONG)
