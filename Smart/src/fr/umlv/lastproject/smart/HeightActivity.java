@@ -22,8 +22,10 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public class HeightActivity extends Activity implements SensorEventListener {
 
+	private static final double ANGLE_180 = 180.0;
+
 	private SensorManager sensorManager;
-	private static final double DEG_TO_RAD = Math.PI / 180.0;
+	private static final double DEG_TO_RAD = Math.PI / ANGLE_180;
 	public static final String HEIGHT_RESULT = "height";
 	public static final String ERROR_RESULT = "error";
 	private final Object lock = new Object();
@@ -31,7 +33,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 	private float bottomAngle, topAngle;
 	private long firstTouch, secondTouch;
 	private double userHeight;
-	private static final long delay = 1000;
+	private static final long DELAY = 1000;
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
 	@Override
@@ -81,10 +83,10 @@ public class HeightActivity extends Activity implements SensorEventListener {
 				return;
 			}
 			secondTouch = System.currentTimeMillis();
-			if (secondTouch - firstTouch < delay) {
+			if (secondTouch - firstTouch < DELAY) {
 				return;
 			}
-			secondTouch = firstTouch + 2 * delay;
+			secondTouch = firstTouch + 2 * DELAY;
 			topAngle = 90 - angle;
 
 			finishWithResult(userHeight, bottomAngle, topAngle);

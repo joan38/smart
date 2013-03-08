@@ -13,15 +13,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class Preferences {
+public final class Preferences {
 
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 	private static Preferences preferences;
 
 	// Values by default
-	public int theme = R.style.AppBaseTheme;
-	public ArrayList<Integer> shortcuts = new ArrayList<Integer>();
+	private int theme = R.style.AppBaseTheme;
+	private ArrayList<Integer> shortcuts = new ArrayList<Integer>();
+
+	private static final String UNABLE_TO_SAVE = "Unable to save the object in preferences";
 
 	// Add values to persist here with his default value
 
@@ -92,8 +94,7 @@ public class Preferences {
 		try {
 			sharedPrefEditor.putString(key, objectToString(object));
 		} catch (IOException e) {
-			throw new PreferencesException(
-					"Unable to save the object in preferences", e);
+			throw new PreferencesException(UNABLE_TO_SAVE, e);
 		}
 	}
 
@@ -122,15 +123,10 @@ public class Preferences {
 		try {
 			return stringToObject(sharedPref.getString(key,
 					objectToString(defaultObject)));
-		} catch (StreamCorruptedException e) {
-			throw new PreferencesException(
-					"Unable to save the object in preferences", e);
 		} catch (IOException e) {
-			throw new PreferencesException(
-					"Unable to save the object in preferences", e);
+			throw new PreferencesException(UNABLE_TO_SAVE, e);
 		} catch (ClassNotFoundException e) {
-			throw new PreferencesException(
-					"Unable to save the object in preferences", e);
+			throw new PreferencesException(UNABLE_TO_SAVE, e);
 		}
 	}
 
@@ -200,5 +196,21 @@ public class Preferences {
 		}
 
 		return bytes;
+	}
+
+	public int getTheme() {
+		return theme;
+	}
+
+	public void setTheme(int theme) {
+		this.theme = theme;
+	}
+
+	public ArrayList<Integer> getShortcuts() {
+		return shortcuts;
+	}
+
+	public void setShortcuts(ArrayList<Integer> shortcuts) {
+		this.shortcuts = shortcuts;
 	}
 }

@@ -75,11 +75,7 @@ public class LayersActivity extends ListActivity {
 	private DragSortListView mDslv;
 	private DragSortController mController;
 
-	public int dragStartMode = DragSortController.ON_DOWN;
-	public boolean removeEnabled = false;
-	public int removeMode = DragSortController.FLING_REMOVE;
-	public boolean sortEnabled = true;
-	public boolean dragEnabled = true;
+	private boolean dragEnabled = true;
 
 	public DragSortController buildController(DragSortListView dslv) {
 		MyDSController c = new MyDSController(dslv);
@@ -91,20 +87,16 @@ public class LayersActivity extends ListActivity {
 		DragSortListView mDslv;
 
 		public MyDSController(DragSortListView dslv) {
-			// super(dslv);
 			super(dslv, 0, 1, 1);
 			setDragHandleId(R.id.drag_handle);
 			mDslv = dslv;
 
 			mDslv.setDropListener(onDrop);
 			mDslv.setRemoveListener(onRemove);
-			// mDslv.setClickable(true);
 
 			mDslv.setDragEnabled(dragEnabled);
 			setDragInitMode(ON_DRAG);
-			// setRemoveMode(removeMode);
 			setRemoveEnabled(true);
-
 		}
 
 		@Override
@@ -113,8 +105,6 @@ public class LayersActivity extends ListActivity {
 			if (LayersActivity.this.mDslv.getAdapter().isEmpty()) {
 				return;
 			}
-			final int x = (int) e.getX();
-			final int y = (int) e.getY();
 
 			int touchPos = itemPosition;
 			if (touchPos < 0) {
@@ -184,7 +174,7 @@ public class LayersActivity extends ListActivity {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();
 		}
-		setTheme(pref.theme);
+		setTheme(pref.getTheme());
 		setContentView(R.layout.activity_layers);
 
 		logger.log(Level.INFO, "Layers menu opened");
