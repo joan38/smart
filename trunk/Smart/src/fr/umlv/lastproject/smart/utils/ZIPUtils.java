@@ -31,6 +31,11 @@ public final class ZIPUtils {
 	private static final int BUFFER = 2048;
 
 	private static final int METADATA_SIZE = 5;
+	private static final int NORTHE6 = 90;
+	private static final int EASTE6 = 180;
+	private static final int SOUTHE6 = -90;
+	private static final int WESTE6 = -180;
+
 
 	private static final String ZIP_FOLDER = Environment
 			.getExternalStorageDirectory() + "/osmdroid/";
@@ -171,7 +176,7 @@ public final class ZIPUtils {
 				}
 			}
 		}
-		BoundingBoxE6 boundingBox = new BoundingBoxE6(90, 180, -90, -180);
+		BoundingBoxE6 boundingBox = new BoundingBoxE6(NORTHE6, EASTE6, SOUTHE6, WESTE6);
 
 		String firstZoomTileDirectory;
 		if (i >= tileDirectories.length) {
@@ -208,7 +213,7 @@ public final class ZIPUtils {
 	}
 
 	private static Pair<Integer, Integer> searchBoundingBox(
-			File tileDirectories, final String extension) throws Exception {
+			File tileDirectories, final String extension) {
 		File[] dirs = tileDirectories.listFiles(new FileFilter() {
 
 			@Override
@@ -241,7 +246,7 @@ public final class ZIPUtils {
 
 					String tileX = dir.getPath();
 					String tileNameWithoutExtensionX = tileX.substring(tileX
-							.lastIndexOf("/") + 1);
+							.lastIndexOf('/') + 1);
 
 					return new Pair<Integer, Integer>(
 							Integer.parseInt(tileNameWithoutExtensionX),
@@ -283,10 +288,10 @@ public final class ZIPUtils {
 	}
 
 	private static class BoundingBox {
-		double north;
-		double south;
-		double east;
-		double west;
+		private double north;
+		private double south;
+		private double east;
+		private double west;
 	}
 
 	/**
@@ -308,7 +313,6 @@ public final class ZIPUtils {
 		bb.south = tile2lat(y + 1, zoom);
 		bb.west = tile2lon(x, zoom);
 		bb.east = tile2lon(x + 1, zoom);
-		// getTileNumber(bb.north, bb.west, zoom);
 		return bb;
 	}
 
@@ -321,15 +325,5 @@ public final class ZIPUtils {
 		/* WARNING MATH.ABS IS VERY NOT SURE SEE OSM FORMULA OPENSOURCE HIPPY :) */
 		return Math.toDegrees(Math.atan(Math.sinh(Math.abs(n))));
 	}
-
-	// public static void getTileNumber(final double lat, final double lon,
-	// final int zoom) {
-	// int xtile = (int) Math.floor((lon + 180) / 360 * (1 << zoom));
-	// int ytile = (int) Math
-	// .floor((1 - Math.log(Math.tan(Math.toRadians(lat)) + 1
-	// / Math.cos(Math.toRadians(lat)))
-	// / Math.PI)
-	// / 2 * (1 << zoom));
-	// }
 
 }

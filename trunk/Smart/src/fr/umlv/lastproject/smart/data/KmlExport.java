@@ -43,6 +43,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 public final class KmlExport {
 
 	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
+	private static final String UNABLE_TO_EXPORT ="Unable to export the mission";
 
 	/**
 	 * Export the given mission in a Kml file.
@@ -153,14 +154,14 @@ public final class KmlExport {
 			return path + mission.getTitle() + FileUtils.KML_SHP_TYPE[1];
 
 		} catch (ParserConfigurationException e) {
-			LOGGER.log(Level.SEVERE, "Unable to export the mission");
-			throw new KmlExportException("Unable to export the mission", e);
+			LOGGER.log(Level.SEVERE, UNABLE_TO_EXPORT);
+			throw new KmlExportException(UNABLE_TO_EXPORT, e);
 		} catch (TransformerException e) {
-			LOGGER.log(Level.SEVERE, "Unable to export the mission");
-			throw new KmlExportException("Unable to export the mission", e);
+			LOGGER.log(Level.SEVERE, UNABLE_TO_EXPORT);
+			throw new KmlExportException(UNABLE_TO_EXPORT, e);
 		} catch (SmartException e) {
-			LOGGER.log(Level.SEVERE, "Unable to export the mission");
-			throw new KmlExportException("Unable to export the mission", e);
+			LOGGER.log(Level.SEVERE, UNABLE_TO_EXPORT);
+			throw new KmlExportException(UNABLE_TO_EXPORT, e);
 		}
 	}
 

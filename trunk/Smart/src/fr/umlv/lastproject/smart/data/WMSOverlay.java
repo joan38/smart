@@ -15,6 +15,10 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 
 	private final String name;
 	private final Context context;
+	private static final int NORTHE6 = 90;
+	private static final int EASTE6 = 180;
+	private static final int SOUTHE6 = -90;
+	private static final int WESTE6 = -180;
 
 	public WMSOverlay(MapTileProviderBase aTileProvider, Context aContext,
 			String name) {
@@ -99,7 +103,7 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	@Override
 	public Extent getExtent() {
 
-		return new Extent(new BoundingBoxE6(90, 180, -90, 180));
+		return new Extent(new BoundingBoxE6(NORTHE6, EASTE6, SOUTHE6, WESTE6));
 	}
 
 }

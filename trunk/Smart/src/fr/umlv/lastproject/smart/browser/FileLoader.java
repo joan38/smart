@@ -72,7 +72,7 @@ public class FileLoader extends AsyncTaskLoader<List<File>> {
 		}
 			
 
-		if (oldData != null && oldData != data){
+		if (!oldData.equals(null) && !oldData.equals(data)){
 			onReleaseResources(oldData);
 		}
 			
@@ -95,8 +95,9 @@ public class FileLoader extends AsyncTaskLoader<List<File>> {
 		}
 		mFileObserver.startWatching();
 		
-		if (takeContentChanged() || mData == null)
+		if (takeContentChanged() || mData == null){
 			forceLoad();
+		}
 	}
 
 	@Override

@@ -42,7 +42,7 @@ import fr.umlv.lastproject.smart.layers.GeometryType;;
 public class DbManager {
 
 	public static final String DB_NAME = "smart.db";
-	private static final Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 
 
@@ -88,7 +88,6 @@ public class DbManager {
 	private static final String INSERT_ERROR = "Insert database error";
 
 
-	private DbHelper mDbHelper;
 	private SQLiteDatabase mDb;
 
 	private static final String CREATE_TABLE_MISSIONS = "CREATE TABLE IF NOT EXISTS missions ( "
@@ -164,7 +163,7 @@ public class DbManager {
 				dbRetour.execSQL(CREATE_TABLE_POINTS);
 			} catch (SQLiteException e) {
 				dbRetour.close();
-				logger.log(Level.SEVERE, "Open database error : "+e.getMessage());
+				LOGGER.log(Level.SEVERE, "Open database error : "+e.getMessage());
 				throw new SmartException(e, "Open database error");
 			}
 
@@ -180,7 +179,7 @@ public class DbManager {
 	 * @throws SmartException
 	 */
 	public void open(Context context) throws SmartException {
-		mDbHelper = new DbHelper(context);
+		DbHelper mDbHelper = new DbHelper(context);
 		mDb = mDbHelper.openDataBase();
 
 	}
@@ -254,10 +253,10 @@ public class DbManager {
 			db = SQLiteDatabase.openDatabase(SmartConstants.BDD_PATH + DB_NAME, null,
 					SQLiteDatabase.OPEN_READWRITE);
 			db.execSQL(sql.toString());
-			logger.log(Level.INFO,"Table form "+f.getTitle()+" created successfull");
+			LOGGER.log(Level.INFO,"Table form "+f.getTitle()+" created successfull");
 			db.close();
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE,"Table form "+f.getTitle()+" not created "+e.getMessage());
+			LOGGER.log(Level.SEVERE,"Table form "+f.getTitle()+" not created "+e.getMessage());
 			throw new SmartException(e, "Database Error");
 		}
 
@@ -320,10 +319,10 @@ public class DbManager {
 
 		try {
 			long id = mDb.insertOrThrow(formRecord.getName(), null, values);
-			logger.log(Level.INFO,"Form record inserted in database");
+			LOGGER.log(Level.INFO,"Form record inserted in database");
 			return id;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, "Form record insert database error "+e.getMessage());
+			LOGGER.log(Level.SEVERE, "Form record insert database error "+e.getMessage());
 			throw new SmartException(e, INSERT_ERROR );
 		}
 	}
@@ -379,7 +378,7 @@ public class DbManager {
 		}
 
 		mDb.update(nameTableForm, values, "id=" + idForm, null);
-		logger.log(Level.INFO, "Database update successfull");
+		LOGGER.log(Level.INFO, "Database update successfull");
 	}
 
 	/**
@@ -448,7 +447,7 @@ public class DbManager {
 			mDb.delete(nomForm, "id=" + l, null);
 		}
 		mDb.delete(TABLE_MISSIONS, "id=" + idMission, null);
-		logger.log(Level.INFO,"Mission "+idMission+" deleted");
+		LOGGER.log(Level.INFO,"Mission "+idMission+" deleted");
 	}
 
 	/**
@@ -632,10 +631,10 @@ public class DbManager {
 				pr.setIdGeometry(id);
 				insertPoint(pr);
 			}
-			logger.log(Level.INFO,"Geometry inserted in database");
+			LOGGER.log(Level.INFO,"Geometry inserted in database");
 			return id;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, "Geometry not inserted in database "+e.getMessage());
+			LOGGER.log(Level.SEVERE, "Geometry not inserted in database "+e.getMessage());
 			throw new SmartException(e, INSERT_ERROR);
 		}
 	}
@@ -740,10 +739,10 @@ public class DbManager {
 
 		try {
 			long id= mDb.insertOrThrow(TABLE_POINTS, null, values);
-			logger.log(Level.INFO, "Point inserted in database");
+			LOGGER.log(Level.INFO, "Point inserted in database");
 			return id;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, "Point not inserted in database "+e.getMessage());
+			LOGGER.log(Level.SEVERE, "Point not inserted in database "+e.getMessage());
 			throw new SmartException(e, INSERT_ERROR);
 		}
 	}

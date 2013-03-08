@@ -61,7 +61,7 @@ public final class DataExport {
 
 			while (true) {
 				StringBuilder line = new StringBuilder(geometry.getType()
-						.name() + "(");
+						.name()).append("(");
 
 				if (geometry.getType() == GeometryType.POLYGON) {
 					line.append("(");
