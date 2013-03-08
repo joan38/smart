@@ -162,6 +162,7 @@
     <string name="editInfo">Editer la zone d\'infos</string>
     <string name="user_height_text">Saisir la hauteur du point de vue en cm (par exemple votre taille moins 15 cm)</string>
     <string name="track_title">Créer une trace GPS</string>
+    <string name="polygon_track_title">Créer une trace polygone</string>
     <string name="height_title">Hauteur du point de vue</string>
     <string name="height_field_missing">La hauteur ne peut être nulle</string>
     <string name="height_field_invalid">La hauteur est incorrecte</string>
