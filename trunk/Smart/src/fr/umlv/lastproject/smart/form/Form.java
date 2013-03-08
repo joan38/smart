@@ -48,7 +48,7 @@ public class Form implements Serializable {
 	private String title;
 	private List<Field> fieldsList;
 
-	private static final Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	private static final String VALUESTAG = "values";
 	private static final String COMMENTS = "Commentaires";
@@ -168,8 +168,6 @@ public class Form implements Serializable {
 	 */
 	public void openForm(final MenuActivity context, final Geometry g,
 			final Mission mission) {
-		// final FormDialog dialog = new FormDialog(context, this, g, mission);
-		// dialog.show();
 		context.createFormDialog(this, g);
 	}
 
@@ -195,13 +193,9 @@ public class Form implements Serializable {
 			while (eventype != XmlPullParser.END_DOCUMENT) {
 				if (eventype == XmlPullParser.START_TAG) {
 					String tag = xpp.getName();
-					Log.d("", "tag" + xpp.getName());
-					Log.d("", "tag count attribute " + xpp.getAttributeCount());
 
 					if (FORMTAG.equalsIgnoreCase(tag)) {
 						for (int i = 0; i < xpp.getAttributeCount(); i++) {
-							Log.d("", "tag form " + xpp.getAttributeName(i));
-
 							if (xpp.getAttributeName(i).equalsIgnoreCase(
 									TITLETAG)) {
 								form.setTitle(xpp.getAttributeValue(i).replace(
@@ -264,10 +258,10 @@ public class Form implements Serializable {
 
 				eventype = xpp.next();
 			}
-			logger.log(Level.INFO, "Form reading successfull");
+			LOGGER.log(Level.INFO, "Form reading successfull");
 			return form;
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Unable to import the form " + path);
+			LOGGER.log(Level.SEVERE, "Unable to import the form " + path);
 			throw new FormIOException("Unable to import the form " + path, e);
 		} catch (XmlPullParserException e) {
 			throw new FormIOException("Unable to import the form " + path, e);
@@ -303,7 +297,7 @@ public class Form implements Serializable {
 			formElement.appendChild(fieldsElement);
 
 			if (fieldsList.size() < 1) {
-				logger.log(Level.SEVERE, "No field in the given form");
+				LOGGER.log(Level.SEVERE, "No field in the given form");
 				throw new FormIOException("No field in the given Form");
 			}
 			for (Field field : fieldsList) {
@@ -359,13 +353,13 @@ public class Form implements Serializable {
 			StreamResult result = new StreamResult(path + title + ".form");
 
 			transformer.transform(source, result);
-			logger.log(Level.INFO, "Form writting successfull");
+			LOGGER.log(Level.INFO, "Form writting successfull");
 		} catch (ParserConfigurationException e) {
-			logger.log(Level.SEVERE,
+			LOGGER.log(Level.SEVERE,
 					"Unable to export the form " + e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		} catch (TransformerException e) {
-			logger.log(Level.SEVERE,
+			LOGGER.log(Level.SEVERE,
 					"Unable to export the form " + e.getMessage());
 			throw new FormIOException("Unable to export the form", e);
 		}

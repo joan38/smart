@@ -21,6 +21,7 @@ import fr.umlv.lastproject.smart.GPSEvent;
 import fr.umlv.lastproject.smart.IGPSListener;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
@@ -31,12 +32,9 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  */
 public class PictureActivity extends Activity {
 
-	private File picture;
 	private static final int PICTURE_RESULT = 1;
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
-	private GPS gps;
-	private LocationManager locationManager;
 	private double latitude;
 	private double longitude;
 	private float bearing;
@@ -46,6 +44,7 @@ public class PictureActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		final Intent startIntent = getIntent();
 		if (startIntent == null) {
@@ -82,7 +81,11 @@ public class PictureActivity extends Activity {
 		// Si la prise de photo c'est bien déroulé, on la geoTag
 		if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
 			// GeoTag picture
-			geoTag(namePicture, latitude, longitude, bearing);
+			try {
+				geoTag(namePicture, latitude, longitude, bearing);
+			} catch (SmartException e) {
+				logger.log(Level.SEVERE, "Error picture not found ");
+			}
 			logger.log(Level.INFO, "Picture taked");
 			finish();
 		}
@@ -92,6 +95,9 @@ public class PictureActivity extends Activity {
 	 * Function which init the gps listener to geoTag picture
 	 */
 	private void initGPS() {
+		GPS gps;
+		LocationManager locationManager;
+
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		gps = new GPS(locationManager);
 
@@ -114,18 +120,17 @@ public class PictureActivity extends Activity {
 	 * @param latitude
 	 * @param longitude
 	 * @param bearing
+	 * @throws SmartException 
 	 */
 	public void geoTag(String filename, double latitude, double longitude,
-			float bearing) {
+			float bearing) throws SmartException {
 		ExifInterface exif = null;
 		try {
 			// Récupration de la photo à geoTag
 			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename
 					+ ".jpg");
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, "Error picture not found");
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new SmartException(e1, "Error picture not found");
 		}
 
 		// Transformation de la latitude au format souhaité
@@ -175,8 +180,7 @@ public class PictureActivity extends Activity {
 			// Sauvegarde des changements
 			exif.saveAttributes();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new SmartException(e, "Error to save changes");
 		}
 
 		// perform a media scanning after saving the image
@@ -190,6 +194,8 @@ public class PictureActivity extends Activity {
 	 * Function which start camera intent and take the picture
 	 */
 	private void takePhoto() {
+		File picture;
+
 		takePicture = true;
 		namePicture = getIntent().getExtras().getString("namePicture");
 		picture = new File(SmartConstants.PICTURES_PATH, namePicture + ".jpg");
