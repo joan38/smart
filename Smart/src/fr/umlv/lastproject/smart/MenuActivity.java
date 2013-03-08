@@ -478,7 +478,6 @@ public class MenuActivity extends Activity {
 						final int success = succ;
 						final List<GeometryLayer> layers = geometryLayersToImport;
 						runOnUiThread(new Runnable() {
-
 							public void run() {
 								if (layers == null || layers.isEmpty()) {
 									Toast.makeText(MenuActivity.this, error,
@@ -487,11 +486,21 @@ public class MenuActivity extends Activity {
 									mapView.addGeometryLayers(layers);
 									Toast.makeText(MenuActivity.this, success,
 											Toast.LENGTH_SHORT).show();
-									final BoundingBoxE6 vectorBB = layers
-											.get(0).getExtent()
-											.getBoundingBox();
+									BoundingBoxE6 vectorBB = layers.get(0)
+											.getExtent().getBoundingBox();
 									if (layers.size() > 1) {
-										int northBB = 0, southBB = 0, eastBB = 0, westBB = 0;
+										int northBB = layers.get(0).getExtent()
+												.getBoundingBox()
+												.getLatNorthE6(), southBB = layers
+												.get(0).getExtent()
+												.getBoundingBox()
+												.getLatSouthE6(), eastBB = layers
+												.get(0).getExtent()
+												.getBoundingBox()
+												.getLonEastE6(), westBB = layers
+												.get(0).getExtent()
+												.getBoundingBox()
+												.getLonWestE6();
 										for (int i = 0; i < layers.size(); i++) {
 											BoundingBoxE6 tmpBB = layers.get(i)
 													.getExtent()
@@ -515,13 +524,12 @@ public class MenuActivity extends Activity {
 												westBB = tmpWest;
 											}
 										}
+										vectorBB = new BoundingBoxE6(northBB,
+												eastBB, southBB, westBB);
 									}
 									mapView.zoomToBoundingBox(vectorBB);
-
 								}
-
 								progressDialogKmlShp.dismiss();
-
 							}
 						});
 

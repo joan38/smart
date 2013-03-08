@@ -78,13 +78,10 @@ public class LayersActivity extends ListActivity {
 	private boolean dragEnabled = true;
 
 	public DragSortController buildController(DragSortListView dslv) {
-		MyDSController c = new MyDSController(dslv);
-		return c;
+		return new MyDSController(dslv);
 	}
 
 	private class MyDSController extends DragSortController {
-
-		DragSortListView mDslv;
 
 		public MyDSController(DragSortListView dslv) {
 			super(dslv, 0, 1, 1);
