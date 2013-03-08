@@ -2,7 +2,6 @@ package fr.umlv.lastproject.smart.dialog;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ public class AlertHeightDialog extends AlertDialog.Builder {
 					heightActivity.setHeight(Double.parseDouble(height));
 
 				} catch (NumberFormatException e) {
-					Log.d("TESTX", "PLOP");
 					Toast.makeText(heightActivity, R.string.track_name_missing,
 							Toast.LENGTH_LONG).show();
 					heightActivity

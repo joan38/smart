@@ -1000,7 +1000,7 @@ public class MenuActivity extends Activity {
 		} else if (id == FORM_MODIFY_DIALOG) {
 			if (bundle == null) {
 				AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
-						this, this.form, this.geom, this.geometryLayer);
+						this, this.form, this.geom, this.geometryLayer, null);
 				modifyDialog.addFormEditedListener(new FormEditedListener() {
 
 					@Override

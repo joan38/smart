@@ -47,29 +47,18 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 		final AlertDialog dialog = setPositiveButton(R.string.create_button,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-
-						final RadioButton radioButton = (RadioButton) alertTrackView
-								.findViewById(radioGroup
-										.getCheckedRadioButtonId());
-						final TrackMode trackMode = TrackMode
-								.valueOf(radioButton.getTag().toString());
-
+						final RadioButton radioButton = (RadioButton) alertTrackView.findViewById(radioGroup.getCheckedRadioButtonId());
+						final TrackMode trackMode = TrackMode.valueOf(radioButton.getTag().toString());
 						final Object oParam = trackParameter.getText();
 						if (oParam == null) {
-							Toast.makeText(menu, R.string.track_param_missing,
-									Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_missing,Toast.LENGTH_LONG).show();
 							return;
-						}
-						try {
-
-							final int param = Integer.parseInt(oParam
-									.toString());
+						}try {
+							final int param = Integer.parseInt(oParam.toString());
 							trackMode.setParameter(param);
 							menu.createPolygonTrack(trackMode);
-
 						} catch (NumberFormatException e) {
-							Toast.makeText(menu, R.string.track_param_false,
-									Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_false,Toast.LENGTH_LONG).show();
 							return;
 						}
 					}
@@ -77,7 +66,6 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
-
 					}
 				}).create();
 
@@ -85,37 +73,21 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
 		trackParameter.addTextChangedListener(new TextWatcher() {
-
-			boolean isValidate;
+			private boolean isValidate;
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,int count) {}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
 
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (s.toString().equals("")) {
-
 					isValidate = false;
-
 				} else {
-
 					isValidate = true;
-
 				}
-
-				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-						isValidate);
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(isValidate);
 			}
 		});
 

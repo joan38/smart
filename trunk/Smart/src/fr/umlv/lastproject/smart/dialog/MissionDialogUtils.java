@@ -87,57 +87,17 @@ public final class MissionDialogUtils {
 		textViewMissionName.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			@Override
 			public void afterTextChanged(Editable s) {
-				if (s.toString().equals("")) {
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
-							false);
-				} else {
-					if (s.toString().equals(
-							activity.getResources().getString(
-									R.string.cheatcode1))) {
-						final AboutDialog about = new AboutDialog(activity);
-						about.show();
-					}
-					DbManager dbManager = new DbManager();
-					try {
-						dbManager.open(activity);
-					} catch (SmartException e) {
-						Toast.makeText(activity, e.getMessage(),
-								Toast.LENGTH_LONG).show();
-						Log.e("", e.getMessage());
-					}
-
-					if (dbManager.existsMission(textViewMissionName.getText()
-							.toString())
-							|| ((overlays.search(textViewMissionName.getText()
-									.toString() + "_POLYGON") != null)
-									&& (overlays.search(textViewMissionName
-											.getText().toString() + "_LINE") != null) && (overlays
-									.search(textViewMissionName.getText()
-											.toString() + "_POINT") != null))) {
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-								.setEnabled(false);
-						textViewMissionName.setError(activity.getResources()
-								.getString(R.string.invalid));
-					} else {
-						dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-								.setEnabled(true);
-						textViewMissionName.setError(null);
-					}
-
-					dbManager.close();
-				}
+				validMissionName(s, dialog, activity, overlays, textViewMissionName);
 			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {}
 		});
 
 		RadioGroup radioForm = (RadioGroup) createMissionDialog
@@ -167,6 +127,48 @@ public final class MissionDialogUtils {
 		});
 
 		return dialog;
+	}
+	
+	private static void validMissionName(Editable s, AlertDialog dialog, MenuActivity activity, ListOverlay overlays, TextView textViewMissionName){
+		if (s.toString().equals("")) {
+			dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(
+					false);
+		} else {
+			if (s.toString().equals(
+					activity.getResources().getString(
+							R.string.cheatcode1))) {
+				final AboutDialog about = new AboutDialog(activity);
+				about.show();
+			}
+			DbManager dbManager = new DbManager();
+			try {
+				dbManager.open(activity);
+			} catch (SmartException e) {
+				Toast.makeText(activity, e.getMessage(),
+						Toast.LENGTH_LONG).show();
+				Log.e("", e.getMessage());
+			}
+
+			if (dbManager.existsMission(textViewMissionName.getText()
+					.toString())
+					|| ((overlays.search(textViewMissionName.getText()
+							.toString() + "_POLYGON") != null)
+							&& (overlays.search(textViewMissionName
+									.getText().toString() + "_LINE") != null) && (overlays
+							.search(textViewMissionName.getText()
+									.toString() + "_POINT") != null))) {
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+						.setEnabled(false);
+				textViewMissionName.setError(activity.getResources()
+						.getString(R.string.invalid));
+			} else {
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+						.setEnabled(true);
+				textViewMissionName.setError(null);
+			}
+
+			dbManager.close();
+		}
 	}
 
 	/**
@@ -200,55 +202,7 @@ public final class MissionDialogUtils {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						if (missionsToExport.size() == 0) {
-							Toast.makeText(
-									context,
-									context.getString(R.string.pleaseSelectMission),
-									Toast.LENGTH_LONG).show();
-							return;
-						}
-
-						ArrayList<Uri> files = new ArrayList<Uri>();
-						for (Long idMission : missionsToExport) {
-							try {
-								switch (formatSelector
-										.getCheckedRadioButtonId()) {
-								case R.id.csvExport:
-									// Export CSV
-									files.add(Uri.fromFile(new File(DataExport
-											.exportCsv(SmartConstants.APP_PATH,
-													idMission, context))));
-									break;
-
-								case R.id.kmlExport:
-									// Export KML
-									files.add(Uri.fromFile(new File(DataExport
-											.exportKml(SmartConstants.APP_PATH,
-													idMission, context))));
-									break;
-
-								default:
-									throw new IllegalStateException(
-											"Id of the radiobutton unkown");
-								}
-							} catch (KmlExportException e) {
-								Toast.makeText(context, e.getMessage(),
-										Toast.LENGTH_LONG).show();
-								return;
-							} catch (CsvExportException e) {
-								Toast.makeText(context, e.getMessage(),
-										Toast.LENGTH_LONG).show();
-								return;
-							}
-						}
-
-						Toast.makeText(context, R.string.missionExported,
-								Toast.LENGTH_LONG).show();
-
-						if (checkBoxEmail.isChecked()) {
-							Intent intent = FileUtils.createEmailIntent(files);
-							context.startActivity(intent);
-						}
+						exportMission(missionsToExport, context, formatSelector, checkBoxEmail);
 					}
 				});
 
@@ -281,20 +235,14 @@ public final class MissionDialogUtils {
 				public void onCheckedChanged(CompoundButton checkBox,
 						boolean isChecked) {
 					if (isChecked) {
-						missionsToExport.add(Long.valueOf(String
-								.valueOf(checkBox.getHint())));
-
+						missionsToExport.add(Long.valueOf(String.valueOf(checkBox.getHint())));
 						if (missionsToExport.size() > 0) {
-							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-									.setEnabled(true);
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 						}
 					} else {
-						missionsToExport.remove(Long.valueOf(String
-								.valueOf(checkBox.getHint())));
-
+						missionsToExport.remove(Long.valueOf(String.valueOf(checkBox.getHint())));
 						if (missionsToExport.size() == 0) {
-							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-									.setEnabled(false);
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 						}
 					}
 				}
@@ -304,6 +252,59 @@ public final class MissionDialogUtils {
 		}
 	}
 
+	private static void exportMission(List<Long> missionsToExport, Context context, RadioGroup formatSelector, CheckBox checkBoxEmail){
+		if (missionsToExport.size() == 0) {
+			Toast.makeText(
+					context,
+					context.getString(R.string.pleaseSelectMission),
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		ArrayList<Uri> files = new ArrayList<Uri>();
+		for (Long idMission : missionsToExport) {
+			try {
+				switch (formatSelector
+						.getCheckedRadioButtonId()) {
+				case R.id.csvExport:
+					// Export CSV
+					files.add(Uri.fromFile(new File(DataExport
+							.exportCsv(SmartConstants.APP_PATH,
+									idMission, context))));
+					break;
+
+				case R.id.kmlExport:
+					// Export KML
+					files.add(Uri.fromFile(new File(DataExport
+							.exportKml(SmartConstants.APP_PATH,
+									idMission, context))));
+					break;
+
+				default:
+					throw new IllegalStateException(
+							"Id of the radiobutton unkown");
+				}
+			} catch (KmlExportException e) {
+				Toast.makeText(context, e.getMessage(),
+						Toast.LENGTH_LONG).show();
+				return;
+			} catch (CsvExportException e) {
+				Toast.makeText(context, e.getMessage(),
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+		}
+
+		Toast.makeText(context, R.string.missionExported,
+				Toast.LENGTH_LONG).show();
+
+		if (checkBoxEmail.isChecked()) {
+			Intent intent = FileUtils.createEmailIntent(files);
+			context.startActivity(intent);
+		}
+	}
+	
+		
 	public static void showDeleteDialog(final Context context)
 			throws SmartException {
 		AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(context);
@@ -360,20 +361,14 @@ public final class MissionDialogUtils {
 				public void onCheckedChanged(CompoundButton checkBox,
 						boolean isChecked) {
 					if (isChecked) {
-						missionsToDelete.add(Long.valueOf(String
-								.valueOf(checkBox.getHint())));
-
+						missionsToDelete.add(Long.valueOf(String.valueOf(checkBox.getHint())));
 						if (missionsToDelete.size() > 0) {
-							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-									.setEnabled(true);
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 						}
 					} else {
-						missionsToDelete.remove(Long.valueOf(String
-								.valueOf(checkBox.getHint())));
-
+						missionsToDelete.remove(Long.valueOf(String.valueOf(checkBox.getHint())));
 						if (missionsToDelete.size() == 0) {
-							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-									.setEnabled(false);
+							alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 						}
 					}
 				}
