@@ -83,8 +83,9 @@ public class GeometryLayer extends Overlay implements Layer {
 			if (other.context != null) {
 				return false;
 			}
-		} else if (!context.equals(other.context))
+		} else if (!context.equals(other.context)) {
 			return false;
+		}
 		if (doubleTapListeners == null) {
 			if (other.doubleTapListeners != null) {
 				return false;
@@ -167,8 +168,8 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	private static final float RADIUS = 12;
 	private static final float LINESIZE = 12;
-	private static final float rectSize = 12;
-	private static final float strokeWidth = 5;
+	private static final float RECTSIZE = 12;
+	private static final float STROKEWIDTH = 5;
 
 	/**
 	 * 
@@ -344,44 +345,6 @@ public class GeometryLayer extends Overlay implements Layer {
 			float x = e.getX();
 
 			float y = e.getY();
-			if (e.getPointerCount() > 1) {
-				float x0 = e.getX(0);
-				float x1 = e.getX(1);
-				float y0 = e.getY(0);
-				float y1 = e.getY(1);
-				// If we tapped really quickly on the map but not at the same
-				// coordinate, then we want to add two points
-				if (Math.abs(x1 - x0) < 5 && Math.abs(y1 - y0) < 5) {
-
-					final IGeoPoint firstPoint = mapView.getProjection()
-							.fromPixels(x0, y0);
-					final float firstLatitude = (float) (firstPoint
-							.getLatitudeE6() / VALUE_1E6);
-					final float firstLongitude = (float) (firstPoint
-							.getLongitudeE6() / VALUE_1E6);
-
-					for (int i = 0; i < singleTapListeners.size(); i++) {
-						singleTapListeners.get(i)
-								.actionPerformed(
-										new PointGeometry(firstLatitude,
-												firstLongitude));
-					}
-					final IGeoPoint secondPoint = mapView.getProjection()
-							.fromPixels(x1, y1);
-					final float secondLatitude = (float) (secondPoint
-							.getLatitudeE6() / VALUE_1E6);
-					final float secondLongitude = (float) (secondPoint
-							.getLongitudeE6() / VALUE_1E6);
-
-					for (int i = 0; i < singleTapListeners.size(); i++) {
-						singleTapListeners.get(i).actionPerformed(
-								new PointGeometry(secondLatitude,
-										secondLongitude));
-					}
-					return super.onDoubleTap(e, mapView);
-				}
-
-			}
 
 			final IGeoPoint point = mapView.getProjection().fromPixels(x, y);
 			float latitude = (float) (point.getLatitudeE6() / VALUE_1E6);
@@ -506,13 +469,13 @@ public class GeometryLayer extends Overlay implements Layer {
 			canvas.drawCircle(middlex, middley, RADIUS, paint);
 			break;
 		case LINE:
-			paint.setStrokeWidth(strokeWidth);
+			paint.setStrokeWidth(STROKEWIDTH);
 			canvas.drawLine(LINESIZE, LINESIZE, height - LINESIZE, width
 					- LINESIZE, paint);
 			break;
 		case POLYGON:
-			canvas.drawRect(rectSize, rectSize, height - rectSize, width
-					- rectSize, paint);
+			canvas.drawRect(RECTSIZE, RECTSIZE, height - RECTSIZE, width
+					- RECTSIZE, paint);
 			break;
 		default:
 			break;
@@ -579,12 +542,17 @@ public class GeometryLayer extends Overlay implements Layer {
 
 	}
 
+	private static final double NORTH = 90;
+	private static final double SOUTH = -90;
+	private static final double EAST = 180;
+	private static final double WEST = -180;
+
 	@Override
 	public Extent getExtent() {
-		double north = 90;
-		double south = -90;
-		double east = 180;
-		double west = -180;
+		double north = NORTH;
+		double south = SOUTH;
+		double east = EAST;
+		double west = WEST;
 
 		if (geometries.size() > 0) {
 			north = geometries.get(0).getBoundingBox().getLatNorthE6()

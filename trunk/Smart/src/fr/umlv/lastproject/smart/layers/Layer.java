@@ -20,7 +20,11 @@ import fr.umlv.lastproject.smart.data.TMSOverlay;
  */
 public interface Layer {
 
-	public class Extent implements Serializable {
+	class Extent implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private BoundingBoxE6 boundingBox;
 		private int zoom;
 

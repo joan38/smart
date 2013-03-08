@@ -9,24 +9,24 @@ import android.graphics.Color;
  * 
  */
 
-
 public class PointSymbology extends Symbology {
-	
-	public enum PointSymbologieType{
-		CIRCLE(0), SQUARE(1) ;
-		private int id ;
-		
+
+	public enum PointSymbologieType {
+		CIRCLE(0), SQUARE(1);
+		private int id;
+
 		private PointSymbologieType(int id) {
 			// TODO Auto-generated constructor stub
-			this.id = id ;
+			this.id = id;
 		}
-		
-		public int getId(){
-			return id ;
+
+		public int getId() {
+			return id;
 		}
-		public static PointSymbologieType getFromId(int id){
-			for(PointSymbologieType p : values()){
-				if(p.id == id){
+
+		public static PointSymbologieType getFromId(int id) {
+			for (PointSymbologieType p : values()) {
+				if (p.id == id) {
 					return p;
 				}
 			}
@@ -34,12 +34,11 @@ public class PointSymbology extends Symbology {
 		}
 	}
 
-
 	private static final long serialVersionUID = 1L;
 	private int radius;
-	private PointSymbologieType type ;
+	private PointSymbologieType type;
 
-	private static final int VALUE_RADIUS = 5;
+	private static final int VALUE_RADIUS = 10;
 
 	/**
 	 * Point default constructor
@@ -56,10 +55,10 @@ public class PointSymbology extends Symbology {
 	 * @param radius
 	 * @param color
 	 */
-	public PointSymbology(int radius, int color, PointSymbologieType type ) {
+	public PointSymbology(int radius, int color, PointSymbologieType type) {
 		super(color, radius);
 		this.radius = radius;
-		this.type = type ;
+		this.type = type;
 	}
 
 	/**
@@ -78,12 +77,12 @@ public class PointSymbology extends Symbology {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
-	
-	public void setType(PointSymbologieType type){
-		this.type = type ;
+
+	public void setType(PointSymbologieType type) {
+		this.type = type;
 	}
 
-	public PointSymbologieType getType(){
-		return type ;
+	public PointSymbologieType getType() {
+		return type;
 	}
 }
