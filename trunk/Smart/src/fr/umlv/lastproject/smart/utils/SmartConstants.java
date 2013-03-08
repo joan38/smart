@@ -11,7 +11,7 @@ import fr.umlv.lastproject.smart.R;
  * 
  */
 public final class SmartConstants {
-	
+
 	public static final String DEFAULT_NAME = "FormDefault";
 
 	public static final int HOME_VIEW = 1;
@@ -51,7 +51,7 @@ public final class SmartConstants {
 	public static final String LOG_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/SMART/Log/";
 
-	private static int[] colors = new int[] { Color.BLACK,
+	private static final int[] colors = new int[] { Color.BLACK,
 			Color.rgb(100, 149, 237), Color.rgb(0, 0, 128),
 			Color.rgb(238, 203, 173), Color.rgb(34, 139, 34),
 			Color.rgb(255, 140, 0), Color.rgb(152, 251, 152),
@@ -59,7 +59,7 @@ public final class SmartConstants {
 			Color.rgb(49, 79, 79), Color.rgb(139, 69, 19) };
 
 	// Icons array for functionalities list
-	private static int[] icons = { R.drawable.startmission,
+	private static final int[] icons = { R.drawable.startmission,
 			R.drawable.createform, R.drawable.pointsurvey,
 			R.drawable.pointsurvey_position, R.drawable.linesurvey,
 			R.drawable.polygonsurvey, R.drawable.startpolygontrack,
