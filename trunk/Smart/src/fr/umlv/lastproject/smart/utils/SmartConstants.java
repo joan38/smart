@@ -11,6 +11,8 @@ import fr.umlv.lastproject.smart.R;
  * 
  */
 public final class SmartConstants {
+	
+	public static final String DEFAULT_NAME = "FormDefault";
 
 	public static final int HOME_VIEW = 1;
 	public static final int LAYERS_VIEW = 2;
