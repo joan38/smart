@@ -72,7 +72,7 @@ public class FileLoader extends AsyncTaskLoader<List<File>> {
 		}
 			
 
-		if (!oldData.equals(null) && !oldData.equals(data)){
+		if (oldData != null && !oldData.equals(data)){
 			onReleaseResources(oldData);
 		}
 			
