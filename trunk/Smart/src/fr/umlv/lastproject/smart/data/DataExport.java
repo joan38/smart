@@ -69,10 +69,6 @@ public final class DataExport {
 
 				for (PointRecord point : geometry.getPointsRecord()) {
 					line.append(point.getY()).append(" ").append(point.getX());
-					/*
-					 * line.append(" ").append( (point.getZ() == -1.0 ? 0 :
-					 * point.getZ()));
-					 */
 					line.append(",");
 				}
 				line.deleteCharAt(line.length() - 1);
@@ -81,10 +77,6 @@ public final class DataExport {
 					PointRecord point = geometry.getPointsRecord().get(0);
 					line.append(",").append(point.getY()).append(" ")
 							.append(point.getX());
-					/*
-					 * line.append(" ").append( (point.getZ() == -1.0 ? 0 :
-					 * point.getZ()));
-					 */
 					line.append(")");
 				}
 				line.append(")");

@@ -18,7 +18,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public final class ShpImport {
 
-	private final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	private ShpImport() {
 	}
@@ -36,7 +36,7 @@ public final class ShpImport {
 
 			ShapeFile shp = new ShapeFile(path, fn).READ();
 			ShpShape.Type type = shp.getSHP_shapeType();
-			logger.log(Level.SEVERE, "Import shape file :" + type.toString());
+			LOGGER.log(Level.SEVERE, "Import shape file :" + type.toString());
 			switch (type) {
 			case Point: {
 				return getLayerFromPointShp(shp, context, fn);
@@ -52,7 +52,7 @@ public final class ShpImport {
 
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "unabled to import shape file");
+			LOGGER.log(Level.SEVERE, "unabled to import shape file");
 		}
 
 		return null;

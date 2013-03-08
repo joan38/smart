@@ -45,23 +45,30 @@ public class WMSOverlay extends TilesOverlay implements Layer {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		WMSOverlay other = (WMSOverlay) obj;
 		if (context == null) {
-			if (other.context != null)
+			if (other.context != null) {
 				return false;
-		} else if (!context.equals(other.context))
+			}
+		} else if (!context.equals(other.context)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 

@@ -43,37 +43,50 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		TMSOverlay other = (TMSOverlay) obj;
 		if (boundingBox == null) {
-			if (other.boundingBox != null)
+			if (other.boundingBox != null) {
 				return false;
-		} else if (!boundingBox.equals(other.boundingBox))
+			}
+		} else if (!boundingBox.equals(other.boundingBox)) {
 			return false;
+		}
 		if (context == null) {
-			if (other.context != null)
+			if (other.context != null) {
 				return false;
-		} else if (!context.equals(other.context))
+			}
+		} else if (!context.equals(other.context)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		if (path == null) {
-			if (other.path != null)
+			if (other.path != null) {
 				return false;
-		} else if (!path.equals(other.path))
+			}
+		} else if (!path.equals(other.path)) {
 			return false;
-		if (zoomLevelMax != other.zoomLevelMax)
+		}
+		if (zoomLevelMax != other.zoomLevelMax) {
 			return false;
-		if (zoomLevelMin != other.zoomLevelMin)
+		}
+		if (zoomLevelMin != other.zoomLevelMin) {
 			return false;
+		}
 		return true;
 	}
 
@@ -96,8 +109,9 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 		this.boundingBox = extent;
 		if (zoomLevelMax < zoomLevelMin
 				|| zoomLevelMax > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
-				|| zoomLevelMin < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL)
+				|| zoomLevelMin < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) {
 			throw new IllegalArgumentException();
+		}
 		setLoadingBackgroundColor(Color.TRANSPARENT);
 
 	}
