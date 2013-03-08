@@ -72,7 +72,7 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 	// Constants
 	// ===========================================================
 
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(MapTileDownloader.class);
 
 	// ===========================================================
@@ -186,7 +186,7 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 				if (mNetworkAvailablityCheck != null
 						&& !mNetworkAvailablityCheck.getNetworkAvailable()) {
 					if (DEBUGMODE) {
-						logger.debug("WMSMapTileDownloader -- Skipping "
+						LOGGER.debug("WMSMapTileDownloader -- Skipping "
 								+ getName()
 								+ " due to NetworkAvailabliltyCheck.");
 					}
@@ -196,7 +196,7 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 				final String tileURLString = mTileSource.getTileURLString(tile);
 
 				if (DEBUGMODE) {
-					logger.debug("WMSMapTileDownloader -- Downloading Maptile from url: "
+					LOGGER.debug("WMSMapTileDownloader -- Downloading Maptile from url: "
 							+ tileURLString);
 				}
 
@@ -216,7 +216,7 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 				((AbstractHttpClient) httpClient)
 						.setCredentialsProvider(credProvider);
 
-				logger.debug("WMSMapTileDownloader -- tileURLString ------------------------- "
+				LOGGER.debug("WMSMapTileDownloader -- tileURLString ------------------------- "
 						+ tileURLString);
 
 				final HttpUriRequest head = new HttpGet(tileURLString);
@@ -226,14 +226,14 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 				final org.apache.http.StatusLine line = response
 						.getStatusLine();
 				if (line.getStatusCode() != 200) {
-					logger.warn("WMSMapTileDownloader -- Problem downloading MapTile: "
+					LOGGER.warn("WMSMapTileDownloader -- Problem downloading MapTile: "
 							+ tile + " HTTP response: " + line);
 					return null;
 				}
 
 				final HttpEntity entity = response.getEntity();
 				if (entity == null) {
-					logger.warn("WMSMapTileDownloader -- No content downloading MapTile: "
+					LOGGER.warn("WMSMapTileDownloader -- No content downloading MapTile: "
 							+ tile);
 					return null;
 				}
@@ -258,19 +258,19 @@ public class WMSMapTileDownloader extends MapTileModuleProviderBase {
 				return result;
 			} catch (final UnknownHostException e) {
 				// no network connection so empty the queue
-				logger.warn("WMSMapTileDownloader -- UnknownHostException downloading MapTile: "
+				LOGGER.warn("WMSMapTileDownloader -- UnknownHostException downloading MapTile: "
 						+ tile + " : " + e);
 				throw new CantContinueException(e);
 			} catch (final LowMemoryException e) {
 				// low memory so empty the queue
-				logger.warn("WMSMapTileDownloader -- LowMemoryException downloading MapTile: "
+				LOGGER.warn("WMSMapTileDownloader -- LowMemoryException downloading MapTile: "
 						+ tile + " : " + e);
 				throw new CantContinueException(e);
 			} catch (final FileNotFoundException e) {
-				logger.warn("WMSMapTileDownloader -- Tile not found: " + tile
+				LOGGER.warn("WMSMapTileDownloader -- Tile not found: " + tile
 						+ " : " + e);
 			} catch (final IOException e) {
-				logger.warn("WMSMapTileDownloader -- IOException downloading MapTile: "
+				LOGGER.warn("WMSMapTileDownloader -- IOException downloading MapTile: "
 						+ tile + " : " + e);
 			} finally {
 				StreamUtils.closeStream(in);

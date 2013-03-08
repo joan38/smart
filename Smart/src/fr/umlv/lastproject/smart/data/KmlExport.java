@@ -42,7 +42,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  */
 public final class KmlExport {
 
-	private final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Export the given mission in a Kml file.
@@ -109,7 +109,7 @@ public final class KmlExport {
 			List<GeometryRecord> geometries = dbm
 					.getGeometriesFromMission(mission.getId());
 			if (geometries.size() < 1) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"Try to export mission without geometry");
 				throw new KmlExportException("No geometry in the given mission");
 			}
@@ -148,19 +148,18 @@ public final class KmlExport {
 			transformer.transform(source, result);
 
 			dbm.close();
-			logger.log(Level.INFO,
-		"Export mission to KML :" + mission.getTitle());
+			LOGGER.log(Level.INFO,
+					"Export mission to KML :" + mission.getTitle());
 			return path + mission.getTitle() + FileUtils.KML_SHP_TYPE[1];
-			
 
 		} catch (ParserConfigurationException e) {
-			logger.log(Level.SEVERE, "Unable to export the mission");
+			LOGGER.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (TransformerException e) {
-			logger.log(Level.SEVERE, "Unable to export the mission");
+			LOGGER.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		} catch (SmartException e) {
-			logger.log(Level.SEVERE, "Unable to export the mission");
+			LOGGER.log(Level.SEVERE, "Unable to export the mission");
 			throw new KmlExportException("Unable to export the mission", e);
 		}
 	}

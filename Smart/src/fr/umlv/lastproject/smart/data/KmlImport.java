@@ -28,7 +28,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  */
 public class KmlImport {
 
-	private final static Logger logger = SmartLogger.getLocator().getLogger();
+	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	/**
 	 * Return a list of GeometryLayer with all the geometry type in the kml
@@ -72,7 +72,7 @@ public class KmlImport {
 				break;
 
 			default:
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"The given GeometryType is not supported for the KML export");
 				throw new IllegalStateException(
 						"The given GeometryType is not supported for the KML export");
