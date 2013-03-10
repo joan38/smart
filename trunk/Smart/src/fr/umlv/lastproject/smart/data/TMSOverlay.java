@@ -1,7 +1,6 @@
 package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
-import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
@@ -107,11 +106,12 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 		zoomLevelMin = minZoomLevel;
 		this.name = name;
 		this.boundingBox = extent;
-		if (zoomLevelMax < zoomLevelMin
-				|| zoomLevelMax > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
-				|| zoomLevelMin < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) {
-			throw new IllegalArgumentException();
-		}
+		/*
+		 * if (zoomLevelMax < zoomLevelMin || zoomLevelMax >
+		 * OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL || zoomLevelMin
+		 * < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) { throw new
+		 * IllegalArgumentException(); }
+		 */
 		setLoadingBackgroundColor(Color.TRANSPARENT);
 
 	}
