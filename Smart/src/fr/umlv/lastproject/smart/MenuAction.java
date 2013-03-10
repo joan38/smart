@@ -202,7 +202,7 @@ public enum MenuAction {
 			} else {
 				try {
 					gpsTrack.stopTrack();
-
+					activity.killGpsTrack();
 					for (GPSTrackListener l : activity.getGpsTrackListeners()) {
 						l.actionPerformed(false);
 					}

@@ -908,6 +908,10 @@ public class MenuActivity extends Activity {
 		return gpsTrack;
 	}
 
+	public void killGpsTrack() {
+		gpsTrack = null;
+	}
+
 	public void setCreateMissionDialog(AlertDialog createMissionDialog) {
 		this.createMissionDialog = createMissionDialog;
 	}
