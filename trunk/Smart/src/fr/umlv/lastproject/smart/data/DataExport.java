@@ -2,6 +2,7 @@ package fr.umlv.lastproject.smart.data;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import android.content.Context;
@@ -47,21 +48,36 @@ public final class DataExport {
 						context.getString(R.string.noGeometryInMission));
 			}
 
-			FileWriter csv = new FileWriter(path + mission.getTitle()
-					+ FileUtils.CSV_TYPE[0]);
-			csv.write("Geom");
+			HashMap<GeometryType, FileWriter> csvs = new HashMap<GeometryType, FileWriter>();
+
+			for (GeometryType t : GeometryType.values()) {
+				csvs.put(t,
+						new FileWriter(path + mission.getTitle() + t.toString()
+								+ FileUtils.CSV_TYPE[0]));
+				csvs.get(t).write("Geom");
+			}
 
 			GeometryRecord geometry = geometryIterator.next();
 			FormRecord formRecord = dbm.getFormRecord(
 					geometry.getIdFormRecord(), mission.getForm().getTitle());
-			for (FieldRecord field : formRecord.getFields()) {
-				csv.write(";" + field.getField().getLabel());
+			for (GeometryType t : GeometryType.values()) {
+				for (FieldRecord field : formRecord.getFields()) {
+					csvs.get(t).write(";" + field.getField().getLabel());
+
+				}
+				csvs.get(t).write("\n");
+
 			}
-			csv.write("\n");
 
 			while (true) {
-				StringBuilder line = new StringBuilder(geometry.getType()
-						.name()).append("(");
+
+				StringBuilder line = new StringBuilder();
+
+				if (geometry.getType() == GeometryType.LINE) {
+					line.append("LINESTRING(");
+				} else {
+					line.append(geometry.getType()).append("(");
+				}
 
 				if (geometry.getType() == GeometryType.POLYGON) {
 					line.append("(");
@@ -121,7 +137,7 @@ public final class DataExport {
 				}
 
 				line.append("\n");
-				csv.write(line.toString());
+				csvs.get(geometry.getType()).write(line.toString());
 
 				if (!geometryIterator.hasNext()) {
 					break;
@@ -131,9 +147,12 @@ public final class DataExport {
 						mission.getForm().getTitle());
 			}
 
-			csv.close();
+			for (GeometryType t : GeometryType.values()) {
+				csvs.get(t).close();
+
+			}
 			dbm.close();
-			return path + mission.getTitle() + FileUtils.CSV_TYPE[0];
+			return path + mission.getTitle();
 		} catch (IOException e) {
 			throw new CsvExportException("Unable to export the mission", e);
 		} catch (SmartException e) {
