@@ -75,8 +75,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 		smartHolder.txtTitle.setText(item.getName());
 
-		smartHolder.txtTitle.setText(item.getName()
-				+ "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+		
 
 		if (item.getOverview() != null) {
 			smartHolder.imageView.setImageBitmap(item.getOverview());

@@ -69,13 +69,15 @@ public class SmartMapView extends MapView {
 	 * 
 	 * @param layer
 	 *            which will be added
+	 * 
+	 * @return true if layer has been added
 	 */
-	public void addOverlay(Layer layer) {
+	public boolean addOverlay(Layer layer) {
 		final String name = layer.getName();
 		if (listOverlay.search(name) != null) {
 			Toast.makeText(getContext(), R.string.layerAlreadyExists,
 					Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 		this.layers.add(layer);
 		final Overlay overlay = layer.getOverlay();
@@ -83,6 +85,7 @@ public class SmartMapView extends MapView {
 		stringToOverlay.put(name, overlay);
 		listOverlay.add(new LayerItem(name, layer.getOverview(), layer
 				.hasSymbologyEditable()));
+		return true;
 	}
 
 	/**
@@ -96,7 +99,9 @@ public class SmartMapView extends MapView {
 			Log.e("TESTX", "ERROR TMS OVERLAY");
 			return;
 		}
-		addOverlay(overlay);
+		if (!addOverlay(overlay)) {
+			return;
+		}
 		geoTIFFOverlays.add(overlay);
 	}
 
@@ -107,8 +112,11 @@ public class SmartMapView extends MapView {
 	 *            to add to the view
 	 */
 	public void addGeometryLayer(final GeometryLayer layer) {
+
+		if (!addOverlay(layer)) {
+			return;
+		}
 		this.geometryOverlays.add(layer);
-		addOverlay(layer);
 	}
 
 	/**
@@ -131,8 +139,12 @@ public class SmartMapView extends MapView {
 	 *            to add to the view
 	 */
 	public void addWMSLayer(final WMSOverlay layer) {
+
+		if (!addOverlay(layer)) {
+			return;
+		}
 		this.wmsOverlays.add(layer);
-		addOverlay(layer);
+
 	}
 
 	public Layer getLayer(LayerItem item) {
@@ -312,6 +324,5 @@ public class SmartMapView extends MapView {
 		addOverlay(wmsOverlay);
 
 	}
-	
 
 }

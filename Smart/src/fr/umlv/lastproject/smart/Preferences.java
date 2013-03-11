@@ -105,18 +105,22 @@ public final class Preferences {
 		sharedPrefEditor.putInt(key, value);
 	}
 
+	@SuppressWarnings("unused")
 	private void putFloat(String key, float value) {
 		sharedPrefEditor.putFloat(key, value);
 	}
 
+	@SuppressWarnings("unused")
 	private void putBoolean(String key, boolean value) {
 		sharedPrefEditor.putBoolean(key, value);
 	}
 
+	@SuppressWarnings("unused")
 	private void putLong(String key, long value) {
 		sharedPrefEditor.putLong(key, value);
 	}
 
+	@SuppressWarnings("unused")
 	private void putString(String key, String value) {
 		sharedPrefEditor.putString(key, value);
 	}
@@ -137,18 +141,22 @@ public final class Preferences {
 		return sharedPref.getInt(key, defaultInt);
 	}
 
+	@SuppressWarnings("unused")
 	private float getFloat(String key, float defaultFloat) {
 		return sharedPref.getFloat(key, defaultFloat);
 	}
 
+	@SuppressWarnings("unused")
 	private boolean getBoolean(String key, boolean defaultBoolean) {
 		return sharedPref.getBoolean(key, defaultBoolean);
 	}
 
+	@SuppressWarnings("unused")
 	private long getLong(String key, long defaultLong) {
 		return sharedPref.getLong(key, defaultLong);
 	}
 
+	@SuppressWarnings("unused")
 	private String getString(String key, String defaultString) {
 		return sharedPref.getString(key, defaultString);
 	}

@@ -2,6 +2,11 @@ package fr.umlv.lastproject.smart;
 
 public class PreferencesException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PreferencesException() {
 		super();
 	}
