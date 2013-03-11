@@ -318,7 +318,6 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
-					setSelectable(true);
 				}
 			});
 			break;
@@ -330,7 +329,6 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
-					setSelectable(true);
 				}
 			});
 			break;
@@ -342,7 +340,6 @@ public final class Mission {
 				public void actionPerformed(Geometry g) {
 					form.openForm(context, g, Mission.this);
 					survey.validateSurvey();
-					setSelectable(true);
 				}
 			});
 			break;
