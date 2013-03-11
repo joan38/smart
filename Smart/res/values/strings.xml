@@ -210,6 +210,8 @@
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Landscape</string>
     
+        <string name="errorShp">Error : Shapefile too big to handle</string>
+    
     
 
 </resources>

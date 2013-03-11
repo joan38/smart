@@ -67,6 +67,7 @@ import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
+import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 import fr.umlv.lastproject.smart.utils.SmartParameters;
 
@@ -470,11 +471,25 @@ public class MenuActivity extends Activity {
 
 								}
 							} else if (extension.equalsIgnoreCase(".shp")) {
-								geometryLayersToImport.add(DataImport
-										.importShapeFile(MenuActivity.this,
-												path));
+								try{
+									final GeometryLayer lay=DataImport
+											.importShapeFile(MenuActivity.this,
+													path);
+									if(lay!=null){
+										geometryLayersToImport.add(lay);
+										succ = R.string.shpImport;
+										
+									}
+									else{
+										err=R.string.errorShp;
+									}
+									
+								}
+								catch(SmartException e){
+									err=R.string.errorShp;
 
-								succ = R.string.shpImport;
+								}
+								
 
 							}
 							final int error = err;
@@ -1136,6 +1151,12 @@ public class MenuActivity extends Activity {
 		mapView.getTileProvider().clearTileCache();
 		System.gc();
 		super.onStop();
+	}
+	
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		mapView.getTileProvider().clearTileCache();
 	}
 
 }

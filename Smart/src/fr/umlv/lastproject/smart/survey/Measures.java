@@ -22,8 +22,8 @@ import fr.umlv.lastproject.smart.layers.PointSymbology;
 public final class Measures {
 	
 	private List<MeasureStopListener> listeners = new ArrayList<MeasureStopListener>() ;
-	private GeometryLayer gl ; 
-	private GeometryLayer gll ;
+	private GeometryLayer pointLayer ; 
+	private GeometryLayer lineLayer ;
 	private final MapView mapview ;
 
 	
@@ -32,15 +32,15 @@ public final class Measures {
 	 */
 	public Measures(MapView mapview){
 		this.mapview = mapview ;
-		gl  = new GeometryLayer(mapview.getContext()) ;
-		gll = new GeometryLayer(mapview.getContext()) ;
-		gl.setType(GeometryType.POINT);
-		gll.setType(GeometryType.LINE);
-		gl.setSymbology(new PointSymbology()) ;
-		gll.setSymbology(new LineSymbology());
-		gl.setEditable(true);
-		mapview.getOverlayManager().add(gl);
-		mapview.getOverlayManager().add(gll);
+		pointLayer  = new GeometryLayer(mapview.getContext()) ;
+		lineLayer = new GeometryLayer(mapview.getContext()) ;
+		pointLayer.setType(GeometryType.POINT);
+		lineLayer.setType(GeometryType.LINE);
+		pointLayer.setSymbology(new PointSymbology()) ;
+		lineLayer.setSymbology(new LineSymbology());
+		pointLayer.setEditable(true);
+		mapview.getOverlayManager().add(pointLayer);
+		mapview.getOverlayManager().add(lineLayer);
 
 	} 
 	
@@ -60,14 +60,14 @@ public final class Measures {
 	 * @return the distance beetween a and an other point
 	 */
 	public  void measure(final PointGeometry a){
-		gl.addGeometryLayerSingleTapListener(new GeometryLayerSingleTapListener() {
+		pointLayer.addGeometryLayerSingleTapListener(new GeometryLayerSingleTapListener() {
 			
 			@Override
 			public void actionPerformed(PointGeometry p) {
 				
 				LineGeometry l = new LineGeometry() ;
 				l.addPoint(a) ; l.addPoint(p);
-				gll.addGeometry(l) ;
+				lineLayer.addGeometry(l) ;
 				mapview.invalidate();
 				
 				for(int i=0 ; i < listeners.size();i++){
@@ -85,23 +85,23 @@ public final class Measures {
 		
 		final List<PointGeometry> list = new ArrayList<PointGeometry>() ;
 		final AtomicInteger count = new AtomicInteger( 0) ;
-		gl.addGeometryLayerSingleTapListener(new GeometryLayerSingleTapListener() {
+		pointLayer.addGeometryLayerSingleTapListener(new GeometryLayerSingleTapListener() {
 			
 			@Override
-			public void actionPerformed(PointGeometry p) {
-				int c =count.incrementAndGet();
-				if(c == 1){
-					list.add(p) ;
-					gl.addGeometry(p);
+			public void actionPerformed(PointGeometry point) {
+				int numberOfPoints =count.incrementAndGet();
+				if(numberOfPoints == 1){
+					list.add(point) ;
+					pointLayer.addGeometry(point);
 					mapview.invalidate();
 				}
-				if(c == 2 ){
-					list.add( p );
+				if(numberOfPoints == 2 ){
+					list.add( point );
 					LineGeometry l = new LineGeometry() ;
 					l.addPoint(list.get(0));
 					l.addPoint(list.get(1)) ;
-					gll.addGeometry(l);
-					mapview.getOverlayManager().remove(gl);
+					lineLayer.addGeometry(l);
+					mapview.getOverlayManager().remove(pointLayer);
 					mapview.invalidate();
 					for(int i =0 ; i < listeners.size();i++){
 						listeners.get(i).actionPerformed(measure(list.get(0), list.get(1))) ;
@@ -132,8 +132,8 @@ public final class Measures {
 	 */
 	public void stop() {
 		listeners = new ArrayList<MeasureStopListener>() ;
-		mapview.getOverlayManager().remove(gl);
-		mapview.getOverlayManager().remove(gll);
+		mapview.getOverlayManager().remove(pointLayer);
+		mapview.getOverlayManager().remove(lineLayer);
 		
 	}
 	

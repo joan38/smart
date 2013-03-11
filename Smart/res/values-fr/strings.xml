@@ -203,5 +203,7 @@
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Paysage</string>
     
+    <string name="errorShp">Erreur : Shapefile trop volumineux</string>
+    
 
 </resources>
