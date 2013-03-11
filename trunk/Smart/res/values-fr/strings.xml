@@ -6,12 +6,12 @@
     <string name="app_name">Smart</string>
     <string name="menu_settings">Paramètres du menu</string>
     <string name="infoSettings">Informations à afficher</string>
-    <string name="latitude">Latitude :</string>
-    <string name="longitude">Longitude :</string>
-    <string name="altitude">Altitude :</string>
-    <string name="accuracy">Précision :</string>
-    <string name="speed">Vitesse :</string>
-    <string name="bearing">Orientation :</string>
+    <string name="latitude">Latitude </string>
+    <string name="longitude">Longitude </string>
+    <string name="altitude">Altitude </string>
+    <string name="accuracy">Précision </string>
+    <string name="speed">Vitesse </string>
+    <string name="bearing">Orientation </string>
     <string name="centerMap">Recentrage de la carte</string>
     <string name="findGPS">Recherche du signal GPS..</string>
     <string name="gpsSettings">Paramètrages du GPS</string>
@@ -24,9 +24,9 @@
     <string name="exitMsg">Quitter SMART ?</string>
     <string name="exitMsgWithMission">Quitter SMART ? La mission en cours sera arrêtée.</string>
     <string name="help">Aide</string>
-    <string name="helpLayer">Menu des couches.\nLa visibilité d\'une couche est liée à sa case à cocher. Pour supprimer une couche, il faut la faire glisser à gauche ou à droite.\nLa hiérarchie des couches est gérée par un glisser-déposer sur les noms.\nPour changer la symbologie d\'une couche, il vous suffit de séléctionner son aperçu.\nIl est possible de zoomer sur l\'étendu d\'une couche en effectuant un appui long directement sur elle.</string>
-    <string name="helpMap">Ceci est l\'écran Carte.\nVous pouvez déplacer la carte en faisant glisser votre doigt sur celle-ci.\nPour zoomer ou dézoomer, pincez ou écartez vos doigts sur l\'écran.\nSi votre GPS est activé, touchez l\'icône en forme de cible pour localiser votre position sur la carte.</string>
-    <string name="helpMenu">Menu.\nVous pouvez ajouter un raccourci à la barre des raccourcis présente dans la page principale en faisant un appui long sur l\'image de votre choix.</string>
+    <string name="helpLayer">Case à cocher : Afficher/Masquer une couche.\nGlisser une couche à gauche/droite : Supprimer une couche.\nGlisser/Déposer de haut en bas sur le texte : Organiser les couches.\nSélectionner une symbologie : Editer la symbologie d\'une couche.\nAppui long : Zoomer sur l\'étendue d\'une couche.</string>
+    <string name="helpMap">Pincer/Ecarter l\'écran : Zoomer/Dézoomer.\nSélectionner l\'icône cible : Recentrer la carte sur la position actuelle.</string>
+    <string name="helpMenu">Appui long sur une entrée du menu : Ajouter un raccourci à la barre des raccourcis de l\'écran principal</string>
     <string name="about">A propos</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
@@ -54,7 +54,7 @@
     <string name="noGeometryInMission">Pas de geométrie dans la mission</string>
     <string name="noMissionAvailable">Pas de mission disponible</string>
     <string name="unableLoadPref">Erreur lors du chargement des préférences</string>
-    <string name="area_measure_start">Mesure d\'aire démarée. Dessinez un polygone</string>
+    <string name="area_measure_start">Mesure d\'aire démarée. Dessiner un polygone</string>
     <string name="directory">Choisir ce dossier</string>
 
     <string-array name="items">
@@ -162,7 +162,7 @@
     <string name="missionStart">Mission démarrée</string>
     <string name="missionDelete">Supprimer mission</string>
     <string name="theme">Thème</string>
-    <string name="editInfo">Editer la zone d\'infos</string>
+    <string name="editInfo">Editer la zone d\'informations</string>
     <string name="user_height_text">Saisir la hauteur du point de vue en cm (par exemple votre taille moins 15 cm)</string>
     <string name="track_title">Créer une trace GPS</string>
     <string name="polygon_track_title">Créer une trace polygone</string>
@@ -187,12 +187,12 @@
     <string name="polygon_track_started">La trace Polygone a démarré</string>
     <string name="polygon_track_stoped">La trace Polygone est arrétée</string>
     <string name="point_survey">Taper pour faire un point</string>
-    <string name="line_survey">Tape : faire plusieurs points\n.Double-tape : finir la ligne</string>
-    <string name="polygon_survey">Tape : faire plusieurs points\n.Double-tape : fermer le polygone</string>
+    <string name="line_survey">Taper : ajouter un point\n.Double-taper : finir la ligne.</string>
+    <string name="polygon_survey">Taper : ajouter un point\n.Double-taper : fermer le polygone.</string>
     <string name="tiff_progress">Création de l\'archive.</string>
-    <string name="tiff_progress_title">Veuillez patienter</string>
+    <string name="tiff_progress_title">Patienter.\nChargement gu GeoTIFF.</string>
     <string name="survayError">Erreur : relevé non enregistré</string>
     <string name="vector_progress">Import des données vectorielles</string>
-    <string name="vector_progress_title">Veuillez patienter</string>
+    <string name="vector_progress_title">Patienter</string>
 
 </resources>

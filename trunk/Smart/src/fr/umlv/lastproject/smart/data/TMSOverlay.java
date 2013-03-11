@@ -1,6 +1,7 @@
 package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
@@ -96,22 +97,24 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 	private final String path;
 
 	public TMSOverlay(final MapTileProviderBase aTileProvider,
-			final Context aContext, final int minZoomLevel,
-			final int maxZoomLevel, final String name,
-			final BoundingBoxE6 extent, String path) {
+			final Context aContext, int minZoomLevel, int maxZoomLevel,
+			final String name, final BoundingBoxE6 extent, String path) {
 		super(aTileProvider, aContext);
 		this.path = path;
 		this.context = aContext;
-		zoomLevelMax = maxZoomLevel;
-		zoomLevelMin = minZoomLevel;
+
 		this.name = name;
 		this.boundingBox = extent;
-		/*
-		 * if (zoomLevelMax < zoomLevelMin || zoomLevelMax >
-		 * OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL || zoomLevelMin
-		 * < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) { throw new
-		 * IllegalArgumentException(); }
-		 */
+
+		if (maxZoomLevel < minZoomLevel
+				|| maxZoomLevel > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
+				|| minZoomLevel < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) {
+			minZoomLevel = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
+			maxZoomLevel = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
+		}
+		zoomLevelMax = maxZoomLevel;
+		zoomLevelMin = minZoomLevel;
+
 		setLoadingBackgroundColor(Color.TRANSPARENT);
 
 	}
