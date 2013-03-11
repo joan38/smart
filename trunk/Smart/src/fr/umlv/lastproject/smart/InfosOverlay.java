@@ -53,13 +53,6 @@ public class InfosOverlay implements GpsListener {
 
 		this.infoView = infoView;
 		this.infosState = infosState;
-
-		setLatitudeVisibility(infosState.isLatitudeVisible);
-		setLongitudeVisibility(infosState.isLongitudeVisible);
-		setAccuracyVisibility(infosState.isAccuracyVisible);
-		setBearingVisibility(infosState.isBearingVisible);
-		setSpeedVisibility(infosState.isSpeedVisible);
-		setAltitudeVisibility(infosState.isAltitudeVisible);
 	}
 
 	/**
@@ -82,6 +75,25 @@ public class InfosOverlay implements GpsListener {
 				.setText(ACCURACY_FORMAT.format(event.getBearing()) + "°");
 		((TextView) infoView.findViewById(R.id.speedValue))
 				.setText(ACCURACY_FORMAT.format(event.getSpeed()) + "m/s");
+
+		setLatitudeVisibility(infosState.isLatitudeVisible);
+		setLongitudeVisibility(infosState.isLongitudeVisible);
+		setAccuracyVisibility(infosState.isAccuracyVisible);
+		setBearingVisibility(infosState.isBearingVisible);
+		setSpeedVisibility(infosState.isSpeedVisible);
+		setAltitudeVisibility(infosState.isAltitudeVisible);
+	}
+
+	@Override
+	public void gpsAvailable() {
+		((TextView) infoView.findViewById(R.id.findGPS))
+				.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void gpsUnavailable() {
+		((TextView) infoView.findViewById(R.id.findGPS))
+				.setVisibility(View.VISIBLE);
 	}
 
 	public void setLatitudeVisibility(boolean visibility) {

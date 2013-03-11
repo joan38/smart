@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationProvider;
 import android.os.Bundle;
 
 public class SmartLocationListener implements LocationListener {
@@ -22,36 +23,40 @@ public class SmartLocationListener implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
+		GpsEvent event = new GpsEvent(location.getLatitude(),
+				location.getLongitude(), location.getAltitude(),
+				location.getAccuracy(), location.getBearing(),
+				location.getSpeed(), new Date(location.getTime()));
 
-		final double longitude = location.getLongitude();
-		final double latitude = location.getLatitude();
-		final double altitude = location.getAltitude();
-		final float accuracy = location.getAccuracy();
-		final float bearing = location.getBearing();
-		final float speed = location.getSpeed();
-		final Date time = new Date(location.getTime());
-
-		for (int i = 0; i < gpsListeners.size(); i++) {
-			gpsListeners.get(i).locationUpdated(
-					new GpsEvent(latitude, longitude, altitude, accuracy,
-							bearing, speed, time));
+		for (GpsListener listener : gpsListeners) {
+			listener.locationUpdated(event);
 		}
-
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-
+		for (GpsListener listener : gpsListeners) {
+			listener.gpsUnavailable();
+		}
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
+		for (GpsListener listener : gpsListeners) {
+			switch (status) {
+			case LocationProvider.AVAILABLE:
+				listener.gpsAvailable();
+				break;
 
+			case LocationProvider.TEMPORARILY_UNAVAILABLE:
+			case LocationProvider.OUT_OF_SERVICE:
+				listener.gpsUnavailable();
+				break;
+			}
+		}
 	}
-
 }

@@ -83,7 +83,6 @@ public class GpsTrack {
 	public GpsTrack(final TrackMode mode, final String trackName,
 			final LocationManager lm, final GeometryType type,
 			final GeometryLayer layer, final Activity activity) {
-
 		this.geometryLayer = layer;
 		this.type = type;
 		this.activity = activity;
@@ -107,7 +106,6 @@ public class GpsTrack {
 		this.trackPoints = new ArrayList<TrackPoint>();
 		this.gpsListener = createListener();
 		gps.addGpsListener(gpsListener);
-
 	}
 
 	/**
@@ -243,6 +241,14 @@ public class GpsTrack {
 				default:
 					break;
 				}
+			}
+
+			@Override
+			public void gpsAvailable() {
+			}
+
+			@Override
+			public void gpsUnavailable() {
 			}
 		};
 	}
