@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.content.Context;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.ZIPUtils;
 
 public final class DataImport {
@@ -94,8 +95,9 @@ public final class DataImport {
 	 * @param context
 	 * @param filename
 	 * @return
+	 * @throws SmartException 
 	 */
-	public static GeometryLayer importShapeFile(Context context, String filename) {
+	public static GeometryLayer importShapeFile(Context context, String filename) throws SmartException {
 		if (context == null || filename == null) {
 			throw new IllegalArgumentException();
 		}

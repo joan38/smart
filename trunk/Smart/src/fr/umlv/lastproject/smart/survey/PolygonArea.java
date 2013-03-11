@@ -1,4 +1,4 @@
-package fr.umlv.lastproject.smart.utils;
+package fr.umlv.lastproject.smart.survey;
 
 import java.util.List;
 

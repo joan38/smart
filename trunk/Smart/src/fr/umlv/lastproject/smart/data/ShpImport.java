@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.content.Context;
+import android.util.Log;
 import diewald_shapeFile.files.shp.shapeTypes.ShpPoint;
 import diewald_shapeFile.files.shp.shapeTypes.ShpPolyLine;
 import diewald_shapeFile.files.shp.shapeTypes.ShpPolygon;
@@ -14,6 +15,7 @@ import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
 import fr.umlv.lastproject.smart.layers.PolygonGeometry;
+import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public final class ShpImport {
@@ -23,8 +25,10 @@ public final class ShpImport {
 	private ShpImport() {
 	}
 
-	public static GeometryLayer getLayerFromShp(String file, Context context) {
+	public static GeometryLayer getLayerFromShp(String file, Context context) throws SmartException{
 		try {
+			
+			
 			String[] split = file.split("/");
 			String path = "";
 			for (int i = 0; i < split.length - 1; i++) {
@@ -35,6 +39,9 @@ public final class ShpImport {
 			fn = fn.replaceFirst(".shp", "");
 
 			ShapeFile shp = new ShapeFile(path, fn).READ();
+			if(shp.getSHP_shapeCount()>5000){
+				throw new SmartException("Shapefile too big to handle");
+			}
 			ShpShape.Type type = shp.getSHP_shapeType();
 			LOGGER.log(Level.SEVERE, "Import shape file :" + type.toString());
 			switch (type) {
