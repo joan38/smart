@@ -48,6 +48,7 @@ public class HomeActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 		}
 		setTheme(pref.getTheme());
+		setRequestedOrientation(pref.getOrientation());
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
 

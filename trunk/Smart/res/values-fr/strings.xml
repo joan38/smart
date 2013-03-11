@@ -161,7 +161,6 @@
     <string name="missionStop">Mission arrêtée</string>
     <string name="missionStart">Mission démarrée</string>
     <string name="missionDelete">Supprimer mission</string>
-    <string name="theme">Thème</string>
     <string name="editInfo">Editer la zone d\'informations</string>
     <string name="user_height_text">Saisir la hauteur du point de vue en cm (par exemple votre taille moins 15 cm)</string>
     <string name="track_title">Créer une trace GPS</string>
@@ -194,5 +193,14 @@
     <string name="survayError">Erreur : relevé non enregistré</string>
     <string name="vector_progress">Import des données vectorielles</string>
     <string name="vector_progress_title">Patienter</string>
+    
+    <string name="settings">Paramètres</string>
+    <string name="theme">Thème</string>
+    <string name="ligthTeme">Clair</string>
+    <string name="darkTeme">Foncé</string>
+    
+    <string name="screenOrientation">Orientation</string>
+    <string name="portraitOrientation">Portrait</string>
+    <string name="landscapeOrientation">Paysage</string>
 
 </resources>
