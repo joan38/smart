@@ -12,31 +12,14 @@ public class HeightField extends Field {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String name;
 
 	/**
 	 * 
 	 * @param label
 	 */
 	public HeightField(String label) {
-		super("Height", FieldType.HEIGHT);
-		this.name = label;
+		super(label, FieldType.HEIGHT);
 	}
 
-	/**
-	 * 
-	 * @return the name of field
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 
 }
