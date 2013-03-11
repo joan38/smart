@@ -316,7 +316,7 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			Intent intentForm = FileUtils.createGetContentIntent(
-					FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
+					FileUtils.FORM_TYPE, SmartConstants.FORM_PATH);
 			activity.startActivityForResult(intentForm,
 					SmartConstants.FORM_BROWSER_ACTIVITY);
 		}
