@@ -39,11 +39,17 @@ public enum MenuAction {
 		@Override
 		public void doAction(MenuActivity activity) {
 			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
-				Mission.getInstance().stopMission();
-
-				Toast.makeText(activity,
-						activity.getText(R.string.missionStop),
-						Toast.LENGTH_LONG).show();
+				if (activity.getPolygonTrack() != null
+						&& activity.getPolygonTrack().isStarted()) {
+					Toast.makeText(activity,
+							activity.getText(R.string.polygon_track_error),
+							Toast.LENGTH_LONG).show();
+				} else {
+					Mission.getInstance().stopMission();
+					Toast.makeText(activity,
+							activity.getText(R.string.missionStop),
+							Toast.LENGTH_LONG).show();
+				}
 			} else {
 				activity.setCreateMissionDialog(MissionDialogUtils
 						.showCreateDialog(activity, activity.getMapView()
@@ -289,6 +295,8 @@ public enum MenuAction {
 			});
 			areaSurvey.startSurvey(areaLayer);
 			activity.getMapView().addGeometryLayer(areaLayer);
+			Toast.makeText(activity, R.string.area_measure_start,
+					Toast.LENGTH_LONG).show();
 		}
 	},
 	EXPORT_MISSION(13) {

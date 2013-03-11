@@ -57,6 +57,8 @@
     <string name="noGeometryInMission">Export failed : no geomtry to export</string>
     <string name="noMissionAvailable">No available mission</string>
     <string name="unableLoadPref">Unable to load the preferences</string>
+    <string name="area_measure_start">Area measuer started. Draw a polygon</string>
+    <string name="directory">Select current directory</string>
 
     <string-array name="items">
         <item>Start mission</item>
@@ -122,6 +124,7 @@
     <string name="track_param_missing"> Must enter a param for the mode selected</string>
     <string name="track_param_false">Param must be an integer</string>
     <string name="track_error">Error while stopping track</string>
+    <string name="polygon_track_error">Error while stopping mission. A polygon track is running</string>
     <string name="Coms">Comments</string>
     <string name="ComsDefault">Default field : Comments</string>
     <string name="CreateForm">Create Form</string>
