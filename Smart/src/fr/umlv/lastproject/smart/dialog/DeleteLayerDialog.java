@@ -6,9 +6,9 @@ import android.content.DialogInterface.OnClickListener;
 import fr.umlv.lastproject.smart.LayersActivity;
 import fr.umlv.lastproject.smart.R;
 
-public class AlertDeleteLayerDialog extends AlertDialog.Builder {
+public class DeleteLayerDialog extends AlertDialog.Builder {
 
-	public AlertDeleteLayerDialog(final LayersActivity activity, final int id,
+	public DeleteLayerDialog(final LayersActivity activity, final int id,
 			final boolean isRemovable) {
 		super(activity);
 		setTitle(R.string.delete);

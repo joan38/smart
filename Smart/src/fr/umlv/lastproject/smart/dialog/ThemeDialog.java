@@ -14,9 +14,9 @@ import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.Theme;
 import fr.umlv.lastproject.smart.utils.SmartParameters;
 
-public class AlertThemeDialog extends AlertDialog.Builder {
+public class ThemeDialog extends AlertDialog.Builder {
 
-	public AlertThemeDialog(final Context c) {
+	public ThemeDialog(final Context c) {
 		super(c);
 		setCancelable(false);
 		final Preferences pref = Preferences.getInstance();

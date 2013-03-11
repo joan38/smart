@@ -240,7 +240,12 @@ public final class Mission {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 			Log.e("", e.getMessage());
 		}
+		
 		dbManager.stopMission(id);
+		if(!hasGeometries()){
+			dbManager.deleteMission(id);
+			LOGGER.log(Level.INFO, "Mission " + title + " deleted");
+		}
 		LOGGER.log(Level.INFO, "Mission " + title + " stopped");
 		dbManager.close();
 		status = false;
@@ -252,6 +257,20 @@ public final class Mission {
 		}
 
 		return status;
+	}
+	
+	/**
+	 * Method useful to delete mission if mission contains no geometries
+	 * 
+	 * @return true if mission contains Geometries
+	 */
+	private boolean hasGeometries(){
+		if(pointLayer!=null && polygonLayer!=null && lineLayer!=null){
+			if(pointLayer.getGeometries().isEmpty() && lineLayer.getGeometries().isEmpty() && polygonLayer.getGeometries().isEmpty()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

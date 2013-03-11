@@ -13,7 +13,7 @@ import fr.umlv.lastproject.smart.R;
  * @author Maelle Cabot
  * 
  */
-public class AlertMeasureResultDialog extends AlertDialog.Builder {
+public class MeasureResultDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
@@ -22,7 +22,7 @@ public class AlertMeasureResultDialog extends AlertDialog.Builder {
 	 * @param result
 	 *            of the measure
 	 */
-	public AlertMeasureResultDialog(MenuActivity menuActivity, double result,
+	public MeasureResultDialog(MenuActivity menuActivity, double result,
 			String unit) {
 		super(menuActivity);
 

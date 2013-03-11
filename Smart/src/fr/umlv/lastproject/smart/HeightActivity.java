@@ -16,7 +16,7 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.dialog.AlertHeightDialog;
+import fr.umlv.lastproject.smart.dialog.HeightDialog;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 public class HeightActivity extends Activity implements SensorEventListener {
@@ -60,7 +60,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 
 		logger.log(Level.INFO, "Height measure started");
 
-		final AlertHeightDialog dialog = new AlertHeightDialog(this);
+		final HeightDialog dialog = new HeightDialog(this);
 		dialog.show();
 
 	}
@@ -171,7 +171,7 @@ public class HeightActivity extends Activity implements SensorEventListener {
 		if (height <= 0) {
 			Toast.makeText(this, getString(R.string.height_field_missing),
 					Toast.LENGTH_LONG).show();
-			final AlertHeightDialog dialog = new AlertHeightDialog(this);
+			final HeightDialog dialog = new HeightDialog(this);
 			dialog.show();
 			return;
 		}

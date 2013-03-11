@@ -61,7 +61,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  * @author Maelle Cabot
  * 
  */
-public class AlertModifFormDialog extends AlertDialog.Builder {
+public class ModifFormDialog extends AlertDialog.Builder {
 
 	private Object[] valuesList;
 	private TableLayout layoutDynamic;
@@ -90,7 +90,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 *            : the geometry
 	 * @param mission
 	 */
-	public AlertModifFormDialog(final MenuActivity context, final Form form,
+	public ModifFormDialog(final MenuActivity context, final Form form,
 			final Geometry g, final GeometryLayer l, final Object[] values) {
 		super(context);
 		this.form = form;
@@ -211,7 +211,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(
+						ValidationDeleteSurveyDialog dialogDelete = new ValidationDeleteSurveyDialog(
 								context, idGeometry, idRowForm,
 								form.getTitle(), l, g, listeners);
 						dialogDelete.show();

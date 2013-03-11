@@ -24,7 +24,7 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
  * @author Marc Barat
  * 
  */
-public class AlertTrackDialog extends AlertDialog.Builder {
+public class TrackDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
@@ -32,7 +32,7 @@ public class AlertTrackDialog extends AlertDialog.Builder {
 	 * @param menu
 	 *            the context
 	 */
-	public AlertTrackDialog(final MenuActivity menu, final ListOverlay overlays) {
+	public TrackDialog(final MenuActivity menu, final ListOverlay overlays) {
 		super(menu);
 		setCancelable(false);
 

@@ -24,7 +24,7 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Maellou
  *
  */
-public class AlertValidationDeleteSurveyDialog extends AlertDialog.Builder {
+public class ValidationDeleteSurveyDialog extends AlertDialog.Builder {
 	/**
 	 * Constructor
 	 * 
@@ -33,7 +33,7 @@ public class AlertValidationDeleteSurveyDialog extends AlertDialog.Builder {
 	 * @param nameMission
 	 */
 
-	public AlertValidationDeleteSurveyDialog(final MenuActivity c,
+	public ValidationDeleteSurveyDialog(final MenuActivity c,
 			final long idGeometry, final int idRowForm, final String title, final GeometryLayer l,
 			final Geometry g, final List<FormEditedListener> listeners) {
 		// TODO Auto-generated constructor stub

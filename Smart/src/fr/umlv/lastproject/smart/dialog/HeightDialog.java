@@ -9,9 +9,9 @@ import android.widget.Toast;
 import fr.umlv.lastproject.smart.HeightActivity;
 import fr.umlv.lastproject.smart.R;
 
-public class AlertHeightDialog extends AlertDialog.Builder {
+public class HeightDialog extends AlertDialog.Builder {
 
-	public AlertHeightDialog(final HeightActivity heightActivity) {
+	public HeightDialog(final HeightActivity heightActivity) {
 		super(heightActivity);
 		setCancelable(false);
 

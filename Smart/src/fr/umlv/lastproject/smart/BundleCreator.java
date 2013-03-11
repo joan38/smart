@@ -22,6 +22,7 @@ import fr.umlv.lastproject.smart.layers.Symbology;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
+ * Static class used to save instance state of MenuActivity
  * 
  * @author thibault brun
  * 
@@ -30,13 +31,44 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
 public final class BundleCreator {
 
 	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
-
+	
+	public static final String MISSION_STARTED="MissionStarted";
+	public static final String MISSION_ID="MISSIONID";
+	public static final String MISSION_NAME="MISSIONNAME";
+	
+	public static final String MISSION_POINT_NAME="MISSIONPOINTNAME";
+	public static final String MISSION_POINT_COUNT="MISSIONPOINTCOUNT";
+	public static final String MISSION_POINT_SYMBO= "MISSIONPOINTSYMBO";
+	
+	public static final String MISSION_LINE_NAME="MISSIONLINENAME";
+	public static final String MISSION_LINE_COUNT="MISSIONLINECOUNT";
+	public static final String MISSION_LINE_SYMBO="MISSIONLINESYMBO";
+	
+	public static final String MISSION_POLYGON_NAME="MISSIONPOLYGONNAME";
+	public static final String MISSION_POLYGON_COUNT="MISSIONPOLYGONCOUNT";
+	public static final String MISSION_POLYGON_SYMBO="MISSIONPOLYGONSYMBO";
+	
+	public static final String FORM="FORM";
+	
+	public static final String MAP_LAT="mapLat";
+	public static final String MAP_LON="mapLon";
+	public static final String MAP_ZOOM="mapZoom";
+	
+	
+/**
+ * Creates the Bundle which saves all data
+ * 
+ * @param mapView
+ * @param gpsTrack
+ * @param polygonTrack
+ * @return
+ */
 	public static Bundle createBundle(SmartMapView mapView, GPSTrack gpsTrack,
 			GPSTrack polygonTrack) {
 		Bundle b = new Bundle();
 		BundleCreator.savePosition(b, mapView);
 		BundleCreator.saveMission(b);
-		BundleCreator.saveGeomtryLayers(b, mapView.getGeometryOverlays());
+		BundleCreator.saveGeometryLayers(b, mapView.getGeometryOverlays());
 		BundleCreator.saveGeotiffs(b, mapView.getGeoTIFFOverlays());
 		BundleCreator.saveTrack(b, gpsTrack);
 		BundleCreator.savePolygonTrack(b, polygonTrack);
@@ -52,25 +84,25 @@ public final class BundleCreator {
 	 */
 	public static void saveMission(Bundle outState) {
 		// Mission started
-		outState.putSerializable("MissionStarted", Mission.isCreated());
+		outState.putSerializable(MISSION_STARTED, Mission.isCreated());
 
 		if (Mission.isCreated()) {
 			// Mission started
-			outState.putSerializable("MissionStarted", Mission.getInstance()
+			outState.putSerializable(MISSION_STARTED, Mission.getInstance()
 					.isStarted());
 
-			outState.putLong("MISSIONID", Mission.getInstance().getId());
+			outState.putLong(MISSION_ID, Mission.getInstance().getId());
 
 			// Mission form
-			outState.putSerializable("FORM", Mission.getInstance().getForm());
+			outState.putSerializable(FORM, Mission.getInstance().getForm());
 
 			// MISSION NAME
-			outState.putString("MISSIONNAME", Mission.getInstance().getTitle());
+			outState.putString(MISSION_NAME, Mission.getInstance().getTitle());
 
 			// Layer point mission
-			outState.putString("MISSIONPOINTNAME", Mission.getInstance()
+			outState.putString(MISSION_POINT_NAME, Mission.getInstance()
 					.getPointLayer().getName());
-			outState.putInt("MISSIONPOINTCOUNT", Mission.getInstance()
+			outState.putInt(MISSION_POINT_COUNT, Mission.getInstance()
 					.getPointLayer().getGeometries().size());
 			for (int i = 0; i < Mission.getInstance().getPointLayer()
 					.getGeometries().size(); i++) {
@@ -79,13 +111,13 @@ public final class BundleCreator {
 						+ i, Mission.getInstance().getPointLayer()
 						.getGeometries().get(i));
 			}
-			outState.putSerializable("MISSIONPOINTSYMBO", Mission.getInstance()
+			outState.putSerializable(MISSION_POINT_SYMBO, Mission.getInstance()
 					.getPointLayer().getSymbology());
 
 			// Layer ligne mission
-			outState.putString("MISSIONLINENAME", Mission.getInstance()
+			outState.putString(MISSION_LINE_NAME, Mission.getInstance()
 					.getLineLayer().getName());
-			outState.putInt("MISSIONLINECOUNT", Mission.getInstance()
+			outState.putInt(MISSION_LINE_NAME, Mission.getInstance()
 					.getLineLayer().getGeometries().size());
 			for (int i = 0; i < Mission.getInstance().getLineLayer()
 					.getGeometries().size(); i++) {
@@ -94,13 +126,13 @@ public final class BundleCreator {
 						+ i, Mission.getInstance().getLineLayer()
 						.getGeometries().get(i));
 			}
-			outState.putSerializable("MISSIONLINESYMBO", Mission.getInstance()
+			outState.putSerializable(MISSION_LINE_SYMBO, Mission.getInstance()
 					.getLineLayer().getSymbology());
 
 			// Layer polygon mission
-			outState.putString("MISSIONPOLYGONNAME", Mission.getInstance()
+			outState.putString(MISSION_POLYGON_NAME, Mission.getInstance()
 					.getPolygonLayer().getName());
-			outState.putInt("MISSIONPOLYGONCOUNT", Mission.getInstance()
+			outState.putInt(MISSION_POLYGON_COUNT, Mission.getInstance()
 					.getPolygonLayer().getGeometries().size());
 			for (int i = 0; i < Mission.getInstance().getPolygonLayer()
 					.getGeometries().size(); i++) {
@@ -109,7 +141,7 @@ public final class BundleCreator {
 						+ i, Mission.getInstance().getPolygonLayer()
 						.getGeometries().get(i));
 			}
-			outState.putSerializable("MISSIONPOLYGONSYMBO", Mission
+			outState.putSerializable(MISSION_POLYGON_SYMBO, Mission
 					.getInstance().getPolygonLayer().getSymbology());
 		}
 	}
@@ -122,11 +154,11 @@ public final class BundleCreator {
 	 *            the map
 	 */
 	public static void savePosition(Bundle outState, SmartMapView mapView) {
-		outState.putInt("mapLat", mapView.getBoundingBox().getCenter()
+		outState.putInt(MAP_LAT, mapView.getBoundingBox().getCenter()
 				.getLatitudeE6());
-		outState.putInt("mapLon", mapView.getBoundingBox().getCenter()
+		outState.putInt(MAP_LON, mapView.getBoundingBox().getCenter()
 				.getLongitudeE6());
-		outState.putInt("mapZoom", mapView.getZoomLevel());
+		outState.putInt(MAP_ZOOM, mapView.getZoomLevel());
 
 	}
 
@@ -141,9 +173,9 @@ public final class BundleCreator {
 			SmartMapView mapView) {
 
 		mapView.getController().setCenter(
-				new GeoPoint(savedInstanceState.getInt("mapLat"),
-						savedInstanceState.getInt("mapLon")));
-		mapView.getController().setZoom(savedInstanceState.getInt("mapZoom"));
+				new GeoPoint(savedInstanceState.getInt(MAP_LAT),
+						savedInstanceState.getInt(MAP_LON)));
+		mapView.getController().setZoom(savedInstanceState.getInt(MAP_ZOOM));
 		mapView.getTileProvider().clearTileCache();
 
 	}
@@ -163,25 +195,25 @@ public final class BundleCreator {
 
 		// Mission created
 		boolean missionStarted = savedInstanceState
-				.getBoolean("MissionStarted");
+				.getBoolean(MISSION_STARTED);
 
 		if (missionStarted) {
-			long id = savedInstanceState.getLong("MISSIONID");
+			long id = savedInstanceState.getLong(MISSION_ID);
 
 			// Mission name
-			String mname = savedInstanceState.getString("MISSIONNAME");
+			String mname = savedInstanceState.getString(MISSION_NAME);
 
 			// Mission Form
-			Form f = (Form) savedInstanceState.getSerializable("FORM");
+			Form f = (Form) savedInstanceState.getSerializable(FORM);
 
 			// Mission point layer
 			GeometryLayer missionPoint = new GeometryLayer(menu);
 			missionPoint.setType(GeometryType.POINT);
 			missionPoint.setSymbology((Symbology) savedInstanceState
-					.getSerializable("MISSIONPOINTSYMBO"));
+					.getSerializable(MISSION_POINT_SYMBO));
 			missionPoint.setName(savedInstanceState
-					.getString("MISSIONPOINTNAME"));
-			for (int i = 0; i < savedInstanceState.getInt("MISSIONPOINTCOUNT"); i++) {
+					.getString(MISSION_POINT_NAME));
+			for (int i = 0; i < savedInstanceState.getInt(MISSION_POINT_COUNT); i++) {
 				missionPoint.addGeometry((Geometry) savedInstanceState
 						.getSerializable(missionPoint.getName() + i));
 			}
@@ -190,10 +222,10 @@ public final class BundleCreator {
 			GeometryLayer missionLine = new GeometryLayer(menu);
 			missionLine.setType(GeometryType.LINE);
 			missionLine.setSymbology((Symbology) savedInstanceState
-					.getSerializable("MISSIONLINESYMBO"));
+					.getSerializable(MISSION_LINE_SYMBO));
 			missionLine
-					.setName(savedInstanceState.getString("MISSIONLINENAME"));
-			for (int i = 0; i < savedInstanceState.getInt("MISSIONLINECOUNT"); i++) {
+					.setName(savedInstanceState.getString(MISSION_LINE_NAME));
+			for (int i = 0; i < savedInstanceState.getInt(MISSION_LINE_COUNT); i++) {
 				missionLine.addGeometry((Geometry) savedInstanceState
 						.getSerializable(missionLine.getName() + i));
 			}
@@ -202,11 +234,11 @@ public final class BundleCreator {
 			GeometryLayer missionPolygon = new GeometryLayer(menu);
 			missionPolygon.setType(GeometryType.POLYGON);
 			missionPolygon.setSymbology((Symbology) savedInstanceState
-					.getSerializable("MISSIONPOLYGONSYMBO"));
+					.getSerializable(MISSION_POLYGON_SYMBO));
 			missionPolygon.setName(savedInstanceState
-					.getString("MISSIONPOLYGONNAME"));
+					.getString(MISSION_POLYGON_NAME));
 			for (int i = 0; i < savedInstanceState
-					.getInt("MISSIONPOLYGONCOUNT"); i++) {
+					.getInt(MISSION_POLYGON_COUNT); i++) {
 				missionPolygon.addGeometry((Geometry) savedInstanceState
 						.getSerializable(missionPolygon.getName() + i));
 			}
@@ -228,24 +260,31 @@ public final class BundleCreator {
 	 * @param geometryOberlays
 	 *            the layers geometry
 	 */
-	public static void saveGeomtryLayers(Bundle outState,
+	
+	public static final String GEOMETRY_LAYER="GEOMETRYLAYER";
+	public static final String TYPE="TYPE";
+	public static final String SYMBO="SYMBO";
+	public static final String GEOMETRY_LAYER_COUNT="GEOMETRYLAYERCOUNT";
+	
+	
+	public static void saveGeometryLayers(Bundle outState,
 			List<GeometryLayer> geometryOberlays) {
 		int count = 0;
 		for (GeometryLayer g : geometryOberlays) {
 			if (!isInMission(g)) {
-				outState.putString("GEOMETRYLAYER" + count, g.getName());
+				outState.putString(GEOMETRY_LAYER + count, g.getName());
 				outState.putInt(g.getName(), g.getGeometries().size());
-				outState.putSerializable(g.getName() + "TYPE", g.getType());
+				outState.putSerializable(g.getName() + TYPE, g.getType());
 				for (int i = 0; i < g.getGeometries().size(); i++) {
 					outState.putSerializable(g.getName() + i, g.getGeometries()
 							.get(i));
 				}
-				outState.putSerializable(g.getName() + "SYMBO",
+				outState.putSerializable(g.getName() + SYMBO,
 						g.getSymbology());
 				count++;
 			}
 		}
-		outState.putInt("GEOMETRYLAYERCOUNT", count);
+		outState.putInt(GEOMETRY_LAYER_COUNT, count);
 	}
 
 	/**
@@ -260,20 +299,20 @@ public final class BundleCreator {
 	public static void loadGeometryLayers(Bundle savedInstanceState,
 			MenuActivity menu, SmartMapView map) {
 		// read the number of layers :)
-		int count = savedInstanceState.getInt("GEOMETRYLAYERCOUNT");
+		int count = savedInstanceState.getInt(GEOMETRY_LAYER_COUNT);
 		for (int i = 0; i < count; i++) {
-			String name = savedInstanceState.getString("GEOMETRYLAYER" + i);
+			String name = savedInstanceState.getString(GEOMETRY_LAYER + i);
 			int geomCOunt = savedInstanceState.getInt(name);
 			GeometryLayer tmp = new GeometryLayer(menu);
 			tmp.setType((GeometryType) savedInstanceState.getSerializable(name
-					+ "TYPE"));
+					+ TYPE));
 			for (int j = 0; j < geomCOunt; j++) {
 				tmp.addGeometry((Geometry) savedInstanceState
 						.getSerializable(name + j));
 			}
 			tmp.setName(name);
 			tmp.setSymbology((Symbology) savedInstanceState
-					.getSerializable(name + "SYMBO"));
+					.getSerializable(name + SYMBO));
 			map.addGeometryLayer(tmp);
 		}
 
@@ -303,6 +342,10 @@ public final class BundleCreator {
 		}
 		return false;
 	}
+	
+	
+	public static final String GEOTIFF_COUNT="GEOTIFFCOUNT";
+	public static final String GEOTIFF="GEOTIFF";
 
 	/**
 	 * 
@@ -314,18 +357,18 @@ public final class BundleCreator {
 	public static void saveGeotiffs(Bundle outState,
 			List<TMSOverlay> geoTIFFOverlays) {
 		int count = geoTIFFOverlays.size();
-		outState.putInt("GEOTIFFCOUNT", count);
+		outState.putInt(GEOTIFF_COUNT, count);
 
 		for (int i = 0; i < count; i++) {
-			outState.putString("GEOTIFF" + i, geoTIFFOverlays.get(i).getPath());
+			outState.putString(GEOTIFF + i, geoTIFFOverlays.get(i).getPath());
 		}
 	}
 
 	public static void loadGeotiffs(Bundle savedInstance, SmartMapView map,
 			MenuActivity ctx) {
-		int count = savedInstance.getInt("GEOTIFFCOUNT");
+		int count = savedInstance.getInt(GEOTIFF_COUNT);
 		for (int i = 0; i < count; i++) {
-			String path = savedInstance.getString("GEOTIFF" + i);
+			String path = savedInstance.getString(GEOTIFF + i);
 			try {
 				TMSOverlay overlay = DataImport.importGeoTIFFFileFolder(path,
 						ctx);
@@ -335,20 +378,28 @@ public final class BundleCreator {
 			}
 		}
 	}
+	
+public static final String GPS_TRACK_STARTED="GPSTRACKSTARTED";
+public static final String GPS_TRACK_NAME="GPSTRACKNAME";
+public static final String GPS_TRACK_MODE="GPSTRACKMODE";
+public static final String GPS_TRACK_VALUE="GPSTRACKVALUE";
+public static final String GPS_TRACK_COUNT="GPSTRACKCOUNT";
+public static final String GPS_TRACKPOINT="GPSTRACKPOINT";
+
 
 	public static void saveTrack(Bundle outState, GPSTrack gpsTrack) {
 		boolean started = (gpsTrack == null ? false : gpsTrack.isStarted());
-		outState.putBoolean("GPSTRACKSTARTED", started);
+		outState.putBoolean(GPS_TRACK_STARTED, started);
 		if (!started) {
 			return;
 		}
-		outState.putString("GPSTRACKNAME", gpsTrack.getName());
-		outState.putString("GPSTRACKMODE", gpsTrack.getTrackMode().name());
-		outState.putInt("GPSTRACKVALUE", gpsTrack.getTrackMode().getParameter());
+		outState.putString(GPS_TRACK_NAME, gpsTrack.getName());
+		outState.putString(GPS_TRACK_MODE, gpsTrack.getTrackMode().name());
+		outState.putInt(GPS_TRACK_VALUE, gpsTrack.getTrackMode().getParameter());
 		int count = gpsTrack.getTrackPoints().size();
-		outState.putInt("GPSTRACKCOUNT", count);
+		outState.putInt(GPS_TRACK_COUNT, count);
 		for (int i = 0; i < count; i++) {
-			outState.putSerializable("GPSTRACKPOINT" + i, gpsTrack
+			outState.putSerializable(GPS_TRACKPOINT + i, gpsTrack
 					.getTrackPoints().get(i));
 		}
 	}
@@ -356,20 +407,20 @@ public final class BundleCreator {
 	public static GPSTrack loadTrack(Bundle savedInstanceState,
 			SmartMapView mapView, MenuActivity menuActivity,
 			LocationManager lm, MenuActivity activity) {
-		boolean started = savedInstanceState.getBoolean("GPSTRACKSTARTED");
+		boolean started = savedInstanceState.getBoolean(GPS_TRACK_STARTED);
 		if (!started) {
 			return null;
 		}
-		String name = savedInstanceState.getString("GPSTRACKNAME");
-		String modeName = savedInstanceState.getString("GPSTRACKMODE");
-		int modeValue = savedInstanceState.getInt("GPSTRACKVALUE");
+		String name = savedInstanceState.getString(GPS_TRACK_NAME);
+		String modeName = savedInstanceState.getString(GPS_TRACK_MODE);
+		int modeValue = savedInstanceState.getInt(GPS_TRACK_VALUE);
 		GPSTrack.TrackMode mode = TrackMode.valueOf(modeName);
 		mode.setParameter(modeValue);
-		int count = savedInstanceState.getInt("GPSTRACKCOUNT");
+		int count = savedInstanceState.getInt(GPS_TRACK_COUNT);
 		List<TrackPoint> points = new ArrayList<TrackPoint>();
 		for (int i = 0; i < count; i++) {
 			points.add((TrackPoint) savedInstanceState
-					.getSerializable("GPSTRACKPOINT" + i));
+					.getSerializable(GPS_TRACKPOINT + i));
 		}
 		GeometryLayer layer = null;
 		for (GeometryLayer l : mapView.getGeometryOverlays()) {
@@ -383,47 +434,72 @@ public final class BundleCreator {
 		return track;
 	}
 
+	public static final String GPS_TRACK_POLYGON_STARTED="GPSTRACKPOLYGONSTARTED";
+	public static final String GPS_TRACK_POLYGON_NAME="GPSTRACKPOLYGONNAME";
+	public static final String GPS_TRACK_POLYGON_MODE="GPSTRACKPOLYGONMODE";
+	public static final String GPS_TRACK_POLYGON_VALUE="GPSTRACKPOLYGONVALUE";
+	public static final String GPS_TRACK_POLYGON_COUNT="GPSTRACKPOLYGONCOUNT";
+	public static final String GPS_TRACK_POLYGON_POINT="GPSTRACKPOLYGONPOINT";
+
+	
+	/**
+	 * Save polygon track data
+	 * 
+	 * @param outState
+	 * @param gpsTrack
+	 */
 	public static void savePolygonTrack(Bundle outState, GPSTrack gpsTrack) {
 
 		boolean started = (gpsTrack == null ? false : gpsTrack.isStarted());
-		outState.putBoolean("GPSTRACKPOLYGONSTARTED", started);
+		outState.putBoolean(GPS_TRACK_POLYGON_STARTED, started);
 		if (!started) {
 			return;
 		}
-		outState.putString("GPSTRACKPOLYGONNAME", gpsTrack.getName());
-		outState.putString("GPSTRACKPOLYGONMODE", gpsTrack.getTrackMode()
+		outState.putString(GPS_TRACK_POLYGON_NAME, gpsTrack.getName());
+		outState.putString(GPS_TRACK_POLYGON_MODE, gpsTrack.getTrackMode()
 				.name());
-		outState.putInt("GPSTRACKPOLYGONVALUE", gpsTrack.getTrackMode()
+		outState.putInt(GPS_TRACK_POLYGON_VALUE, gpsTrack.getTrackMode()
 				.getParameter());
 		int count = gpsTrack.getTrackPoints().size();
-		outState.putInt("GPSTRACKPOLYGONCOUNT", count);
+		outState.putInt(GPS_TRACK_POLYGON_COUNT, count);
 		Mission.getInstance().getPolygonLayer()
 				.removeGeometry(gpsTrack.getGeometry());
 		for (int i = 0; i < count; i++) {
-			outState.putSerializable("GPSTRACKPOLYGONPOINT" + i, gpsTrack
+			outState.putSerializable(GPS_TRACK_POLYGON_POINT + i, gpsTrack
 					.getTrackPoints().get(i));
 		}
 	}
 
+	/**
+	 * 
+	 * Retrieve old polygon track data
+	 * 
+	 * @param savedInstanceState
+	 * @param mapView
+	 * @param layer
+	 * @param lm
+	 * @param activity
+	 * @return
+	 */
 	public static GPSTrack loadPolygonTrack(Bundle savedInstanceState,
 			SmartMapView mapView, GeometryLayer layer, LocationManager lm,
 			MenuActivity activity) {
-		// TODO Auto-generated method stub
+		
 		boolean started = savedInstanceState
-				.getBoolean("GPSTRACKPOLYGONSTARTED");
+				.getBoolean(GPS_TRACK_POLYGON_STARTED);
 		if (!started) {
 			return null;
 		}
-		String name = savedInstanceState.getString("GPSTRACKPOLYGONNAME");
-		String modeName = savedInstanceState.getString("GPSTRACKPOLYGONMODE");
-		int modeValue = savedInstanceState.getInt("GPSTRACKPOLYGONVALUE");
+		String name = savedInstanceState.getString(GPS_TRACK_POLYGON_NAME);
+		String modeName = savedInstanceState.getString(GPS_TRACK_POLYGON_MODE);
+		int modeValue = savedInstanceState.getInt(GPS_TRACK_POLYGON_VALUE);
 		GPSTrack.TrackMode mode = TrackMode.valueOf(modeName);
 		mode.setParameter(modeValue);
-		int count = savedInstanceState.getInt("GPSTRACKPOLYGONCOUNT");
+		int count = savedInstanceState.getInt(GPS_TRACK_POLYGON_COUNT);
 		List<TrackPoint> points = new ArrayList<TrackPoint>();
 		for (int i = 0; i < count; i++) {
 			points.add((TrackPoint) savedInstanceState
-					.getSerializable("GPSTRACKPOLYGONPOINT" + i));
+					.getSerializable(GPS_TRACK_POLYGON_POINT + i));
 		}
 		GPSTrack track = new GPSTrack(mode, name, lm, GeometryType.POLYGON,
 				points, layer, activity);

@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
+import fr.umlv.lastproject.smart.dialog.HelpDialog;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -156,7 +156,7 @@ public class HomeActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
-			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+			final HelpDialog helpDialog = new HelpDialog(this,
 					R.string.helpMenu);
 			helpDialog.show();
 		}

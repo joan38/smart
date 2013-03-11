@@ -70,6 +70,7 @@ public class FileListFragment extends ListFragment implements
 		mPath = getArguments() != null ? getArguments().getString(
 				FileChooserActivity.PATH) : Environment
 				.getExternalStorageDirectory().getAbsolutePath();
+				
 	}
 
 	@Override

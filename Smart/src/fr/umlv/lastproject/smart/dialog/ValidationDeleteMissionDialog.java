@@ -20,7 +20,7 @@ import fr.umlv.lastproject.smart.utils.SmartException;
  * @author Maelle Cabot
  * 
  */
-public class AlertValidationDeleteMissionDialog extends AlertDialog.Builder {
+public class ValidationDeleteMissionDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ public class AlertValidationDeleteMissionDialog extends AlertDialog.Builder {
 	 * @param nameMission
 	 */
 
-	public AlertValidationDeleteMissionDialog(final Context c,
+	public ValidationDeleteMissionDialog(final Context c,
 			final List<Long> missionsToDelete) {
 
 		super(c);

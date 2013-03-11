@@ -26,7 +26,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  * @author Maelle Cabot
  * 
  */
-public class AlertCreateFormDialog extends AlertDialog.Builder {
+public class CreateFormDialog extends AlertDialog.Builder {
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -35,7 +35,7 @@ public class AlertCreateFormDialog extends AlertDialog.Builder {
 	 * 
 	 * @param menu
 	 */
-	public AlertCreateFormDialog(final MenuActivity menu) {
+	public CreateFormDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);
 

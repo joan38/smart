@@ -10,12 +10,12 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
-import fr.umlv.lastproject.smart.dialog.AlertCreateFormDialog;
-import fr.umlv.lastproject.smart.dialog.AlertGPSTrackDialog;
-import fr.umlv.lastproject.smart.dialog.AlertMeasureRequestDialog;
-import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
-import fr.umlv.lastproject.smart.dialog.AlertPolygonTrackDialog;
-import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
+import fr.umlv.lastproject.smart.dialog.CreateFormDialog;
+import fr.umlv.lastproject.smart.dialog.GPSTrackDialog;
+import fr.umlv.lastproject.smart.dialog.MeasureRequestDialog;
+import fr.umlv.lastproject.smart.dialog.MeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.PolygonTrackDialog;
+import fr.umlv.lastproject.smart.dialog.TrackDialog;
 import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Mission;
@@ -61,7 +61,7 @@ public enum MenuAction {
 
 		@Override
 		public void doAction(MenuActivity activity) {
-			new AlertCreateFormDialog(activity);
+			new CreateFormDialog(activity);
 		}
 	},
 	POINT_SURVEY(2) {
@@ -160,7 +160,7 @@ public enum MenuAction {
 						Toast.LENGTH_LONG).show();
 			} else {
 				if (!activity.getGps().isEnabled()) {
-					final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
+					final GPSTrackDialog gpsTrackDialog = new GPSTrackDialog(
 							activity, this);
 					gpsTrackDialog.show();
 					return;
@@ -168,7 +168,7 @@ public enum MenuAction {
 
 				GPSTrack polygonTrack = activity.getPolygonTrack();
 				if (polygonTrack == null || polygonTrack.isFinished()) {
-					new AlertPolygonTrackDialog(activity);
+					new PolygonTrackDialog(activity);
 				} else {
 					try {
 						polygonTrack.stopTrack();
@@ -195,7 +195,7 @@ public enum MenuAction {
 			File trackfolder = new File(SmartConstants.TRACK_PATH);
 			trackfolder.mkdir();
 			if (!activity.getGps().isEnabled()) {
-				final AlertGPSTrackDialog gpsTrackDialog = new AlertGPSTrackDialog(
+				final GPSTrackDialog gpsTrackDialog = new GPSTrackDialog(
 						activity, this);
 				gpsTrackDialog.show();
 				return;
@@ -203,7 +203,7 @@ public enum MenuAction {
 
 			GPSTrack gpsTrack = activity.getGpsTrack();
 			if (gpsTrack == null) {
-				new AlertTrackDialog(activity, activity.getMapView()
+				new TrackDialog(activity, activity.getMapView()
 						.getListOverlay());
 			} else {
 				try {
@@ -257,7 +257,7 @@ public enum MenuAction {
 
 		@Override
 		public void doAction(MenuActivity activity) {
-			AlertMeasureRequestDialog amrd = new AlertMeasureRequestDialog(
+			MeasureRequestDialog amrd = new MeasureRequestDialog(
 					activity);
 			amrd.show();
 		}
@@ -270,7 +270,7 @@ public enum MenuAction {
 				Mission.getInstance().setSelectable(false);
 			}
 
-			Log.d("AIRE", "SMART CONSTANT");
+		
 			final Survey areaSurvey = new Survey(activity.getMapView());
 			final GeometryLayer areaLayer = new GeometryLayer(activity);
 			areaLayer.setName("AREA_MEASURE");
@@ -283,12 +283,12 @@ public enum MenuAction {
 					if (Mission.isCreated()) {
 						Mission.getInstance().setSelectable(true);
 					}
-					Log.d("AIRE", "STOP LISTENER");
+					
 					final double result = PolygonArea
 							.getPolygonArea((PolygonGeometry) g) / VALUE_1E6;
 					areaSurvey.stop();
 					activity.getMapView().removeGeometryLayer(areaLayer);
-					final AlertMeasureResultDialog areaDialog = new AlertMeasureResultDialog(
+					final MeasureResultDialog areaDialog = new MeasureResultDialog(
 							activity, result, " km²");
 					areaDialog.show();
 				}

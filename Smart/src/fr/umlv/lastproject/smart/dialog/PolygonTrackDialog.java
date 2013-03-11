@@ -20,7 +20,7 @@ import fr.umlv.lastproject.smart.R;
  * @author Marc Barat
  * 
  */
-public class AlertPolygonTrackDialog extends AlertDialog.Builder {
+public class PolygonTrackDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
@@ -28,7 +28,7 @@ public class AlertPolygonTrackDialog extends AlertDialog.Builder {
 	 * @param menu
 	 *            the context
 	 */
-	public AlertPolygonTrackDialog(final MenuActivity menu) {
+	public PolygonTrackDialog(final MenuActivity menu) {
 		super(menu);
 		setCancelable(false);
 

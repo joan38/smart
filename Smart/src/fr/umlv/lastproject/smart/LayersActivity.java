@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.dialog.AlertDeleteLayerDialog;
-import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
+import fr.umlv.lastproject.smart.dialog.DeleteLayerDialog;
+import fr.umlv.lastproject.smart.dialog.HelpDialog;
 import fr.umlv.lastproject.smart.drag.DragSortController;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
@@ -57,15 +57,15 @@ public class LayersActivity extends ListActivity {
 	private RemoveListener onRemove = new DragSortListView.RemoveListener() {
 		@Override
 		public void remove(int which) {
-			AlertDeleteLayerDialog removeDialog;
+			DeleteLayerDialog removeDialog;
 			if ((mission != null && adapter.getItem(which).getName()
 					.contains(mission))
 					|| (track != null && adapter.getItem(which).getName()
 							.contains(track))) {
-				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
+				removeDialog = new DeleteLayerDialog(LayersActivity.this,
 						which, false);
 			} else {
-				removeDialog = new AlertDeleteLayerDialog(LayersActivity.this,
+				removeDialog = new DeleteLayerDialog(LayersActivity.this,
 						which, true);
 			}
 			removeDialog.show();
@@ -209,7 +209,7 @@ public class LayersActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 1:
-			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+			final HelpDialog helpDialog = new HelpDialog(this,
 					R.string.helpLayer);
 			helpDialog.show();
 			break;
