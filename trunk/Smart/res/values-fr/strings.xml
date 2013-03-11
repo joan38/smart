@@ -202,5 +202,6 @@
     <string name="screenOrientation">Orientation</string>
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Paysage</string>
+    
 
 </resources>
