@@ -124,7 +124,7 @@ public final class MissionDialogUtils {
 			@Override
 			public void onClick(View v) {
 				Intent intent = FileUtils.createGetContentIntent(
-						FileUtils.FORM_TYPE, SmartConstants.APP_PATH);
+						FileUtils.FORM_TYPE, SmartConstants.FORM_PATH);
 				activity.startActivityForResult(intent,
 						SmartConstants.MISSION_BROWSER_ACTIVITY);
 			}
