@@ -167,7 +167,7 @@ public enum MenuAction {
 				}
 
 				GPSTrack polygonTrack = activity.getPolygonTrack();
-				if (polygonTrack == null) {
+				if (polygonTrack == null || polygonTrack.isFinished()) {
 					new AlertPolygonTrackDialog(activity);
 				} else {
 					try {
