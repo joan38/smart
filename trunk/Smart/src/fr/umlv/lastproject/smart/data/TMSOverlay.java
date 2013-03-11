@@ -1,7 +1,6 @@
 package fr.umlv.lastproject.smart.data;
 
 import org.osmdroid.tileprovider.MapTileProviderBase;
-import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
@@ -106,12 +105,14 @@ public class TMSOverlay extends TilesOverlay implements Layer {
 		this.name = name;
 		this.boundingBox = extent;
 
-		if (maxZoomLevel < minZoomLevel
-				|| maxZoomLevel > OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL
-				|| minZoomLevel < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) {
-			minZoomLevel = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
-			maxZoomLevel = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
-		}
+		/*
+		 * if (maxZoomLevel < minZoomLevel || maxZoomLevel >
+		 * OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL || minZoomLevel
+		 * < OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL) {
+		 * minZoomLevel = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
+		 * maxZoomLevel = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
+		 * }
+		 */
 		zoomLevelMax = maxZoomLevel;
 		zoomLevelMin = minZoomLevel;
 
