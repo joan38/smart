@@ -227,11 +227,11 @@ public class MenuActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_smart, menu);
-		menu.add(0, 0, 0, R.string.infoSettings);
-		menu.add(0, 1, 0, R.string.hideInfoZone);
-		menu.add(0, 2, 0, R.string.gpsSettings);
-		menu.add(0, 3, 0, R.string.settings);
-		menu.add(0, 4, 0, R.string.help);
+		menu.add(0, SmartConstants.PARAMS_INFO_SETTINGS, 0, R.string.infoSettings);
+		menu.add(0, SmartConstants.PARAMS_HIDE_INFO_ZONE, 0, R.string.hideInfoZone);
+		menu.add(0, SmartConstants.PARAMS_GPS_SETTINGS, 0, R.string.gpsSettings);
+		menu.add(0, SmartConstants.PARAMS_SETTINGS, 0, R.string.settings);
+		menu.add(0, SmartConstants.PARAMS_HELP, 0, R.string.help);
 		// menu.add(0, 5, 0, R.string.about);
 
 		return true;
@@ -331,20 +331,20 @@ public class MenuActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case 0:
+		case SmartConstants.PARAMS_INFO_SETTINGS:
 			new SettingInfoDialog(this, findViewById(R.id.table), infoOverlay);
 			break;
 
-		case 1:
+		case SmartConstants.PARAMS_HIDE_INFO_ZONE:
 			infoOverlay.hideInfoZone(findViewById(R.id.table), item);
 			break;
 
-		case 2:
+		case SmartConstants.PARAMS_GPS_SETTINGS:
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivity(intent);
 			break;
 
-		case 3:
+		case SmartConstants.PARAMS_SETTINGS:
 			if (Mission.isCreated() && Mission.getInstance().isStarted()) {
 				Toast.makeText(this, "Stop the mission before",
 						Toast.LENGTH_LONG).show();
@@ -353,7 +353,7 @@ public class MenuActivity extends Activity {
 			}
 			break;
 
-		case 4:
+		case SmartConstants.PARAMS_HELP:
 			final HelpDialog helpDialog = new HelpDialog(this, R.string.helpMap);
 			helpDialog.show();
 			break;

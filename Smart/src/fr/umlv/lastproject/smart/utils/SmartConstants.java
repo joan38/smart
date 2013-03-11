@@ -33,6 +33,12 @@ public final class SmartConstants {
 	public static final int LIST_FIELD = 3;
 	public static final int PICTURE_FIELD = 4;
 	public static final int HEIGHT_FIELD = 5;
+	
+	public static final int PARAMS_INFO_SETTINGS = 0;
+	public static final int PARAMS_HIDE_INFO_ZONE = 1;
+	public static final int PARAMS_GPS_SETTINGS = 2;
+	public static final int PARAMS_SETTINGS = 3;
+	public static final int PARAMS_HELP = 4;
 
 	public static final String TIFF_PATH = Environment
 			.getExternalStorageDirectory().getPath() + "/osmdroid/";
