@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
         <RadioGroup
             android:id="@+id/measureChoice"
             android:layout_width="wrap_content"
@@ -27,15 +29,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/MeasureAbsolute" />
         </RadioGroup>
-    
-        <TextView
-        android:id="@+id/measureTextExplain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:inputType="none"
-        android:text="@string/MeasureRelativeText" />
-        
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/measureTextExplain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="none"
+            android:text="@string/MeasureRelativeText" />
+    </LinearLayout>
+
 </ScrollView>

@@ -3,50 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/createMissionLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/spinner"
-    android:orientation="vertical" >
 
-    <TableRow
-        android:id="@+id/createMissionRow"
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/createMissionLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="5dip" >
+        android:layout_below="@+id/spinner"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/missionNameLabel"
+        <TableRow
+            android:id="@+id/createMissionRow"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:text="@string/missionName" />
+            android:padding="5dip" >
 
-        <EditText
-            android:id="@+id/missionNameValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text"
-            android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
-            android:padding="10dip" />
-    </TableRow>
+            <TextView
+                android:id="@+id/missionNameLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip"
+                android:text="@string/missionName" />
 
-    <TableRow
-        android:id="@+id/selectMissionRow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
+            <EditText
+                android:id="@+id/missionNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
+                android:inputType="text"
+                android:padding="10dip" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/selectFormLabel"
+        <TableRow
+            android:id="@+id/selectMissionRow"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:padding="10dip"
-            android:text="@string/selectForm" />
+            android:layout_height="wrap_content"
+            android:padding="5dip" >
 
-       
+            <TextView
+                android:id="@+id/selectFormLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dip"
+                android:text="@string/selectForm" />
 
             <RadioGroup
                 android:id="@+id/radioForm"
@@ -66,11 +66,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/othertForm" />
             </RadioGroup>
+        </TableRow>
 
-        
-    </TableRow>
-
-    <Button
+        <Button
             android:id="@+id/selectFormButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +76,6 @@
             android:padding="10dip"
             android:text="@string/formBrowser"
             android:visibility="gone" />
+    </TableLayout>
 
-</TableLayout>
 </ScrollView>

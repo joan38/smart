@@ -3,13 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:scrollbars="horizontal">
+    android:scrollbars="horizontal" >
 
     <RelativeLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#11000000">
+        android:background="#11000000" >
 
         <ImageButton
             android:id="@+id/home"
@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:padding="5dp"
+            android:contentDescription="@string/menuFunctionalitiesTitle"
             android:src="@drawable/homemenu" />
 
         <HorizontalScrollView
@@ -35,7 +36,6 @@
                 android:orientation="horizontal"
                 android:padding="5dp"
                 android:scrollbars="horizontal" >
-
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="5dp"
+            android:contentDescription="@string/menuLayersTitle"
             android:src="@drawable/layersmenu" />
     </RelativeLayout>
 
@@ -91,6 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dip" >
+
             <TextView
                 android:id="@+id/latitude"
                 android:layout_width="wrap_content"
@@ -102,16 +104,16 @@
                 android:id="@+id/latitudeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:paddingRight="10dip" />
+                android:paddingRight="10dip"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/longitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="#FFFFFF"
-                android:paddingLeft="10dip" />
+                android:paddingLeft="10dip"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/longitudeValue"

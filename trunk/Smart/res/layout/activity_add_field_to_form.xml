@@ -3,77 +3,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-<RelativeLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
-	<Spinner android:id="@+id/spinner" 
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content"/>   
-	
-	<TableLayout
-	    xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/layoutDynamicAddField"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/spinner"
-	    android:orientation="vertical" >
-	
-	    <TableRow
-        android:id="@+id/tableRowName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
-        
-        	<TextView android:layout_width = "fill_parent"
-			android:layout_height = "wrap_content"
-			android:padding="10dip"
-			android:id = "@+id/LabelName" 
-			android:text="@string/Name"/>
-		
-			<EditText 
-			android:inputType="text"
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:layout_weight="1" 
-			android:padding="10dip"
-			android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
-			android:id = "@+id/valueName" />
-	
-		</TableRow>
-		
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layoutDynamicAddField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner"
+            android:orientation="vertical" >
 
-	    <TableRow
-        android:id="@+id/tableRowList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" 
-        android:visibility="gone">
-        
-        	<TextView android:layout_width = "fill_parent"
-			android:layout_height = "wrap_content"
-			android:padding="10dip"
-			android:id = "@+id/LabelListe" 
-			android:text="@string/List"/>
-        	
-        	<ImageView
-       	 	android:id="@+id/plusImage"
-       		android:layout_width="wrap_content"
-       		android:layout_height="wrap_content"
-       		android:layout_weight="1" 
-       		/>
-		
-			
-	
-		</TableRow>
-	    
-	</TableLayout>
-	    
-	    
+            <TableRow
+                android:id="@+id/tableRowName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip" >
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/LabelName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dip"
+                    android:text="@string/Name" />
+
+                <EditText
+                    android:id="@+id/valueName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:digits="azertyuiopmlkjhgfdsqwxcvbn0123456789_-AZERTYUIOPMLKJHGFDSQWXCVBN"
+                    android:inputType="text"
+                    android:padding="10dip" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRowList"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/LabelListe"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dip"
+                    android:text="@string/List" />
+
+                <ImageView
+                    android:id="@+id/plusImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
 
 </ScrollView>

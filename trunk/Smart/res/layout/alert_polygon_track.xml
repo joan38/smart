@@ -2,29 +2,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".TrackActivity" >
-    
-    <TextView
-        android:id="@+id/polygontrackname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:inputType="none"
-        android:text="@string/polygon_track_text_name" />
 
-    <TextView
-        android:id="@+id/tracktextparam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:padding="10dip"
-        android:inputType="none"
-        android:text="@string/track_text_param" />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".TrackActivity" >
+
+        <TextView
+            android:id="@+id/polygontrackname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:padding="10dip"
+            android:text="@string/polygon_track_text_name" />
+
+        <TextView
+            android:id="@+id/tracktextparam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="none"
+            android:padding="10dip"
+            android:text="@string/track_text_param" />
 
         <RadioGroup
             android:id="@+id/trackradiogroup"
@@ -36,8 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:tag="TIME"
                 android:checked="true"
+                android:tag="TIME"
                 android:text="@string/track_radio_time" />
 
             <RadioButton
@@ -53,10 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:padding="10dip"
             android:inputType="number"
-            android:minWidth="150dp" />
-    
+            android:minWidth="150dp"
+            android:padding="10dip" />
+    </LinearLayout>
 
-</LinearLayout>
 </ScrollView>
