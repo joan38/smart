@@ -297,8 +297,7 @@ public class MenuActivity extends Activity {
 		gps = new GPS(locationManager);
 
 		if (!gps.isEnabled()) {
-			final GPSSettingDialog gpsSettingDialog = new GPSSettingDialog(
-					this);
+			final GPSSettingDialog gpsSettingDialog = new GPSSettingDialog(this);
 			gpsSettingDialog.show();
 		}
 
@@ -333,8 +332,7 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
-			new SettingInfoDialog(this, findViewById(R.id.table),
-					infoOverlay);
+			new SettingInfoDialog(this, findViewById(R.id.table), infoOverlay);
 			break;
 
 		case 1:
@@ -356,8 +354,7 @@ public class MenuActivity extends Activity {
 			break;
 
 		case 4:
-			final HelpDialog helpDialog = new HelpDialog(this,
-					R.string.helpMap);
+			final HelpDialog helpDialog = new HelpDialog(this, R.string.helpMap);
 			helpDialog.show();
 			break;
 
@@ -454,87 +451,110 @@ public class MenuActivity extends Activity {
 
 					@Override
 					public void run() {
-						List<GeometryLayer> geometryLayersToImport = new ArrayList<GeometryLayer>();
-						int err = R.string.kmlParseError;
-						int succ = R.string.kmlImport;
-						if (extension.equalsIgnoreCase(".kml")) {
-							try {
-								geometryLayersToImport = DataImport.importKml(
-										MenuActivity.this, path);
-								succ = R.string.kmlImport;
+						try {
+							List<GeometryLayer> geometryLayersToImport = new ArrayList<GeometryLayer>();
+							int err = R.string.kmlParseError;
+							int succ = R.string.kmlImport;
 
-							} catch (XmlPullParserException e) {
-								err = R.string.kmlParseError;
+							if (extension.equalsIgnoreCase(".kml")) {
+								try {
+									geometryLayersToImport = DataImport
+											.importKml(MenuActivity.this, path);
+									succ = R.string.kmlImport;
 
-							} catch (IOException e) {
-								err = R.string.kmlReadError;
+								} catch (XmlPullParserException e) {
+									err = R.string.kmlParseError;
 
-							}
-						} else if (extension.equalsIgnoreCase(".shp")) {
-							geometryLayersToImport.add(DataImport
-									.importShapeFile(MenuActivity.this, path));
+								} catch (IOException e) {
+									err = R.string.kmlReadError;
 
-							succ = R.string.shpImport;
-
-						}
-						final int error = err;
-						final int success = succ;
-						final List<GeometryLayer> layers = geometryLayersToImport;
-						runOnUiThread(new Runnable() {
-							public void run() {
-								if (layers == null || layers.isEmpty()) {
-									Toast.makeText(MenuActivity.this, error,
-											Toast.LENGTH_SHORT).show();
-								} else {
-									mapView.addGeometryLayers(layers);
-									Toast.makeText(MenuActivity.this, success,
-											Toast.LENGTH_SHORT).show();
-									BoundingBoxE6 vectorBB = layers.get(0)
-											.getExtent().getBoundingBox();
-									if (layers.size() > 1) {
-										int northBB = layers.get(0).getExtent()
-												.getBoundingBox()
-												.getLatNorthE6(), southBB = layers
-												.get(0).getExtent()
-												.getBoundingBox()
-												.getLatSouthE6(), eastBB = layers
-												.get(0).getExtent()
-												.getBoundingBox()
-												.getLonEastE6(), westBB = layers
-												.get(0).getExtent()
-												.getBoundingBox()
-												.getLonWestE6();
-										for (int i = 0; i < layers.size(); i++) {
-											BoundingBoxE6 tmpBB = layers.get(i)
-													.getExtent()
-													.getBoundingBox();
-											int tmpNorth = tmpBB
-													.getLatNorthE6();
-											int tmpSouth = tmpBB
-													.getLatSouthE6();
-											int tmpEast = tmpBB.getLonEastE6();
-											int tmpWest = tmpBB.getLonWestE6();
-											if (tmpNorth > northBB) {
-												northBB = tmpNorth;
-											}
-											if (tmpSouth < southBB) {
-												southBB = tmpSouth;
-											}
-											if (tmpEast > eastBB) {
-												eastBB = tmpEast;
-											}
-											if (tmpWest < westBB) {
-												westBB = tmpWest;
-											}
-										}
-										vectorBB = new BoundingBoxE6(northBB,
-												eastBB, southBB, westBB);
-									}
-									mapView.zoomToBoundingBox(vectorBB);
 								}
-								progressDialogKmlShp.dismiss();
+							} else if (extension.equalsIgnoreCase(".shp")) {
+								geometryLayersToImport.add(DataImport
+										.importShapeFile(MenuActivity.this,
+												path));
+
+								succ = R.string.shpImport;
+
 							}
-						});
+							final int error = err;
+							final int success = succ;
+							final List<GeometryLayer> layers = geometryLayersToImport;
+							runOnUiThread(new Runnable() {
+								public void run() {
+									if (layers == null || layers.isEmpty()) {
+										Toast.makeText(MenuActivity.this,
+												error, Toast.LENGTH_SHORT)
+												.show();
+									} else {
+										mapView.addGeometryLayers(layers);
+										Toast.makeText(MenuActivity.this,
+												success, Toast.LENGTH_SHORT)
+												.show();
+										BoundingBoxE6 vectorBB = layers.get(0)
+												.getExtent().getBoundingBox();
+										if (layers.size() > 1) {
+											int northBB = layers.get(0)
+													.getExtent()
+													.getBoundingBox()
+													.getLatNorthE6(), southBB = layers
+													.get(0).getExtent()
+													.getBoundingBox()
+													.getLatSouthE6(), eastBB = layers
+													.get(0).getExtent()
+													.getBoundingBox()
+													.getLonEastE6(), westBB = layers
+													.get(0).getExtent()
+													.getBoundingBox()
+													.getLonWestE6();
+											for (int i = 0; i < layers.size(); i++) {
+												BoundingBoxE6 tmpBB = layers
+														.get(i).getExtent()
+														.getBoundingBox();
+												int tmpNorth = tmpBB
+														.getLatNorthE6();
+												int tmpSouth = tmpBB
+														.getLatSouthE6();
+												int tmpEast = tmpBB
+														.getLonEastE6();
+												int tmpWest = tmpBB
+														.getLonWestE6();
+												if (tmpNorth > northBB) {
+													northBB = tmpNorth;
+												}
+												if (tmpSouth < southBB) {
+													southBB = tmpSouth;
+												}
+												if (tmpEast > eastBB) {
+													eastBB = tmpEast;
+												}
+												if (tmpWest < westBB) {
+													westBB = tmpWest;
+												}
+											}
+											vectorBB = new BoundingBoxE6(
+													northBB, eastBB, southBB,
+													westBB);
+										}
+										mapView.zoomToBoundingBox(vectorBB);
+									}
+									progressDialogKmlShp.dismiss();
+								}
+							});
+						} catch (OutOfMemoryError outOfMemory) {
+							mapView.getTileProvider().clearTileCache();
+
+							progressDialogKmlShp.dismiss();
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									Toast.makeText(MenuActivity.this, "Error",
+											Toast.LENGTH_LONG);
+
+								}
+							});
+						}
 
 					}
 
@@ -885,8 +905,8 @@ public class MenuActivity extends Activity {
 		m.addStopListener(new MeasureStopListener() {
 			@Override
 			public void actionPerformed(double distance) {
-				MeasureResultDialog amrd = new MeasureResultDialog(
-						ma, distance, " m");
+				MeasureResultDialog amrd = new MeasureResultDialog(ma,
+						distance, " m");
 				amrd.show();
 				m.stop();
 				if (Mission.isCreated()) {
@@ -1012,8 +1032,8 @@ public class MenuActivity extends Activity {
 			dialog.show();
 		} else if (id == FORM_MODIFY_DIALOG) {
 			if (bundle == null) {
-				ModifFormDialog modifyDialog = new ModifFormDialog(
-						this, this.form, this.geom, this.geometryLayer, null);
+				ModifFormDialog modifyDialog = new ModifFormDialog(this,
+						this.form, this.geom, this.geometryLayer, null);
 				modifyDialog.addFormEditedListener(new FormEditedListener() {
 
 					@Override
@@ -1033,8 +1053,8 @@ public class MenuActivity extends Activity {
 					valuesList[heightIndex] = height;
 				}
 
-				final ModifFormDialog modifyDialog = new ModifFormDialog(
-						this, form, geom, geometryLayer, valuesList);
+				final ModifFormDialog modifyDialog = new ModifFormDialog(this,
+						form, geom, geometryLayer, valuesList);
 
 				modifyDialog.addFormEditedListener(new FormEditedListener() {
 
@@ -1117,4 +1137,5 @@ public class MenuActivity extends Activity {
 		System.gc();
 		super.onStop();
 	}
+
 }
