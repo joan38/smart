@@ -44,7 +44,7 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		try {
-			Preferences.create(this);
+			pref = Preferences.create(this);
 		} catch (PreferencesException e) {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();
