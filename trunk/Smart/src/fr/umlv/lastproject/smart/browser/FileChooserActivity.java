@@ -213,7 +213,7 @@ public class FileChooserActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_smart, menu);
-		menu.add(0, 1, 0, "Select current directory");
+		menu.add(0, 1, 0, R.string.directory);
 
 		return true;
 	}
