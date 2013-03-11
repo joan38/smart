@@ -550,7 +550,7 @@ public class MenuActivity extends Activity {
 								@Override
 								public void run() {
 									Toast.makeText(MenuActivity.this, "Error",
-											Toast.LENGTH_LONG);
+											Toast.LENGTH_LONG).show();
 
 								}
 							});
