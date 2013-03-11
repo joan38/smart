@@ -192,6 +192,9 @@ public class FormDialog extends AlertDialog.Builder {
 						}
 						dbManager.close();
 						dialog.dismiss();
+						if (Mission.getInstance() != null) {
+							Mission.getInstance().setSelectable(true);
+						}
 					}
 				});
 		if (mission != null) {
@@ -202,6 +205,10 @@ public class FormDialog extends AlertDialog.Builder {
 							mission.removeGeometry(g);
 
 							dialog.dismiss();
+							if (Mission.getInstance() != null) {
+								Mission.getInstance().setSelectable(true);
+							}
+
 						}
 					});
 		}
