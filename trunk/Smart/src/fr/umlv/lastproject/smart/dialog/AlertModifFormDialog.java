@@ -96,7 +96,6 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		this.form = form;
 		this.geom = g;
 		this.layer = l;
-	
 
 		final long idGeometry = g.getId();
 		setCancelable(false);
@@ -127,24 +126,24 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 		final int idRowForm = idForm;
 		setPositiveButton(R.string.validate,
 				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				DbManager dbManager = new DbManager();
-				FormRecord formRecord = new FormRecord(form);
+					public void onClick(DialogInterface dialog, int which) {
+						DbManager dbManager = new DbManager();
+						FormRecord formRecord = new FormRecord(form);
 
-				for (int i = 0; i < formRecord.getFields().size(); i++) {
+						for (int i = 0; i < formRecord.getFields().size(); i++) {
 
-					switch (formRecord.getFields().get(i).getField()
-							.getType()) {
+							switch (formRecord.getFields().get(i).getField()
+									.getType()) {
 							case TEXT:
 								TextFieldRecord text = (TextFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								text.setValue(((EditText) valuesList[i])
 										.getText().toString());
 								break;
 
 							case NUMERIC:
 								NumericFieldRecord num = (NumericFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								if (!((EditText) valuesList[i]).getText()
 										.toString().equals("")) {
 									num.setValue(Double
@@ -155,7 +154,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 							case BOOLEAN:
 								BooleanFieldRecord b = (BooleanFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								Integer idChecked = (Integer) valuesList[i];
 								if (idChecked == 0) {
 									b.setValue(true);
@@ -166,71 +165,69 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 							case LIST:
 								ListFieldRecord l = (ListFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								l.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
 
 							case PICTURE:
 								PictureFieldRecord p = (PictureFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								p.setValue(((EditText) valuesList[i]).getText()
 										.toString());
 								break;
 
 							case HEIGHT:
 								HeightFieldRecord h = (HeightFieldRecord) formRecord
-								.getFields().get(i);
+										.getFields().get(i);
 								h.setValue(Double.parseDouble(valuesList[i]
 										.toString()));
 								break;
 
 							default:
 								throw new IllegalStateException(UNKNOW_FIELD);
+							}
+						}
+
+						try {
+							dbManager.open(context);
+							dbManager.updateFormRecord(formRecord, idRowForm);
+
+						} catch (SmartException e) {
+							Toast.makeText(context, e.getMessage(),
+									Toast.LENGTH_LONG).show();
+							Log.e("", e.getMessage());
+						}
+						dbManager.close();
+						for (FormEditedListener l : listeners) {
+							l.actionPerformed(g);
+						}
 					}
-				}
-
-				try {
-					dbManager.open(context);
-					dbManager.updateFormRecord(formRecord, idRowForm);
-
-				} catch (SmartException e) {
-					Toast.makeText(context, e.getMessage(),
-							Toast.LENGTH_LONG).show();
-					Log.e("", e.getMessage());
-				}
-				dbManager.close();
-				for (FormEditedListener l : listeners) {
-					l.actionPerformed(g);
-				}
-			}
-		});
+				});
 
 		setNeutralButton(R.string.delete,
 				new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-				AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(
-						context, idGeometry, idRowForm,
-						form.getTitle(), l, g, listeners);
-				dialogDelete.show();
-			}
-		});
+						AlertValidationDeleteSurveyDialog dialogDelete = new AlertValidationDeleteSurveyDialog(
+								context, idGeometry, idRowForm,
+								form.getTitle(), l, g, listeners);
+						dialogDelete.show();
+					}
+				});
 
 		setNegativeButton(R.string.cancel,
 				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				for (FormEditedListener l : listeners) {
-					l.actionPerformed(g);
-				}
+					public void onClick(DialogInterface dialog, int which) {
+						for (FormEditedListener l : listeners) {
+							l.actionPerformed(g);
+						}
 
-			}
-		});
+					}
+				});
 	}
-
-
 
 	/**
 	 * Build the form associated to the mission to display it
@@ -241,15 +238,16 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 	 * @throws SmartException
 	 */
 	public final int buildForm(TableLayout l, final MenuActivity c,
-			List<Field> fieldsList, long idGeometry, Object[] values) throws SmartException {
+			List<Field> fieldsList, long idGeometry, Object[] values)
+			throws SmartException {
 
 		boolean isAlreadyFilled = false;
-		if(values != null){
+		if (values != null) {
 			isAlreadyFilled = true;
 		} else {
 			isAlreadyFilled = false;
 		}
-		
+
 		DbManager dbManager = new DbManager();
 		dbManager.open(c);
 		int idForm = dbManager.getIdForm(idGeometry);
@@ -276,7 +274,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 			case NUMERIC:
 				final NumericFieldRecord nf = (NumericFieldRecord) fieldRecords
-				.get(i);
+						.get(i);
 				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER
@@ -309,7 +307,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 			case BOOLEAN:
 				BooleanFieldRecord bf = (BooleanFieldRecord) fieldRecords
-				.get(i);
+						.get(i);
 				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
@@ -347,7 +345,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 			case LIST:
 				final ListFieldRecord lf = (ListFieldRecord) fieldRecords
-				.get(i);
+						.get(i);
 				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
 
@@ -387,7 +385,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 
 			case PICTURE:
 				PictureFieldRecord pf = (PictureFieldRecord) fieldRecords
-				.get(i);
+						.get(i);
 				final EditText et = new EditText(c);
 				textView.setText(fieldRecords.get(i).getField().getLabel());
 				textView.setPadding(PADDING_LEFT, PADDING_TOP, PADDING_RIGHT, 0);
@@ -444,7 +442,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 				final TextView heightName = new TextView(c);
 				double t;
-				if(isAlreadyFilled){
+				if (isAlreadyFilled) {
 					t = Double.parseDouble(String.valueOf(values[i]));
 				} else {
 					t = Double.parseDouble(String.valueOf(hf.getValue()));
@@ -454,7 +452,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				final ImageView heightPicture = new ImageView(c);
 				heightPicture.setClickable(true);
 				heightPicture.setImageDrawable(c.getResources().getDrawable(
-						R.drawable.toise));
+						R.drawable.toisemeasure));
 				heightPicture.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -469,7 +467,7 @@ public class AlertModifFormDialog extends AlertDialog.Builder {
 				heightLayout.addView(heightPicture);
 				heightLayout.addView(heightName);
 				layoutDynamic.addView(heightLayout);
-				if(isAlreadyFilled){
+				if (isAlreadyFilled) {
 					valuesList[i] = values[i];
 				} else {
 					valuesList[i] = hf.getValue();

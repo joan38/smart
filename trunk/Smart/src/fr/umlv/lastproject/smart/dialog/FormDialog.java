@@ -253,9 +253,9 @@ public class FormDialog extends AlertDialog.Builder {
 									num.setValue(Double
 											.parseDouble(((EditText) valuesList[i])
 													.getText().toString()));
-								} /*else {
-									num.setValue();
-								}*/
+								} /*
+								 * else { num.setValue(); }
+								 */
 								break;
 
 							case BOOLEAN:
@@ -524,7 +524,7 @@ public class FormDialog extends AlertDialog.Builder {
 				final ImageView heightPicture = new ImageView(menuActivity);
 				heightPicture.setClickable(true);
 				heightPicture.setImageDrawable(menuActivity.getResources()
-						.getDrawable(R.drawable.toise));
+						.getDrawable(R.drawable.toisemeasure));
 				heightPicture.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -733,7 +733,7 @@ public class FormDialog extends AlertDialog.Builder {
 				final ImageView heightPicture = new ImageView(c);
 				heightPicture.setClickable(true);
 				heightPicture.setImageDrawable(c.getResources().getDrawable(
-						R.drawable.toise));
+						R.drawable.toisemeasure));
 				heightPicture.setOnClickListener(new OnClickListener() {
 
 					@Override
