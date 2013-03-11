@@ -8,13 +8,12 @@ import java.util.List;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
- * Writes a GPX file.
- * Class used by {@link GPSTrack}
+ * Writes a GPX file. Class used by {@link GPSTrack}
  * 
  * @author Marc Barat
  * 
  */
-public final class GPXWriter {
+public final class GpxWriter {
 
 	/**
 	 * XML header.
@@ -29,10 +28,8 @@ public final class GPXWriter {
 			+ " version=\"1.1\""
 			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
 			+ " xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd \">";
-	
-	
-	private GPXWriter() {
 
+	private GpxWriter() {
 	}
 
 	/**
@@ -50,23 +47,23 @@ public final class GPXWriter {
 	 */
 	public static void writeGpxFile(String trackName,
 			List<TrackPoint> trackPoints) throws IOException {
-		if (trackName == null || trackPoints==null){
+		if (trackName == null || trackPoints == null) {
 			throw new IllegalArgumentException();
 		}
-		if(trackPoints.isEmpty()){
+		if (trackPoints.isEmpty()) {
 			return;
 		}
 		final File appFolder = new File(SmartConstants.TRACK_PATH);
 		appFolder.mkdir();
-		
-		
-		final File trackFile = new File(SmartConstants.TRACK_PATH+trackName+".gpx");
-		
+
+		final File trackFile = new File(SmartConstants.TRACK_PATH + trackName
+				+ ".gpx");
+
 		final FileWriter fileWriter = new FileWriter(trackFile);
 
 		fileWriter.write(XML_HEADER + "\n");
 		fileWriter.write(TAG_GPX + "\n");
-		
+
 		writeTrackPoints(trackName, fileWriter, trackPoints);
 		fileWriter.write("</gpx>");
 
@@ -87,23 +84,27 @@ public final class GPXWriter {
 	public static void writeTrackPoints(final String trackName,
 			final FileWriter fileWriter, final List<TrackPoint> trackPoints)
 			throws IOException {
-		
 
 		final StringBuilder builder = new StringBuilder();
 		builder.append("\t").append("<trk>");
-		builder.append("\t\t").append("<name>").append(trackName).append("</name>").append("\n");
+		builder.append("\t\t").append("<name>").append(trackName)
+				.append("</name>").append("\n");
 		builder.append("\t\t").append("<trkseg>").append("\n");
 		for (TrackPoint trackPoint : trackPoints) {
-			builder.append("\t\t\t").append("<trkpt lat=\"").append(trackPoint.getLatitude()).append("\" ").append("lon=\"").append(trackPoint.getLongitude()).append("\">");
-			builder.append("<ele>").append(trackPoint.getElevation()).append("</ele>");
-			builder.append("<time>").append(trackPoint.getTime()).append("</time>");
+			builder.append("\t\t\t").append("<trkpt lat=\"")
+					.append(trackPoint.getLatitude()).append("\" ")
+					.append("lon=\"").append(trackPoint.getLongitude())
+					.append("\">");
+			builder.append("<ele>").append(trackPoint.getElevation())
+					.append("</ele>");
+			builder.append("<time>").append(trackPoint.getTime())
+					.append("</time>");
 			builder.append("</trkpt>").append("\n");
 		}
 
-		
 		builder.append("\t\t").append("</trkseg>").append("\n");
 		builder.append("\t").append("</trk>").append("\n");
-		
+
 		fileWriter.write(builder.toString());
 	}
 
