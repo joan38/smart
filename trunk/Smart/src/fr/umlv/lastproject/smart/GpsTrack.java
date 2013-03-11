@@ -319,7 +319,6 @@ public class GpsTrack {
 				break;
 			}
 		}
-
 	}
 
 	public boolean isFinished() {
@@ -341,5 +340,4 @@ public class GpsTrack {
 	public Geometry getGeometry() {
 		return geometry;
 	}
-
 }
