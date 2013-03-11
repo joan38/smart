@@ -68,6 +68,7 @@ import fr.umlv.lastproject.smart.survey.MeasureStopListener;
 import fr.umlv.lastproject.smart.survey.Measures;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
+import fr.umlv.lastproject.smart.utils.SmartParameters;
 
 /**
  * 
@@ -111,6 +112,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+
 		outState.putAll(BundleCreator.createBundle(mapView, gpsTrack,
 				polygonTrack));
 		logger.log(Level.INFO, "Saving the application bundle");
@@ -129,6 +131,7 @@ public class MenuActivity extends Activity {
 		}
 
 		setTheme(pref.getTheme());
+		setRequestedOrientation(pref.getOrientation());
 
 		File f = new File(SmartConstants.APP_PATH);
 		f.mkdir();
@@ -227,7 +230,7 @@ public class MenuActivity extends Activity {
 		menu.add(0, 0, 0, R.string.infoSettings);
 		menu.add(0, 1, 0, R.string.hideInfoZone);
 		menu.add(0, 2, 0, R.string.gpsSettings);
-		menu.add(0, 3, 0, R.string.theme);
+		menu.add(0, 3, 0, R.string.settings);
 		menu.add(0, 4, 0, R.string.help);
 		// menu.add(0, 5, 0, R.string.about);
 
@@ -929,19 +932,17 @@ public class MenuActivity extends Activity {
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onDestroy() {
+		super.onDestroy();
+		pref.setOrientation(SmartParameters.getParameters()
+				.getScreenOrientation());
+		pref.setTheme(SmartParameters.getParameters().getApplicationTheme());
 		try {
 			pref.save();
 		} catch (PreferencesException e) {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();
 		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
 		cleanTIFFFolder();
 		cleanTmpFolder();
 		mapView.getTileProvider().clearTileCache();

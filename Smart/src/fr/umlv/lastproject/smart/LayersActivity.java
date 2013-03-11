@@ -172,6 +172,7 @@ public class LayersActivity extends ListActivity {
 					Toast.LENGTH_LONG).show();
 		}
 		setTheme(pref.getTheme());
+		setRequestedOrientation(pref.getOrientation());
 		setContentView(R.layout.activity_layers);
 
 		logger.log(Level.INFO, "Layers menu opened");

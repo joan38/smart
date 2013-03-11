@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:id="@+id/groupTheme">
-    
-    <RadioButton
-        android:id="@+id/buttonLightTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Light" />
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <RadioButton
-        android:id="@+id/buttonDarkTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dark" />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="15dip" >
 
-</RadioGroup>
+        <TextView
+            android:id="@+id/themeApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dip"
+            android:text="@string/theme" />
+
+        <RadioGroup
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/groupTheme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RadioButton
+                android:id="@+id/buttonLightTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ligthTeme" />
+
+            <RadioButton
+                android:id="@+id/buttonDarkTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/darkTeme" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/orientationApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dip"
+            android:text="@string/screenOrientation" />
+
+        <RadioGroup
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/groupOrientation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RadioButton
+                android:id="@+id/buttonPortraitOrientation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/portraitOrientation" />
+
+            <RadioButton
+                android:id="@+id/buttonLandscapOrientation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/landscapeOrientation" />
+        </RadioGroup>
+    </LinearLayout>
+
+</ScrollView>

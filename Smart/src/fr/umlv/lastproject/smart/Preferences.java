@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
 
 public final class Preferences {
@@ -24,6 +25,8 @@ public final class Preferences {
 	private ArrayList<Integer> shortcuts = new ArrayList<Integer>();
 
 	private static final String UNABLE_TO_SAVE = "Unable to save the object in preferences";
+
+	private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
 	// Add values to persist here with his default value
 
@@ -204,6 +207,14 @@ public final class Preferences {
 
 	public void setTheme(int theme) {
 		this.theme = theme;
+	}
+
+	public int getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
 	}
 
 	public ArrayList<Integer> getShortcuts() {

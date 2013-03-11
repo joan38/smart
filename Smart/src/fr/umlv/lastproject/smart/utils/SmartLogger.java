@@ -14,8 +14,8 @@ public final class SmartLogger {
 	private static final int CACHE_SIZE = 5242880;
 
 	/**
-	     * 
-	     */
+	 * 
+	 */
 	private SmartLogger() {
 		initLogger();
 	}
@@ -35,8 +35,8 @@ public final class SmartLogger {
 	}
 
 	/**
-	     * 
-	     */
+	 * 
+	 */
 	private void initLogger() {
 		File f = new File(SmartConstants.LOG_PATH);
 		f.mkdir();

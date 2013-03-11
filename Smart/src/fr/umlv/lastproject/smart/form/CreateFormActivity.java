@@ -66,6 +66,7 @@ public class CreateFormActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 		}
 		setTheme(pref.getTheme());
+		setRequestedOrientation(pref.getOrientation());
 		setContentView(R.layout.activity_create_form);
 		setTitle(getString(R.string.title_activity_create_form));
 
