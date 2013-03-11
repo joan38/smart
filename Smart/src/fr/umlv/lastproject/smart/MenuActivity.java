@@ -331,6 +331,14 @@ public class MenuActivity extends Activity {
 				directedLocationOverlay.setBearing(event.getBearing());
 				mapView.invalidate();
 			}
+
+			@Override
+			public void gpsAvailable() {
+			}
+
+			@Override
+			public void gpsUnavailable() {
+			}
 		});
 
 		gps.addGpsListener(infoOverlay);

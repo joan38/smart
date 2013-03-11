@@ -12,4 +12,8 @@ public interface GpsListener {
 	 *            contains the coordinate
 	 */
 	void locationUpdated(GpsEvent event);
+
+	void gpsAvailable();
+
+	void gpsUnavailable();
 }

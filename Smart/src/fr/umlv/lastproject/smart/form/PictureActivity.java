@@ -77,7 +77,7 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		// Si la prise de photo c'est bien d�roul�, on la geoTag
+		// Si la prise de photo c'est bien d���roul���, on la geoTag
 		if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
 			// GeoTag picture
 			try {
@@ -109,6 +109,14 @@ public class PictureActivity extends Activity {
 				longitude = event.getLongitude();
 				bearing = event.getBearing();
 			}
+
+			@Override
+			public void gpsAvailable() {
+			}
+
+			@Override
+			public void gpsUnavailable() {
+			}
 		});
 	}
 
@@ -125,14 +133,14 @@ public class PictureActivity extends Activity {
 			float bearing) throws SmartException {
 		ExifInterface exif = null;
 		try {
-			// R�cupration de la photo � geoTag
+			// R���cupration de la photo ��� geoTag
 			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename
 					+ ".jpg");
 		} catch (IOException e1) {
 			throw new SmartException(e1, "Error picture not found");
 		}
 
-		// Transformation de la latitude au format souhait�
+		// Transformation de la latitude au format souhait���
 		double alat = Math.abs(latitude);
 		String dms = Location.convert(alat, Location.FORMAT_SECONDS);
 		String[] splits = dms.split(":");
@@ -152,7 +160,7 @@ public class PictureActivity extends Activity {
 		exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF,
 				latitude > 0 ? "N" : "S");
 
-		// Transformation de la longitude au format souhait�
+		// Transformation de la longitude au format souhait���
 		double alon = Math.abs(longitude);
 
 		dms = Location.convert(alon, Location.FORMAT_SECONDS);
@@ -199,13 +207,13 @@ public class PictureActivity extends Activity {
 		namePicture = getIntent().getExtras().getString("namePicture");
 		picture = new File(SmartConstants.PICTURES_PATH, namePicture + ".jpg");
 
-		// On r�cup�re l'URI associ�e au fichier
+		// On r���cup���re l'URI associ���e au fichier
 		Uri fileUri = Uri.fromFile(picture);
-		// Cr�ation de l'intent de la cam�ra
+		// Cr���ation de l'intent de la cam���ra
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// On indique que qu'on enregistre l'image la o� pointe l'Uri
+		// On indique que qu'on enregistre l'image la o��� pointe l'Uri
 		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		// Lancement de l'intent de cam�ra
+		// Lancement de l'intent de cam���ra
 		startActivityForResult(cameraIntent, PICTURE_RESULT);
 
 	}
