@@ -300,7 +300,7 @@ public class GpsTrack {
 			/** Writing of gpx file */
 			switch (type) {
 			case LINE:
-				GPXWriter.writeGpxFile(trackName, trackPoints);
+				GpxWriter.writeGpxFile(trackName, trackPoints);
 				break;
 
 			case POLYGON:
