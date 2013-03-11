@@ -3,6 +3,8 @@
 
     <string name="teamtype">An application of :</string>
     <string name="teamname">Thibault Douilly, Marc Barat, Thibault Brun, Maelle Cabot, Tanios Faddoul, Joan Goyeau (missing)</string>
+    <string name="home">Home</string>
+    <string name="layers">Layers</string>
     <string name="app_name">Smart</string>
     <string name="menu_settings">Settings</string>
     <string name="infoSettings">Information parameters</string>
@@ -28,7 +30,7 @@
     <string name="helpLayer">Check/Uncheck a layer : Show/Hide the layer.\nSlide to the left/right : Remove the layer.\nDrag and Drop : Organize layers.\nSelect symbology : Modify symbology.\nLong press on a layer : Zoom at a layer\'s extent.</string>
     <string name="helpMap"> Pinch/double tap : Zoom in.\n
          Spread the screen : Zoom out .\nSelect target icon : Center the map on current location.</string>
-         <string name="helpMenu">Long press on a menu entry : Add a shortcut to the shortcut bar on map view</string>
+    <string name="helpMenu">Long press on a menu entry : Add a shortcut to the shortcut bar on map view</string>
     <string name="about">About</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -200,12 +202,10 @@
     <string name="cheatcode1">geom2013</string>
     <string name="vector_progress">Importing vector data..</string>
     <string name="vector_progress_title">Please wait</string>
-    
     <string name="settings">Settings</string>
     <string name="theme">Theme</string>
     <string name="ligthTeme">Ligth</string>
     <string name="darkTeme">Dark</string>
-    
     <string name="screenOrientation">Orientation</string>
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Landscape</string>

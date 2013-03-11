@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -338,7 +339,7 @@ public class CreateFormActivity extends Activity {
 							false);
 					final TableRow row = new TableRow(CreateFormActivity.this);
 					rowDynamic.add(row);
-					final EditText listValues = new EditText(
+					final AutoCompleteTextView listValues = new AutoCompleteTextView(
 							CreateFormActivity.this);
 					listValues.addTextChangedListener(new TextWatcher() {
 
@@ -396,6 +397,7 @@ public class CreateFormActivity extends Activity {
 					});
 
 					listFieldValues.add(listValues);
+					listValues.requestFocus();
 					row.addView(imageDelete);
 					row.addView(listValues);
 					tableLayoutAddField.addView(row);

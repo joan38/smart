@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -344,6 +345,7 @@ public class FormDialog extends AlertDialog.Builder {
 		for (int i = 0; i < fieldsList.size(); i++) {
 			Field field = fieldsList.get(i);
 			TextView textView = new TextView(menuActivity);
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 			final EditText editText = new EditText(menuActivity);
 
 			switch (field.getType()) {
@@ -569,6 +571,7 @@ public class FormDialog extends AlertDialog.Builder {
 		for (int i = 0; i < fieldsList.size(); i++) {
 			Field field = fieldsList.get(i);
 			TextView textView = new TextView(c);
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 			final EditText editText = new EditText(c);
 			switch (field.getType()) {
 			case TEXT:

@@ -2,23 +2,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-android:orientation = "vertical"
-android:layout_width = "fill_parent"
-android:layout_height = "wrap_content"
-android:id = "@+id/mainlayout" 
-android:scrollbars="vertical"
-android:verticalScrollbarPosition="right"
-style="@style/AppTheme"
->
-     	
-	
-	<TableLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-	android:orientation = "vertical"
-	android:layout_width = "fill_parent"
-	android:layout_height = "wrap_content"
-	android:id = "@+id/layoutDynamicFormulaire" >
-	</TableLayout >
-	
-</LinearLayout >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mainlayout"
+        style="@style/AppTheme"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="right">
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layoutDynamicFormulaire"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </TableLayout>
+    </LinearLayout>
+
 </ScrollView>
