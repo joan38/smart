@@ -95,32 +95,38 @@
 
             <TextView
                 android:id="@+id/latitude"
+                android:text="@string/latitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/latitudeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
                 android:paddingRight="10dip"
-                android:textColor="#FFFFFF" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/longitude"
+                android:text="@string/longitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:textColor="#FFFFFF"
                 android:paddingLeft="10dip"
-                android:textColor="#FFFFFF" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/longitudeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
         </TableRow>
 
         <TableRow
@@ -131,31 +137,37 @@
 
             <TextView
                 android:id="@+id/altitude"
+                android:text="@string/altitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/altitudeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/precision"
+                android:id="@+id/accuracy"
+                android:text="@string/accuracy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/precisionValue"
+                android:id="@+id/accuracyValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
         </TableRow>
 
         <TableRow
@@ -166,6 +178,7 @@
 
             <TextView
                 android:id="@+id/bearing"
+                android:text="@string/bearing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -182,6 +195,7 @@
 
             <TextView
                 android:id="@+id/speed"
+                android:text="@string/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"

@@ -34,7 +34,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  */
 public final class Mission {
 
-	private static Mission mission = null;
+	private static Mission mission;
 	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	private static final int LINE_THICKNESS = 10;
@@ -182,7 +182,7 @@ public final class Mission {
 	 *            of the mission
 	 * @return the new mission
 	 */
-	public static Mission createMission(String name, MenuActivity activity,
+	public static Mission create(String name, MenuActivity activity,
 			SmartMapView mapview, Form form) {
 		mission = new Mission(name, activity, mapview, form);
 
@@ -206,7 +206,7 @@ public final class Mission {
 		return mission;
 	}
 
-	public static Mission createMission(String name, MenuActivity activity,
+	public static Mission create(String name, MenuActivity activity,
 			SmartMapView mapView, Form form, GeometryLayer missionPoint,
 			GeometryLayer missionLine, GeometryLayer missionPolygon) {
 

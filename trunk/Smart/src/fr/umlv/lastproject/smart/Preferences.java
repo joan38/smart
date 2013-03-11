@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
+import fr.umlv.lastproject.smart.InfosOverlay.InfosState;
 
 public final class Preferences {
 
@@ -27,6 +28,7 @@ public final class Preferences {
 	private static final String UNABLE_TO_SAVE = "Unable to save the object in preferences";
 
 	private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+	public InfosState infosState = new InfosState();
 
 	// Add values to persist here with his default value
 
@@ -39,6 +41,7 @@ public final class Preferences {
 	public void load() throws PreferencesException {
 		theme = getInt("theme", theme);
 		shortcuts = (ArrayList<Integer>) getObject("shortcuts", shortcuts);
+		infosState = (InfosState) getObject("infosState", infosState);
 	}
 
 	/**
@@ -49,6 +52,7 @@ public final class Preferences {
 	public void save() throws PreferencesException {
 		putInt("theme", theme);
 		putObject("shortcuts", shortcuts);
+		putObject("infosState", infosState);
 
 		sharedPrefEditor.commit();
 	}
@@ -83,7 +87,7 @@ public final class Preferences {
 	 * @return the instance of Preferences
 	 * @throws PreferencesException
 	 */
-	public static Preferences getInstance(Context context)
+	public static Preferences create(Context context)
 			throws PreferencesException {
 		if (preferences == null) {
 			preferences = new Preferences(context);
