@@ -10,14 +10,14 @@ import fr.umlv.lastproject.smart.R;
  * @author Maelle Cabot
  *
  */
-public class AlertHelpDialog extends AlertDialog.Builder {
+public class HelpDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
 	 * @param activity
 	 * @param stringText : the message to display
 	 */
-	public AlertHelpDialog(final Activity activity, final int stringText) {
+	public HelpDialog(final Activity activity, final int stringText) {
 		super(activity);
 		setTitle(R.string.help);
 		setMessage(stringText);

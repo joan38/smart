@@ -312,5 +312,6 @@ public class SmartMapView extends MapView {
 		addOverlay(wmsOverlay);
 
 	}
+	
 
 }

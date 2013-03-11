@@ -16,7 +16,7 @@ import android.widget.TextView;
  * @author Marc
  *
  */
-public class AlertZoomDialog extends AlertDialog.Builder {
+public class ZoomDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor 
@@ -25,7 +25,7 @@ public class AlertZoomDialog extends AlertDialog.Builder {
 	 * @param zoomIn
 	 * @param mapView
 	 */
-	public AlertZoomDialog(final Context context, final boolean zoomIn,
+	public ZoomDialog(final Context context, final boolean zoomIn,
 			final MapView mapView) {
 		super(context);
 

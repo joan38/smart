@@ -43,16 +43,16 @@ import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.data.DataImport;
 import fr.umlv.lastproject.smart.data.TMSOverlay;
-import fr.umlv.lastproject.smart.dialog.AlertExitSmartDialog;
-import fr.umlv.lastproject.smart.dialog.AlertGPSSettingDialog;
-import fr.umlv.lastproject.smart.dialog.AlertHelpDialog;
-import fr.umlv.lastproject.smart.dialog.AlertMeasureResultDialog;
-import fr.umlv.lastproject.smart.dialog.AlertModifFormDialog;
-import fr.umlv.lastproject.smart.dialog.AlertPolygonTrackDialog;
-import fr.umlv.lastproject.smart.dialog.AlertSettingInfoDialog;
-import fr.umlv.lastproject.smart.dialog.AlertSymbologyDialog;
-import fr.umlv.lastproject.smart.dialog.AlertThemeDialog;
-import fr.umlv.lastproject.smart.dialog.AlertTrackDialog;
+import fr.umlv.lastproject.smart.dialog.ExitSmartDialog;
+import fr.umlv.lastproject.smart.dialog.GPSSettingDialog;
+import fr.umlv.lastproject.smart.dialog.HelpDialog;
+import fr.umlv.lastproject.smart.dialog.MeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.ModifFormDialog;
+import fr.umlv.lastproject.smart.dialog.PolygonTrackDialog;
+import fr.umlv.lastproject.smart.dialog.SettingInfoDialog;
+import fr.umlv.lastproject.smart.dialog.SymbologyDialog;
+import fr.umlv.lastproject.smart.dialog.ThemeDialog;
+import fr.umlv.lastproject.smart.dialog.TrackDialog;
 import fr.umlv.lastproject.smart.dialog.FormDialog;
 import fr.umlv.lastproject.smart.form.Form;
 import fr.umlv.lastproject.smart.form.FormEditedListener;
@@ -219,7 +219,7 @@ public class MenuActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		final AlertExitSmartDialog exitDialog = new AlertExitSmartDialog(this);
+		final ExitSmartDialog exitDialog = new ExitSmartDialog(this);
 		exitDialog.show();
 	}
 
@@ -297,7 +297,7 @@ public class MenuActivity extends Activity {
 		gps = new GPS(locationManager);
 
 		if (!gps.isEnabled()) {
-			final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
+			final GPSSettingDialog gpsSettingDialog = new GPSSettingDialog(
 					this);
 			gpsSettingDialog.show();
 		}
@@ -333,7 +333,7 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
-			new AlertSettingInfoDialog(this, findViewById(R.id.table),
+			new SettingInfoDialog(this, findViewById(R.id.table),
 					infoOverlay);
 			break;
 
@@ -351,12 +351,12 @@ public class MenuActivity extends Activity {
 				Toast.makeText(this, "Stop the mission before",
 						Toast.LENGTH_LONG).show();
 			} else {
-				new AlertThemeDialog(this);
+				new ThemeDialog(this);
 			}
 			break;
 
 		case 4:
-			final AlertHelpDialog helpDialog = new AlertHelpDialog(this,
+			final HelpDialog helpDialog = new HelpDialog(this,
 					R.string.helpMap);
 			helpDialog.show();
 			break;
@@ -410,7 +410,7 @@ public class MenuActivity extends Activity {
 									.get((Integer) data
 											.getSerializableExtra("symboToEdit"))
 									.getName());
-					new AlertSymbologyDialog(this, layer,
+					new SymbologyDialog(this, layer,
 							listOverlay.get((Integer) data
 									.getSerializableExtra("symboToEdit")));
 
@@ -659,7 +659,7 @@ public class MenuActivity extends Activity {
 				switch (trackType) {
 				case GPS_TRACK:
 					if (gpsTrack == null) {
-						new AlertTrackDialog(this, mapView.getListOverlay());
+						new TrackDialog(this, mapView.getListOverlay());
 					} else {
 						try {
 							gpsTrack.stopTrack();
@@ -681,7 +681,7 @@ public class MenuActivity extends Activity {
 					break;
 				case POLYGON_TRACK:
 					if (polygonTrack == null) {
-						new AlertPolygonTrackDialog(this);
+						new PolygonTrackDialog(this);
 					} else {
 						try {
 							polygonTrack.stopTrack();
@@ -885,7 +885,7 @@ public class MenuActivity extends Activity {
 		m.addStopListener(new MeasureStopListener() {
 			@Override
 			public void actionPerformed(double distance) {
-				AlertMeasureResultDialog amrd = new AlertMeasureResultDialog(
+				MeasureResultDialog amrd = new MeasureResultDialog(
 						ma, distance, " m");
 				amrd.show();
 				m.stop();
@@ -1012,7 +1012,7 @@ public class MenuActivity extends Activity {
 			dialog.show();
 		} else if (id == FORM_MODIFY_DIALOG) {
 			if (bundle == null) {
-				AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
+				ModifFormDialog modifyDialog = new ModifFormDialog(
 						this, this.form, this.geom, this.geometryLayer, null);
 				modifyDialog.addFormEditedListener(new FormEditedListener() {
 
@@ -1033,7 +1033,7 @@ public class MenuActivity extends Activity {
 					valuesList[heightIndex] = height;
 				}
 
-				final AlertModifFormDialog modifyDialog = new AlertModifFormDialog(
+				final ModifFormDialog modifyDialog = new ModifFormDialog(
 						this, form, geom, geometryLayer, valuesList);
 
 				modifyDialog.addFormEditedListener(new FormEditedListener() {

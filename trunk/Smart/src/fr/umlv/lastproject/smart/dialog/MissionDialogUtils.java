@@ -305,7 +305,7 @@ public final class MissionDialogUtils {
 			}
 		}
 
-		Toast.makeText(context, R.string.missionExported, Toast.LENGTH_LONG)
+		Toast.makeText(context, context.getString(R.string.missionExported)+" : "+SmartConstants.APP_PATH, Toast.LENGTH_LONG)
 				.show();
 
 		if (checkBoxEmail.isChecked()) {
@@ -335,7 +335,7 @@ public final class MissionDialogUtils {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						AlertValidationDeleteMissionDialog alertValidationDialog = new AlertValidationDeleteMissionDialog(
+						ValidationDeleteMissionDialog alertValidationDialog = new ValidationDeleteMissionDialog(
 								context, missionsToDelete);
 						alertValidationDialog.show();
 					}

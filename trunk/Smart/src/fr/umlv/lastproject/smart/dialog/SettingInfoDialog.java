@@ -21,9 +21,9 @@ import fr.umlv.lastproject.smart.R;
  * @author Fad's
  * 
  */
-public class AlertSettingInfoDialog extends AlertDialog.Builder {
+public class SettingInfoDialog extends AlertDialog.Builder {
 
-	public AlertSettingInfoDialog(Context menu, final View view,
+	public SettingInfoDialog(Context menu, final View view,
 			final InfoOverlay infoOverlay) {
 		super(menu);
 

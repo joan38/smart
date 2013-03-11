@@ -14,14 +14,14 @@ import fr.umlv.lastproject.smart.form.Mission;
  * @author Maelle Cabot
  * 
  */
-public class AlertExitSmartDialog extends AlertDialog.Builder {
+public class ExitSmartDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param menu
 	 */
-	public AlertExitSmartDialog(final MenuActivity menu) {
+	public ExitSmartDialog(final MenuActivity menu) {
 		super(menu);
 		setTitle(R.string.exit);
 		if(Mission.getInstance() != null){

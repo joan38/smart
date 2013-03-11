@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import fr.umlv.lastproject.smart.LayersActivity;
 import fr.umlv.lastproject.smart.R;
 
-public class AlertLayerVisibilityDialog extends AlertDialog.Builder {
+public class LayerVisibilityDialog extends AlertDialog.Builder {
 
-	public AlertLayerVisibilityDialog(final LayersActivity activity) {
+	public LayerVisibilityDialog(final LayersActivity activity) {
 		super(activity);
 		setTitle(R.string.warning);
 		setMessage(R.string.visibilityLayer);

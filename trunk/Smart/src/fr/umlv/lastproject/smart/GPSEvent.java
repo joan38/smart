@@ -2,6 +2,11 @@ package fr.umlv.lastproject.smart;
 
 import java.util.Date;
 
+/**
+ * GPSEvent are sent by GPS and catched by {@link IGPSListener}
+ * @author Marc
+ *
+ */
 public class GPSEvent {
 
 	private final double latitude;

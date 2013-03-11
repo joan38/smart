@@ -14,14 +14,14 @@ import fr.umlv.lastproject.smart.R;
  * @author Maelle Cabot
  *
  */
-public class AlertGPSSettingDialog extends AlertDialog.Builder {
+public class GPSSettingDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param menu
 	 */
-	public AlertGPSSettingDialog(final MenuActivity menu) {
+	public GPSSettingDialog(final MenuActivity menu) {
 		super(menu);
 		setTitle(R.string.gpsSettings);
 		setMessage(R.string.gpsMessage);

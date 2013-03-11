@@ -25,7 +25,7 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  * @author thibault brun
  * 
  */
-public class AlertMeasureRequestDialog extends AlertDialog.Builder {
+public class MeasureRequestDialog extends AlertDialog.Builder {
 
 	private final Logger logger = SmartLogger.getLocator().getLogger();
 
@@ -34,7 +34,7 @@ public class AlertMeasureRequestDialog extends AlertDialog.Builder {
 	 * 
 	 * @param menuActivity
 	 */
-	public AlertMeasureRequestDialog(final MenuActivity menuActivity) {
+	public MeasureRequestDialog(final MenuActivity menuActivity) {
 		super(menuActivity);
 		setTitle(R.string.MeasureTitle);
 		final AtomicBoolean absolute = new AtomicBoolean(false);

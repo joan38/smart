@@ -77,6 +77,7 @@ public class FileChooserActivity extends FragmentActivity implements
 
 		mFragmentManager = getSupportFragmentManager();
 		mFragmentManager.addOnBackStackChangedListener(this);
+		
 
 		if (savedInstanceState == null) {
 			Bundle bundle = getIntent().getExtras();
@@ -171,6 +172,7 @@ public class FileChooserActivity extends FragmentActivity implements
 			finish();
 		}
 	}
+	
 
 	/**
 	 * Called when the user selects a File

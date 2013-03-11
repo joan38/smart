@@ -16,14 +16,14 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
  * @author Maelle Cabot
  * 
  */
-public class AlertGPSTrackDialog extends AlertDialog.Builder {
+public class GPSTrackDialog extends AlertDialog.Builder {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param menu
 	 */
-	public AlertGPSTrackDialog(final Activity menu, final MenuAction trackType) {
+	public GPSTrackDialog(final Activity menu, final MenuAction trackType) {
 		super(menu);
 		setTitle(R.string.gpsCompulsory);
 		setMessage(R.string.gpsTrackMessage);

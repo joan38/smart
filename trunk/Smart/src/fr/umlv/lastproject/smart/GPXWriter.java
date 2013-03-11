@@ -9,6 +9,7 @@ import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 /**
  * Writes a GPX file.
+ * Class used by {@link GPSTrack}
  * 
  * @author Marc Barat
  * 

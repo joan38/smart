@@ -22,12 +22,12 @@ import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology.PointSymbologieType;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
-public class AlertSymbologyDialog extends AlertDialog.Builder {
+public class SymbologyDialog extends AlertDialog.Builder {
 
 	private static final int SPINNER_WIDTH = 200;
 	private static final int SIZE = 20;
 
-	public AlertSymbologyDialog(final MenuActivity menu,
+	public SymbologyDialog(final MenuActivity menu,
 			final GeometryLayer layer, final LayerItem layerItem) {
 		super(menu);
 		setCancelable(false);

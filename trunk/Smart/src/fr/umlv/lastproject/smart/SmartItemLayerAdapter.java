@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import fr.umlv.lastproject.smart.dialog.AlertLayerVisibilityDialog;
+import fr.umlv.lastproject.smart.dialog.LayerVisibilityDialog;
 
 public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
@@ -89,7 +89,7 @@ public class SmartItemLayerAdapter extends ArrayAdapter<LayerItem> {
 
 				@Override
 				public void onClick(View arg0) {
-					AlertLayerVisibilityDialog dialog = new AlertLayerVisibilityDialog(
+					LayerVisibilityDialog dialog = new LayerVisibilityDialog(
 							(LayersActivity) context);
 					dialog.show();
 					((CheckBox) arg0).setChecked(true);
