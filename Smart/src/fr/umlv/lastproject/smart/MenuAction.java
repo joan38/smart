@@ -166,7 +166,7 @@ public enum MenuAction {
 					return;
 				}
 
-				GPSTrack polygonTrack = activity.getPolygonTrack();
+				GpsTrack polygonTrack = activity.getPolygonTrack();
 				if (polygonTrack == null || polygonTrack.isFinished()) {
 					new PolygonTrackDialog(activity);
 				} else {
@@ -201,7 +201,7 @@ public enum MenuAction {
 				return;
 			}
 
-			GPSTrack gpsTrack = activity.getGpsTrack();
+			GpsTrack gpsTrack = activity.getGpsTrack();
 			if (gpsTrack == null) {
 				new TrackDialog(activity, activity.getMapView()
 						.getListOverlay());
@@ -209,7 +209,7 @@ public enum MenuAction {
 				try {
 					gpsTrack.stopTrack();
 					activity.killGpsTrack();
-					for (GPSTrackListener l : activity.getGpsTrackListeners()) {
+					for (GpsTrackListener l : activity.getGpsTrackListeners()) {
 						l.actionPerformed(false);
 					}
 
@@ -289,7 +289,7 @@ public enum MenuAction {
 					areaSurvey.stop();
 					activity.getMapView().removeGeometryLayer(areaLayer);
 					final MeasureResultDialog areaDialog = new MeasureResultDialog(
-							activity, result, " km²");
+							activity, result, " kmï¿½");
 					areaDialog.show();
 				}
 			});

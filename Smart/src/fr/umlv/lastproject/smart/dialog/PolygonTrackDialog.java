@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
+import fr.umlv.lastproject.smart.GpsTrack.TrackMode;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 

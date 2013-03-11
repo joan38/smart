@@ -35,24 +35,28 @@ public class HomeActivity extends Activity {
 	private List<ListViewItem> listItem;
 	private String[] items;
 	private ArrayList<Integer> shortcut = new ArrayList<Integer>();
+
 	private Preferences pref;
-	private final Logger logger = SmartLogger.getLocator().getLogger();
+	private final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		try {
-			pref = Preferences.getInstance(this);
+			Preferences.create(this);
 		} catch (PreferencesException e) {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();
 		}
+
 		setTheme(pref.getTheme());
 		setRequestedOrientation(pref.getOrientation());
+
 		setTitle(R.string.menuFunctionalitiesTitle);
 		setContentView(R.layout.activity_home);
 
-		logger.log(Level.INFO, "Functionalities menu opened");
+		LOGGER.log(Level.INFO, "Functionalities menu opened");
 
 		// Retry the mission status
 		boolean trackStarted = getIntent().getExtras().getBoolean(
@@ -168,7 +172,7 @@ public class HomeActivity extends Activity {
 		Intent intentReturn = new Intent(HomeActivity.this, MenuActivity.class);
 		intentReturn.putIntegerArrayListExtra("shortcut", shortcut);
 		setResult(RESULT_CANCELED, intentReturn);
-		logger.log(Level.INFO, "Back from functionalities menu");
+		LOGGER.log(Level.INFO, "Back from functionalities menu");
 		finish();
 	}
 
@@ -176,7 +180,7 @@ public class HomeActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		try {
-			pref.save();
+			Preferences.getInstance().save();
 		} catch (PreferencesException e) {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();

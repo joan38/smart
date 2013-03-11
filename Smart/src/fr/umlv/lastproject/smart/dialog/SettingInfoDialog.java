@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import fr.umlv.lastproject.smart.InfoOverlay;
+import fr.umlv.lastproject.smart.InfosOverlay;
 import fr.umlv.lastproject.smart.R;
 
 /**
@@ -23,10 +23,8 @@ import fr.umlv.lastproject.smart.R;
  */
 public class SettingInfoDialog extends AlertDialog.Builder {
 
-	public SettingInfoDialog(Context menu, final View view,
-			final InfoOverlay infoOverlay) {
+	public SettingInfoDialog(Context menu, final InfosOverlay infoOverlay) {
 		super(menu);
-
 		setCancelable(false);
 
 		LayoutInflater factory = LayoutInflater.from(menu);
@@ -36,7 +34,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 		setView(alertDialogView);
 		setTitle(R.string.infoSettings);
 
-		setCheckboxStates(alertDialogView, view);
+		setCheckboxStates(alertDialogView, infoOverlay);
 
 		CheckBox latitude = (CheckBox) alertDialogView
 				.findViewById(R.id.latitudeChkbx);
@@ -56,9 +54,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.latitude),
-						view.findViewById(R.id.latitudeValue), isChecked);
-
+				infoOverlay.setLatitudeVisibility(isChecked);
 			}
 		});
 
@@ -67,8 +63,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.longitude),
-						view.findViewById(R.id.longitudeValue), isChecked);
+				infoOverlay.setLongitudeVisibility(isChecked);
 			}
 		});
 
@@ -77,9 +72,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.altitude),
-						view.findViewById(R.id.altitudeValue), isChecked);
-
+				infoOverlay.setAltitudeVisibility(isChecked);
 			}
 		});
 
@@ -88,9 +81,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.precision),
-						view.findViewById(R.id.precisionValue), isChecked);
-
+				infoOverlay.setAccuracyVisibility(isChecked);
 			}
 		});
 
@@ -99,9 +90,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.bearing),
-						view.findViewById(R.id.bearingValue), isChecked);
-
+				infoOverlay.setBearingVisibility(isChecked);
 			}
 		});
 
@@ -110,9 +99,7 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				infoOverlay.setVisibility(view.findViewById(R.id.speed),
-						view.findViewById(R.id.speedValue), isChecked);
-
+				infoOverlay.setSpeedVisibility(isChecked);
 			}
 		});
 
@@ -120,12 +107,10 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-
 			}
 		});
 
 		show();
-
 	}
 
 	/**
@@ -136,27 +121,23 @@ public class SettingInfoDialog extends AlertDialog.Builder {
 	 * @param infoView
 	 *            : the view of informations zone
 	 */
-	public void setCheckboxStates(View checkboxView, View infoView) {
+	private void setCheckboxStates(View checkboxView, InfosOverlay infoOverlay) {
 		((CheckBox) checkboxView.findViewById(R.id.latitudeChkbx))
-				.setChecked(infoView.findViewById(R.id.latitude)
-						.getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isLatitudeVisible());
 
 		((CheckBox) checkboxView.findViewById(R.id.longitudeChkbx))
-				.setChecked(infoView.findViewById(R.id.longitude)
-						.getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isLongitudeVisible());
 
 		((CheckBox) checkboxView.findViewById(R.id.altitudeChkbx))
-				.setChecked(infoView.findViewById(R.id.altitude)
-						.getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isAltitudeVisible());
 
 		((CheckBox) checkboxView.findViewById(R.id.accuracyChkbx))
-				.setChecked(infoView.findViewById(R.id.precision)
-						.getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isAccuracyVisible());
 
 		((CheckBox) checkboxView.findViewById(R.id.bearingChkbx))
-				.setChecked(infoView.findViewById(R.id.bearing).getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isBearingVisible());
 
 		((CheckBox) checkboxView.findViewById(R.id.speedChkbx))
-				.setChecked(infoView.findViewById(R.id.speed).getVisibility() == View.VISIBLE);
+				.setChecked(infoOverlay.isSpeedVisible());
 	}
 }

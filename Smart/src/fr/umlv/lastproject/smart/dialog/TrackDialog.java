@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import fr.umlv.lastproject.smart.GPSTrack.TrackMode;
+import fr.umlv.lastproject.smart.GpsTrack.TrackMode;
 import fr.umlv.lastproject.smart.ListOverlay;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
@@ -54,25 +54,32 @@ public class TrackDialog extends AlertDialog.Builder {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 
-						final RadioButton radioButton = (RadioButton) alertTrackView.findViewById(radioGroup.getCheckedRadioButtonId());
-						final TrackMode trackMode = TrackMode.valueOf(radioButton.getTag().toString());
+						final RadioButton radioButton = (RadioButton) alertTrackView
+								.findViewById(radioGroup
+										.getCheckedRadioButtonId());
+						final TrackMode trackMode = TrackMode
+								.valueOf(radioButton.getTag().toString());
 						final Object oName = trackName.getText();
 						if (oName == null) {
-							Toast.makeText(menu, R.string.track_name_missing,Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_name_missing,
+									Toast.LENGTH_LONG).show();
 							return;
 						}
 						final String name = oName.toString();
 						final Object oParam = trackParameter.getText();
 						if (oParam == null) {
-							Toast.makeText(menu, R.string.track_param_missing,Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_missing,
+									Toast.LENGTH_LONG).show();
 							return;
 						}
 						try {
-							final int param = Integer.parseInt(oParam.toString());
+							final int param = Integer.parseInt(oParam
+									.toString());
 							trackMode.setParameter(param);
 							menu.createGPSTrack(name, trackMode);
 						} catch (NumberFormatException e) {
-							Toast.makeText(menu, R.string.track_param_false,Toast.LENGTH_LONG).show();
+							Toast.makeText(menu, R.string.track_param_false,
+									Toast.LENGTH_LONG).show();
 							return;
 						}
 					}

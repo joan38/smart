@@ -166,7 +166,7 @@ public class LayersActivity extends ListActivity {
 		setTitle(R.string.menuLayersTitle);
 
 		try {
-			pref = Preferences.getInstance(this);
+			pref = Preferences.create(this);
 		} catch (PreferencesException e) {
 			Toast.makeText(this, getString(R.string.unableLoadPref),
 					Toast.LENGTH_LONG).show();

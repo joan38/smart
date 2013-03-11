@@ -16,9 +16,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
-import fr.umlv.lastproject.smart.GPS;
-import fr.umlv.lastproject.smart.GPSEvent;
-import fr.umlv.lastproject.smart.IGPSListener;
+import fr.umlv.lastproject.smart.Gps;
+import fr.umlv.lastproject.smart.GpsEvent;
+import fr.umlv.lastproject.smart.GpsListener;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartException;
@@ -44,15 +44,14 @@ public class PictureActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		final Intent startIntent = getIntent();
 		if (startIntent == null) {
 			finish();
 			return;
 		} else {
-			takePicture = startIntent.getBooleanExtra("takePicture",
-					false);
+			takePicture = startIntent.getBooleanExtra("takePicture", false);
 			if (!takePicture) {
 				finish();
 				return;
@@ -78,7 +77,7 @@ public class PictureActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		// Si la prise de photo c'est bien déroulé, on la geoTag
+		// Si la prise de photo c'est bien dï¿½roulï¿½, on la geoTag
 		if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
 			// GeoTag picture
 			try {
@@ -95,17 +94,17 @@ public class PictureActivity extends Activity {
 	 * Function which init the gps listener to geoTag picture
 	 */
 	private void initGPS() {
-		GPS gps;
+		Gps gps;
 		LocationManager locationManager;
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		gps = new GPS(locationManager);
+		gps = new Gps(locationManager);
 
 		gps.start(1, 1);
-		gps.addGPSListener(new IGPSListener() {
+		gps.addGpsListener(new GpsListener() {
 
 			@Override
-			public void actionPerformed(GPSEvent event) {
+			public void locationUpdated(GpsEvent event) {
 				latitude = event.getLatitude();
 				longitude = event.getLongitude();
 				bearing = event.getBearing();
@@ -120,20 +119,20 @@ public class PictureActivity extends Activity {
 	 * @param latitude
 	 * @param longitude
 	 * @param bearing
-	 * @throws SmartException 
+	 * @throws SmartException
 	 */
 	public void geoTag(String filename, double latitude, double longitude,
 			float bearing) throws SmartException {
 		ExifInterface exif = null;
 		try {
-			// Récupration de la photo à geoTag
+			// Rï¿½cupration de la photo ï¿½ geoTag
 			exif = new ExifInterface(SmartConstants.PICTURES_PATH + filename
 					+ ".jpg");
 		} catch (IOException e1) {
 			throw new SmartException(e1, "Error picture not found");
 		}
 
-		// Transformation de la latitude au format souhaité
+		// Transformation de la latitude au format souhaitï¿½
 		double alat = Math.abs(latitude);
 		String dms = Location.convert(alat, Location.FORMAT_SECONDS);
 		String[] splits = dms.split(":");
@@ -153,7 +152,7 @@ public class PictureActivity extends Activity {
 		exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF,
 				latitude > 0 ? "N" : "S");
 
-		// Transformation de la longitude au format souhaité
+		// Transformation de la longitude au format souhaitï¿½
 		double alon = Math.abs(longitude);
 
 		dms = Location.convert(alon, Location.FORMAT_SECONDS);
@@ -200,13 +199,13 @@ public class PictureActivity extends Activity {
 		namePicture = getIntent().getExtras().getString("namePicture");
 		picture = new File(SmartConstants.PICTURES_PATH, namePicture + ".jpg");
 
-		// On récupère l'URI associée au fichier
+		// On rï¿½cupï¿½re l'URI associï¿½e au fichier
 		Uri fileUri = Uri.fromFile(picture);
-		// Création de l'intent de la caméra
+		// Crï¿½ation de l'intent de la camï¿½ra
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// On indique que qu'on enregistre l'image la où pointe l'Uri
+		// On indique que qu'on enregistre l'image la oï¿½ pointe l'Uri
 		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		// Lancement de l'intent de caméra
+		// Lancement de l'intent de camï¿½ra
 		startActivityForResult(cameraIntent, PICTURE_RESULT);
 
 	}
@@ -231,6 +230,5 @@ public class PictureActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean("takePicture", takePicture);
 	}
-
 
 }

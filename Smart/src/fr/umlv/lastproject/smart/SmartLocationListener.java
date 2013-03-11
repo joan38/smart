@@ -9,14 +9,14 @@ import android.os.Bundle;
 
 public class SmartLocationListener implements LocationListener {
 
-	private final List<IGPSListener> gpsListeners;
+	private final List<GpsListener> gpsListeners;
 
 	/**
 	 * 
-	 * @param listeners list of listeners
+	 * @param listeners
+	 *            list of listeners
 	 */
-	public SmartLocationListener( List<IGPSListener> listeners) {
-		
+	public SmartLocationListener(List<GpsListener> listeners) {
 		this.gpsListeners = listeners;
 	}
 
@@ -32,8 +32,8 @@ public class SmartLocationListener implements LocationListener {
 		final Date time = new Date(location.getTime());
 
 		for (int i = 0; i < gpsListeners.size(); i++) {
-			gpsListeners.get(i).actionPerformed(
-					new GPSEvent(latitude, longitude, altitude, accuracy,
+			gpsListeners.get(i).locationUpdated(
+					new GpsEvent(latitude, longitude, altitude, accuracy,
 							bearing, speed, time));
 		}
 
@@ -41,22 +41,17 @@ public class SmartLocationListener implements LocationListener {
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		
-		
+
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		
-		
+
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		
-		
+
 	}
-
-
 
 }

@@ -13,11 +13,11 @@ import android.location.LocationManager;
  * @author Marc
  * 
  */
-public class GPS {
+public class Gps {
 
 	private final LocationManager locationManager;
 	private final Criteria criteria;
-	private final List<IGPSListener> gpsListeners;
+	private final List<GpsListener> gpsListeners;
 
 	/**
 	 * GPS Constructor
@@ -25,11 +25,11 @@ public class GPS {
 	 * @param lm
 	 *            : LocationManager of the GPS
 	 */
-	public GPS(LocationManager lm) {
+	public Gps(LocationManager lm) {
 		if (lm == null) {
 			throw new IllegalArgumentException();
 		}
-		gpsListeners = new ArrayList<IGPSListener>();
+		gpsListeners = new ArrayList<GpsListener>();
 		this.locationManager = lm;
 		this.criteria = new Criteria();
 		this.criteria.setAltitudeRequired(false);
@@ -74,11 +74,11 @@ public class GPS {
 	 * @param listener
 	 *            : listener to add
 	 */
-	public void addGPSListener(IGPSListener listener) {
+	public void addGpsListener(GpsListener listener) {
 		gpsListeners.add(listener);
 	}
 
-	public void removeGPSListener(IGPSListener listener) {
+	public void removeGPSListener(GpsListener listener) {
 		gpsListeners.remove(listener);
 	}
 
