@@ -417,7 +417,6 @@ public class CreateFormActivity extends Activity {
 
 	private void validNewField(EditText labelValue) {
 		String label = labelValue.getText().toString();
-
 		switch (fieldType) {
 		case TEXT:
 			TextField tf = new TextField(label);
