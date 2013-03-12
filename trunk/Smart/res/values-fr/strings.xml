@@ -189,7 +189,7 @@
     <string name="line_survey">Taper : ajouter un point\n.Double-taper : finir la ligne.</string>
     <string name="polygon_survey">Taper : ajouter un point\n.Double-taper : fermer le polygone.</string>
     <string name="tiff_progress">Création de l\'archive.</string>
-    <string name="tiff_progress_title">Patienter.\nChargement gu GeoTIFF.</string>
+    <string name="tiff_progress_title">Patienter.\nChargement du GeoTIFF.</string>
     <string name="survayError">Erreur : relevé non enregistré</string>
     <string name="vector_progress">Import des données vectorielles</string>
     <string name="vector_progress_title">Patienter</string>

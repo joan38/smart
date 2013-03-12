@@ -7,16 +7,15 @@ import java.util.logging.Logger;
 
 import android.content.Intent;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 import fr.umlv.lastproject.smart.dialog.CreateFormDialog;
 import fr.umlv.lastproject.smart.dialog.GPSTrackDialog;
 import fr.umlv.lastproject.smart.dialog.MeasureRequestDialog;
 import fr.umlv.lastproject.smart.dialog.MeasureResultDialog;
+import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.PolygonTrackDialog;
 import fr.umlv.lastproject.smart.dialog.TrackDialog;
-import fr.umlv.lastproject.smart.dialog.MissionDialogUtils;
 import fr.umlv.lastproject.smart.dialog.WMSDialog;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.layers.Geometry;
@@ -257,8 +256,7 @@ public enum MenuAction {
 
 		@Override
 		public void doAction(MenuActivity activity) {
-			MeasureRequestDialog amrd = new MeasureRequestDialog(
-					activity);
+			MeasureRequestDialog amrd = new MeasureRequestDialog(activity);
 			amrd.show();
 		}
 	},
@@ -270,7 +268,6 @@ public enum MenuAction {
 				Mission.getInstance().setSelectable(false);
 			}
 
-		
 			final Survey areaSurvey = new Survey(activity.getMapView());
 			final GeometryLayer areaLayer = new GeometryLayer(activity);
 			areaLayer.setName("AREA_MEASURE");
@@ -283,13 +280,15 @@ public enum MenuAction {
 					if (Mission.isCreated()) {
 						Mission.getInstance().setSelectable(true);
 					}
-					
+
 					final double result = PolygonArea
 							.getPolygonArea((PolygonGeometry) g) / VALUE_1E6;
 					areaSurvey.stop();
 					activity.getMapView().removeGeometryLayer(areaLayer);
 					final MeasureResultDialog areaDialog = new MeasureResultDialog(
-							activity, result, " km�");
+							activity, result, " "
+									+ activity.getResources().getString(
+											R.string.kilometers));
 					areaDialog.show();
 				}
 			});
