@@ -16,6 +16,7 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.util.BoundingBoxE6;
 
 import android.os.Environment;
+import android.util.Log;
 import android.util.Pair;
 import fr.umlv.lastproject.smart.browser.utils.FileUtils;
 
@@ -31,9 +32,9 @@ public final class ZIPUtils {
 	private static final int BUFFER = 2048;
 
 	private static final int METADATA_SIZE = 5;
-	private static final int NORTHE6 = 90;
+	private static final int NORTHE6 = 85;
 	private static final int EASTE6 = 180;
-	private static final int SOUTHE6 = -90;
+	private static final int SOUTHE6 = -85;
 	private static final int WESTE6 = -180;
 
 
@@ -150,58 +151,95 @@ public final class ZIPUtils {
 		final File[] tileDirectories = file.listFiles();
 
 		String extension = getExtension(file);
+		int minZoom, maxZoom;
+maxZoom=OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
+minZoom=OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
 
 		String lastZoomTileDirectory = null;
+		String firstZoomTileDirectory = null;
+		
 		for (File f : tileDirectories) {
 			if (f.isDirectory()) {
-				lastZoomTileDirectory = f.toString();
+				String zoomTileDirectory = f.toString();
+			
+
+				try{
+					int tmpDir=Integer.parseInt(zoomTileDirectory
+							.substring(zoomTileDirectory.lastIndexOf('/') + 1));
+					
+					if(tmpDir>maxZoom){
+						maxZoom=tmpDir;
+						lastZoomTileDirectory=zoomTileDirectory;
+					}
+					if(tmpDir<minZoom){
+						minZoom=tmpDir;
+						firstZoomTileDirectory=zoomTileDirectory;
+					}
+				}
+				catch(NumberFormatException e){
+					
+				}
 			}
 		}
-		int i = 0;
-		int y = -1;
-		int x = -1;
-		for (i = 0; i < tileDirectories.length; i++) {
-			if (tileDirectories[i].isDirectory()) {
-				try {
-					Pair<Integer, Integer> pair = searchBoundingBox(
-							tileDirectories[i], extension);
-					x = pair.first;
-					y = pair.second;
-				} catch (Exception e) {
-					y = -1;
-					break;
-				}
-				if (y >= 0) {
-					break;
-				}
-			}
+//		Log.d("TIFF",lastZoomTileDirectory);
+//		int i = 0;
+//		int y = -1;
+//		int x = -1;
+//		for (i = 0; i < tileDirectories.length; i++) {
+//			if (tileDirectories[i].isDirectory()) {
+//				try {
+//					Pair<Integer, Integer> pair = searchBoundingBox(
+//							tileDirectories[i], extension);
+//					x = pair.first;
+//					y = pair.second;
+//				} catch (Exception e) {
+//					y = -1;
+//					break;
+//				}
+//				if (y >= 0) {
+//					break;
+//				}
+//			}
+//		}
+		int x=-1, y=-1;
+		try {
+			Pair<Integer, Integer> pair = searchBoundingBox(
+					new File(firstZoomTileDirectory), extension);
+			x = pair.first;
+			y = pair.second;
+		} catch (Exception e) {
+			y = -1;
+			x=-1;
 		}
+		
 		BoundingBoxE6 boundingBox = new BoundingBoxE6(NORTHE6, EASTE6, SOUTHE6, WESTE6);
 
-		String firstZoomTileDirectory;
-		if (i >= tileDirectories.length) {
-			firstZoomTileDirectory = tileDirectories[0].toString();
-		} else {
-			firstZoomTileDirectory = tileDirectories[i].toString();
+		
+//		if (i >= tileDirectories.length) {
+//			firstZoomTileDirectory = tileDirectories[0].toString();
+//		} else {
+//			firstZoomTileDirectory = tileDirectories[i].toString();
+//
+//		}
+//
+//		
+//		try {
+//			minZoom = Integer.parseInt(firstZoomTileDirectory
+//					.substring(firstZoomTileDirectory.lastIndexOf('/') + 1));
+//			maxZoom = Integer.parseInt(lastZoomTileDirectory
+//					.substring(lastZoomTileDirectory.lastIndexOf('/') + 1));
+//		} catch (Exception e) {
+//			minZoom = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
+//			maxZoom = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
+//		}
+		if (x >=0 && y >= 0) {
 
+			boundingBox = tile2boundingBox(x, y, minZoom);
 		}
-
-		int minZoom, maxZoom;
-		try {
-			minZoom = Integer.parseInt(firstZoomTileDirectory
-					.substring(firstZoomTileDirectory.lastIndexOf('/') + 1));
-			maxZoom = Integer.parseInt(lastZoomTileDirectory
-					.substring(lastZoomTileDirectory.lastIndexOf('/') + 1));
-		} catch (Exception e) {
-			minZoom = OpenStreetMapTileProviderConstants.MINIMUM_ZOOMLEVEL;
-			maxZoom = OpenStreetMapTileProviderConstants.MAXIMUM_ZOOMLEVEL;
-		}
-		if (y >= 0) {
-
-			BoundingBox box = tile2boundingBox(x, y, minZoom);
-			boundingBox = new BoundingBoxE6(box.north, box.east, box.south,
-					box.west);
-		}
+		Log.d("TIFF","extension : "+extension);
+		Log.d("TIFF","min zoom : "+minZoom);
+		Log.d("TIFF","max zoom : "+maxZoom);
+		Log.d("TIFF","bounding box : North "+boundingBox.getLatNorthE6()/1E6+" / South "+boundingBox.getLatSouthE6()/1E6+" / West "+boundingBox.getLonWestE6()/1E6+" / "+boundingBox.getLonEastE6()/1E6);
 
 		metaData[1] = extension;
 		metaData[2] = minZoom;
@@ -287,12 +325,7 @@ public final class ZIPUtils {
 		return null;
 	}
 
-	private static class BoundingBox {
-		private double north;
-		private double south;
-		private double east;
-		private double west;
-	}
+
 
 	/**
 	 * This method converts tile xyz values to a WMS bounding box.
@@ -306,24 +339,28 @@ public final class ZIPUtils {
 	 * 
 	 * @return The completed bounding box.
 	 */
-	private static BoundingBox tile2boundingBox(final int x, final int y,
+	private static BoundingBoxE6 tile2boundingBox(final int x,  int y,
 			final int zoom) {
-		BoundingBox bb = new BoundingBox();
-		bb.north = tile2lat(y, zoom);
-		bb.south = tile2lat(y + 1, zoom);
-		bb.west = tile2lon(x, zoom);
-		bb.east = tile2lon(x + 1, zoom);
-		return bb;
+		return new BoundingBoxE6(tile2lat(y, zoom), tile2lon(x +1, zoom), tile2lat(y +1, zoom), tile2lon(x, zoom));
+		
 	}
+	
+	
 
 	private static double tile2lon(int x, int z) {
+	Log.d("TIFF"," x : "+x+" / z: "+z);
+	
 		return x / Math.pow(2.0, z) * 360.0 - 180;
+		
 	}
 
 	private static double tile2lat(int y, int z) {
+		Log.d("TIFF"," y : "+y+" / z: "+z);
+		y=(int) (Math.pow(2, z)-y-1);
 		double n = Math.PI - (2.0 * Math.PI * y) / Math.pow(2.0, z);
-		/* WARNING MATH.ABS IS VERY NOT SURE SEE OSM FORMULA OPENSOURCE HIPPY :) */
-		return Math.toDegrees(Math.atan(Math.sinh(Math.abs(n))));
+		return Math.toDegrees(Math.atan(Math.sinh(n)));
+
+		
 	}
 
 }
