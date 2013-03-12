@@ -639,10 +639,12 @@ public class MenuActivity extends Activity {
 											R.string.geotiffImport,
 											Toast.LENGTH_SHORT).show();
 									mapView.getController().setCenter(
-											overlay.getExtent()
+											(overlay.getExtent()
 													.getBoundingBox()
-													.getCenter());
-									mapView.getController().setZoom(12);
+													.getCenter()));
+									mapView.getController().setZoom(
+											overlay.getExtent().getZoom());
+
 								}
 
 								progressDialog.dismiss();
