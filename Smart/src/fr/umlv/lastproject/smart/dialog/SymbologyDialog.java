@@ -27,8 +27,8 @@ public class SymbologyDialog extends AlertDialog.Builder {
 	private static final int SPINNER_WIDTH = 200;
 	private static final int SIZE = 20;
 
-	public SymbologyDialog(final MenuActivity menu,
-			final GeometryLayer layer, final LayerItem layerItem) {
+	public SymbologyDialog(final MenuActivity menu, final GeometryLayer layer,
+			final LayerItem layerItem) {
 		super(menu);
 		setCancelable(false);
 
@@ -107,6 +107,18 @@ public class SymbologyDialog extends AlertDialog.Builder {
 								.getSelectedItemPosition());
 						int positionShape = shapeSpinner
 								.getSelectedItemPosition();
+
+						// switch(layer.getType()){
+						// case POINT :
+						// break;
+						// case LINE:
+						// break;
+						// case POLYGON:
+						// break;
+						// default:break;
+						//
+						//
+						// }
 						layer.setSymbology(new PointSymbology(taille,
 								SmartConstants.getColors()[positionColor],
 								PointSymbologieType.getFromId(positionShape)));

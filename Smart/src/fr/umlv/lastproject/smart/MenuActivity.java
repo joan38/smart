@@ -436,6 +436,13 @@ public class MenuActivity extends Activity {
 				}
 				Collections.reverse(listOverlay.toList());
 				mapView.setReorderedLayers(listOverlay);
+				if (Mission.isCreated() && polygonTrack != null
+						&& polygonTrack.isStarted()) {
+					Mission.getInstance().getPolygonLayer()
+							.removeGeometry(polygonTrack.getGeometry());
+					Mission.getInstance().getPolygonLayer()
+							.addGeometry(polygonTrack.getGeometry());
+				}
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
