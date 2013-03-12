@@ -70,11 +70,15 @@ public class InfosOverlay implements GpsListener {
 		((TextView) infoView.findViewById(R.id.altitudeValue))
 				.setText(LOCATION_FORMAT.format(event.getAltitude()));
 		((TextView) infoView.findViewById(R.id.accuracyValue))
-				.setText(ACCURACY_FORMAT.format(event.getAccuracy()) + "m");
+				.setText(ACCURACY_FORMAT.format(event.getAccuracy())
+						+ infoView.getResources().getString(R.string.meters));
 		((TextView) infoView.findViewById(R.id.bearingValue))
-				.setText(ACCURACY_FORMAT.format(event.getBearing()) + "°");
+				.setText(ACCURACY_FORMAT.format(event.getBearing())
+						+ infoView.getResources().getString(R.string.degrees));
 		((TextView) infoView.findViewById(R.id.speedValue))
-				.setText(ACCURACY_FORMAT.format(event.getSpeed()) + "m/s");
+				.setText(ACCURACY_FORMAT.format(event.getSpeed())
+						+ infoView.getResources().getString(
+								R.string.meterspersecond));
 
 		setLatitudeVisibility(infosState.isLatitudeVisible);
 		setLongitudeVisibility(infosState.isLongitudeVisible);
