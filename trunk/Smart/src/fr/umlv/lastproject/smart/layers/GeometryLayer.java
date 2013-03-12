@@ -354,6 +354,7 @@ public class GeometryLayer extends Overlay implements Layer {
 				doubleTapListeners.get(i).actionPerformed(
 						new PointGeometry(latitude, longitude));
 			}
+			return true;
 		}
 
 		return super.onDoubleTap(e, mapView);
