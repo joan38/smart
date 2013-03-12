@@ -241,6 +241,7 @@ public class GpsTrack {
 				default:
 					break;
 				}
+
 			}
 
 			@Override
