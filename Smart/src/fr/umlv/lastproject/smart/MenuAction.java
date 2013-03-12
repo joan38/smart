@@ -288,7 +288,7 @@ public enum MenuAction {
 					final MeasureResultDialog areaDialog = new MeasureResultDialog(
 							activity, result, " "
 									+ activity.getResources().getString(
-											R.string.kilometers));
+											R.string.kilometersquater));
 					areaDialog.show();
 				}
 			});
