@@ -1,6 +1,8 @@
 package fr.umlv.lastproject.smart;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,14 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import fr.umlv.lastproject.smart.dialog.DeleteLayerDialog;
 import fr.umlv.lastproject.smart.dialog.HelpDialog;
 import fr.umlv.lastproject.smart.drag.DragSortController;
 import fr.umlv.lastproject.smart.drag.DragSortListView;
 import fr.umlv.lastproject.smart.drag.DragSortListView.RemoveListener;
+import fr.umlv.lastproject.smart.layers.BaseMapsAvailable;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
@@ -177,6 +184,34 @@ public class LayersActivity extends ListActivity {
 
 		logger.log(Level.INFO, "Layers menu opened");
 
+		final Spinner baseSpinner = (Spinner) findViewById(R.id.baseMapSpinner) ;
+		baseSpinner.setMinimumWidth(200);
+
+		List<String> baseMaps = new ArrayList<String>();
+		for(BaseMapsAvailable bma : BaseMapsAvailable.values()){
+			baseMaps.add(bma.toString()) ;
+		}
+
+		ArrayAdapter<String> baseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, baseMaps) ;
+		baseSpinner.setAdapter(baseAdapter);
+		baseSpinner.setSelection(Preferences.getInstance().getBase_map());
+		
+		baseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				pref.setBase_map(baseSpinner.getSelectedItemPosition()) ;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+		
+		
 		listOverlay = (ListOverlay) getIntent().getExtras().get("overlays");
 		mission = getIntent().getExtras().getString("mission");
 		track = getIntent().getExtras().getString("track");
@@ -223,6 +258,7 @@ public class LayersActivity extends ListActivity {
 				MenuActivity.class);
 		intentReturn.putExtra("overlays", listOverlay);
 		intentReturn.putExtra("editSymbo", false);
+		intentReturn.putExtra("baseMap", pref.getBase_map());
 		setResult(RESULT_OK, intentReturn);
 		logger.log(Level.INFO, "Back from layers menu");
 		finish();

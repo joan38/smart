@@ -79,7 +79,7 @@ public class PolygonGeometry extends Geometry {
 		return this.points;
 	}
 
-	private static final int ALPHA_SELECTED = 220;
+	private static final int ALPHA_SELECTED = 255;
 	private static final int ALPHA_UNSELECTED = 150;
 
 	@Override
@@ -96,7 +96,7 @@ public class PolygonGeometry extends Geometry {
 		if (isSelected()) {
 			paint.setAlpha(ALPHA_SELECTED);
 		} else {
-			paint.setAlpha(ALPHA_UNSELECTED);
+			paint.setAlpha(s.getAlpha() );
 		}
 		for (int j = 0; j < getPoints().size() + 1; j++) {
 			// on récupere les 2 points
@@ -168,6 +168,7 @@ public class PolygonGeometry extends Geometry {
 	 * @throws ClassNotFoundException
 	 *             if class does not exist
 	 */
+	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 

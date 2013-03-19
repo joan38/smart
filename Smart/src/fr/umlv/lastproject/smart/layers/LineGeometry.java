@@ -103,7 +103,7 @@ public class LineGeometry extends Geometry {
 					map,
 					c,
 					bool,
-					new PointSymbology(s.getSize(), s.getColor(),
+					new PointSymbology(s.getSize(), s.getColor(),s.getAlpha(),
 							PointSymbologieType.CIRCLE));
 
 		}
@@ -142,6 +142,7 @@ public class LineGeometry extends Geometry {
 	 * @throws ClassNotFoundException
 	 *             if class does not exist
 	 */
+	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 

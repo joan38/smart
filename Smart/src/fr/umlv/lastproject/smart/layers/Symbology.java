@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
 /**
@@ -21,6 +23,15 @@ public abstract class Symbology implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int color;
 	private int size;
+	private int alpha = 150 ;
+
+	public int getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
 
 	/**
 	 * @param color
@@ -38,9 +49,10 @@ public abstract class Symbology implements Serializable {
 		this.size = size;
 	}
 
-	public Symbology(int color, int size) {
+	public Symbology(int color, int size, int alpha) {
 		this.color = color;
 		this.size = size;
+		this.alpha = alpha;
 	}
 
 	/**
@@ -89,5 +101,7 @@ public abstract class Symbology implements Serializable {
 		this.size = in.readInt();
 		in.close();
 	}
+	
+	public abstract Bitmap getOverview(Context c);
 
 }

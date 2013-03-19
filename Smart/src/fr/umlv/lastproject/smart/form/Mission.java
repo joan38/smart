@@ -96,15 +96,14 @@ public final class Mission {
 		lineLayer = new GeometryLayer(activity);
 		lineLayer.setType(GeometryType.LINE);
 		lineLayer.setName(title + "_LINE");
-		lineLayer.setSymbology(new LineSymbology(LINE_THICKNESS, Color.BLACK));
+		lineLayer.setSymbology(new LineSymbology());
 		lineLayer.setSelectable(true);
 		lineLayer.addSelectedGeometryListener(list);
 
 		polygonLayer = new GeometryLayer(activity);
 		polygonLayer.setType(GeometryType.POLYGON);
 		polygonLayer.setName(title + "_POLYGON");
-		polygonLayer.setSymbology(new PolygonSymbology(POLY_THICKNESS,
-				Color.BLACK));
+		polygonLayer.setSymbology(new PolygonSymbology());
 		polygonLayer.setSelectable(true);
 		polygonLayer.addSelectedGeometryListener(list);
 
