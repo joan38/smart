@@ -132,13 +132,11 @@ public class GpsTrack {
 		switch (type) {
 		case LINE:
 			this.geometry = new LineGeometry();
-			this.geometryLayer.setSymbology(new LineSymbology(LINE_THICKNESS,
-					Color.RED));
+			this.geometryLayer.setSymbology(new LineSymbology());
 			break;
 		case POLYGON:
 			this.geometry = new PolygonGeometry();
-			this.geometryLayer.setSymbology(new PolygonSymbology(
-					LINE_THICKNESS, Color.RED));
+			this.geometryLayer.setSymbology(new PolygonSymbology());
 			break;
 		default:
 			geometry = null;

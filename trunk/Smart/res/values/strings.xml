@@ -68,7 +68,8 @@
     <string name="unableLoadPref">Unable to load the preferences</string>
     <string name="area_measure_start">Area measure started.\n Draw a polygon.</string>
     <string name="directory">Select current directory</string>
-
+    <string name="alpha">Transparency</string>
+    
     <string-array name="items">
         <item>Start mission</item>
         <item>Create form</item>
@@ -215,5 +216,7 @@
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Landscape</string>
     <string name="errorShp">Error : Shapefile too big to handle</string>
+    <string name="baseMap">Select the base map</string>
+    
 
 </resources>

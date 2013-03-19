@@ -28,7 +28,20 @@ public final class Preferences {
 	private static final String UNABLE_TO_SAVE = "Unable to save the object in preferences";
 
 	private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+	
+	private int baseMap = 0 ;
+	
+	public int getBase_map() {
+		return baseMap;
+	}
+
+	public void setBase_map(int baseMap) {
+		this.baseMap = baseMap;
+	}
+
 	public InfosState infosState = new InfosState();
+	
+	
 
 	// Add values to persist here with his default value
 
@@ -42,6 +55,7 @@ public final class Preferences {
 		theme = getInt("theme", theme);
 		shortcuts = (ArrayList<Integer>) getObject("shortcuts", shortcuts);
 		infosState = (InfosState) getObject("infosState", infosState);
+		baseMap = getInt("baseMap", baseMap);
 	}
 
 	/**
@@ -53,7 +67,7 @@ public final class Preferences {
 		putInt("theme", theme);
 		putObject("shortcuts", shortcuts);
 		putObject("infosState", infosState);
-
+		putInt("baseMap", baseMap);
 		sharedPrefEditor.commit();
 	}
 

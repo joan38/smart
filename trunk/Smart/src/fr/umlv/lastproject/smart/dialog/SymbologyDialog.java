@@ -11,21 +11,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 import fr.umlv.lastproject.smart.LayerItem;
 import fr.umlv.lastproject.smart.MenuActivity;
 import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
+import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology.PointSymbologieType;
+import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.utils.SmartConstants;
 
 public class SymbologyDialog extends AlertDialog.Builder {
 
 	private static final int SPINNER_WIDTH = 200;
 	private static final int SIZE = 20;
+	
 
 	public SymbologyDialog(final MenuActivity menu, final GeometryLayer layer,
 			final LayerItem layerItem) {
@@ -33,6 +39,9 @@ public class SymbologyDialog extends AlertDialog.Builder {
 		setCancelable(false);
 
 		final LayoutInflater inflater = LayoutInflater.from(menu);
+		
+		
+		
 		final View symbologyDialog = inflater.inflate(R.layout.alert_symbology,
 				null);
 		TableRow rowShape = (TableRow) symbologyDialog
@@ -42,6 +51,36 @@ public class SymbologyDialog extends AlertDialog.Builder {
 		setView(symbologyDialog);
 		setTitle(R.string.symbo);
 
+		
+		final TextView alphaText = (TextView) symbologyDialog.findViewById(R.id.alphaLabel);
+		final SeekBar alphaSeek = (SeekBar) symbologyDialog.findViewById(R.id.seekAlpha) ;
+		alphaSeek.setMax(100);
+		alphaSeek.setProgress((int)(layer.getSymbology().getAlpha()/2.56));
+		alphaText.setText(new String((int)(layer.getSymbology().getAlpha()/2.56)+" %")) ;
+		alphaSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				alphaText.setText(new String(progress+" %"));
+				
+			}
+		});
+
+		
+		
 		final Spinner spinner = (Spinner) symbologyDialog
 				.findViewById(R.id.colorSpinner);
 		spinner.setMinimumWidth(SPINNER_WIDTH);
@@ -102,26 +141,31 @@ public class SymbologyDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
+						
 						int positionColor = spinner.getSelectedItemPosition();
 						Integer taille = tailles.get(tailleSpinner
 								.getSelectedItemPosition());
 						int positionShape = shapeSpinner
 								.getSelectedItemPosition();
+						int alpha = (int)(alphaSeek.getProgress() * 2.55 );
 
-						// switch(layer.getType()){
-						// case POINT :
-						// break;
-						// case LINE:
-						// break;
-						// case POLYGON:
-						// break;
-						// default:break;
-						//
-						//
-						// }
-						layer.setSymbology(new PointSymbology(taille,
-								SmartConstants.getColors()[positionColor],
-								PointSymbologieType.getFromId(positionShape)));
+						switch (layer.getType()) {
+						case POINT :
+							layer.setSymbology(new PointSymbology(taille,
+									SmartConstants.getColors()[positionColor],alpha,
+									PointSymbologieType.getFromId(positionShape)));
+							break ;
+						case LINE:
+							layer.setSymbology(new LineSymbology(taille, SmartConstants.getColors()[positionColor], alpha));
+							break;
+							
+						case POLYGON : 
+							
+							layer.setSymbology(new PolygonSymbology(taille, SmartConstants.getColors()[positionColor],alpha));
+							
+						default:
+							break;
+						}
 						layerItem.setOverview(layer.getOverview());
 						menu.getMapView().invalidate();
 
@@ -135,6 +179,5 @@ public class SymbologyDialog extends AlertDialog.Builder {
 				}).create();
 
 		dialog.show();
-
 	}
 }

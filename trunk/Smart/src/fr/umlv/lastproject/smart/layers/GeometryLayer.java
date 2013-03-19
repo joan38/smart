@@ -10,14 +10,11 @@ import org.osmdroid.views.overlay.Overlay;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
-import fr.umlv.lastproject.smart.R;
 import fr.umlv.lastproject.smart.form.SelectedGeometryListener;
 
 /**
@@ -166,10 +163,6 @@ public class GeometryLayer extends Overlay implements Layer {
 	private static final int BUFFER = 100;
 	private static final String DEFAULT_NAME = "default";
 
-	private static final float RADIUS = 12;
-	private static final float LINESIZE = 12;
-	private static final float RECTSIZE = 12;
-	private static final float STROKEWIDTH = 5;
 
 	/**
 	 * 
@@ -449,39 +442,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	 */
 	@Override
 	public Bitmap getOverview() {
-
-		final Bitmap bit = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.geometry_blank);
-
-		Bitmap bitmap = bit.copy(Config.ARGB_8888, true);
-		bit.recycle();
-		int height = (bitmap.getHeight());
-		int width = (bitmap.getWidth());
-		int middlex = (bitmap.getHeight() / 2);
-		int middley = (bitmap.getWidth() / 2);
-
-		final Canvas canvas = new Canvas(bitmap);
-
-		paint = new Paint();
-
-		paint.setColor(symbology.getColor());
-		switch (type) {
-		case POINT:
-			canvas.drawCircle(middlex, middley, RADIUS, paint);
-			break;
-		case LINE:
-			paint.setStrokeWidth(STROKEWIDTH);
-			canvas.drawLine(LINESIZE, LINESIZE, height - LINESIZE, width
-					- LINESIZE, paint);
-			break;
-		case POLYGON:
-			canvas.drawRect(RECTSIZE, RECTSIZE, height - RECTSIZE, width
-					- RECTSIZE, paint);
-			break;
-		default:
-			break;
-		}
-		return bitmap;
+		return symbology.getOverview(context);
 
 	}
 

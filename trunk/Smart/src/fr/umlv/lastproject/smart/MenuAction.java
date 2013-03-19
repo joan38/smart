@@ -251,6 +251,7 @@ public enum MenuAction {
 			final WMSDialog dialog = new WMSDialog(activity.getMapView());
 			dialog.show();
 		}
+			
 	},
 	MEASURE(11) {
 

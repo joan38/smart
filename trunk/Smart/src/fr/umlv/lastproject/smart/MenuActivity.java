@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -59,6 +58,7 @@ import fr.umlv.lastproject.smart.form.FormEditedListener;
 import fr.umlv.lastproject.smart.form.FormIOException;
 import fr.umlv.lastproject.smart.form.Mission;
 import fr.umlv.lastproject.smart.form.MissionListener;
+import fr.umlv.lastproject.smart.layers.BaseMapsAvailable;
 import fr.umlv.lastproject.smart.layers.Geometry;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
@@ -254,7 +254,7 @@ public class MenuActivity extends Activity {
 		mapView = (SmartMapView) findViewById(R.id.mapview);
 		mapController = mapView.getController();
 		overlayManager = mapView.getOverlayManager();
-		mapView.setTileSource(TileSourceFactory.MAPNIK);
+		mapView.setTileSource(BaseMapsAvailable.getFromId(Preferences.getInstance().getBase_map()).getSource());
 		mapView.setClickable(true);
 		mapView.setMultiTouchControls(true);
 		mapController.setZoom(15);
@@ -289,13 +289,6 @@ public class MenuActivity extends Activity {
 		});
 	}
 
-	// private void checkGPSEnabled() {
-	// if (!gps.isEnabled(locationManager)) {
-	// final AlertGPSSettingDialog gpsSettingDialog = new AlertGPSSettingDialog(
-	// this);
-	// gpsSettingDialog.show();
-	// }
-	// }
 
 	/**
 	 * This method is use to connect the GPS to the positionOverlay
@@ -443,6 +436,9 @@ public class MenuActivity extends Activity {
 					Mission.getInstance().getPolygonLayer()
 							.addGeometry(polygonTrack.getGeometry());
 				}
+				
+				mapView.setTileSource(BaseMapsAvailable.getFromId(data.getIntExtra("baseMap", 0)).getSource());
+				
 				break;
 
 			case SmartConstants.MISSION_BROWSER_ACTIVITY:
