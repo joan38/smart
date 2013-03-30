@@ -22,7 +22,6 @@ public class LineSymbology extends Symbology {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final int DEFAULT_THICKNESS = 5;
 	
 	private static final float LINESIZE = 12;
 	
@@ -36,7 +35,7 @@ public class LineSymbology extends Symbology {
 	 * Color : Black / Thickness : 5
 	 */
 	public LineSymbology() {
-		this(Color.BLACK, DEFAULT_THICKNESS,150);
+		this(Color.BLACK, 5,150);
 	}
 
 	/**

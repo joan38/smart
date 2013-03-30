@@ -37,8 +37,6 @@ public final class Mission {
 	private static Mission mission;
 	private static final Logger LOGGER = SmartLogger.getLocator().getLogger();
 
-	private static final int LINE_THICKNESS = 10;
-	private static final int POLY_THICKNESS = 10;
 
 	/* three type of survey are available : line, polygon, point */
 	private GeometryLayer pointLayer;

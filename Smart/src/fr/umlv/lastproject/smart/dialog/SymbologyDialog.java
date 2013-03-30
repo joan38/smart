@@ -18,7 +18,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import fr.umlv.lastproject.smart.LayerItem;
 import fr.umlv.lastproject.smart.MenuActivity;
+import fr.umlv.lastproject.smart.Preferences;
 import fr.umlv.lastproject.smart.R;
+import fr.umlv.lastproject.smart.layers.BaseMapsAvailable;
 import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineSymbology;
@@ -167,6 +169,8 @@ public class SymbologyDialog extends AlertDialog.Builder {
 							break;
 						}
 						layerItem.setOverview(layer.getOverview());
+						menu.getMapView().setTileSource(BaseMapsAvailable.getFromId(Preferences.getInstance().getBase_map()).getSource());
+
 						menu.getMapView().invalidate();
 
 					}
@@ -174,6 +178,8 @@ public class SymbologyDialog extends AlertDialog.Builder {
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
+						
+						menu.getMapView().setTileSource(BaseMapsAvailable.getFromId(Preferences.getInstance().getBase_map()).getSource());
 
 					}
 				}).create();
