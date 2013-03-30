@@ -10,6 +10,8 @@
     <string name="meters">m</string>
     <string name="meterspersecond">m/s</string>
     <string name="degrees">°</string>
+        <string name="stopPolygonTrack">Stop the polygon track</string>
+    
     <string name="app_name">Smart</string>
     <string name="menu_settings">Settings</string>
     <string name="infoSettings">Information parameters</string>
@@ -90,7 +92,6 @@
     </string-array>
 
     <string name="stopMission">Stop mission</string>
-    <string name="stoPolygonTrack">Stop polygon track</string>
     <string name="stopGPSTrack">Stop track</string>
 
     <string-array name="typeFields">

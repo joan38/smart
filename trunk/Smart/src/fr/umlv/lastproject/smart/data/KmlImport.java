@@ -17,6 +17,7 @@ import fr.umlv.lastproject.smart.layers.LineSymbology;
 import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonSymbology;
 import fr.umlv.lastproject.smart.layers.Symbology;
+import fr.umlv.lastproject.smart.utils.SmartConstants;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
 
 /**
@@ -62,7 +63,7 @@ public class KmlImport {
 				break;
 
 			case LINE:
-				symbology = new LineSymbology();
+				symbology = new LineSymbology(5, SmartConstants.getColors()[0], 150);
 				name += "_LINE";
 				break;
 

@@ -28,7 +28,6 @@ import fr.umlv.lastproject.smart.utils.SmartLogger;
  */
 public class GpsTrack {
 
-	private static final int LINE_THICKNESS = 5;
 	private static final int MULT = 1000;
 	private final TrackMode trackMode;
 

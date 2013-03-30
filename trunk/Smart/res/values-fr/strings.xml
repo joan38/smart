@@ -57,7 +57,21 @@
     <string name="area_measure_start">Mesure d\'aire démarée. Dessiner un polygone</string>
     <string name="directory">Choisir ce dossier</string>
     <string name="alpha">Transparence</string>
-    
+    <string name="home">Home</string>
+    <string name="layers">Layers</string>
+    <string name="kilometersquater">km²</string>
+    <string name="kilometers">km</string>
+    <string name="meters">m</string>
+    <string name="meterspersecond">m/s</string>
+    <string name="degrees">°</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_home">Menu</string>
+    <string name="symbo_desc">Symbology</string>
+    <string name="cheatcode1">geom2013</string>
+    <string name="title_activity_height">Measure height</string>
+    <string name="title_activity_add_fieldto_form">Add a field to the form</string>
+    <string name="title_activity_layers">Layers </string>
+
     <string-array name="items">
         <item>Démarrer une mission</item>
         <item>Créer un formulaire</item>
@@ -194,18 +208,14 @@
     <string name="survayError">Erreur : relevé non enregistré</string>
     <string name="vector_progress">Import des données vectorielles</string>
     <string name="vector_progress_title">Patienter</string>
-    
     <string name="settings">Paramètres</string>
     <string name="theme">Thème</string>
     <string name="ligthTeme">Clair</string>
     <string name="darkTeme">Foncé</string>
-    
     <string name="screenOrientation">Orientation</string>
     <string name="portraitOrientation">Portrait</string>
     <string name="landscapeOrientation">Paysage</string>
-    
     <string name="errorShp">Erreur : Shapefile trop volumineux</string>
     <string name="baseMap">Selectionner le fond de carte</string>
-    
 
 </resources>

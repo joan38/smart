@@ -67,6 +67,10 @@ public class Kml {
 		FileInputStream stream = new FileInputStream(file);
 		xpp.setInput(stream, "UTF-8");
 		int eventType = xpp.getEventType();
+		
+		for(GeometryType t : GeometryType.values()){
+			geometries.put(t, new ArrayList<Geometry>());
+		}
 
 		// create all the objects use in the while loop
 		boolean filter = false;
@@ -97,7 +101,7 @@ public class Kml {
 				}
 
 				// if a geometry tag was found
-			} else if (eventType == XmlPullParser.START_TAG
+			} /*else if (eventType == XmlPullParser.START_TAG
 					&& GEOMETRIESTAGS.contains(xpp.getName())) {
 				if (xpp.getName().equals(POINTTAG)) {
 					this.geometries.put(GeometryType.POINT,
@@ -111,7 +115,7 @@ public class Kml {
 				}
 
 				// if a <coordinates> tag was found
-			} else if (eventType == XmlPullParser.START_TAG
+			}*/ else if (eventType == XmlPullParser.START_TAG
 					&& COORDINATESTAG.contains(xpp.getName())) {
 				if (xpp.getName().equals(POINTTAG)) {
 					this.geometries.put(GeometryType.POINT,
@@ -146,6 +150,12 @@ public class Kml {
 			}
 
 			eventType = xpp.next();
+		}
+		
+		for(GeometryType t : GeometryType.values()){
+			if(geometries.get(t).isEmpty()){
+				geometries.remove(t);
+			}
 		}
 	}
 
