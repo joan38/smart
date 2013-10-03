@@ -70,7 +70,7 @@
 				<version>2.8.3</version>
 				<configuration>
 					<sdk>
-						<path>/home/ig2k/android-sdk-linux</path>
+						<path>/home/ubuntu/workspace/android-sdk-linux</path>
 						<platform>17</platform>
 					</sdk>
 					<emulator>
