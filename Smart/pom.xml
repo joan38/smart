@@ -66,12 +66,12 @@
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>maven-android-plugin</artifactId>
-				<version>2.8.3</version>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>3.5.4-SNAPSHOT</version>
 				<configuration>
 					<sdk>
 						<path>/home/ubuntu/workspace/android-sdk-linux</path>
-						<platform>17</platform>
+						<platform>18</platform>
 					</sdk>
 					<emulator>
 						<!-- the name of the avd device to use for starting the emulator -->
