@@ -14,6 +14,7 @@ import fr.umlv.lastproject.smart.layers.GeometryLayer;
 import fr.umlv.lastproject.smart.layers.GeometryType;
 import fr.umlv.lastproject.smart.layers.LineGeometry;
 import fr.umlv.lastproject.smart.layers.PointGeometry;
+import fr.umlv.lastproject.smart.layers.PointSymbology;
 import fr.umlv.lastproject.smart.layers.PolygonGeometry;
 import fr.umlv.lastproject.smart.utils.SmartException;
 import fr.umlv.lastproject.smart.utils.SmartLogger;
@@ -96,6 +97,7 @@ public final class ShpImport {
 
 		gl.setType(GeometryType.POINT);
 		gl.setName(fileName);
+		gl.setSymbology(new PointSymbology());
 
 		for (int i = 0; i < shp.getSHP_shapeCount(); i++) {
 			ShpPoint point = shp.getSHP_shape(i);
