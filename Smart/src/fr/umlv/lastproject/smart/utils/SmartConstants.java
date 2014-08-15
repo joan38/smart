@@ -102,21 +102,21 @@ public final class SmartConstants {
 
 	public static final OnlineTileSourceBase GOOGLEHYBRIDMAP = 
 			new GoogleMapsPhysicalTileSource(
-					"GoogleMapsHybrid", ResourceProxy.string.unknown, 0, 15, 256, "",
+					"GoogleMapsHybrid", ResourceProxy.string.unknown, 0, 22, 256, "",
 					"http://mt1.google.com/vt/lyrs=y") ;
 
 	public static final OnlineTileSourceBase GOOGLESTREETMAP = 
 			new GoogleMapsPhysicalTileSource(
-					"GoogleMapsStreet", ResourceProxy.string.unknown, 0, 15, 256, "",
+					"GoogleMapsStreet", ResourceProxy.string.unknown, 0, 22, 256, "",
 					"http://mt1.google.com/vt/lyrs=m");
 	
 	public static final OnlineTileSourceBase GOOGLETERRAINMAP = 
 			new GoogleMapsPhysicalTileSource(
-					"GoogleMapsTerrain", ResourceProxy.string.unknown, 0, 15, 256, "",
+					"GoogleMapsTerrain", ResourceProxy.string.unknown, 0, 22, 256, "",
 					"http://mt1.google.com/vt/lyrs=p");
 	public static final OnlineTileSourceBase GOOGLESATELLITEMAP = 
 			new GoogleMapsPhysicalTileSource(
-					"GoogleMapsSatellite", ResourceProxy.string.unknown, 0, 15, 256, "",
+					"GoogleMapsSatellite", ResourceProxy.string.unknown, 0, 22, 256, "",
 					"http://khm1.google.com/kh/v=101");
 	
 
