@@ -305,6 +305,7 @@ public class GeometryLayer extends Overlay implements Layer {
 	 */
 	@Override
 	protected void draw(Canvas canvas, MapView mapView, boolean b) {
+		System.out.println("zoom" + mapView.getZoomLevel());
 		for (Geometry geometry : geometries) {
 			geometry.draw(mapView, canvas, b, getSymbology());
 		}

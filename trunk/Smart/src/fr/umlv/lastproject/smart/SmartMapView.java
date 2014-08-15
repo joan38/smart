@@ -13,9 +13,11 @@ import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.util.constants.MapViewConstants;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.hardware.Camera.OnZoomChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ public class SmartMapView extends MapView {
 	private final List<GeometryLayer> geometryOverlays;
 	private final List<WMSOverlay> wmsOverlays;
 	private final Set<Layer> layers;
+	public static final int MAXIMUM_ZOOMLEVEL = 28;
 
 	private ListOverlay listOverlay;
 
@@ -56,10 +59,10 @@ public class SmartMapView extends MapView {
 		this.listOverlay = new ListOverlay();
 		this.geometryOverlays = new ArrayList<GeometryLayer>();
 		this.wmsOverlays = new ArrayList<WMSOverlay>();
-
 		this.stringToOverlay = new HashMap<String, Overlay>();
-
 	}
+	
+	
 
 	public List<GeometryLayer> getGeometryOverlays() {
 		return geometryOverlays;
