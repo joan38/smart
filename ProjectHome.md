@@ -1,0 +1,1 @@
+SMART is a Mobile solution of field Survey developed by the ESIPE (Ecole Supérieure d'Ingénieur de Paris Est).
